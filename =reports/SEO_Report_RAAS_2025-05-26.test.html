@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - RAAS</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td { padding: 18px 20px; border-bottom: 1px solid #f0f0f0; color: #000000; }
+        tr:hover td { background-color: #f8f9ff; }
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; }
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">RAAS • raas.today</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> May 26, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><table><thead><tr><th>Metric</th><th>Value / Change</th></tr></thead><tbody><tr><td>Estimated Traffic Volume (ETV)</td><td>1,320.75 (latest month)</td></tr><tr><td>ETV Growth (Last 12 months)</td><td>+23.72%</td></tr><tr><td>Keywords in Position 1</td><td>3</td></tr><tr><td>Keywords in Positions 2-3</td><td>2</td></tr><tr><td>Keywords in Positions 4-10</td><td>44</td></tr><tr><td>Keywords in Positions 11-20</td><td>87</td></tr><tr><td>Keywords in Positions 21-100</td><td>347</td></tr><tr><td>Estimated Paid Traffic Cost</td><td>€3,285.68</td></tr></tbody></table><p></p><br><table><thead><tr><th>Competitor</th><th>Keywords They Rank Well For (Monthly Search Volume)</th><th>RAAS Ranking Status</th></tr></thead><tbody><tr><td>Michael Page</td><td>"op afstand werken" (720), "werving en selectie bureau" (720), "wat is interim" (480), "flexibel werken" (390), "hoe vind ik een baan die bij mij past" (210)</td><td>RAAS ranks poorly or not in top 10</td></tr><tr><td>TimeToHire</td><td>"rpo" (260), "rpo recruitment" (260), "rpo recruiter" (260), "interim recruitment" (210), "betekenis recruitment" (170)</td><td>RAAS ranks 10-20 or lower</td></tr><tr><td>Recruitment Center</td><td>"interim recruiter" (590), "interim recruiter opdracht" (170), "recruitmentproces" (140)</td><td>RAAS ranks 11-20 or lower</td></tr></tbody></table><p></p><br><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume (NL)</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td>interim management recruitment</td><td>390 (Apr 2025)</td><td>Low</td><td>High relevance, low competition, currently underutilized</td></tr><tr><td>interim manager recruitment</td><td>390 (Apr 2025)</td><td>Low</td><td>Same as above</td></tr><tr><td>interim recruiter</td><td>590</td><td>Medium</td><td>High volume, competitor dominance, opportunity to improve rankings</td></tr><tr><td>wat is interim</td><td>480</td><td>Low</td><td>Informational intent, opportunity to capture educational search traffic</td></tr><tr><td>op afstand werken</td><td>720</td><td>Medium</td><td>Trending topic on remote work, competitor ranks higher</td></tr><tr><td>salaris onderhandeling</td><td>480</td><td>Medium</td><td>Relevant to salary negotiation content, currently ranking just outside top 10</td></tr><tr><td>werving en selectie bureau breda</td><td>50 (Apr 2025)</td><td>Low</td><td>Location-specific targeting, low competition</td></tr><tr><td>werving en selectie bureau zorg</td><td>40 (Apr 2025)</td><td>Medium</td><td>Industry-specific targeting, relevant to healthcare recruitment</td></tr></tbody></table><p></p><br><h3>TL;DR - Key Findings</h3><br><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                RAAS shows solid organic growth (+23.72% ETV increase) with 3 keywords in #1 position and 44 in top 10.
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Strong brand keyword rankings but limited presence on high-volume, non-branded recruitment keywords.
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Competitors Michael Page, TimeToHire, and Recruitment Center outrank RAAS on key high-volume keywords related to interim recruitment, RPO, and modern work trends.
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Technical SEO is generally strong but needs fixes on meta descriptions, image alt texts, and some HTML errors.
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Backlink profile is clean but could be improved by disavowing toxic links, fixing broken backlinks, and acquiring links from authoritative Dutch HR/recruitment sites.
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Content gaps exist in industry-specific recruitment, location-based services, interim management, and flexible/remote work topics.
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Recommendations include optimizing existing pages, creating dedicated service pages, improving SERP elements, diversifying content formats, and implementing a strategic internal linking and link-building plan.
+            </p><br><p></p><br><p></p><br></div></section>
+                <section id="seo-research-report-raas-raas-today-" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: RAAS (raas.today)</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for RAAS, a Recruitment as a Service provider operating in the Netherlands. The analysis focuses on RAAS's current SEO performance, keyword opportunities, competitive landscape, and backlink profile within the Dutch market. Based on our findings, we've developed actionable recommendations to improve RAAS's search visibility and capture untapped opportunities in the recruitment services sector.</p><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>RAAS (raas.today) is a specialized recruitment service provider offering multiple solutions including:</p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Recruitment Process Outsourcing (RPO)
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Interim Recruitment services
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Werving & Selectie (W&S) on a "No Cure, No Pay" basis
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Comprehensive Recruitment as a Service with in-house recruiters and AI-driven tools
+            </p><p>Source: [Company Website]</p><br></div></section>
+                <section id="research-methodology" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Research Methodology</h2>
+                    </div>
+                    <div class="section-content"><p>Our analysis focuses specifically on the Dutch market, examining:</p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Overall SEO performance metrics
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Keyword rankings and opportunities
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Competitive landscape analysis
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Backlink profile and authority assessment
+            </p><br></div></section>
+                <section id="1-overall-seo-performance" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance</h2>
+                    </div>
+                    <div class="section-content"><br><h3>Current Organic Visibility</h3><p>RAAS has demonstrated positive growth in organic visibility over the past year:</p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Estimated Traffic Volume (ETV)</strong>: 1,320.75 (latest month), representing a <strong>23.72% increase</strong> over the past 12 months
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Current Ranking Positions</strong>:
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Position 1: 3 keywords
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Positions 2-3: 2 keywords
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Positions 4-10: 44 keywords
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Positions 11-20: 87 keywords
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Positions 21-100: 347 keywords
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Estimated Paid Traffic Cost</strong>: €3,285.68, indicating the value of their organic traffic if acquired through paid channels
+            </p><br><h3>Top-Performing Pages</h3><p>Several pages demonstrate strong organic performance:</p><p>1. <strong>Homepage</strong> (https://raas.today/): Ranks in top 3 positions for 3 SERPs with an ETV of 553.51</p><p>2. <strong>Holiday Planning Page</strong> (https://raas.today/feestdagen-en-vakantieplanning-voor-2026/): High ETV of 239.11, ranking in positions 4-40 across 9 SERPs</p><p>3. <strong>Salary Negotiation Guide</strong> (https://raas.today/in-5-stappen-voorbereiden-op-je-salarisonderhandeling/): ETV of 17.00, ranking in top 10 for one SERP</p><br><h3>Underperforming Pages</h3><p>Several areas show potential for improvement:</p><p>1. <strong>Job Posting Pages</strong>: Individual vacancy pages under /vacatures/ directory have low ETVs (often below 1) and rank in lower positions (below 20)</p><p>2. <strong>Outdated Content</strong>: Pages like "recruitment-trends-12-voor-2021" are ranking but contain outdated information</p><p>3. <strong>Low-Impact Pages</strong>: Several pages rank for very few keywords (count of 2-3) with minimal traffic contribution</p><br><h3>Content Strategy Analysis</h3><p>RAAS's current content falls into several categories:</p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Vacancies/Job Postings</strong>: Significant portion of ranking pages are individual job listings
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Career Advice/HR Articles</strong>: Content targeting keywords related to CV writing, salary negotiation, employer branding
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>"What is..." Articles</strong>: Educational content explaining recruitment concepts (e.g., "Wat doet een detacheringsbureau?")
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Holiday Planning</strong>: Content around holiday planning for future years (2025, 2026)
+            </p><br><h3>Technical SEO Assessment</h3><p>Technical issues requiring attention include:</p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                HTML errors and warnings
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Missing meta descriptions on several pages
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Missing image alt text
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                The site's on-page score is 93.41, indicating a solid technical foundation but with room for improvement
+            </p><br></div></section>
+                <section id="2-keyword-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3>Current Keyword Rankings</h3><p>RAAS demonstrates strong performance for several key keywords in the Netherlands:</p><br><h4>Top Performing Keywords (Positions 1-10):</h4><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td>raas</td><td>1600</td><td>1</td></tr><tr><td>raas bv</td><td>110</td><td>1</td></tr><tr><td>raas recruitment</td><td>110</td><td>1</td></tr><tr><td>jezelf voorstellen in een nieuwsbrief</td><td>320</td><td>4</td></tr><tr><td>jezelf voorstellen in een nieuwsbrief voorbeeld</td><td>90</td><td>5</td></tr><tr><td>postkamer medewerker vacature</td><td>70</td><td>6</td></tr><tr><td>vacatures postkamer medewerker</td><td>70</td><td>6</td></tr><tr><td>kenbri vacature</td><td>90</td><td>7</td></tr><tr><td>nh1816 vacature</td><td>140</td><td>7</td></tr><tr><td>recruiting funnel</td><td>110</td><td>7</td></tr><tr><td>feestdagen 2026</td><td>5400</td><td>8</td></tr></tbody></table><p>This data reveals strong brand recognition with #1 rankings for brand terms and good performance for specific job-related keywords and informational content.</p><br><h3>Keyword Opportunities</h3><p>Our analysis identified several high-potential keywords currently ranking in positions 11-30:</p><br><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td>crm recruitment</td><td>210</td><td>11</td></tr><tr><td>gebouwbeheer vacatures</td><td>320</td><td>12</td></tr><tr><td>rpo recruiter</td><td>260</td><td>10</td></tr><tr><td>rpo recruitment</td><td>260</td><td>11</td></tr><tr><td>talent pool</td><td>320</td><td>10</td></tr><tr><td>google for jobs</td><td>320</td><td>11</td></tr><tr><td>salaris onderhandeling</td><td>480</td><td>11</td></tr></tbody></table><p>These keywords represent immediate optimization opportunities with significant search volume and achievable ranking improvements.</p><br><h3>Recommended Target Keywords</h3><p>Based on search volume, competition, and relevance to RAAS's services, we recommend prioritizing these keywords:</p><br><h4>Top Priority Keywords:</h4><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>interim management recruitment</strong>: 390 (Apr 2025) - 110 (Dec 2024) | LOW competition
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>interim manager recruitment</strong>: 390 (Apr 2025) - 110 (Dec 2024) | LOW competition
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>recruitment interim</strong>: 390 (Apr 2025) - 110 (Dec 2024) | LOW competition
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>interim recruiter</strong>: 590 | MEDIUM competition
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>wat is interim</strong>: 480 | LOW competition
+            </p><br><h4>Secondary Keywords:</h4><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>werving en selectie bureau breda</strong>: 50 (Apr 2025) - 10 (Dec 2024) | LOW competition
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>werving en selectie bureau den bosch</strong>: 40 (Apr 2025) - 10 (Dec 2024) | LOW competition
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>it werving en selectie bureau</strong>: 30 (Apr 2025) - 50 (Dec 2024) | LOW competition
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>werving en selectie bureau zorg</strong>: 40 (Apr 2025) - 10 (Dec 2024) | MEDIUM competition
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>op afstand werken</strong>: 720 | MEDIUM competition
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>werving en selectie bureau</strong>: 720 | MEDIUM competition
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>flexibel werken</strong>: 390 | MEDIUM competition
+            </p><br><h3>Content Gap Analysis</h3><p>Our analysis identified several content gaps in RAAS's keyword strategy:</p><br><p>1. <strong>Industry-Specific Recruitment</strong>: Limited content targeting recruitment for specific industries (IT, healthcare, etc.)</p><p>2. <strong>Location-Based Services</strong>: Minimal optimization for location-specific recruitment services (Amsterdam, Breda, Den Bosch)</p><p>3. <strong>Interim Management</strong>: Despite ranking for some related terms, dedicated content for interim management recruitment is lacking</p><p>4. <strong>RPO Services</strong>: While ranking for some RPO-related terms, more comprehensive content could improve rankings for these high-value keywords</p><p>5. <strong>Work Flexibility Content</strong>: Competitors are outranking RAAS for keywords like "op afstand werken" and "flexibel werken" which are highly relevant to modern recruitment</p><br></div></section>
+                <section id="3-competitive-landscape" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape</h2>
+                    </div>
+                    <div class="section-content"><br><h3>Key Competitors</h3><p>Our analysis identified three primary competitors in the Dutch recruitment market:</p><br><p>1. <strong>Michael Page (www.michaelpage.nl)</strong></p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Key Strengths</strong>: High average keyword position, significant estimated traffic volume, strong brand recognition
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Content Focus</strong>: Job postings and career advice content
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Type</strong>: Direct competitor (recruitment agency)
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Notable Strategy</strong>: Effectively targets both job seekers and employers with diverse content types
+            </p><br><p>2. <strong>Recruitment Center (www.recruitmentcenter.nl)</strong></p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Key Strengths</strong>: Highest average keyword position among competitors, indicating strong relevance for targeted keywords
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Content Focus</strong>: Interim recruitment services
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Type</strong>: Direct competitor (recruitment agency specializing in interim)
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Notable Strategy</strong>: Highly focused content strategy around interim recruitment
+            </p><br><p>3. <strong>TimeToHire (timetohire.nl)</strong></p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Key Strengths</strong>: Focus on RPO (Recruitment Process Outsourcing) and related services
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Content Focus</strong>: Blog content around recruitment topics and RPO services
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Type</strong>: Direct competitor (recruitment agency with a focus on RPO)
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Notable Strategy</strong>: Dominates RPO-related keywords with comprehensive content
+            </p><br><h3>Competitor Keyword Analysis</h3><p>Our analysis revealed several keywords where competitors significantly outrank RAAS:</p><br><h4>Michael Page Dominates:</h4><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                "op afstand werken" (720 monthly searches)
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                "werving en selectie bureau" (720 monthly searches)
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                "wat is interim" (480 monthly searches)
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                "flexibel werken" (390 monthly searches)
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                "werving en selectiebureaus" (320 monthly searches)
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                "hoe vind ik een baan die bij mij past" (210 monthly searches)
+            </p><br><h4>TimeToHire Dominates:</h4><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                "rpo" (260 monthly searches)
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                "rpo recruitment" (260 monthly searches)
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                "rpo recruiter" (260 monthly searches)
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                "interim recruitment" (210 monthly searches)
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                "betekenis recruitment" (170 monthly searches)
+            </p><br><h4>Recruitment Center Dominates:</h4><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                "interim recruiter" (590 monthly searches)
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                "interim recruiter opdracht" (170 monthly searches)
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                "recruitmentproces" (140 monthly searches)
+            </p><br><h3>Competitor SERP Strategies</h3><p>Our analysis of competitor SERP elements revealed several effective patterns:</p><br><p>1. <strong>Title Optimization</strong>:</p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Michael Page uses concise titles that include the keyword and brand name (e.g., "Werving en Selectie - expertise | Michael Page Recruitment")
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                TimeToHire often uses question-based titles or focuses on benefits
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                RAAS titles are sometimes lengthy and could be optimized for better CTR
+            </p><br><p>2. <strong>Meta Description Strategies</strong>:</p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Competitors clearly state their value proposition in meta descriptions
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Use of compelling calls to action (e.g., "Find your dream job today!")
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                RAAS meta descriptions are sometimes truncated or don't effectively summarize page content
+            </p><br><p>3. <strong>Content Formats</strong>:</p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Blog Posts/Articles</strong>: Competitors successfully use blog posts to target informational keywords
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Service Pages</strong>: Dedicated service pages for core offerings rank well
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Numbered Lists</strong>: Michael Page effectively uses numbered lists in titles (e.g., "5 tips om de baan te vinden die bij je past")
+            </p><br></div></section>
+                <section id="4-backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3>Current Backlink Profile</h3><p>Our detailed backlink analysis reveals that RAAS has established a solid foundation with room for strategic improvement:</p><br><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Total Backlinks</strong>: 2,356 backlinks from 30 referring domains
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Backlink Spam Score</strong>: Very low at 1, indicating a clean overall profile
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Domain Distribution</strong>: Strong local relevance with 1,044 backlinks from .nl domains
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Technical Issues</strong>: 2 broken backlinks and 4 broken pages identified
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Link Types</strong>: Mix of anchor text links (1,058), redirects (576), and image links (5)
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Domain Authority</strong>: Site rank of 122, indicating moderate authority
+            </p><br><h3>Backlink Quality Assessment</h3><p>The backlink profile shows a mix of quality levels:</p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Low Spam Score Links (19)</strong>: Quality links from relevant Dutch business directories and recruitment sites like betrokkenondernemerswoerden.nl, werf-en.nl, and recruiternext.nl
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Medium Spam Score Links (5)</strong>: Some questionable links from domains like seobacklinks.agency (45% spam score)
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>High Spam Score Links (6)</strong>: Potentially harmful links from domains like what-happens-next.xyz (85% spam score) and thebestbacklinksavailable.click (65% spam score)
+            </p><br><h3>Anchor Text Analysis</h3><p>The anchor text profile reveals several patterns:</p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Brand Anchors</strong>: Strong presence of brand terms like "RAAS" and "Raas"
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Generic Anchors</strong>: Many generic terms like "Solliciteren" and "Bezoek website"
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Contextual Anchors</strong>: Some valuable contextual anchors like "gratis vacaturescan"
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>Missing Opportunity</strong>: Limited use of keyword-rich anchors related to core services
+            </p><br><h3>Competitor Backlink Comparison</h3><p>Our analysis identified several competitors with backlink intersections:</p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>flexsoftware.nl</strong>: 5 shared backlink sources, rank 14
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>skymem.com</strong>: 2 shared backlink sources, rank 7
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>rendement.nl</strong>: 2 shared backlink sources, rank 14
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>company.info</strong>: 1 shared backlink source, rank 51
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                <strong>digger.dev</strong>: 1 shared backlink source, rank 9
+            </p><br><h3>Link Building Opportunities</h3><p>Based on our analysis, we recommend focusing on:</p><br><p>1. <strong>Toxic Link Removal</strong>: Disavow the 6 high-spam score domains to protect RAAS's search rankings</p><p>2. <strong>Broken Link Fixing</strong>: Address the 2 broken backlinks and 4 broken pages to recapture lost link equity</p><p>3. <strong>Local Business Directories</strong>: Expand presence in Dutch business directories where competitors are listed</p><p>4. <strong>Industry Publications</strong>: Target Dutch HR and recruitment publications for guest posting and feature opportunities</p><p>5. <strong>Competitor Link Acquisition</strong>: Pursue backlinks from the same sources linking to flexsoftware.nl and other competitors</p><p>6. <strong>Anchor Text Diversification</strong>: Work on acquiring more keyword-rich anchor text related to core services</p><br></div></section>
+                <section id="5-content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tasks"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><p>Based on our comprehensive analysis of RAAS's current SEO performance, keyword opportunities, competitive landscape, and backlink profile, we recommend the following content strategy:</p><br><h3>Content Optimization Opportunities</h3><p>1. <strong>Job Posting Pages</strong>: Optimize individual vacancy pages with more specific long-tail keywords and improve internal linking structure. Implement proper schema markup to enhance visibility in Google for Jobs.</p><br><p>2. <strong>RPO Service Pages</strong>: Enhance the existing RPO content to better target keywords like "rpo recruiter," "rpo recruitment," and "rpo recruitment process outsourcing" where TimeToHire currently dominates.</p><br><p>3. <strong>Salary Negotiation Content</strong>: Further optimize the "Hoe bereid je je voor op de salarisonderhandeling?" page to improve rankings for "salaris onderhandeling" (position 11, 480 monthly searches).</p><br><p>4. <strong>Holiday Planning Content</strong>: Continue to leverage the strong performance of the "Feestdagen en Vakantieplanning voor 2026" page and create similar content for 2027 well in advance.</p><br><p>5. <strong>Title and Meta Description Optimization</strong>: Rewrite titles and meta descriptions for existing content, focusing on clarity, keyword optimization, and compelling value propositions. For example:</p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                For "wat is interim" keyword: Change title to "Wat is een Interim Professional? Definitie & Uitleg | RAAS" and meta description to "Ontdek wat een interim professional is, wat ze doen en wanneer je er een inhuurt. RAAS legt het uit."
+            </p><br><h3>Content Development Opportunities</h3><p>1. <strong>Dedicated Service Pages</strong>: Create dedicated pages for each core service offering with detailed information:</p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Interim Recruitment (targeting "interim management recruitment," "interim manager recruitment," "interim recruiter")
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Industry-Specific Recruitment (targeting "it werving en selectie bureau," "werving en selectie bureau zorg")
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Location-Based Services (targeting "werving en selectie bureau breda," "werving en selectie bureau den bosch")
+            </p><br><p>2. <strong>Modern Work Trends Content</strong>: Develop comprehensive content around:</p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Remote work (targeting "op afstand werken" - 720 monthly searches)
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Flexible work arrangements (targeting "flexibel werken" - 390 monthly searches)
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Finding the right job fit (targeting "hoe vind ik een baan die bij mij past" - 210 monthly searches)
+            </p><br><p>3. <strong>RPO Content Hub</strong>: Create a comprehensive content hub around RPO to compete with TimeToHire, including:</p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                What is RPO? (beginner's guide)
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Benefits of RPO for different company sizes
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                Case studies of successful RPO implementations
+            </p><p style="margin: 10px 0; padding-left: 20px; position: relative;">
+                <i class="fas fa-check" style="position: absolute; left: 0; color: var(--success);"></i>
+                RPO vs. traditional recruitment comparison
+            </p><br><p>4. <strong>Content Format Diversification</strong>: Consider creating video content or infographics to complement existing blog posts and articles, similar to successful competitors.</p><br><h3>Linkable Asset Development</h3><p>Based on our backlink analysis, we recommend creating these specific linkable assets:</p><br><p>1. <strong>Dutch Recruitment Industry Report</strong>: Create an annual or quarterly report on the state of recruitment in the Netherlands, targeting backlinks from HR publications and competitors like flexsoftware.nl</p><br><p>2. <strong>Recruitment Salary Guide</strong>: Develop a comprehensive salary guide for various positions in the Netherlands, which could attract links from career sites and HR blogs</p><br><p>3. <strong>Interactive Recruitment Tools</strong>: Create tools like a "Recruitment ROI Calculator" or "Hiring Timeline Estimator" that other sites would reference and link to</p><br><p>4. <strong>Expert Interview Series</strong>: Conduct and publish interviews with Dutch recruitment experts and HR leaders to build relationships that could lead to backlinks</p><br><h3>Internal Linking Strategy</h3><p>Implement a strategic internal linking approach to:</p><p>1. Connect related content and improve overall site architecture</p><p>2. Link from relevant blog posts to service pages and vice versa</p><p>3. Create content clusters around core topics (RPO, interim recruitment, W&S)</p><p>4. Fix the 4 broken pages identified in our backlink analysis to recapture lost link equity</p><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><p>Our analysis reveals that RAAS has established a solid SEO foundation with positive growth in organic visibility over the past year and a generally healthy backlink profile. However, the competitive landscape analysis shows that key competitors like Michael Page, Recruitment Center, and TimeToHire are outranking RAAS for valuable keywords in the Dutch recruitment market.</p><br><p>Key opportunities for improvement include:</p><br><p>1. <strong>Optimize for High-Value Keywords</strong>: Focus on improving rankings for keywords like "interim recruiter" (590 searches), "wat is interim" (480 searches), and "op afstand werken" (720 searches) where competitors currently dominate.</p><br><p>2. <strong>Enhance SERP Elements</strong>: Improve titles and meta descriptions following competitor best practices, focusing on clarity, keyword optimization, and compelling value propositions.</p><br><p>3. <strong>Develop Comprehensive Service Content</strong>: Create dedicated pages for core services, particularly interim recruitment and RPO, to compete with specialized competitors like Recruitment Center and TimeToHire.</p><br><p>4. <strong>Clean Up Backlink Profile</strong>: Address the 6 high-spam score backlinks and fix the 2 broken backlinks and 4 broken pages identified in our analysis.</p><br><p>5. <strong>Strategic Link Building</strong>: Target authoritative Dutch recruitment and HR websites for backlink acquisition, focusing on those that currently link to competitors but not to RAAS.</p><br><p>6. <strong>Content Format Diversification</strong>: Expand content formats beyond text-based articles to include video, infographics, and interactive elements that can serve as linkable assets.</p><br><p>7. <strong>Strategic Internal Linking</strong>: Implement a comprehensive internal linking strategy to improve site architecture and user navigation.</p><br><p>By implementing these recommendations, RAAS can significantly improve its search visibility, outrank competitors, and capture untapped opportunities within the Dutch recruitment market. The company's strong foundation, existing content assets, and relatively clean backlink profile provide an excellent starting point for this enhanced SEO strategy.</p></div></div></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report',
+                    text: 'Check out this SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

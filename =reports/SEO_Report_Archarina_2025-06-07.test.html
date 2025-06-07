@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Archarina</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Archarina • https://www.archarina.io/</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> USA Market</span>
+                        <span><i class="fas fa-calendar"></i> June 7, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th></tr></thead><tbody><tr><td class="">Organic Visibility Change</td><td class="negative">-55.42% Estimated Traffic Volume (ETV) over last 12 months</td></tr><tr><td class="">Current Estimated Traffic Volume (ETV)</td><td class="">90.86</td></tr><tr><td class="">Keywords Ranking Position 1</td><td class="">0</td></tr><tr><td class="">Keywords Ranking Positions 2-3</td><td class="">2</td></tr><tr><td class="">Keywords Ranking Positions 4-10</td><td class="">3</td></tr><tr><td class="">Keywords Ranking Positions 11-20</td><td class="">1</td></tr><tr><td class="">Keywords Ranking Positions 21-30</td><td class="">3</td></tr><tr><td class="">Keywords Ranking Positions 31-40</td><td class="">7</td></tr><tr><td class="">Keywords Ranking Positions 41-50</td><td class="">9</td></tr><tr><td class="">Keywords Ranking Positions 51-100</td><td class="">50</td></tr><tr><td class="">Domain Rank</td><td class="">167</td></tr><tr><td class="">Backlink Count</td><td class="">1,681 backlinks from 138 referring domains</td></tr><tr><td class="">Backlink Spam Score</td><td class="positive">28% (with 6 toxic domains identified)</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The steep 55.42% drop in ETV highlights a need for rapid optimization of high-value pages and keywords.</li><li>Only 5 keywords in the top 10 positions indicate low visibility; prioritize quick-win content updates and on-page tweaks.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Key Keywords They Rank Well For (Archarina Ranks Poorly)</th><th>Notes on Competitor Strengths</th></tr></thead><tbody><tr><td class="">Kissflow.com</td><td class="">"online hrm software" (Vol: 480, Low competition), "workflow efficiency" (260), "efficient workflow" (260), "workflow improvement" (170), "project management features" (50)</td><td class="">Strong benefit-oriented meta descriptions, keyword-rich titles, long-tail targeting</td></tr><tr><td class="">Salesmate.io</td><td class="">"phone dialer software" (390), "auto dialer crm" (170)</td><td class="">Effective "best of" listicle content, direct feature-benefit meta descriptions</td></tr><tr><td class="">Factorialhr.com</td><td class="">"online hrm software" (480)</td><td class="">Clear value propositions, concise meta descriptions</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a gap analysis on meta title and description strategies versus each competitor.</li><li>Audit competitor content formats (e.g., listicles, guides) to identify replicable high-impact formats.</li><li>Assign team members to monitor competitor ranking movements weekly.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">arc ticketing</td><td class="">3,600</td><td class="">Medium</td><td class="">Currently ranks #23; biggest immediate opportunity</td></tr><tr><td class="">hr software for small business</td><td class="">3,600</td><td class="">Low</td><td class="">High volume, low competition, relevant to product</td></tr><tr><td class="">small business hr software</td><td class="">3,600</td><td class="">Low</td><td class="">High volume, low competition</td></tr><tr><td class="">software project management</td><td class="">49,500</td><td class="">Low</td><td class="">Very high volume, low competition</td></tr><tr><td class="">online hrm software</td><td class="">480</td><td class="">Low</td><td class="">Competitor-dominated, but critical for HRM positioning</td></tr><tr><td class="">phone dialer software</td><td class="">390</td><td class="">Low</td><td class="">Competitor-dominated, aligns with ArcDialer</td></tr><tr><td class="">cloud based crm software</td><td class="">1,900</td><td class="">Low</td><td class="">Relevant to ArcCRM, low competition</td></tr><tr><td class="">business process automation software</td><td class="">1,900</td><td class="">Low</td><td class="">Matches core automation value proposition</td></tr><tr><td class="">marketing automation software for small business</td><td class="">590</td><td class="">Low</td><td class="">Long-tail, growing interest</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Focus immediate content briefs on "arc ticketing" and "software project management" for high search volume gains.</li><li>Ensure each target keyword deep-link pages with clear CTAs and structured content to improve SERP click-through.</li></ul><br><hr><br><h3 id="tl-dr-most-important-findings">TL;DR - Most Important Findings</h3><br><ul><li>Archarina’s organic visibility has dropped by 55.42% in the last 12 months, with only 5 keywords ranking in top 10 positions.</li><li>The homepage and blog content are underperforming and need urgent optimization.</li><li>The staging subdomain is indexed and competing with the main site, diluting SEO authority.</li><li>Major keyword opportunity: "arc ticketing" (3,600 monthly searches) ranks only #23.</li><li>Competitors Kissflow.com, Salesmate.io, and Factorialhr.com dominate key HRM, workflow, and dialer software keywords.</li><li>Technical SEO is strong overall but needs fixes for render-blocking resources, image optimization, and caching.</li><li>Backlink profile has moderate authority but includes toxic links that must be disavowed.</li><li>Content strategy should focus on creating pillar pages, seasonal content, and "best of" listicles to capture competitor traffic.</li><li>Immediate actions: fix subdomain issue, optimize high-opportunity pages, update meta tags, disavow toxic backlinks, and start targeted link building.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Address subdomain noindex and render-blocking scripts within 1–2 weeks.</li><li>Establish a bi-weekly keyword tracking dashboard for the nine opportunity terms.</li><li>Schedule a content sprint for high-volume keyword page optimizations.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-archarina" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Archarina</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This research report analyzes the SEO performance of Archarina, a cloud software suite provider offering business automation solutions across multiple departments. Our comprehensive analysis reveals a concerning 55.42% decrease in organic search visibility over the past 12 months, despite a strong technical SEO foundation. We've identified several critical opportunities to reverse this trend and improve their competitive positioning in the US market, including high-value keyword targets, content optimization strategies, backlink acquisition opportunities, and specific competitive advantages that can be leveraged against key industry rivals.</p><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Archarina (<a href="https://www.archarina.io/" class="link-reference" target="_blank" rel="noopener">Company Website</a>) provides a comprehensive cloud software suite designed to transform various business departments through automation. Their product offerings include:</p><br><ul><li><strong>Sales and Marketing Tools</strong>: ArcCRM (sales conversion), ArcDialer (sales communication), ArcCalendar (time organization)</li><li><strong>Office Applications</strong>: ArcTicket (issue resolution), ArcSign (actionable insights)</li><li><strong>Human Resources Solutions</strong>: ArcHRM (HR efficiency), ArcTime (time tracking), ArcPayroll (payroll processing)</li><li><strong>Financial Tools</strong>: AP Automation, AR Automation (collections acceleration), ArcPay (payment processing)</li></ul><br><p>Their value proposition centers on providing automation-enabled workflows to improve business outcomes, save time on repetitive tasks, and boost revenue.</p><br></div></section>
+                <section id="1-overall-seo-performance" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-trends">Organic Visibility Trends</h3><p>Our analysis reveals a significant <strong>55.42% decrease in Estimated Traffic Volume (ETV)</strong> over the past 12 months, indicating a substantial decline in organic search visibility and traffic. This downward trend requires immediate attention.</p><br><h3 id="current-ranking-distribution">Current Ranking Distribution</h3><p>The latest data shows the following distribution of Archarina's rankings:</p><ul><li>Position 1: 0 keywords</li><li>Positions 2-3: 2 keywords</li><li>Positions 4-10: 3 keywords</li><li>Positions 11-20: 1 keyword</li><li>Positions 21-30: 3 keywords</li><li>Positions 31-40: 7 keywords</li><li>Positions 41-50: 9 keywords</li><li>Positions 51-100: 50 keywords</li></ul><br><h3 id="current-search-engine-traffic">Current Search Engine Traffic</h3><p>The latest ETV (Estimated Traffic Volume) is <strong>90.86</strong>, with an estimated paid traffic cost equivalent of $655.22.</p><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><p>Archarina's website has a strong technical foundation with an on-page score of <strong>97.07</strong>. Key strengths include:</p><ul><li>Mobile-friendly design</li><li>HTTPS implementation</li><li>SEO-friendly URL structure</li><li>Proper canonical tag implementation</li><li>Social media meta tags</li></ul><br><p>However, several technical issues require attention:</p><ul><li>Render-blocking resources affecting page load speed</li><li>Low content-to-code ratio</li><li>Image optimization issues</li><li>Caching configuration problems</li></ul><br><h3 id="top-performing-pages">Top Performing Pages</h3><ol><li><code>/products/financial-tools/arc-time-tracking</code> - ETV: 46.70, ranking in positions 2-3</li><li><code>/arc-crm</code> - ETV: 8.75, ranking in positions 2-3</li><li><code>/arc-ticket</code> - ETV: 7.92, ranking in positions 21-30</li><li><code>/arc-sign</code> - ETV: 5.84, ranking in positions 4-10</li><li><code>/arc-dialer</code> - ETV: 5.52, ranking in positions 4-10, with high commercial value ($162.32 estimated paid traffic cost)</li></ol><br><h3 id="underperforming-pages">Underperforming Pages</h3><ol><li>Homepage (<code>/</code>) - ETV: 0.08, ranking in positions 31-40</li><li>Blog posts - Most ranking in positions 50-100</li><li><code>/products/organization/arc-contract</code> - ETV: 0.20, ranking in positions 41-60</li></ol><br><h3 id="critical-issues">Critical Issues</h3><ol><li>The pilot subdomain (<code>archarinawebsite-pilot.archarina.io</code>) is ranking in search results, potentially diluting the main domain's authority</li><li>No featured snippets or local pack rankings, representing missed opportunities</li><li>Significant ranking fluctuations across multiple pages</li></ol><br></div></section>
+                <section id="2-keyword-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-performing-keywords-positions-1-10-">Top Performing Keywords (Positions 1-10)</h3><p>Our analysis identified several keywords where Archarina is performing well:</p><ul><li><strong>arccrm</strong>: Search Volume: 90, Position: 3</li><li><strong>arctime</strong>: Search Volume: 480, Position: 3</li><li><strong>arch dialer</strong>: Search Volume: 40, Position: 8</li><li><strong>arcsign</strong>: Search Volume: 390, Position: 9</li></ul><br><h3 id="keyword-opportunities-positions-11-30-">Keyword Opportunities (Positions 11-30)</h3><p>These keywords represent immediate opportunities for improvement:</p><ul><li><strong>hrm cloud</strong>: Search Volume: 70, Position: 11</li><li><strong>arc analytics</strong>: Search Volume: 40, Position: 18</li><li><strong>arc ticketing</strong>: Search Volume: 3,600, Position: 23 (highest opportunity)</li><li><strong>hr pillars</strong>: Search Volume: 140, Position: 27</li><li><strong>project management pillars</strong>: Search Volume: 140, Position: 30</li></ul><br><h3 id="content-performance-analysis">Content Performance Analysis</h3><ul><li><strong>Product Pages</strong>: Generally ranking well for branded keywords (e.g., <code>/arc-crm</code>, <code>/arc-dialer</code>, <code>/arc-sign</code>)</li><li><strong>Blog Posts</strong>: Ranking for informational keywords but in lower positions (30+)</li><li><strong>SERP Snippet Issues</strong>: Blog post snippets often include publication dates, which can be disadvantageous as content ages, and descriptions are frequently cut off</li></ul><br><h3 id="seasonal-keyword-trends">Seasonal Keyword Trends</h3><p>We identified seasonal patterns in certain keywords, particularly:</p><ul><li><strong>automated phone call software</strong> and <strong>phone call dialer</strong>: Higher search volume during winter months (December-January), likely due to increased sales activity</li></ul><br><h3 id="high-value-target-keywords">High-Value Target Keywords</h3><p>Based on search volume and competition analysis, we recommend prioritizing:</p><br><p><strong>Top Priority Keywords:</strong></p><ul><li><strong>hr software for small business</strong>: 3,600 | LOW competition</li><li><strong>small business hr software</strong>: 3,600 | LOW competition</li><li><strong>software project management</strong>: 49,500 | LOW competition</li><li><strong>online hrm software</strong>: 480 | LOW competition (competitor-dominated keyword)</li><li><strong>phone dialer software</strong>: 390 | LOW competition (competitor-dominated keyword)</li></ul><br><p><strong>Secondary Keywords:</strong></p><ul><li><strong>cloud based crm software</strong>: 1,900 | LOW competition</li><li><strong>business process automation software</strong>: 1,900 | LOW competition</li><li><strong>cloud-based crm</strong>: 2,400 | LOW competition</li><li><strong>workflow efficiency</strong>: 260 | LOW competition (competitor-dominated keyword)</li><li><strong>auto dialer crm</strong>: 170 | LOW competition (competitor-dominated keyword)</li></ul><br><p><strong>Long-term Opportunities:</strong></p><ul><li><strong>marketing automation software for small business</strong>: 590 | LOW competition</li><li><strong>business process automation software open source</strong>: 170 | LOW competition</li></ul><br><h3 id="keyword-issues-and-opportunities">Keyword Issues and Opportunities</h3><ol><li><strong>Major Opportunity</strong>: "arc ticketing" has 3,600 monthly searches but ranks only in position 23</li><li><strong>Content Cluster Potential</strong>: Multiple "pillars" related keywords (HR pillars, project management pillars)</li><li><strong>Timesheet Keywords</strong>: Several keywords related to timesheet software have decent search volume but rankings in positions 30-40</li><li><strong>Keyword Cannibalization</strong>: The same page is ranking for multiple timesheet-related keywords</li><li><strong>HRM Software Gap</strong>: Significant underperformance for high-volume HRM-related keywords compared to competitors</li></ol><br></div></section>
+                <section id="3-competitive-landscape" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-competitors-overview">Top Competitors Overview</h3><br><h4 id="kissflow-com">Kissflow.com</h4><ul><li><strong>Type</strong>: Direct competitor (HRM and Workflow software) and indirect competitor (Project Management)</li><li><strong>SEO Strengths</strong>:</li><li>Strong rankings for workflow efficiency keywords (e.g., "workflow efficiency," "efficient workflow")</li><li>Effective targeting of project management feature keywords</li><li>Dominant position for "online hrm software" related terms</li><li>Benefit-oriented meta descriptions highlighting efficiency and problem-solving</li><li>Effective targeting of long-tail keywords</li></ul><br><h4 id="salesmate-io">Salesmate.io</h4><ul><li><strong>Type</strong>: Direct competitor (CRM with dialer functionality)</li><li><strong>SEO Strengths</strong>:</li><li>Strong performance for "phone dialer software" (Volume: 390) and "auto dialer CRM" (Volume: 170)</li><li>Meta descriptions directly address user search intent by focusing on features and benefits</li><li>Effective "best of" listicle content format for software recommendations</li></ul><br><h4 id="factorialhr-com">Factorialhr.com</h4><ul><li><strong>Type</strong>: Direct competitor (HRM software)</li><li><strong>SEO Strengths</strong>:</li><li>High ranking for "online hrm software" related keywords</li><li>Concise meta descriptions focusing on "all-in-one" solution messaging</li><li>Clear value proposition in SERP elements</li></ul><br><h3 id="competitor-serp-strategy-analysis">Competitor SERP Strategy Analysis</h3><br><h4 id="title-and-meta-description-patterns">Title and Meta Description Patterns</h4><ul><li><strong>Archarina.io</strong>: Titles are often descriptive but lack strong calls to action or benefit statements. Meta descriptions are generic and don't always directly address the search query.</li><li><strong>Competitors</strong>: Titles include keywords and clear value propositions (e.g., "Best HR Management Software," "AI-Powered Low-Code Application Development Platform"). Meta descriptions highlight key benefits, features, and include calls to action.</li></ul><br><h4 id="effective-competitor-strategies">Effective Competitor Strategies</h4><ol><li><strong>Keyword-Rich Titles</strong>: Competitors strategically place relevant keywords in titles to improve visibility</li><li><strong>Benefit-Oriented Meta Descriptions</strong>: Focus on value the software provides (e.g., "Streamline HR processes")</li><li><strong>Clear Calls to Action</strong>: Inclusion of action phrases like "Try it today!" in meta descriptions</li><li><strong>Content Formats</strong>:</li></ol><ul><li>"Best of" listicles for software recommendations</li><li>"What is" guides for definitions and explanations of concepts</li></ul><br><h3 id="keyword-performance-comparison">Keyword Performance Comparison</h3><p>Archarina is being outperformed by competitors in several high-value keyword areas:</p><br><ol><li><strong>HRM Software Keywords</strong>:</li></ol><ul><li>"online hrm software" (Volume: 480, Competition: LOW) - Kissflow.com, Factorialhr.com</li><li>"hrm software online" (Volume: 480, Competition: LOW) - Kissflow.com</li><li>"hr management software online" (Volume: 480, Competition: LOW) - Kissflow.com</li></ul><br><ol><li><strong>Workflow Efficiency Keywords</strong>:</li></ol><ul><li>"workflow efficiency" (Volume: 260, Competition: LOW) - Kissflow.com</li><li>"efficient workflow" (Volume: 260, Competition: LOW) - Kissflow.com</li><li>"workflow improvement" (Volume: 170, Competition: LOW) - Kissflow.com</li></ul><br><ol><li><strong>Project Management Keywords</strong>:</li></ol><ul><li>"features of project management" (Volume: 50, Competition: LOW) - Kissflow.com</li><li>"project management features" (Volume: 50, Competition: LOW) - Kissflow.com</li></ul><br><ol><li><strong>Dialer Software Keywords</strong>:</li></ol><ul><li>"phone dialer software" (Volume: 390, Competition: LOW) - Salesmate.io</li><li>"auto dialer crm" (Volume: 170, Competition: LOW) - Salesmate.io</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><p>Archarina has a moderate backlink profile with <strong>1,681 backlinks</strong> from <strong>138 referring domains</strong>. Key metrics include:</p><ul><li>Domain rank: 167</li><li>Backlink spam score: 28% (indicating some potentially toxic links)</li><li>Referring domains: 138 (86 with nofollow attributes)</li><li>Referring main domains: 128 (82 with nofollow attributes)</li></ul><br><h3 id="backlink-quality-analysis">Backlink Quality Analysis</h3><p>The backlink profile shows a mix of quality levels:</p><ul><li><strong>Low spam score (quality) backlinks</strong>: 25 domains including trustradius.com (4% spam score), alternative.to (2% spam score), and growjo.com (0% spam score)</li><li><strong>Medium spam score backlinks</strong>: 14 domains including diigo.com (40% spam score) and businessvocal.com (60% spam score)</li><li><strong>High spam score (toxic) backlinks</strong>: 6 domains including belonnanotservice.ga (85% spam score) and browseallexpireddomains.us (65% spam score)</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><p>The majority of Archarina's backlinks use generic anchor text rather than keyword-rich anchors:</p><ul><li>Most common anchor texts: "Visit Site", "Website", "View privacy policy for [product name]"</li><li>Limited use of keyword-rich anchors like "CRM platforms" or "customer relationship management (CRM) systems"</li><li>Opportunity to improve anchor text diversity with more keyword-focused links</li></ul><br><h3 id="competitor-backlink-comparison">Competitor Backlink Comparison</h3><p>Several competitors share backlink sources with Archarina, presenting opportunities for link acquisition:</p><ul><li><strong>trustradius.com</strong>: 9 shared backlinks, rank 42</li><li><strong>softwareadvice.com</strong>: 5 shared backlinks, rank 33</li><li><strong>saaskart.co</strong>: 4 shared backlinks, rank 14</li><li><strong>softrak.com</strong>: 4 shared backlinks, rank 23</li></ul><br><h3 id="backlink-opportunities">Backlink Opportunities</h3><p>Our analysis identified several high-quality websites linking to competitors but not to Archarina:</p><ol><li>Industry review sites like G2.com and Capterra.com</li><li>Business software directories with high domain authority</li><li>Industry publications covering HR, CRM, and business automation topics</li></ol><br><h3 id="toxic-backlink-issues">Toxic Backlink Issues</h3><p>Several toxic backlinks were identified that should be disavowed:</p><ul><li>belonnanotservice.ga (85% spam score)</li><li>browseallexpireddomains.us (65% spam score)</li><li>thebestbacklinksavailable.click (65% spam score)</li><li>great-choice-for-pbn-domains.co.uk (65% spam score)</li><li>mundotecnologia.info (65% spam score)</li><li>kompromat100.info (70% spam score)</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="immediate-actions-">Immediate Actions:</h3><ol><li><strong>Fix Subdomain Issue</strong>: The staging subdomain (<code>archarinawebsite-pilot.archarina.io</code>) is ranking for key terms like "arctime" and "arc contract." This should be noindexed immediately to prevent duplicate content issues.</li><li><strong>Optimize for "arc ticketing"</strong>: With 3,600 monthly searches and currently ranking at position 23, this represents the single biggest opportunity. Create comprehensive content targeting this keyword and related terms.</li><li><strong>Homepage Optimization</strong>: The homepage's extremely low ETV (0.08) and poor ranking position (31-40) indicate an urgent need for optimization.</li><li><strong>Blog Content Revitalization</strong>: Update older blog content to improve freshness signals, enhance meta descriptions, and build more backlinks to these pages.</li></ol><br><h3 id="competitor-informed-optimizations-">Competitor-Informed Optimizations:</h3><ol><li><strong>Improve HRM Software Page</strong>:</li></ol><ul><li>Rewrite the title and meta description of the <code>/hr-management-software</code> page to include keywords like "online HRM software" and "cloud-based HRMS"</li><li>Suggested title: "Online HR Software | Cloud HRMS | Automate Your HR Processes"</li><li>Suggested meta description: "Simplify HR with our online HR software. Automate tasks, customize workflows, and improve employee management. Get a free demo today!"</li></ul><ol><li><strong>Revamp Workflow Efficiency Content</strong>:</li></ol><ul><li>Replace the current blog post "#8 Simple Tips to Manage Workflow & Improve Efficiency" with a comprehensive guide titled "How to Improve Workflow Efficiency: A Step-by-Step Guide"</li><li>Optimize for keywords like "workflow efficiency improvement" and "improve workflow efficiency"</li><li>Include practical examples, case studies, and actionable advice</li></ul><ol><li><strong>Optimize Auto Dialer CRM Page</strong>:</li></ol><ul><li>Rewrite the title and meta description of the <code>/arc-dialer</code> page to include keywords like "auto dialer CRM" and "power dialer"</li><li>Suggested title: "Auto Dialer CRM | Power Dialer Software for Sales Teams"</li><li>Suggested meta description: "Boost sales with our auto dialer CRM. Automate calls, integrate with your CRM, and improve lead conversion rates. Try our free trial today!"</li></ul><br><h3 id="content-development-strategy-">Content Development Strategy:</h3><ol><li><strong>Create a "Pillars" Content Cluster</strong>: Develop a pillar page that summarizes key concepts around HR pillars and project management pillars, linking to supporting articles.</li><li><strong>Timesheet Content Optimization</strong>: Review and optimize the "Employee Time Tracking Software | Timesheet..." page. Consider creating separate pages for long-tail variations like "timesheet payroll software."</li><li><strong>Seasonal Content Planning</strong>: Develop content around "automated phone call software" and "phone call dialer" to capitalize on winter search volume increases.</li><li><strong>Featured Snippet Targeting</strong>: Create content specifically structured to capture featured snippets for relevant queries.</li><li><strong>Department-Specific Content</strong>: Develop comprehensive guides addressing pain points in Sales, HR, and Finance departments, targeting high-volume keywords like "hr software for small business" (3,600 searches).</li><li><strong>"Best of" Listicles</strong>: Create comparison content like "Best Online HRM Software," "Best Auto Dialer CRM," and "Best Workflow Management Software" to mirror successful competitor content formats.</li></ol><br><h3 id="serp-optimization-strategy-">SERP Optimization Strategy:</h3><ol><li><strong>Meta Description Enhancement</strong>: Immediately update meta descriptions across the site to include:</li></ol><ul><li>Relevant keywords</li><li>Clear benefits statements</li><li>Strong calls to action</li></ul><ol><li><strong>Title Tag Optimization</strong>: Revise title tags to be more keyword-rich while maintaining readability and including value propositions.</li><li><strong>Quick Wins</strong>:</li></ol><ul><li>Update meta descriptions for the <code>/hr-management-software</code> and <code>/arc-dialer</code> pages immediately</li><li>Revise title tags for these pages to include high-value keywords</li></ul><br><h3 id="backlink-strategy-">Backlink Strategy:</h3><ol><li><strong>Disavow Toxic Links</strong>: Submit a disavow file to Google for the 6 identified high-spam score domains to prevent negative SEO impact.</li><li><strong>Target Competitor Backlink Sources</strong>: Prioritize outreach to the following sites that link to competitors but not to Archarina:</li></ol><ul><li>G2.com (create and optimize company profile)</li><li>Capterra.com (create and optimize company profile)</li><li>GetApp.com (create and optimize company profile)</li><li>Business software directories with high domain authority</li></ul><ol><li><strong>Improve Anchor Text Distribution</strong>: Work with existing and new link partners to use more keyword-rich anchor text rather than generic terms like "Visit Site" or "Website."</li><li><strong>Content-Driven Link Building</strong>: Create linkable assets such as:</li></ol><ul><li>Industry reports on HR automation, CRM efficiency, or workflow optimization</li><li>Original research studies on business process automation</li><li>Comprehensive guides on HR management, sales automation, or financial process optimization</li></ul><ol><li><strong>Leverage Existing Relationships</strong>: Several sites like bmobileroute.com and logiciels.pro already link to Archarina but use generic anchor text. Contact these sites to update anchor text to include relevant keywords.</li></ol><br><h3 id="keyword-targeting-strategy-">Keyword Targeting Strategy:</h3><ol><li><strong>Focus on Low-Competition, High-Volume Keywords</strong>: Prioritize terms like "software project management" (49,500 searches, LOW competition) and "cloud-based crm" (2,400 searches, LOW competition).</li><li><strong>Create Dedicated Pages for Long-Tail Keywords</strong>: Develop specific pages for terms like "marketing automation software for small business" to capture targeted traffic.</li><li><strong>Monitor Seasonal Trends</strong>: Adjust content promotion and creation based on identified seasonal patterns.</li><li><strong>Target Competitor-Dominated Keywords</strong>: Create optimized content specifically targeting the keywords where competitors are currently outperforming Archarina.</li></ol><br></div></section>
+                <section id="conclusion-and-next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion and Next Steps</h2>
+                    </div>
+                    <div class="section-content"><br><p>This analysis provides Archarina with a clear roadmap to reverse their declining organic visibility, improve search rankings, outrank competitors, and capture untapped opportunities within the US market.</p><br><h3 id="priority-actions-">Priority Actions:</h3><ol><li>Fix the subdomain issue to prevent dilution of domain authority</li><li>Optimize the HRM software and Auto Dialer CRM pages based on competitor insights</li><li>Create comprehensive content targeting "arc ticketing" (3,600 monthly searches)</li><li>Revamp meta descriptions and title tags across the site to match competitor effectiveness</li><li>Develop a content strategy that includes "best of" listicles and comprehensive guides</li><li>Disavow the 6 identified toxic backlinks and implement a strategic link building campaign</li></ol><br><h3 id="implementation-timeline-">Implementation Timeline:</h3><ol><li><strong>Immediate (1-2 weeks)</strong>:</li></ol><ul><li>Fix technical SEO issues (subdomain, render-blocking resources)</li><li>Disavow toxic backlinks</li><li>Update meta descriptions and title tags for top priority pages</li></ul><br><ol><li><strong>Short-term (1-2 months)</strong>:</li></ol><ul><li>Optimize content for "arc ticketing" and other high-opportunity keywords</li><li>Begin outreach to high-quality websites already linking to competitors</li><li>Create profiles on key industry directories and review sites</li></ul><br><ol><li><strong>Medium-term (3-6 months)</strong>:</li></ol><ul><li>Develop comprehensive content clusters around HR pillars and project management</li><li>Create linkable assets for backlink acquisition</li><li>Implement seasonal content strategy</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Assign clear owners for each phase in your project management tool to ensure accountability.</li><li>Set milestone reviews at the end of each phase to track progress and adjust tactics as needed.</li></ul><br><p>By implementing these recommendations, Archarina can significantly improve their organic search visibility, better compete with industry leaders like Kissflow.com and Salesmate.io, and capture valuable traffic from high-intent keywords that are currently underutilized.</p><br><p>The combination of technical SEO improvements, strategic content development, competitor-informed optimizations, and a robust backlink strategy will help reverse the 55.42% decline in organic visibility and establish a strong foundation for sustainable SEO growth in the US market.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Archarina',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

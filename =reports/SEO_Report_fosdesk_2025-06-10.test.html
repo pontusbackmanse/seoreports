@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - fosdesk</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">fosdesk • https://www.fosdesk.com/</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> USA Market</span>
+                        <span><i class="fas fa-calendar"></i> June 10, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>SEO Performance Metrics</strong></th><th><strong>Value</strong></th></tr></thead><tbody><tr><td class="">Total Ranking Keywords</td><td class="">330</td></tr><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">273.23</td></tr><tr><td class="">Organic Visibility Growth (12 months)</td><td class="positive">+1062.39%</td></tr><tr><td class="">Keywords in Position 1</td><td class="">0</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">3</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">10</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="">28</td></tr><tr><td class="">Keywords in Positions 21-30</td><td class="">31</td></tr><tr><td class="">Keywords in Positions 31-40</td><td class="">46</td></tr><tr><td class="">Keywords in Positions 41-50</td><td class="">49</td></tr><tr><td class="">Keywords in Positions 51-100</td><td class="">163</td></tr><tr><td class="">New Rankings (12 months)</td><td class="">118</td></tr><tr><td class="">Improved Rankings</td><td class="">156</td></tr><tr><td class="">Declining Rankings</td><td class="">46</td></tr><tr><td class="">Lost Rankings</td><td class="">124</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Despite a +1062% growth in visibility, the absence of any position-1 rankings highlights the need for prioritized featured snippet and top-of-SERP optimization.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Top Competitors & Keywords They Rank Well For</strong></th><th><strong>Search Volume</strong></th><th><strong>FOSDesk Position</strong></th><th><strong>Competitor</strong></th></tr></thead><tbody><tr><td class="">ltl vs ftl (and variations)</td><td class="">880</td><td class="">>20 (lower)</td><td class="">RXO.com</td></tr><tr><td class="">ftl and ltl meaning (and variations)</td><td class="">210</td><td class="">>20 (lower)</td><td class="">RXO.com</td></tr><tr><td class="">logistics outsourcing (and variations)</td><td class="">170</td><td class="">>10 (lower)</td><td class="">RXO.com</td></tr><tr><td class="">manifest filing</td><td class="">720</td><td class="">>20 (lower)</td><td class="">ShipBob.com</td></tr><tr><td class="">import custom clearance (and variations)</td><td class="">390</td><td class="">>20 (lower)</td><td class="">ShipBob.com</td></tr><tr><td class="">logistics cost (and variations)</td><td class="">260</td><td class="">>20 (lower)</td><td class="">ShipBob.com</td></tr><tr><td class="">end to end supply chain management (and variations)</td><td class="">50</td><td class="">>20 (lower)</td><td class="">GEP.com, ShipBob.com</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Immediately audit and update the “FTL vs LTL” and “manifest filing” pages with list-based formats and comparison tables to close the gap with RXO and ShipBob.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Opportunity Keywords to Target</strong></th><th><strong>Search Volume</strong></th><th><strong>Competition</strong></th><th><strong>Why Target?</strong></th></tr></thead><tbody><tr><td class="">outsourced logistics</td><td class="">1000</td><td class="">Medium</td><td class="">High volume, currently page 2 (position 19), strong commercial intent</td></tr><tr><td class="">outsourcing supply chain management</td><td class="">390-1000</td><td class="">Low</td><td class="">Low competition, relevant to core services, strong growth potential</td></tr><tr><td class="">supply chain outsourcing</td><td class="">390-1000</td><td class="">Low</td><td class="">Low competition, aligns with service offerings</td></tr><tr><td class="">import documentation</td><td class="">210</td><td class="">Medium</td><td class="">Directly relevant to import/export services, moderate volume</td></tr><tr><td class="">what is a kingpin on a truck</td><td class="">390</td><td class="">Low</td><td class="">High volume, opportunity for authoritative content on transportation-specific term</td></tr><tr><td class="">logistics accounting services</td><td class="">10-140</td><td class="">Low</td><td class="">Niche, low competition, aligns with finance/accounting services</td></tr><tr><td class="">freight forwarding bpo</td><td class="">0-20</td><td class="">Low</td><td class="">Low competition, highly targeted</td></tr><tr><td class="">supply chain outsourcing examples</td><td class="">10-260</td><td class="">Low</td><td class="">Long-tail, low competition, good for content clusters</td></tr><tr><td class="">amazon outsourcing supply chain</td><td class="">10-140</td><td class="">Low</td><td class="">Long-tail, potential for topical authority</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop a keyword-to-content matrix assigning each opportunity keyword to specific page types (pillar pages, blog posts, case studies) and schedule content creation in the next 4–6 weeks.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li><strong>Strong organic growth:</strong> +1062% increase in traffic volume over 12 months, but no keywords in position 1 yet.</li><li><strong>Top competitors (RXO, ShipBob, GEP) outrank FOSDesk on key informational and commercial keywords</strong> like "ltl vs ftl," "logistics outsourcing," and "manifest filing."</li><li><strong>Glossary and blog content drive most traffic; service pages underperform and need dedicated optimization.</strong></li><li><strong>Technical SEO issues</strong> (HTML errors, large DOM, slow page speed) present opportunities for quick improvements.</li><li><strong>Backlink profile is growing but still behind competitors; toxic backlinks identified and should be disavowed.</strong></li><li><strong>High-value backlink opportunities exist with authoritative industry sites linking to competitors but not FOSDesk.</strong></li><li><strong>Content gaps in supply chain outsourcing, customs clearance, and logistics cost optimization represent untapped keyword opportunities.</strong></li><li><strong>Competitors use engaging, list-based, and up-to-date content formats with clear value propositions in titles and meta descriptions.</strong></li><li><strong>Immediate wins include optimizing "FTL vs LTL" content, creating dedicated service pages, and improving meta tags.</strong></li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize quick wins (title/meta updates and content format changes) this month to capitalize on seasonal drayage and logistics outsourcing trends.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-fosdesk" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: FOSDesk</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for FOSDesk, a logistics BPO (Business Process Outsourcing) and freight outsourcing services provider operating in the USA. The research delivers a data-driven SEO roadmap to improve search visibility, outrank competitors, and capture untapped opportunities within the US logistics and freight outsourcing market.</p><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>FOSDesk (<a href="https://www.fosdesk.com/" class="link-reference" target="_blank" rel="noopener">Company Website</a>) specializes in providing comprehensive logistics BPO and freight outsourcing services. Their service offerings include:</p><br><ol><li><strong>Customer Service and Operations</strong>:</li></ol><ul><li>End-to-end customer service</li><li>Shipment registration</li><li>Customs entry</li><li>Manifest filing</li><li>Import/export documentation</li><li>Track and trace</li><li>Pickup & delivery</li></ul><br><ol><li><strong>Finance and Accounting</strong>:</li></ol><ul><li>Account receivables</li><li>Account payables</li><li>Bank reconciliation</li><li>Vendor reconciliation</li></ul><br><ol><li><strong>Value-Added Services</strong>:</li></ol><ul><li>Pricing & tariff maintenance</li><li>Quality desk</li><li>Audit desk</li><li>MIS desk</li><li>Master data management</li><li>SOP development</li></ul><br><ol><li><strong>US Drayage Operations Management</strong>:</li></ol><ul><li>Specialized drayage</li><li>Carrier management</li><li>Port and rail ramp operations</li><li>Tailored tariffs</li><li>Transloading & OTR</li><li>FTL and LTL deliveries</li></ul><br></div></section>
+                <section id="overall-seo-performance" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">Overall SEO Performance</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-growth">Organic Visibility Growth</h3><p>FOSDesk has experienced remarkable growth in organic visibility over the past 12 months, with a <strong>1062.39% increase in Estimated Traffic Volume (ETV)</strong> from June 2024 to June 2025. This indicates strong positive momentum in their SEO efforts.</p><br><h3 id="current-ranking-distribution-latest-data-">Current Ranking Distribution (Latest Data)</h3><ul><li>Position 1: 0 keywords</li><li>Positions 2-3: 3 keywords</li><li>Positions 4-10: 10 keywords</li><li>Positions 11-20: 28 keywords</li><li>Positions 21-30: 31 keywords</li><li>Positions 31-40: 46 keywords</li><li>Positions 41-50: 49 keywords</li><li>Positions 51-100: 163 keywords</li></ul><br><h3 id="traffic-metrics">Traffic Metrics</h3><ul><li>Current ETV (Estimated Traffic Volume): 273.23</li><li>Estimated Paid Traffic Cost: $983.60</li><li>Total Ranking Keywords: 330</li></ul><br><h3 id="ranking-trends">Ranking Trends</h3><ul><li>New Rankings: 118 keywords</li><li>Improved Rankings: 156 keywords</li><li>Declining Rankings: 46 keywords</li><li>Lost Rankings: 124 keywords</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ol><li><strong>FOB Glossary Page</strong> (<a href="https://www.fosdesk.com/glossary/fob/" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</li></ol><ul><li>ETV: 97.06</li><li>Ranking Keywords: 11</li><li>Estimated Paid Traffic Value: $196.07</li></ul><br><ol><li><strong>Logistics Outsourcing Blog</strong> (<a href="https://www.fosdesk.com/blog/what-is-logistics-outsourcing-logistics-bpo/" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</li></ol><ul><li>ETV: 35.21</li><li>Ranking Keywords: 21</li><li>Estimated Paid Traffic Value: $128.57</li></ul><br><ol><li><strong>FTL/LTL Deliveries Blog</strong> (<a href="https://www.fosdesk.com/blog/what-are-ftl-ltl-deliveries-whats-the-difference/" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</li></ol><ul><li>ETV: 12.16</li><li>Ranking Keywords: 24</li><li>Estimated Paid Traffic Value: $85.07</li></ul><br><ol><li><strong>Cash with Order (CWO) Glossary</strong> (<a href="https://www.fosdesk.com/glossary/cash-with-order-cwo/" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</li></ol><ul><li>ETV: 13.33</li><li>Ranking Keywords: 2</li><li>Estimated Paid Traffic Value: $387.81</li></ul><br><h3 id="underperforming-pages">Underperforming Pages</h3><p>Many glossary and blog pages have minimal traffic value (ETV below 1) and rank in positions 50+, including:</p><ul><li>Various logistics terminology glossary pages</li><li>Several specialized blog posts on logistics processes</li><li>Service pages like "Pricing Tariff Maintenance"</li></ul><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><ul><li>HTML validation errors detected</li><li>Large DOM size affecting page performance</li><li>Opportunity to improve page load speeds</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a technical audit sprint in the next 2 weeks, assign responsible developers, and track improvements with performance benchmarks.</li></ul><br></div></section>
+                <section id="keyword-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">Keyword Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-performing-keywords-positions-4-10-">Top-Performing Keywords (Positions 4-10)</h3><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Current Position</th></tr></thead><tbody><tr><td class="">logistics bpo</td><td class="">90</td><td class="">4</td></tr><tr><td class="">bpo logistics</td><td class="">90</td><td class="">5</td></tr><tr><td class="">logistics business process outsourcing</td><td class="">30</td><td class="">5</td></tr><tr><td class="">logistics bpo services</td><td class="">70</td><td class="">6</td></tr><tr><td class="">logistics process outsourcing</td><td class="">50</td><td class="">6</td></tr><tr><td class="">total logistics cost refers to</td><td class="">20</td><td class="">8</td></tr><tr><td class="">cash with order</td><td class="">390</td><td class="">8</td></tr><tr><td class="">define job shop</td><td class="">140</td><td class="">10</td></tr><tr><td class="">what is a job shop</td><td class="">260</td><td class="">10</td></tr></tbody></table></div><h3 id="high-value-keyword-opportunities">High-Value Keyword Opportunities</h3><ol><li><strong>"outsourced logistics"</strong> (Search Volume: 1000, Position: 19)</li></ol><ul><li>This high-volume keyword represents a significant opportunity to capture more targeted traffic</li><li>Currently ranking on page 2, making it a prime target for optimization</li></ul><br><ol><li><strong>"import documentation"</strong> (Search Volume: 210, Position: 24)</li></ol><ul><li>Directly relevant to FOSDesk's import/export documentation services</li><li>Moderate search volume with strong commercial intent</li></ul><br><ol><li><strong>"what is a kingpin on a truck"</strong> (Search Volume: 390, Position: 25)</li></ol><ul><li>High search volume for a transportation-related term</li><li>Opportunity to create authoritative content on this specific topic</li></ul><br><h3 id="recommended-priority-keywords">Recommended Priority Keywords</h3><ol><li><strong>Top Priority Keywords</strong>:</li></ol><ul><li><strong>outsourcing supply chain management</strong> (SV: 390-1000, Competition: LOW)</li><li><strong>supply chain outsourcing</strong> (SV: 390-1000, Competition: LOW)</li><li><strong>outsourcing in supply chain management</strong> (SV: 390-1000, Competition: LOW)</li></ul><br><ol><li><strong>Secondary Keywords</strong>:</li></ol><ul><li><strong>logistics accounting services</strong> (SV: 10-140, Competition: LOW)</li><li><strong>freight forwarding bpo</strong> (SV: 0-20, Competition: LOW)</li><li><strong>supply chain outsourcing services</strong> (SV: 10-140, Competition: LOW)</li><li><strong>outsourcing and supply chain management</strong> (SV: 140-1000, Competition: LOW)</li></ul><br><ol><li><strong>Long-term Opportunities</strong>:</li></ol><ul><li><strong>supply chain outsourcing examples</strong> (SV: 10-260, Competition: LOW)</li><li><strong>amazon outsourcing supply chain</strong> (SV: 10-140, Competition: LOW)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Allocate the next quarter’s content development resources toward top-priority keywords and align service page launches with those terms for immediate ranking potential.</li></ul><br><h3 id="keyword-performance-insights">Keyword Performance Insights</h3><ol><li><strong>Core Service Keywords</strong>: FOSDesk is performing well for direct service-related terms like "logistics bpo" and "logistics process outsourcing," indicating strong relevance to their primary offerings.</li><li><strong>Glossary Term Performance</strong>: Glossary pages are effectively capturing traffic for specific logistics terminology searches, particularly shipping terms and industry definitions.</li><li><strong>Content Gap Keywords</strong>: Several high-value keywords related to supply chain outsourcing and specialized logistics services show potential but currently lack dedicated content.</li><li><strong>Seasonal Trends</strong>: Keywords related to drayage services show fluctuating search volumes, with "import export drayage" and "import export drayage specialist" having higher search volumes in February and March compared to April.</li></ol><br></div></section>
+                <section id="competitive-landscape-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">Competitive Landscape Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-competitors-overview">Top Competitors Overview</h3><br><ol><li><strong>RXO.com</strong></li></ol><ul><li><strong>Key Strengths</strong>: High average keyword position for "FTL" and "LTL" related keywords, strong performance on "logistics outsourcing" related keywords, and comprehensive resources for shippers.</li><li><strong>Type</strong>: Direct competitor offering similar logistics solutions and information.</li></ul><br><ol><li><strong>ShipBob.com</strong></li></ol><ul><li><strong>Key Strengths</strong>: High estimated traffic volume, strong performance on "logistics cost" and "customs clearance" related keywords, and "end to end supply chain management" related keywords. Strong focus on ecommerce fulfillment.</li><li><strong>Type</strong>: Direct competitor focusing on a specific niche within logistics (ecommerce fulfillment).</li></ul><br><ol><li><strong>GEP.com</strong></li></ol><ul><li><strong>Key Strengths</strong>: Strong performance on "supply chain BPO" and "end to end supply chain management" related keywords.</li><li><strong>Type</strong>: Direct competitor focusing on supply chain management and BPO solutions.</li></ul><br><h3 id="competitor-keyword-performance">Competitor Keyword Performance</h3><br><h4 id="keywords-where-competitors-outperform-fosdesk-">Keywords Where Competitors Outperform FOSDesk:</h4><br><ol><li><strong>"ltl vs ftl" and variations</strong> (Search Volume: 880, Competition: LOW)</li></ol><ul><li>RXO consistently ranks much higher</li><li>Search Intent: Informational - users seeking to understand the differences between LTL and FTL shipping</li></ul><br><ol><li><strong>"ftl and ltl meaning" and variations</strong> (Search Volume: 210, Competition: LOW)</li></ol><ul><li>RXO consistently ranks much higher</li><li>Search Intent: Informational - users seeking to understand the meaning of LTL and FTL shipping</li></ul><br><ol><li><strong>"logistics outsourcing" and variations</strong> (Search Volume: 170, Competition: LOW)</li></ol><ul><li>RXO consistently ranks much higher</li><li>Search Intent: Informational/Commercial - users seeking information about logistics outsourcing and potentially looking for providers</li></ul><br><ol><li><strong>"manifest filing"</strong> (Search Volume: 720, Competition: LOW)</li></ol><ul><li>ShipBob ranks higher</li><li>Search Intent: Informational - users seeking to understand what manifest filing is</li></ul><br><ol><li><strong>"import custom clearance" and variations</strong> (Search Volume: 390, Competition: LOW)</li></ol><ul><li>ShipBob ranks higher</li><li>Search Intent: Informational - users seeking to understand what import custom clearance is</li></ul><br><ol><li><strong>"logistics cost" and variations</strong> (Search Volume: 260, Competition: LOW)</li></ol><ul><li>ShipBob ranks higher</li><li>Search Intent: Informational - users seeking to understand what logistics cost is</li></ul><br><ol><li><strong>"end to end supply chain management" and variations</strong> (Search Volume: 50, Competition: LOW)</li></ol><ul><li>GEP and ShipBob rank higher</li><li>Search Intent: Informational - users seeking to understand what end to end supply chain management is</li></ul><br><h3 id="serp-strategy-analysis">SERP Strategy Analysis</h3><br><h4 id="title-and-meta-description-comparison-">Title and Meta Description Comparison:</h4><br><ol><li><strong>RXO.com</strong>: Uses clear, concise titles that often include the keyword and a benefit (e.g., "LTL vs. Full Truckload: 7 Key Differences..."). Meta descriptions often highlight key takeaways or benefits of reading the article.</li></ol><br><ol><li><strong>ShipBob.com</strong>: Titles are keyword-rich and often include the year (e.g., "Shipping Manifests Simplified: A Guide for 2025"). Meta descriptions summarize the article's content and highlight key information.</li></ol><br><ol><li><strong>FOSDesk.com</strong>: Titles are often keyword-focused but can be less engaging. Meta descriptions sometimes focus on budget considerations or product sensitivity, which may not be the primary search intent.</li></ol><br><h4 id="effective-patterns-in-competitor-serp-elements-">Effective Patterns in Competitor SERP Elements:</h4><br><ul><li><strong>List-based articles</strong>: RXO's "7 Key Differences" title format is highly effective</li><li><strong>"How-to" guides</strong>: ShipBob's "How-to Guide" approach is successful for topics like customs clearance</li><li><strong>Year in Title</strong>: ShipBob includes the year in the title, which signals that the content is up-to-date</li><li><strong>Clear Value Proposition</strong>: Competitors clearly state the value proposition in their titles and meta descriptions</li></ul><br><h4 id="successful-content-types-formats-">Successful Content Types/Formats:</h4><br><ul><li><strong>Comprehensive Guides</strong>: Both RXO and ShipBob create in-depth guides on key logistics topics</li><li><strong>Glossary Definitions</strong>: While FOSDesk has a glossary, RXO's glossary definitions sometimes rank higher, suggesting a more user-friendly or comprehensive approach</li><li><strong>Blog Posts</strong>: All three competitors use blog posts extensively to target informational keywords</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Adopt list-based, year-stamped titles and “how-to” formats in your next content updates to mirror competitor successes and signal freshness.</li></ul><br></div></section>
+                <section id="content-strategy-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">Content Strategy Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="content-categories-performance">Content Categories Performance</h3><ol><li><strong>Glossary Pages</strong>: Strong performers for specific logistics terminology, particularly shipping terms like FOB. These pages capture high-value search traffic from industry professionals seeking definitions.</li><li><strong>Blog Content</strong>: Covers logistics outsourcing, transportation methods, and operational processes. The blog serves as the primary traffic driver with mixed performance - some articles perform exceptionally well while others need optimization.</li><li><strong>Service Pages</strong>: Currently underperforming compared to educational content. Service pages have lower visibility and fewer ranking keywords.</li><li><strong>Careers Section</strong>: Minimal SEO impact with few ranking keywords.</li></ol><br><h3 id="content-gaps-opportunities">Content Gaps & Opportunities</h3><ol><li><strong>Featured Snippet Potential</strong>: The absence of position 1 rankings indicates opportunities to optimize content for featured snippets, particularly for definitional queries.</li><li><strong>Thin Content Issues</strong>: Many glossary pages lack comprehensive information, limiting their ranking potential.</li><li><strong>Content Depth</strong>: Top-performing pages have more comprehensive content addressing specific logistics concepts in detail.</li><li><strong>Service-Specific Content</strong>: There's a notable gap in dedicated content for each of FOSDesk's core service offerings (customer service, operations, finance, accounting).</li><li><strong>Cost Optimization Content</strong>: The "Understanding Total Logistics Costs" blog post is ranking for several cost-related keywords, suggesting audience interest in this topic that could be further developed.</li><li><strong>Drayage Services Content</strong>: Seasonal search trends indicate opportunity for expanded content around drayage services, particularly during peak interest periods.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a content audit of the top 10 glossary and underperforming service pages, enrich them with detailed examples, visuals, and FAQ sections, and set target publish dates in your editorial calendar.</li></ul><br></div></section>
+                <section id="backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="backlink-profile-overview">Backlink Profile Overview</h3><p>FOSDesk currently has a developing backlink profile with <strong>96 backlinks</strong> from <strong>57 referring domains</strong>. The site has a domain rank of <strong>273</strong> and a relatively low spam score of <strong>18%</strong>, indicating a generally clean backlink profile.</p><br><h3 id="backlink-quality-assessment">Backlink Quality Assessment</h3><ul><li><strong>Backlink Distribution</strong>: The majority of backlinks come from domains with low spam scores (25 domains), while 11 domains have medium spam scores and 8 domains have high spam scores.</li><li><strong>Link Types</strong>: 78 anchor text links and 3 image links, showing a good diversity of link types.</li><li><strong>Link Attributes</strong>: 16 nofollow links, 19 with noopener attributes, and 6 with noreferrer attributes.</li><li><strong>Platform Types</strong>: Links come from diverse sources including CMS platforms (29), blogs (28), news sites (14), and organizational websites (14).</li></ul><br><h3 id="toxic-backlinks-identified">Toxic Backlinks Identified</h3><p>Several potentially harmful backlinks with high spam scores (65-85%) were identified:</p><ul><li>australianwebdirectory.shop (65% spam score)</li><li>belonnanotservice.ga (85% spam score)</li><li>australianwebdirectory.info (65% spam score)</li><li>thebestbacklinksavailable.click (65% spam score)</li><li>browseallexpireddomains.us (65% spam score)</li><li>what-happens-next.xyz (85% spam score)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prepare and upload a disavow file for these domains within the next two weeks and set quarterly monitoring alerts for new high-spam backlinks.</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><p>The backlink profile shows a healthy mix of relevant anchor texts related to FOSDesk's core services:</p><ul><li>"supply chain management"</li><li>"freight invoice management"</li><li>"logistics tracking"</li><li>"customs entry"</li><li>"export documentation"</li><li>"shipment registration"</li></ul><br><p>However, there are also generic anchor texts like "Visit Website" that provide less SEO value.</p><br><h3 id="competitor-backlink-opportunities">Competitor Backlink Opportunities</h3><p>The analysis identified several high-quality websites linking to competitors but not to FOSDesk:</p><ol><li><strong>justlanded.es</strong> (rank: 34, 15 intersections with competitors)</li><li><strong>justlanded.be</strong> (rank: 33, 14 intersections)</li><li><strong>carguber.com</strong> (rank: 42, 6 intersections)</li><li><strong>megaventory.com</strong> (rank: 26, 6 intersections)</li><li><strong>dev.to</strong> (rank: 39, 5 intersections)</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Target outreach campaigns to expat community sites (justlanded), inventory platforms (megaventory), and developer communities (dev.to) with tailored guest posts and resource collaborations.</li></ul><br><h3 id="backlink-gap-analysis">Backlink Gap Analysis</h3><p>FOSDesk's backlink profile is still developing compared to competitors. Key gaps include:</p><ul><li>Fewer backlinks from high-authority industry publications</li><li>Limited backlinks from educational institutions and research organizations</li><li>Opportunity to increase backlinks from logistics industry associations and forums</li></ul><br></div></section>
+                <section id="strategic-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tasks"></i></div>
+                        <h2 class="section-title">Strategic Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our comprehensive analysis, we recommend the following strategic actions to improve FOSDesk's SEO performance:</p><br><h3 id="1-content-optimization-strategy">1. Content Optimization Strategy</h3><br><h4 id="optimize-existing-ftl-vs-ltl-content-">Optimize Existing "FTL vs. LTL" Content:</h4><ul><li>Rewrite the "FTL vs. LTL Deliveries: Key Differences & Benefits" blog post to be more comprehensive and user-friendly</li><li>Use a list-based format (e.g., "7 Key Differences Between FTL and LTL Shipping")</li><li>Include a clear definition of FTL and LTL at the beginning of the article</li><li>Add a table comparing FTL and LTL across key factors (cost, speed, shipment size, etc.)</li><li>Optimize the title and meta description to match RXO's successful format</li><li>Target the keyword "ftl vs ltl" and variations in the title, meta description, and throughout the content</li></ul><br><h4 id="create-dedicated-service-pages-">Create Dedicated Service Pages:</h4><ul><li>Develop individual, optimized pages for each core service offering (customer service, operations, finance, accounting, etc.) targeting relevant keywords</li></ul><br><h4 id="expand-the-glossary-">Expand the Glossary:</h4><ul><li>Continue building out the glossary with comprehensive definitions for logistics terms</li><li>Focus on making glossary entries more comprehensive than competitors' versions</li><li>Add practical examples, visuals, and related terms to each entry</li></ul><br><h3 id="2-new-content-development">2. New Content Development</h3><br><h4 id="create-a-dedicated-logistics-outsourcing-guide-">Create a Dedicated "Logistics Outsourcing" Guide:</h4><ul><li>Develop a comprehensive guide on logistics outsourcing, covering benefits, types of services, how to choose a provider, and potential challenges</li><li>Target keywords like "logistics outsourcing," "outsourcing logistics services," and "logistics outsourcing companies"</li><li>Include case studies of successful logistics outsourcing partnerships</li><li>Offer a downloadable checklist or template for evaluating logistics outsourcing providers</li></ul><br><h4 id="develop-customs-clearance-content-">Develop "Customs Clearance" Content:</h4><ul><li>Create comprehensive guide on customs clearance processes</li><li>Target keywords like "customs clearance," "import custom clearance," and "export custom clearance"</li><li>Include case studies and downloadable resources</li></ul><br><h4 id="develop-logistics-cost-content-">Develop "Logistics Cost" Content:</h4><ul><li>Create in-depth content on logistics cost optimization</li><li>Target keywords like "logistics cost," "logistic cost," and "logistical cost"</li><li>Include practical examples and cost-saving strategies</li></ul><br><h4 id="develop-end-to-end-supply-chain-management-content-">Develop "End to End Supply Chain Management" Content:</h4><ul><li>Create comprehensive guide on end-to-end supply chain management</li><li>Target keywords like "end to end supply chain management" and related variations</li><li>Include case studies and best practices</li></ul><br><h3 id="3-technical-seo-improvements">3. Technical SEO Improvements</h3><br><ul><li>Address HTML validation errors</li><li>Optimize DOM size for better page performance</li><li>Improve page load speeds across the site</li><li>Enhance mobile responsiveness</li></ul><br><h3 id="4-serp-optimization">4. SERP Optimization</h3><br><h4 id="update-meta-descriptions-">Update Meta Descriptions:</h4><ul><li>Review and rewrite meta descriptions for existing blog posts to be more compelling and accurately reflect the content</li><li>Focus on highlighting key benefits and takeaways for the reader</li></ul><br><h4 id="title-optimization-">Title Optimization:</h4><ul><li>Implement more engaging title formats following competitor best practices</li><li>Add the current year to titles of relevant blog posts to signal that the content is up-to-date</li><li>Use list-based formats for appropriate content (e.g., "7 Key Differences...")</li></ul><br><h3 id="5-backlink-strategy">5. Backlink Strategy</h3><br><h4 id="toxic-backlink-disavowal-">Toxic Backlink Disavowal:</h4><ul><li>Submit a disavow file to Google for the identified high spam score backlinks (65-85% spam score)</li><li>Monitor the backlink profile regularly for new potentially harmful links</li></ul><br><h4 id="strategic-backlink-acquisition-">Strategic Backlink Acquisition:</h4><ul><li>Develop a targeted outreach campaign to acquire backlinks from the identified competitor backlink sources, particularly:</li><li>justlanded.es and justlanded.be (expat communities with logistics content)</li><li>megaventory.com (inventory management platform)</li><li>dev.to (developer community with logistics tech discussions)</li><li>Create shareable, link-worthy content such as industry reports, infographics, or tools</li></ul><br><h4 id="anchor-text-optimization-">Anchor Text Optimization:</h4><ul><li>In future guest posting and outreach efforts, aim for more descriptive, keyword-rich anchor texts related to core services</li><li>Diversify anchor texts to include variations of target keywords while maintaining a natural link profile</li></ul><br><h4 id="industry-association-partnerships-">Industry Association Partnerships:</h4><ul><li>Pursue memberships and partnerships with logistics and supply chain industry associations to gain authoritative backlinks</li><li>Contribute expert content to industry publications to establish thought leadership and earn editorial links</li></ul><br><h3 id="6-quick-wins">6. Quick Wins</h3><br><ul><li>Immediately update titles and meta descriptions for the "FTL vs. LTL" and "Logistics Outsourcing" blog posts to match the successful formats used by RXO</li><li>Add the current year to titles of relevant blog posts</li><li>Improve internal linking structure between related content pieces to distribute page authority and improve user navigation</li><li>Reach out to the 5 identified high-quality websites linking to competitors for potential backlink opportunities</li></ul><br><h3 id="7-long-term-strategy">7. Long-Term Strategy</h3><br><ul><li>Create a content calendar focused on "meaning" and "definition" keywords</li><li>Enhance the existing glossary with more comprehensive definitions and examples</li><li>Build a systematic backlink acquisition strategy targeting industry-relevant sites</li><li>Develop a quarterly content audit process to identify and update underperforming content</li><li>Implement a backlink monitoring system to quickly identify and address potentially harmful links</li></ul><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><br><p>FOSDesk has shown impressive organic growth over the past year, demonstrating the effectiveness of their current SEO efforts. However, significant opportunities exist to further improve their search visibility and outrank competitors in key areas.</p><br><p>By implementing the strategic recommendations outlined in this report, FOSDesk can:</p><ol><li>Capture more high-value traffic from logistics and supply chain management keywords</li><li>Improve rankings for competitive terms where they currently lag behind competitors</li><li>Develop more comprehensive content that better serves user search intent</li><li>Optimize technical aspects of their website for improved crawling and indexing</li><li>Build a stronger, more authoritative backlink profile while addressing potentially harmful links</li></ol><br><p>With a focused approach to content development, on-page optimization, technical improvements, and strategic backlink acquisition, FOSDesk is well-positioned to continue its upward trajectory in organic search performance and establish itself as an authoritative resource in the logistics BPO and freight outsourcing industry.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - fosdesk',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

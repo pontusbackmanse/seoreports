@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Elicit</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Elicit • www.elicittechnology.com</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> United States Market</span>
+                        <span><i class="fas fa-calendar"></i> June 10, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th></tr></thead><tbody><tr><td class="">Keywords Ranking (US)</td><td class="">36 total keywords ranked</td></tr><tr><td class="">- Position 1</td><td class="">0</td></tr><tr><td class="">- Positions 2-3</td><td class="">0</td></tr><tr><td class="">- Positions 4-10</td><td class="">3</td></tr><tr><td class="">- Positions 11-20</td><td class="">8</td></tr><tr><td class="">- Positions 21-30</td><td class="">6</td></tr><tr><td class="">- Positions 31-100</td><td class="">19</td></tr><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">Increased from 0.31 (June 2024) to 46.64 (June 2025) — a 15,043.05% growth</td></tr><tr><td class="">Top Performing Page ETV</td><td class=""><code>/glossary/air-waybill-awb/</code> with 29.81 ETV</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Despite the massive percentage jump in ETV, absolute traffic remains modest. Prioritize improving rankings in positions 4–10 to convert visibility into meaningful visits.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Notable Keywords They Rank Well For (Elicit Ranks Poorly)</th><th>Competitor Strengths / Notes</th></tr></thead><tbody><tr><td class="">Supply Chain Digital</td><td class="">Keywords with estimated volume 1337.6 (position 1)</td><td class="">Strong domain authority, supply chain focus</td></tr><tr><td class="">o9 Solutions</td><td class="">Shared keyword with 66 estimated volume (position 9)</td><td class="">Focused SEO effort, top 10 rankings</td></tr><tr><td class="">ThroughPut</td><td class="">AI-driven supply chain intelligence and analytics keywords</td><td class="">Clear, benefit-driven meta titles and descriptions</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a gap analysis on Supply Chain Digital’s top-ranking content and model key structural elements (e.g., headers, internal links) for Elicit’s pages.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">transtream</td><td class="">90</td><td class="">Medium</td><td class="">Branded keyword, current position 7, maintain/improve</td></tr><tr><td class="">cargowise neo</td><td class="">50</td><td class="">Low</td><td class="">High commercial value ($104.76 CPC), position 8</td></tr><tr><td class="">saas transportation management system</td><td class="">70</td><td class="">Low</td><td class="">Aligns with services, position 9</td></tr><tr><td class="">supply chain analytics</td><td class="">500+</td><td class="">Medium</td><td class="">Industry trend, competitor focus</td></tr><tr><td class="">supply chain intelligence</td><td class="">300+</td><td class="">Medium</td><td class="">Growing interest, competitor content gap</td></tr><tr><td class="">demand sensing</td><td class="">150+</td><td class="">Low-Medium</td><td class="">Emerging topic, relevant to AI and supply chain</td></tr><tr><td class="">capacity planning</td><td class="">400+</td><td class="">Medium</td><td class="">Core supply chain function, competitor content gap</td></tr><tr><td class="">supply chain optimization</td><td class="">600+</td><td class="">Medium</td><td class="">High search volume, strategic for visibility</td></tr><tr><td class="">AI supply chain</td><td class="">200+</td><td class="">Low-Medium</td><td class="">Emerging tech focus, competitor messaging</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Target low-competition, high-CPC terms first (e.g., “cargowise neo”) to maximize ROI from limited content and link-building resources.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Elicit Technology’s organic visibility in the US has grown dramatically (15,043% ETV increase) but from a very low base, with no keywords in top 3 positions.</li><li>The site ranks for 36 keywords, mostly outside top 10, limiting traffic potential.</li><li>Top pages include glossary and blog content, but homepage and key service pages underperform.</li><li>Technical SEO issues likely limit rankings; a full audit is recommended.</li><li>High-value keywords like "cargowise neo" and "saas transportation management system" have low competition and should be prioritized.</li><li>Competitors dominate supply chain and AI-related keywords with strong domain authority and clear messaging.</li><li>Backlink profile is moderate but contains toxic links that should be disavowed.</li><li>Content strategy should focus on CargoWise expertise, supply chain analytics, and AI integration.</li><li>Quick wins include meta description optimization, homepage improvement, and toxic backlink cleanup.</li><li>Medium and long-term strategies involve content clusters, technical SEO fixes, and authority building through backlinks and thought leadership.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Convert these findings into a prioritized 30/60/90-day action plan with clear owners for each task.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-elicit-technology" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Elicit Technology</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Elicit Technology Private Ltd is a certified CargoWise service partner headquartered in Chennai, India (<a href="https://www.elicittechnology.com" class="link-reference" target="_blank" rel="noopener">Company Website</a>, <a href="https://www.cargowise.com/partners/find-a-partner/elicit-technology-private-ltd/" class="link-reference" target="_blank" rel="noopener">CargoWise Partner Directory</a>). They specialize in helping businesses overcome challenges with the CargoWise platform through services including implementation support, customization and configuration, integration services, and RPA (Robotic Process Automation) and API services. Their business model focuses on simplifying CargoWise for their clients through tailored solutions and personalized support.</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-us-market" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the US Market</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-traffic-growth">Organic Visibility and Traffic Growth</h3><p>Elicit Technology's website has shown remarkable growth in organic visibility over the past year, with a <strong>15,043.05% increase in Estimated Traffic Volume (ETV)</strong> from June 2024 to June 2025 (<a href="https://dataforseo.com" class="link-reference" target="_blank" rel="noopener">SEO Performance Data</a>). However, this dramatic percentage increase is from an extremely low base - their June 2024 ETV was only 0.31, growing to 46.64 by June 2025.</p><br><h3 id="current-organic-visibility-june-2025-">Current Organic Visibility (June 2025)</h3><p>The website currently has <strong>36 keywords ranking</strong> in Google US search results, distributed across positions as follows:</p><ul><li>Position 1: 0 keywords</li><li>Positions 2-3: 0 keywords</li><li>Positions 4-10: 3 keywords</li><li>Positions 11-20: 8 keywords</li><li>Positions 21-30: 6 keywords</li><li>Positions 31-100: 19 keywords</li></ul><br><p>This distribution indicates that while the site has gained some visibility, it lacks high-impact rankings in the top 3 positions that typically drive significant organic traffic.</p><br><h3 id="top-performing-pages">Top Performing Pages</h3><p>Based on our analysis, the following pages are driving the most organic traffic:</p><br><ol><li><code>/glossary/air-waybill-awb/</code> - Best performing page with an ETV of 29.81, ranking for 12 keywords (mostly in positions 71-100)</li><li><code>/saas-transportation/</code> - ETV of 3.98 with high commercial value (estimated paid traffic cost: $162.46)</li><li><code>/blogs/what-is-cargowise-neo-and-how-can-it-transform-your-logistics-operations/</code> - Blog post with high commercial value (estimated paid traffic cost: $105.59)</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Enhance internal linking from high-authority pages (e.g., the AWB glossary) to underperforming service pages to boost their authority.</li></ul><br><h3 id="underperforming-pages">Underperforming Pages</h3><p>Several key pages are significantly underperforming in organic search:</p><br><ol><li><strong>Homepage</strong> (<code>/</code>) - Very low ETV (0.21) and ranking in positions 21-50, indicating poor optimization for the main entry point</li><li><strong>Service Pages</strong> - Key service pages like <code>/cargowise/</code>, <code>/carrier-integration/</code>, and <code>/booking-creation/</code> have low ETVs and rank in positions 11-30</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The homepage and core service pages need clearer messaging and optimized meta tags to capture broad, high-intent queries.</li></ul><br><h3 id="content-strategy-patterns">Content Strategy Patterns</h3><p>The website's current organic visibility relies heavily on:</p><ol><li><strong>Glossary Content</strong> - Dictionary-style entries defining industry terms</li><li><strong>Service/Product Pages</strong> - Descriptions of specific offerings</li><li><strong>Blog Content</strong> - Educational articles about CargoWise and logistics</li><li><strong>Company Information</strong> - Pages about Elicit Technology itself</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop topic clusters around core services (CargoWise implementation, integration, RPA) to strengthen thematic relevance.</li></ul><br><h3 id="technical-seo-observations">Technical SEO Observations</h3><p>While our current data doesn't provide comprehensive technical SEO metrics, the low rankings across most pages suggest potential technical issues that may be limiting organic performance.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Commission a full site audit to identify crawl errors, XML sitemap issues, page speed bottlenecks, and mobile usability problems.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-us-market" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for US Market</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-keyword-performance">Current Keyword Performance</h3><p>Based on our analysis (<a href="https://dataforseo.com" class="link-reference" target="_blank" rel="noopener">DataForSEO Keyword Analysis</a>), Elicit Technology's website is not currently ranking in the top 10 positions for any keywords in the US market. This indicates a significant opportunity for improvement in their SEO strategy.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize optimization efforts for keywords in positions 7–20 to break into the top 10.</li></ul><br><h3 id="key-keyword-opportunities">Key Keyword Opportunities</h3><br><ol><li><strong>"transtream"</strong></li></ol><ul><li>Search Volume: 90</li><li>Current Position: 7</li><li>URL: https://elicittechnology.com/transtream/</li><li>Notes: This is a branded keyword, likely related to a specific product or service. Maintaining and improving this ranking is crucial.</li></ul><br><ol><li><strong>"cargowise neo"</strong></li></ol><ul><li>Search Volume: 50</li><li>Current Position: 8</li><li>URL: https://elicittechnology.com/blogs/what-is-cargowise-neo-and-how-can-it-transform-your-logistics-operations/</li><li>Competition: LOW</li><li>CPC: $104.76</li><li>Notes: This keyword has high commercial value and low competition, making it a prime target for optimization.</li></ul><br><ol><li><strong>"saas transportation management system"</strong></li></ol><ul><li>Search Volume: 70</li><li>Current Position: 9</li><li>URL: https://elicittechnology.com/saas-transportation/</li><li>Competition: LOW</li><li>Notes: This keyword aligns well with Elicit's services and has a good search volume with low competition.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Small content refreshes (adding FAQs, updated stats) on these pages can boost relevance and push rankings into the top 5.</li></ul><br><h3 id="keyword-trends-and-seasonality">Keyword Trends and Seasonality</h3><p>The "cargowise neo" keyword shows some seasonal fluctuations, with higher search volumes in March and April, and lower volumes in November and December. This information can be used to plan content updates and marketing campaigns.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Schedule targeted content pushes (social, email) in peak seasons to amplify organic visibility.</li></ul><br><h3 id="content-gap-analysis">Content Gap Analysis</h3><p>The current keyword data reveals several gaps in Elicit Technology's content strategy:</p><br><ol><li>Lack of high-ranking keywords for core services (e.g., CargoWise implementation, customization)</li><li>Limited visibility for industry-specific terms and problems (e.g., logistics software integration, supply chain management)</li><li>Absence of location-specific keywords targeting the US market</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Developing location-specific landing pages for major US logistics hubs (e.g., Los Angeles, New York) could capture local search demand.</li></ul><br><h3 id="potential-keywords-to-target">Potential Keywords to Target</h3><p>Based on competitive analysis, we recommend targeting these additional keywords:</p><ul><li>"supply chain analytics"</li><li>"supply chain intelligence"</li><li>"demand sensing"</li><li>"capacity planning"</li><li>"supply chain optimization"</li><li>"AI supply chain"</li></ul><br><p>These keywords align with industry trends and competitor strategies, offering opportunities for Elicit Technology to expand their visibility in the US market.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Map these keywords to existing or new content assets and assign owners for content creation.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-us" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the US</h2>
+                    </div>
+                    <div class="section-content"><br><p>Our competitive analysis (<a href="https://dataforseo.com" class="link-reference" target="_blank" rel="noopener">DataForSEO Competitive Landscape</a>) has identified three key competitors in the US market:</p><br><h3 id="1-supply-chain-digital-supplychaindigital-com-">1. Supply Chain Digital (supplychaindigital.com)</h3><ul><li><strong>Key Strengths</strong>: Ranks in position 1 for a shared keyword, driving significant traffic (1337.6 estimated volume)</li><li><strong>Type</strong>: Direct competitor focusing on supply chain content and solutions</li><li><strong>Competitive Advantage</strong>: Strong domain authority and relevance for supply chain-related keywords</li></ul><br><h3 id="2-o9-solutions-o9solutions-com-">2. o9 Solutions (o9solutions.com)</h3><ul><li><strong>Key Strengths</strong>: Ranks in position 9 for a shared keyword with moderate traffic (66 estimated volume)</li><li><strong>Type</strong>: Direct competitor offering supply chain solutions</li><li><strong>Competitive Advantage</strong>: Focused SEO effort resulting in top 10 rankings</li></ul><br><h3 id="3-throughput-throughput-world-">3. ThroughPut (throughput.world)</h3><ul><li><strong>Key Strengths</strong>: Well-defined meta title and description that clearly communicates value proposition</li><li><strong>Type</strong>: Direct competitor specializing in AI-driven supply chain solutions</li><li><strong>Competitive Advantage</strong>: Strong messaging around AI-powered supply chain intelligence and analytics</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Identifying the unique angle in Elicit’s AI or RPA offerings could differentiate messaging from these competitors.</li></ul><br><h3 id="competitor-serp-strategy-analysis">Competitor SERP Strategy Analysis</h3><p>ThroughPut's meta title and description provide an excellent model for Elicit Technology to follow:</p><br><ul><li><strong>Meta Title</strong>: "Supply Chain Intelligence and Analytics Software | ThroughPut AI"</li><li><strong>Meta Description</strong>: Compelling copy highlighting key benefits (improves demand sensing, capacity planning, unlocks profitability) with action-oriented language</li></ul><br><p>This approach effectively communicates their value proposition while incorporating relevant keywords.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Craft new meta titles/descriptions for top service pages using benefit-led messaging and targeted keywords.</li></ul><br><h3 id="competitive-content-strategy-patterns">Competitive Content Strategy Patterns</h3><p>All three competitors focus on supply chain solutions, intelligence, and analytics, indicating that Elicit Technology operates in a competitive market with established players. To compete effectively, Elicit needs to:</p><br><ol><li>Clearly differentiate their CargoWise expertise</li><li>Develop content that addresses specific supply chain challenges</li><li>Consider incorporating AI-related messaging if applicable to their services</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>A content series on “AI and RPA in CargoWise” could bridge their technical expertise with market demand.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><p>Elicit Technology has a moderate backlink profile with <strong>49 backlinks</strong> from <strong>32 referring domains</strong> (<a href="https://dataforseo.com" class="link-reference" target="_blank" rel="noopener">DataForSEO Backlink Analysis</a>). The domain has a rank of 90, indicating reasonable authority, but there are several concerns:</p><br><ul><li><strong>Backlink Spam Score</strong>: 26% of backlinks have medium to high spam scores</li><li><strong>Referring Domains Quality</strong>: 16 low spam score domains, 9 medium spam score domains, and 6 high spam score domains</li><li><strong>Nofollow Links</strong>: 13 of the 32 referring domains use nofollow attributes</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Begin disavow process for high-spam domains and monitor backlink profile monthly.</li></ul><br><h3 id="quality-backlinks">Quality Backlinks</h3><p>Elicit Technology has secured some valuable backlinks from reputable sources:</p><ul><li><strong>producthunt.com</strong> (0% spam score) - Product listing page</li><li><strong>hashnode.dev</strong> (11% spam score) - Multiple blog posts about CargoWise</li><li><strong>cargowise.com</strong> (0% spam score) - Partner directory listing</li><li><strong>clodura.ai</strong> (0% spam score) - Company directory listing</li><li><strong>zoominfo.com</strong> (0% spam score) - Business information listing</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Capitalize on partner directories (CargoWise, Clodura) by requesting featured case studies or co-marketing mentions.</li></ul><br><h3 id="toxic-backlinks">Toxic Backlinks</h3><p>Several potentially harmful backlinks were identified:</p><ul><li><strong>australianwebdirectory.shop</strong> (65% spam score)</li><li><strong>belonnanotservice.ga</strong> (85% spam score)</li><li><strong>browseallexpireddomains.us</strong> (65% spam score)</li><li><strong>what-happens-next.xyz</strong> (85% spam score)</li><li><strong>mundotecnologia.info</strong> (65% spam score)</li><li><strong>kompromat100.info</strong> (70% spam score)</li></ul><br><p>These toxic backlinks could be negatively impacting Elicit Technology's search rankings and should be addressed through a disavowal process.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Compile a disavow file for Google Search Console and track impact on rankings over the next quarter.</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><p>The current anchor text distribution is suboptimal:</p><ul><li>Overreliance on branded terms like "elicittechnology.com"</li><li>Limited use of keyword-rich anchors related to their services</li><li>Some valuable anchors like "CargoWise service partner" and "SAP integration in CargoWise" appear in quality backlinks</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Diversify anchor text by targeting terms like “CargoWise implementation” and “logistics integration” in future outreach.</li></ul><br><h3 id="competitor-backlink-comparison">Competitor Backlink Comparison</h3><p>Two notable competitors with overlapping backlinks were identified:</p><ul><li><strong>wisetechglobal.com</strong> (rank: 10) - 4 shared backlink sources</li><li><strong>hashnode.com</strong> (rank: 33) - 2 shared backlink sources</li></ul><br><p>These competitors have stronger backlink profiles, suggesting opportunities for Elicit Technology to pursue similar link-building strategies.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Reach out to shared referring domains for guest post or link exchange opportunities.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our comprehensive analysis of Elicit Technology's SEO performance, keyword opportunities, competitive landscape, and backlink profile, we recommend the following content strategy:</p><br><h3 id="quick-wins">Quick Wins</h3><ol><li><strong>Meta Description Optimization</strong>: Rewrite meta descriptions for key service pages following ThroughPut's model, focusing on benefits and incorporating target keywords</li><li><strong>Keyword Optimization</strong>: Enhance existing content for the three key keyword opportunities identified (transtream, cargowise neo, saas transportation management system)</li><li><strong>Homepage Improvement</strong>: Optimize the homepage with clear value propositions and targeted keywords to improve its current low ETV</li><li><strong>Toxic Backlink Disavowal</strong>: Submit a disavow file to Google containing the 6 high-spam domains identified in the backlink analysis</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign owners and set deadlines for each quick-win task within the next two weeks.</li></ul><br><h3 id="medium-term-strategy-3-6-months-">Medium-Term Strategy (3-6 months)</h3><ol><li><strong>Content Development</strong>:</li></ol><ul><li>Create comprehensive guides on CargoWise implementation, customization, and integration</li><li>Develop case studies showcasing successful CargoWise projects in the US market</li><li>Produce content targeting supply chain analytics and intelligence keywords</li></ul><br><ol><li><strong>Technical SEO Improvements</strong>:</li></ol><ul><li>Conduct a thorough technical SEO audit</li><li>Address indexing issues and improve site speed</li><li>Enhance internal linking structure to distribute page authority</li></ul><br><ol><li><strong>Competitor Gap Analysis</strong>:</li></ol><ul><li>Create content targeting keywords where competitors rank well but Elicit doesn't</li><li>Analyze and adapt successful content formats from competitors</li></ul><br><ol><li><strong>Backlink Building Strategy</strong>:</li></ol><ul><li>Pursue additional listings in industry directories similar to cargowise.com</li><li>Develop a guest posting strategy targeting logistics and supply chain blogs</li><li>Create shareable assets (infographics, research reports) to attract natural backlinks</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>A phased content calendar aligned with seasonal peaks (e.g., cargo operations in Q1) will maximize engagement and ranking impact.</li></ul><br><h3 id="long-term-strategy-6-12-months-">Long-Term Strategy (6-12 months)</h3><ol><li><strong>Content Clusters</strong>: Develop comprehensive content clusters around:</li></ol><ul><li>CargoWise implementation and optimization</li><li>Supply chain integration and automation</li><li>Logistics technology solutions</li></ul><br><ol><li><strong>Authority Building</strong>:</li></ol><ul><li>Create thought leadership content positioning Elicit as CargoWise experts</li><li>Develop relationships with industry publications for regular contributions</li><li>Consider creating a resource center with downloadable guides and templates</li></ul><br><ol><li><strong>AI Integration</strong> (if applicable):</li></ol><ul><li>Highlight AI capabilities in content and meta descriptions</li><li>Create content explaining how AI enhances CargoWise implementation and usage</li></ul><br><ol><li><strong>Anchor Text Diversification</strong>:</li></ol><ul><li>Work to acquire backlinks with more diverse, keyword-rich anchor text</li><li>Focus on obtaining links with anchors related to core services like "CargoWise implementation" and "logistics software integration"</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Establish a quarterly review process to measure content cluster performance and adjust strategy accordingly.</li></ul><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><br><p>Elicit Technology has shown impressive growth in organic visibility over the past year, but significant opportunities remain to improve their SEO performance in the US market. By addressing technical issues, optimizing content for high-value keywords, cleaning up their backlink profile, and implementing a strategic content development plan, they can substantially increase their organic traffic and competitive position.</p><br><p>The company's specialized expertise in CargoWise implementation and customization represents a valuable differentiator that should be emphasized throughout their SEO strategy. By focusing on this unique selling proposition while addressing the gaps and opportunities identified in this analysis, Elicit Technology can establish themselves as a leading CargoWise service partner in the US market.</p><br><p>WP SEO AI's comprehensive toolset is ideally suited to help Elicit Technology implement these recommendations efficiently and effectively, with particular emphasis on AI-powered keyword analysis, content optimization, and technical SEO audits that can rapidly improve their search visibility and organic traffic.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Elicit',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - ERIKS</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">ERIKS • https://shop.eriks.nl/nl/</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> June 24, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>SEO Performance Metrics (Netherlands, Last 12 Months)</strong></th><th><strong>Change / Value</strong></th></tr></thead><tbody><tr><td class="">Organic Traffic (ETV) June 2024</td><td class="">56,968 monthly visits</td></tr><tr><td class="">Organic Traffic (ETV) June 2025</td><td class="positive">38,230 monthly visits (-32.89%)</td></tr><tr><td class="">Keywords in Position 1</td><td class="positive">137 (+61.18%)</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="positive">391 (+153.90%)</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="positive">1,386 (+94.66%)</td></tr><tr><td class="">Total Keywords Tracked</td><td class="">8,040</td></tr><tr><td class="">On-Page SEO Score</td><td class="">91.59 / 100</td></tr><tr><td class="">Backlinks</td><td class="">395,770 total, 560 referring domains</td></tr><tr><td class="">Backlink Spam Score</td><td class="positive">17% (medium-low risk)</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The steep traffic decline despite high on-page scores suggests prioritizing technical and content audits.</li><li>Focus immediate efforts on pages losing the most organic visits.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Top Competitors & Keywords They Rank Well For (Where ERIKS Ranks Poorly)</strong></th><th><strong>Competitor</strong></th><th><strong>Keywords</strong></th></tr></thead><tbody><tr><td class="">Hydrauliek24.nl</td><td class="">Hydrauliek24.nl</td><td class="">"buisklem" (3,600 sv), "manometers" (2,900 sv), "hydrauliek olie" (1,900 sv), "loctite 577"</td></tr><tr><td class="">Pirtek.nl</td><td class="">Pirtek.nl</td><td class="">"hydrauliek olie," "hydrauliek onderdelen," "hydrauliek olie kopen"</td></tr><tr><td class="">Hydrauliekservice.nl</td><td class="">Hydrauliekservice.nl</td><td class="">"nord-lock ring," "koppeling pomp"</td></tr></tbody></table></div><p><em>sv = monthly search volume</em></p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit competitor pages to identify on-page and structural elements driving their rankings.</li><li>Emulate best-performing title/meta formats and CTAs for key product pages.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>High-Value Keyword Opportunities for ERIKS</strong></th><th><strong>Search Volume (NL)</strong></th><th><strong>Competition</strong></th><th><strong>Why Target?</strong></th></tr></thead><tbody><tr><td class="">"hydrauliek olie" (Hydraulic oil)</td><td class="">1,900</td><td class="">High</td><td class="">High commercial intent, strong search volume, competitor presence</td></tr><tr><td class="">"buisklem" (Pipe clamp)</td><td class="">3,600</td><td class="">High</td><td class="">Very high volume, competitor ranks better, product relevance</td></tr><tr><td class="">"manometers"</td><td class="">2,900</td><td class="">High</td><td class="">High volume, product category with buying intent</td></tr><tr><td class="">"overdrukventiel" (Pressure relief valve)</td><td class="">1,300</td><td class="">High</td><td class="">Niche product with commercial intent</td></tr><tr><td class="">"reduceerventiel" (Pressure reducing valve)</td><td class="">1,300</td><td class="">High</td><td class="">Related to core product range, good traffic potential</td></tr><tr><td class="">Long-tail keywords like "hoe hydraulische systemen onderhouden"</td><td class="">30-90</td><td class="">Low</td><td class="">Informational content gap, opportunity to build topical authority</td></tr><tr><td class="">"verschil tussen pneumatische en hydraulische systemen"</td><td class="">40-110</td><td class="">Low</td><td class="">Educational content opportunity, currently missing on site</td></tr></tbody></table></div><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Prioritize high-volume, high-intent terms for commercial pages.</li><li>Schedule long-tail informational content in Q3 to build authority.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>ERIKS’ organic traffic in the Netherlands dropped by 32.89% over the last year despite significant improvements in keyword rankings, indicating underlying issues.</li><li>Critical technical SEO problems include missing H1 tags, missing alt text on images, unminified CSS/JS, and render-blocking resources.</li><li>ERIKS lacks a blog or informational content hub, missing out on long-tail and educational keyword opportunities.</li><li>Competitors like Hydrauliek24.nl and Pirtek.nl outperform ERIKS on high-volume, high-intent keywords with better-optimized titles, meta descriptions, and content strategies.</li><li>Backlink profile is large but with only 598 links from Dutch sites and a medium spam score of 17%; toxic backlinks and broken links need cleanup.</li><li>Quick wins include fixing technical SEO issues, optimizing titles/meta descriptions, and improving URL structure.</li><li>Medium and long-term strategies focus on launching a blog, enhancing product/category pages, building topical clusters, and acquiring authoritative Dutch backlinks.</li><li>Addressing these issues can reverse traffic decline and leverage improved keyword rankings for substantial growth in the Dutch industrial market.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Align quick wins with a 30-day sprint to demonstrate initial recovery.</li><li>Use TL;DR highlights to secure stakeholder buy-in before deep-dive implementations.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-eriks-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: ERIKS Netherlands</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This research report provides a comprehensive SEO analysis for ERIKS in the Dutch market. ERIKS is a supplier of technical products for industrial applications with an extensive product catalog including seals, valves, actuators, factory equipment, and many other industrial components (<a href="https://shop.eriks.nl/nl/" class="link-reference" target="_blank" rel="noopener">Company Website</a>). The analysis reveals a concerning 32.89% decrease in organic traffic over the past year despite improvements in keyword positions, indicating significant opportunities for optimization. Our keyword analysis has identified specific high-value opportunities in technical industrial terms that could help reverse this trend, while our competitive analysis shows ERIKS is being outperformed by specialized competitors like Hydrauliek24.nl on key product keywords. Additionally, our backlink analysis reveals a substantial but imperfect backlink profile with 395,770 backlinks and a medium spam score of 17%, indicating both strengths to leverage and issues to address. This report outlines current performance, technical issues, keyword opportunities, competitive landscape, backlink profile, and actionable recommendations to improve search visibility and capture untapped opportunities within the Dutch market.</p><br></div></section>
+                <section id="1-company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">1. Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>ERIKS operates as a technical industrial supplier with a diverse product range that includes:</p><ul><li>Seals and gaskets</li><li>Valves and actuators</li><li>Factory equipment</li><li>Fastening materials</li><li>Electrical components</li><li>Filtration systems</li><li>Tools and maintenance products</li><li>Hydraulics and pneumatics</li><li>Industrial hoses and couplings</li><li>And many other technical industrial products</li></ul><br><p>Their e-commerce platform (shop.eriks.nl) serves the Dutch market with industrial supplies targeting manufacturing, maintenance, and engineering professionals.</p><br></div></section>
+                <section id="2-overall-seo-performance" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">2. Overall SEO Performance</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-organic-visibility">Current Organic Visibility</h3><ul><li><strong>Organic Traffic Decline</strong>: ERIKS has experienced a significant 32.89% decrease in estimated traffic volume (ETV) from June 2024 to June 2025 in the Netherlands.</li><li><strong>Keyword Position Improvements</strong>: Despite the traffic decline, the site has seen improvements in keyword positions across all SERP ranges:</li><li>Position 1: +61.18% increase</li><li>Positions 2-3: +153.90% increase</li><li>Positions 4-10: +94.66% increase</li><li>Positions 11-20: +48.32% increase</li><li><strong>Latest Organic Traffic Metrics</strong> (June 2025):</li><li>Total ETV: 38,230 monthly visits</li><li>Position 1 keywords: 137</li><li>Positions 2-3 keywords: 391</li><li>Positions 4-10 keywords: 1,386</li><li>Total keywords tracked: 8,040</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Drill down to monthly landing page performance to identify high-impression, low-CTR pages.</li><li>Map traffic declines to specific sections (e.g., product vs. blog) to isolate issues.</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><ul><li><strong>On-Page Score</strong>: 91.59 out of 100, indicating a solid foundation but with room for improvement</li><li><strong>Critical Technical Issues</strong>:</li><li>Missing H1 tags across the site (high-priority issue)</li><li>27 images without alt text</li><li>1 unminified CSS file and 2 unminified JS files affecting page performance</li><li>Missing favicon</li><li>Render-blocking resources affecting page load speed</li><li>Non-SEO-friendly URL structure</li><li>Large DOM size impacting performance</li><li><strong>Positive Technical Aspects</strong>:</li><li>Fast page load time (0.202 seconds)</li><li>Strong internal linking structure (446 internal links with 0.982 internal link ratio)</li><li>Mobile-friendly design</li><li>HTTPS implementation</li><li>Proper title (60 characters) and meta description (150 characters)</li><li>Canonical tag implementation</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize H1 fixes and image alt text in the next dev sprint to improve crawlability and accessibility.</li><li>Schedule performance audits with the development team to address render-blocking and DOM bloat.</li></ul><br><h3 id="traffic-pattern-analysis">Traffic Pattern Analysis</h3><ul><li><strong>Monthly Traffic Fluctuations</strong>: Organic traffic has been inconsistent over the past 12 months:</li><li>June 2024: 56,968 ETV</li><li>December 2024: 53,205 ETV</li><li>June 2025: 38,230 ETV</li><li><strong>Keyword Movement</strong>: High volatility with thousands of keywords gained and lost each month:</li><li>June 2025: 4,532 new keywords, 3,727 lost keywords</li><li>May 2025: 3,640 new keywords, 2,935 lost keywords</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>High keyword churn suggests unstable rankings—investigate algorithm updates or site changes coinciding with dips.</li></ul><br><h3 id="top-performing-pages">Top Performing Pages</h3><p><em>Note: The research did not provide specific data on top-performing pages. This section will be completed once that data is available.</em></p><br><h3 id="underperforming-pages">Underperforming Pages</h3><p><em>Note: The research did not provide specific data on underperforming pages. This section will be completed once that data is available.</em></p><br></div></section>
+                <section id="3-keyword-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">3. Keyword Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-keyword-rankings">Current Keyword Rankings</h3><ul><li><strong>Top-Ranking Keywords</strong>: ERIKS is performing well for several technical product keywords in the Netherlands:</li><li>"15x1 5" - Position 1 (390 monthly searches)</li><li>Technical product specifications and part numbers show strong performance</li><li>Several niche industrial product terms rank in top positions</li></ul><br><h3 id="keyword-opportunities">Keyword Opportunities</h3><ul><li><strong>High-Value Commercial Keywords</strong>:</li><li>"Hydrauliek olie" (Hydraulic oil) - 1,900 monthly searches, high competition</li><li>"Buisklem" (Pipe clamp) - 3,600 monthly searches, high competition</li><li>"Manometers" - 2,900 monthly searches, high competition</li><li>"Overdrukventiel" (Pressure relief valve) - 1,300 monthly searches, high competition</li><li>"Reduceerventiel" (Pressure reducing valve) - 1,300 monthly searches, high competition</li><li>"Seegerring" (Circlip) - 1,000 monthly searches, high competition</li><li>"Handpomp" (Hand pump) - 880 monthly searches, high competition</li><li>"Hydraulische koppelingen" (Hydraulic couplings) - 320 monthly searches, high competition</li><li>"Hydrauliek onderdelen" (Hydraulic components) - 110 monthly searches, high competition</li><li>"Hydrauliek olie kopen" (Buy hydraulic oil) - 70 monthly searches, high competition</li></ul><br><ul><li><strong>Industry Category Keywords</strong>:</li><li>"Industrial components" - High search volume, currently dominated by competitors</li><li>"Technical products for industrial applications" - Relevant to ERIKS' core business</li><li>"Industrial seals and valves" - Directly related to ERIKS' product offerings</li></ul><br><ul><li><strong>Long-Tail Opportunities</strong>:</li><li>"Soorten pneumatische cilinders" (Types of pneumatic cylinders) - 10-40 monthly searches, low competition</li><li>"Hydraulische slang koppeling vervangen" (Replace hydraulic hose coupling) - 20-70 monthly searches, low competition</li><li>"Industriële afdichtingen voor hoge temperaturen" (Industrial seals for high temperatures) - 10-30 monthly searches, low competition</li></ul><br><ul><li><strong>Informational Content Opportunities</strong>:</li><li>"Hoe hydraulische systemen onderhouden" (How to maintain hydraulic systems) - 30-90 monthly searches, low competition</li><li>"Verschil tussen pneumatische en hydraulische systemen" (Difference between pneumatic and hydraulic systems) - 40-110 monthly searches, low competition</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop a prioritized list of pages to target each keyword cluster.</li><li>Assign content owners to begin drafting long-tail and informational articles.</li></ul><br><h3 id="seasonal-trends">Seasonal Trends</h3><ul><li>Maintenance-related keywords show higher search volumes in Q2 and Q3</li><li>Emergency repair terms maintain consistent search volume year-round</li><li>New equipment and system design keywords peak in Q1 and Q4</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Align content calendar with seasonal peaks: schedule maintenance guides for Q2 launch.</li></ul><br><h3 id="content-gaps">Content Gaps</h3><ul><li>No blog section on the website, missing a crucial platform for informational content</li><li>Limited ranking for informational and educational content about industrial products</li><li>Weak coverage for comparison keywords (e.g., "pneumatic vs hydraulic cylinders")</li><li>Missing content targeting industry-specific applications (e.g., "food-grade hydraulic systems")</li><li>Insufficient Dutch-language technical resources compared to English content</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Establish blog templates and workflows to fill these content gaps within 3 months.</li></ul><br></div></section>
+                <section id="4-competitive-landscape" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">4. Competitive Landscape</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors-in-the-netherlands">Key Competitors in the Netherlands</h3><p>Based on our analysis, ERIKS faces three main competitors in the Dutch market:</p><br><ol><li><strong>www.pirtek.nl</strong></li></ol><ul><li><strong>Strengths</strong>: Excels in core hydraulic product keywords including "hydrauliek olie," "hydrauliek onderdelen," and "hydrauliek olie kopen"</li><li><strong>Content Focus</strong>: Specialized in hydraulic components and services</li><li><strong>SERP Strategy</strong>: Uses benefit-oriented titles and descriptions like "Hydrauliek onderdelen: altijd een passende oplossing"</li></ul><br><ol><li><strong>www.hydrauliek24.nl</strong></li></ol><ul><li><strong>Strengths</strong>: Significantly outperforms ERIKS across a wide range of keywords</li><li><strong>Key Ranking Keywords</strong>: "buisklem," "manometers," "hydrauliek olie," "loctite 577," "wartelmoer," "druksensor"</li><li><strong>SERP Strategy</strong>: Highlights fast shipping, expert advice, and includes direct calls to action in meta descriptions</li><li><strong>Content Approach</strong>: Uses highly optimized category pages with specific product-focused titles</li></ul><br><ol><li><strong>www.hydrauliekservice.nl</strong></li></ol><ul><li><strong>Strengths</strong>: Shows strength in niche areas like "nord-lock ring" and "koppeling pomp"</li><li><strong>Strategy</strong>: Takes a targeted approach to specific product segments</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Map competitor CTAs and trust signals (badges, shipping promises) to adopt for ERIKS category pages.</li><li>Benchmark competitor page structures to optimize ERIKS layouts.</li></ul><br><h3 id="competitor-content-strategies">Competitor Content Strategies</h3><p>Our analysis reveals several effective patterns in competitor SERP elements:</p><br><ol><li><strong>Title and Meta Description Optimization</strong>:</li></ol><ul><li><strong>ERIKS</strong> typically uses generic titles like "[Product Category] (X resultaten bevatten Y Artikelen)" or "Find your [Product] at ERIKS"</li><li><strong>Competitors</strong> use more specific and benefit-oriented titles and descriptions:</li><li>Highlight fast shipping and expert advice</li><li>Include product features and benefits</li><li>Use direct calls to action like "Bestellen" (Order)</li></ul><br><ol><li><strong>Content Types and Formats</strong>:</li></ol><ul><li><strong>Hydrauliek24.nl</strong> effectively uses category pages optimized for specific product types (e.g., "Ontluchtingsventielen | Hydrauliek24.nl")</li><li>Competitors provide more detailed and informative product descriptions than ERIKS</li><li>Competitors focus on specificity in their content, targeting exact products or components</li><li>Most competitors maintain active blogs with informational content, unlike ERIKS</li></ul><br><h3 id="competitive-advantages-disadvantages">Competitive Advantages/Disadvantages</h3><ul><li><strong>Areas where competitors outperform ERIKS</strong>:</li><li>More specific keyword targeting in titles and meta descriptions</li><li>Better optimization of category pages for commercial keywords</li><li>More detailed product descriptions with specifications and applications</li><li>Clearer calls to action in search results</li><li>Better performance for high-volume hydraulic component keywords</li><li>Presence of blogs with informational content</li></ul><br><ul><li><strong>ERIKS advantages</strong>:</li><li>Broader product range beyond just hydraulics</li><li>Stronger brand recognition</li><li>Improved keyword positions over the past year (despite traffic decline)</li><li>Strong internal linking structure (446 internal links)</li><li>Fast page load time (0.202 seconds)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Compile a competitor benchmarking spreadsheet covering page elements, CTAs, and content depth.</li><li>Use findings to inform ERIKS page templates.</li></ul><br></div></section>
+                <section id="5-backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">5. Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li><strong>Overall Backlink Metrics</strong>:</li><li>Total backlinks: 395,770</li><li>Referring domains: 560</li><li>Referring main domains: 374</li><li>Referring IPs: 323</li><li>Domain rank: 485</li><li>Backlink spam score: 17% (medium-low risk)</li><li>Target spam score: 20% (medium-low risk)</li></ul><br><ul><li><strong>Backlink Geographic Distribution</strong>:</li><li>Belgium: 102,463 links</li><li>Luxembourg: 68,387 links</li><li>France: 28,428 links</li><li>Switzerland: 27,241 links</li><li>Germany: 23,826 links</li><li>UK: 11,571 links</li><li>Netherlands: 598 links</li></ul><br><ul><li><strong>Backlink Quality Assessment</strong>:</li><li>Majority of backlinks come from European domains, indicating strong regional relevance</li><li>162 referring domains use nofollow links, representing 28.9% of all referring domains</li><li>1,052 referring pages use nofollow links, representing only 0.4% of all referring pages</li><li>Most links come from e-commerce platforms (192,117 links) and unknown sources (72,715 links)</li></ul><br><h3 id="link-building-opportunities">Link Building Opportunities</h3><ul><li><strong>Competitor Backlink Analysis</strong>: Several competitors have stronger backlink profiles:</li><li>Conrad.nl (rank: 37, 168 shared referring domains)</li><li>Gamma.nl (rank: 21, 155 shared referring domains)</li><li>Elektrototaalmarkt.nl (rank: 5, 88 shared referring domains)</li><li>Hornbach.nl (rank: 9, 78 shared referring domains)</li><li>M4n.nl (rank: 4, 78 shared referring domains)</li></ul><br><ul><li><strong>Industry Authority Sites</strong>: Potential high-value link targets include:</li><li>Industry associations and trade publications</li><li>Technical universities and educational institutions</li><li>Dutch manufacturing and engineering forums</li><li>Industry-specific directories with low spam scores</li></ul><br><ul><li><strong>Content-Driven Link Building Opportunities</strong>:</li><li>Technical guides and resources that could attract links from educational institutions</li><li>Industry case studies that showcase successful implementations</li><li>Original research or data that would be valuable to the industrial sector</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Develop a link prospect list divided by domain authority and relevance to prioritize outreach.</li><li>Leverage existing customer case studies as linkable assets.</li></ul><br><h3 id="toxic-backlink-assessment">Toxic Backlink Assessment</h3><ul><li><strong>Potentially Harmful Backlinks</strong>:</li><li>1 domain with high spam score (65%): noticiasbancarias.com</li><li>25 domains with medium spam scores (31-60%), including:</li><li>mjnutrition.co.uk (35%)</li><li>presentationschool.org (55%)</li><li>linkplein.net (60%)</li><li>pagina-start.com (60%)</li></ul><br><ul><li><strong>Link Quality Issues</strong>:</li><li>161 broken backlinks that need to be addressed</li><li>343 broken pages on the site that are receiving backlinks</li><li>Several low-quality directory sites with medium spam scores</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Disavow high-risk backlinks immediately and set up a quarterly review process.</li><li>Prioritize fixing broken pages that hold external link equity.</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><ul><li><strong>Current Anchor Text Distribution</strong>:</li><li>Limited keyword-rich anchor texts in backlink profile</li><li>Many generic anchors like "Netherlands" or product names</li><li>Opportunity to diversify anchor text with more relevant industry terms</li></ul><br><ul><li><strong>Anchor Text Optimization Opportunities</strong>:</li><li>Increase branded anchor texts with relevant keywords</li><li>Develop more descriptive anchor texts for internal linking</li><li>Create content that naturally attracts keyword-rich anchor texts</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Balance natural anchor distribution by mixing branded, naked URLs, and keyword phrases.</li></ul><br></div></section>
+                <section id="6-content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">6. Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="content-optimization-priorities">Content Optimization Priorities</h3><p>Based on our keyword and competitor analysis, we recommend:</p><br><ol><li><strong>Technical Product Pages Enhancement</strong>:</li></ol><ul><li>Optimize existing product pages for high-value keywords like "hydrauliek olie" (1,900 searches) and "buisklem" (3,600 searches)</li><li>Add comprehensive technical specifications and application information</li><li>Implement structured data for product pages to enhance SERP visibility</li><li>Add alt text to all product images (currently 27 images missing alt text)</li></ul><br><ol><li><strong>Title and Meta Description Optimization</strong>:</li></ol><ul><li>Rewrite titles and meta descriptions for key product categories to be more specific and benefit-oriented</li><li><strong>Current Example</strong>: "Hydraulische olie (22 resultaten bevatten 48 Artikelen)"</li><li><strong>Recommended Format</strong>: "Hydraulische Olie Kopen? Breed Assortiment & Snelle Levering | ERIKS"</li></ul><br><ol><li><strong>Category Page Optimization</strong>:</li></ol><ul><li>Create or optimize dedicated category pages for high-value keywords</li><li>Ensure consistent keyword usage in title, H1, and content</li><li>Add informative content about product types, applications, and selection criteria</li></ul><br><ol><li><strong>Blog Implementation and Educational Content Development</strong>:</li></ol><ul><li>Create a blog section on the website (currently missing)</li><li>Develop in-depth guides on topics like "Hoe hydraulische systemen onderhouden" (How to maintain hydraulic systems)</li><li>Create comparison content addressing "Verschil tussen pneumatische en hydraulische systemen"</li><li>Build a knowledge base targeting long-tail informational queries</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Kick off a content workshop with product experts to source technical details for new guides.</li><li>Use a template for consistent blog post structure and SEO metadata.</li></ul><br><h3 id="content-format-recommendations">Content Format Recommendations</h3><ul><li><strong>Enhanced Product Descriptions</strong>: Rewrite product descriptions to be more detailed and informative, including specifications, benefits, and use cases</li><li><strong>Technical Documentation</strong>: Enhance and expand Dutch-language technical documentation</li><li><strong>How-To Guides</strong>: Create visual step-by-step guides for maintenance and installation</li><li><strong>Comparison Tools</strong>: Develop interactive tools to help users select the right products</li><li><strong>Case Studies</strong>: Showcase successful implementations in Dutch industrial settings</li></ul><br><h3 id="topic-clusters">Topic Clusters</h3><ul><li><strong>Hydraulic Systems Cluster</strong>: Main pillar page on hydraulic systems with supporting content on components, maintenance, troubleshooting</li><li><strong>Pneumatic Solutions Cluster</strong>: Comprehensive guide to pneumatic systems with supporting articles on cylinders, valves, and applications</li><li><strong>Industrial Seals Cluster</strong>: Complete resource on industrial sealing solutions with supporting content on material selection, applications, and maintenance</li><li><strong>Industrial Components Cluster</strong>: New cluster targeting the broader "industrial components" keyword opportunity</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Define pillar pages and link hierarchy for each cluster.</li><li>Assign content leads and deadlines to ensure phased rollout.</li></ul><br></div></section>
+                <section id="7-action-plan" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tasks"></i></div>
+                        <h2 class="section-title">7. Action Plan</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="quick-wins-high-priority-">Quick Wins (High Priority)</h3><ol><li><strong>Fix Critical Technical Issues</strong>:</li></ol><ul><li>Implement H1 tags on all pages, starting with the homepage (currently missing completely)</li><li>Add alt text to the 27 images currently missing this attribute</li><li>Minify the 1 CSS file and 2 JS files identified as unminified</li><li>Create and implement a favicon</li><li>Optimize render-blocking resources to improve page load speed</li></ul><br><ol><li><strong>Title and Meta Description Optimization</strong>:</li></ol><ul><li>Rewrite titles and meta descriptions for top 5-10 most important product categories</li><li>Focus on being more specific with keywords and highlighting key benefits</li><li>Include clear calls to action</li></ul><br><ol><li><strong>URL Structure Optimization</strong>:</li></ol><ul><li>Implement more SEO-friendly URL structures for product and category pages</li><li>Ensure proper redirects from old URLs to maintain link equity</li></ul><br><ol><li><strong>Content Enhancement</strong>:</li></ol><ul><li>Increase plain text content rate on key pages</li><li>Remove deprecated HTML tags</li><li>Optimize DOM size to improve page performance</li></ul><br><ol><li><strong>Toxic Backlink Cleanup</strong>:</li></ol><ul><li>Disavow the high spam score backlink from noticiasbancarias.com (65% spam score)</li><li>Review and potentially disavow medium-high spam score backlinks (50-60% range)</li><li>Fix or redirect the 161 broken backlinks to recover lost link equity</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Set up a 4-week sprint plan with clear owners for each quick win item.</li><li>Use a shared dashboard to track progress and impact on traffic/score.</li></ul><br><h3 id="medium-term-strategy-3-6-months-">Medium-Term Strategy (3-6 months)</h3><ol><li><strong>Blog Implementation</strong>:</li></ol><ul><li>Create a blog section on the website (currently missing)</li><li>Develop an editorial calendar focused on informational content</li><li>Start publishing regular content targeting identified keyword opportunities</li></ul><br><ol><li><strong>Category Page Optimization</strong>:</li></ol><ul><li>Create or optimize category pages for the prioritized keywords identified in our analysis</li><li>Focus on high-volume terms like "hydrauliek olie" (1,900 searches) and "buisklem" (3,600 searches)</li><li>Add "Fast Shipping" or "Expert Advice" badges to key category pages</li></ul><br><ol><li><strong>Product Description Enhancement</strong>:</li></ol><ul><li>Rewrite product descriptions to be more detailed and informative</li><li>Include key product specifications, benefits, and use cases</li><li>Add images or videos to enhance the product pages</li></ul><br><ol><li><strong>Technical SEO Improvements</strong>:</li></ol><ul><li>Implement structured data across all product pages</li><li>Improve site speed and Core Web Vitals</li><li>Enhance internal linking structure between related products and content</li></ul><br><ol><li><strong>User Experience Optimization</strong>:</li></ol><ul><li>Improve product filtering and search functionality</li><li>Enhance mobile experience for technical professionals</li><li>Implement conversion rate optimization for key product pages</li></ul><br><ol><li><strong>Backlink Acquisition Strategy</strong>:</li></ol><ul><li>Target high-authority Dutch industrial websites for backlink opportunities</li><li>Create linkable assets such as industry guides, tools, or resources</li><li>Develop relationships with industry publications for content placement</li><li>Focus on acquiring links with relevant anchor text to improve topical authority</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Finalize editorial calendar for next 6 months and assign responsibilities.</li><li>Schedule UX audits to roadmap filtering and search enhancements.</li></ul><br><h3 id="long-term-vision-6-12-months-">Long-Term Vision (6-12 months)</h3><ol><li><strong>Content Strategy Development</strong>:</li></ol><ul><li>Develop a comprehensive content strategy focused on creating informative content about hydraulic components and systems</li><li>Create blog posts, guides, and videos targeting informational queries</li><li>Build a Dutch-language knowledge base for technical industrial products</li></ul><br><ol><li><strong>Authority Building</strong>:</li></ol><ul><li>Build backlinks from relevant industry websites and publications</li><li>Develop comprehensive resource centers for each major product category</li><li>Create industry-specific landing pages and solution guides</li><li>Implement a digital PR strategy to increase brand mentions and backlinks</li></ul><br><ol><li><strong>Product Selection Tools</strong>:</li></ol><ul><li>Consider offering a product configurator or selection tool to help customers find the right hydraulic components</li><li>Develop interactive comparison tools for similar products</li></ul><br><ol><li><strong>Measurement and Refinement</strong>:</li></ol><ul><li>Implement advanced analytics to track user journeys</li><li>Conduct regular content audits and optimization</li><li>Refine keyword strategy based on performance data</li><li>Monitor backlink profile health and continue to disavow toxic links as needed</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Begin prototyping interactive selection tools to differentiate ERIKS from competitors.</li><li>Plan quarterly business reviews to align SEO progress with revenue impact.</li></ul><br></div></section>
+                <section id="8-conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">8. Conclusion</h2>
+                    </div>
+                    <div class="section-content"><p>ERIKS is facing significant challenges in the Dutch search landscape, with a 32.89% decrease in organic traffic despite improvements in keyword positions. Our competitive analysis reveals that specialized competitors like Hydrauliek24.nl and Pirtek.nl are outperforming ERIKS on high-value keywords related to hydraulic components, with more effective SERP strategies and content approaches.</p><br><p>The technical audit has revealed several critical issues that need immediate attention, particularly the missing H1 tags, 27 images without alt text, unminified CSS and JS files, and render-blocking resources. Additionally, there are clear content gaps around informational queries and long-tail keywords that represent untapped potential, with the complete absence of a blog section being a significant disadvantage compared to competitors.</p><br><p>Our keyword analysis has identified substantial opportunities in technical industrial terms, particularly in the hydraulics category, with high-volume keywords like "hydrauliek olie" (1,900 searches) and "buisklem" (3,600 searches) representing significant traffic potential. Additional opportunities exist in broader category terms like "industrial components" and "technical products for industrial applications."</p><br><p>The backlink analysis shows a substantial profile with 395,770 backlinks from 560 referring domains, but with some quality concerns including a medium spam score (17%) and several potentially toxic backlinks. Competitors like Conrad.nl and Gamma.nl have stronger backlink profiles, indicating an opportunity for improvement in this area.</p><br><p>By addressing the technical issues as a first priority, then implementing a strategic content plan targeting the identified keyword opportunities (including adding a blog section), and finally enhancing the backlink profile by removing toxic links and acquiring high-quality industry-relevant backlinks, ERIKS can reverse the traffic decline and capitalize on their improved keyword positions. The contradiction between better rankings but lower traffic presents a unique opportunity to diagnose and solve fundamental SEO issues that, once addressed, could lead to substantial organic growth in the Dutch market.</p><br><p>Our recommended approach focuses on four key areas:</p><ol><li>Technical SEO optimization to provide a solid foundation</li><li>Strategic content development targeting high-value keywords identified in our analysis</li><li>SERP optimization to compete more effectively with specialized competitors</li><li>Backlink profile enhancement to improve domain authority and topical relevance</li></ol><br><p>With these improvements, ERIKS can strengthen its position as a leading technical industrial supplier in the Dutch market and capture significant additional organic traffic.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - ERIKS',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

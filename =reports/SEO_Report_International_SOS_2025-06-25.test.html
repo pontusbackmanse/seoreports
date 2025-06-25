@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - International SOS</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">International SOS • internationalsos.com</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> United States Market</span>
+                        <span><i class="fas fa-calendar"></i> June 25, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Change Last 12 Months</th><th>Latest Value / Notes</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="negative">-35.34%</td><td class="">76,037</td></tr><tr><td class="">Position 1 Rankings</td><td class="positive">+18.52%</td><td class="">10,744 keywords on homepage</td></tr><tr><td class="">Position 2-3 Rankings</td><td class="negative">-19.66%</td><td class="">Significant decline</td></tr><tr><td class="">Position 4-10 Rankings</td><td class="negative">-25.12%</td><td class="">Significant decline</td></tr><tr><td class="">Position 11-20 Rankings</td><td class="negative">-28.06%</td><td class="">Significant decline</td></tr><tr><td class="">Position 21-30 Rankings</td><td class="negative">-30.70%</td><td class="">Significant decline</td></tr><tr><td class="">Total Ranking Keywords</td><td class="">N/A</td><td class="">15,293</td></tr><tr><td class="">New Rankings</td><td class="">N/A</td><td class="">6,694</td></tr><tr><td class="">Lost Rankings</td><td class="">N/A</td><td class="">21,627 (much higher than new)</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The steep ETV decline signals urgent prioritization of recovery tactics—focus first on the most impactful pages and keywords.</li><li>Gains in position 1 rankings indicate content/authority strengths; replicate those elements on underperforming asset categories.</li><li>Lost rankings far exceed new, highlighting gaps in content freshness and technical health that must be addressed immediately.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor Name</th><th>Keywords They Rank Well For (Lead Ranks Poorly)</th><th>Notes / Strategy Highlights</th></tr></thead><tbody><tr><td class="">Global Guardian</td><td class="">"medical evacuation insurance" (3,600 SV), "travel advisory brazil" (2,400 SV), "medical evacuation" (720 SV)</td><td class="">Uses "Is [Country] Safe?" content strategy targeting travel safety questions</td></tr><tr><td class="">Global Security Services LLC</td><td class="">"global security service" (1,600 SV), "global security company" (390 SV), "global security jobs" (1,000 SV)</td><td class="">Strong local SEO focus, clear service descriptions, dedicated careers page</td></tr><tr><td class="">Global Security Services</td><td class="">Same as above</td><td class="">High average keyword position (1), clear value propositions in meta</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Competitors blend localized service pages with high-intent content—adopt a similar mix of local and broad safety guides.</li><li>The “Is [Country] Safe?” model directly addresses user questions and should be a central pillar of the content plan.</li><li>Dedicated careers pages drive job‐seeker traffic—expanding this approach can reclaim market share in recruitment searches.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Monthly Search Volume (SV)</th><th>Competition Level</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">"global security services"</td><td class="">1,000 - 2,900</td><td class="">Low</td><td class="">High intent, low competition, aligns with core offerings</td></tr><tr><td class="">"emergency medical services"</td><td class="">4,400 - 6,600</td><td class="">Low</td><td class="">High volume, relevant to medical emergency services</td></tr><tr><td class="">"medical evacuation insurance"</td><td class="">3,600</td><td class="">High</td><td class="">High volume, competitor ranks well, opportunity to capture valuable insurance-related traffic</td></tr><tr><td class="">"travel advisory brazil"</td><td class="">2,400</td><td class="">Low</td><td class="">High volume, low competition, fits travel risk management focus</td></tr><tr><td class="">"global security jobs"</td><td class="">1,000</td><td class="">Low</td><td class="">Captures job seeker traffic, competitor advantage</td></tr><tr><td class="">"medical evacuation services"</td><td class="">10 - 390</td><td class="">Low</td><td class="">Niche, low competition, relevant to core services</td></tr><tr><td class="">"private security for international travel"</td><td class="">30 - 210</td><td class="">Low</td><td class="">Long-tail, low competition, potential for growth</td></tr><tr><td class="">Country-specific travel safety terms</td><td class="">Varies</td><td class="">Low to Medium</td><td class="">Seasonal and location-specific, aligns with competitor content strategy</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize “global security services” and “emergency medical services” for immediate landing page optimization.</li><li>Develop content outlines for “travel advisory brazil” and other country safety guides within the next sprint.</li><li>Conduct a mini audit on “medical evacuation insurance” to assess feasibility given high competition.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li><strong>Organic visibility and traffic have declined sharply (-35.34% ETV), despite some gains in position 1 rankings.</strong></li><li><strong>Lost rankings (21,627) far exceed new rankings (6,694), indicating urgent need for recovery strategy.</strong></li><li><strong>Top competitors outperform International SOS on key high-volume keywords related to medical evacuation insurance, travel advisories, and global security services.</strong></li><li><strong>Competitors use effective content strategies such as "Is [Country] Safe?" articles and localized SEO with clear value propositions.</strong></li><li><strong>International SOS has a strong backlink profile with authoritative .edu and government links but needs to disavow toxic backlinks and fix broken links.</strong></li><li><strong>Technical SEO issues (page speed, mobile optimization, title tags) need addressing to improve rankings.</strong></li><li><strong>Content gaps exist in travel safety guides, medical evacuation insurance, duty of care resources, and careers-related content.</strong></li><li><strong>Recommended quick wins include optimizing meta descriptions, creating country safety articles, enhancing careers page, and disavowing toxic backlinks.</strong></li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>This concise summary provides a clear action roadmap—use it as the foundation for your next sprint planning session to align stakeholders quickly.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-international-sos" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: International SOS</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>International SOS specializes in providing critical services including:</p><ul><li>24/7 assistance for medical and security emergencies</li><li>Health and security consulting</li><li>Timely insights and analyses on potential threats</li><li>Travel risk management aligned with ISO 31030 standards</li><li>Medical and security evacuations</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>This report focuses on the United States market but many recommendations (e.g., country safety guides) have global applicability.</li></ul><br></div></section>
+                <section id="seo-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-analytics"></i></div>
+                        <h2 class="section-title">SEO Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="1-overall-seo-performance">1. Overall SEO Performance</h3><br><h4 id="organic-visibility-trends">Organic Visibility Trends</h4><p>International SOS is experiencing concerning trends in their organic search performance. Data shows a <strong>35.34% decrease in Estimated Traffic Volume (ETV)</strong> from June 2024 to June 2025. While position 1 rankings have increased by 18.52%, all other key ranking positions (2-3 through 41-50) have decreased significantly:</p><ul><li>Position 2-3: -19.66%</li><li>Position 4-10: -25.12%</li><li>Position 11-20: -28.06%</li><li>Position 21-30: -30.70%</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Recovery should focus on pages ranking in positions 2-30—small content or technical tweaks could push many into top 10.</li></ul><br><h4 id="current-organic-visibility-latest-data-">Current Organic Visibility (Latest Data)</h4><ul><li><strong>Total ETV</strong>: 76,037</li><li><strong>Total Ranking Keywords</strong>: 15,293</li><li><strong>Estimated Paid Traffic Cost</strong>: $327,085</li><li><strong>New Rankings</strong>: 6,694</li><li><strong>Lost Rankings</strong>: 21,627 (significantly higher than new rankings)</li></ul><br><h4 id="top-performing-pages">Top-Performing Pages</h4><ol><li><strong>Homepage</strong> (https://www.internationalsos.com/): Ranks for 10,744 keywords with an ETV of 46,522.18</li><li><strong>Careers Page</strong> (https://www.internationalsos.com/careers): Ranks for 940 keywords with an ETV of 2,304.72</li><li><strong>Services Pages</strong>: Multiple service-related pages perform well, particularly those focused on personal travel, medical supply, consulting, and evacuations</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Strengthen internal linking from these high-ETV pages to underperforming but strategically important pages.</li></ul><br><h4 id="underperforming-pages">Underperforming Pages</h4><p>Location-specific pages (e.g., Vietnam, South Korea) show potential for improvement through enhanced local SEO strategies.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit each location page for missing local schema, contact info, and region-specific case studies.</li></ul><br><h4 id="technical-seo-issues">Technical SEO Issues</h4><p>Several technical issues have been identified:</p><ul><li>Short title length on some pages</li><li>Render-blocking resources affecting page load speed</li><li>Potential for improved mobile optimization</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize fixing render-blocking JS/CSS to improve both desktop and mobile page speeds.</li><li>Extend title tags to 50–60 characters including primary keywords and locale.</li></ul><br><h3 id="2-keyword-analysis">2. Keyword Analysis</h3><br><h4 id="top-performing-keywords-rank-1-10-">Top Performing Keywords (Rank 1-10)</h4><p>International SOS dominates rankings for several key categories of keywords:</p><br><p><strong>Brand-Related Keywords:</strong></p><ul><li>"international sos" (6,600 monthly searches, Position 1)</li><li>"international sos app" (320 monthly searches, Position 1)</li><li>"international sos assistance" (390 monthly searches, Position 2)</li></ul><br><p><strong>Location-Based Keywords:</strong></p><ul><li>"international sos aberdeen" (170 monthly searches, Position 4)</li><li>"international sos baku" (30 monthly searches, Position 1)</li><li>"international sos houston" (70 monthly searches, Position 1)</li></ul><br><p><strong>Service-Oriented Keywords:</strong></p><ul><li>"evacuation services" (30 monthly searches, Position 1)</li><li>"international medical suppliers" (70 monthly searches, Position 1)</li><li>"crisis management phases" (90 monthly searches, Position 3)</li></ul><br><p><strong>"Duty of Care" Related Keywords:</strong></p><ul><li>"duty of care meaning" (1,300 monthly searches, Position 3)</li><li>"duty of care definition in healthcare" (30 monthly searches, Position 2)</li><li>"duty of care obligations" (40 monthly searches, Position 2)</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>These core keywords reflect brand strength and existing domain authority—maintain and protect them while building new thematic clusters.</li></ul><br><h4 id="recommended-keywords-to-target">Recommended Keywords to Target</h4><br><p><strong>Top Priority Keywords:</strong></p><ul><li>"global security services" (1,000-2,900 monthly searches, LOW competition)</li><li>"emergency medical services" (4,400-6,600 monthly searches, LOW competition)</li><li>"medical evacuation services" (10-390 monthly searches, LOW competition)</li><li>"global security and investigative services" (90-210 monthly searches, LOW competition)</li><li>"medical evacuation insurance" (3,600 monthly searches, HIGH competition)</li><li>"travel advisory brazil" (2,400 monthly searches, LOW competition)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Kick off content briefs for the top five target keywords in Q1, assigning each to an owner and defining publication dates.</li></ul><br><p><strong>Secondary Keywords:</strong></p><ul><li>"global services security" (20-720 monthly searches, LOW competition)</li><li>"global security services jobs" (50-210 monthly searches, LOW competition)</li><li>"private security for international travel" (30-210 monthly searches, LOW competition)</li><li>"security clearance international travel" (40-70 monthly searches, LOW competition)</li><li>"global security company" (390 monthly searches, LOW competition)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Integrate these into FAQ sections and blog posts to build depth around core pages.</li></ul><br><p><strong>Long-term Opportunities:</strong></p><ul><li>"international SOS travel security" (10-20 monthly searches, MEDIUM competition)</li><li>"global operations security services" (20-210 monthly searches, LOW competition)</li><li>Country-specific travel safety keywords (e.g., "is [country] safe?", "travel warning [country]")</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Plan quarterly content sprints focused on new country safety guides, syncing with seasonal travel peaks.</li></ul><br><h3 id="3-competitive-landscape">3. Competitive Landscape</h3><br><h4 id="key-competitors">Key Competitors</h4><br><p><strong>1. Global Security Services, LLC (gssllc1.com)</strong></p><ul><li><strong>Key Strengths:</strong> High average keyword position (2.5), strong performance for "global security" related keywords</li><li><strong>Focus:</strong> Physical security services with emphasis on local service areas (Jackson, Memphis, Nashville, TN)</li><li><strong>Type:</strong> Direct competitor focusing on security services</li></ul><br><p><strong>2. Global Guardian (globalguardian.com)</strong></p><ul><li><strong>Key Strengths:</strong> High estimated traffic volume, strong performance for travel safety and medical evacuation keywords</li><li><strong>Unique Strategy:</strong> Content centered around "Is [Country] Safe?" articles that directly address travel safety concerns</li><li><strong>Type:</strong> Direct competitor offering broader range of services including security, medical, and emergency response</li></ul><br><p><strong>3. Global Security Services (globalsecurityservices.com)</strong></p><ul><li><strong>Key Strengths:</strong> Very high average keyword position (1), strong performance for "global security" related keywords</li><li><strong>Focus:</strong> Security systems, investigative services, and armored transportation</li><li><strong>Type:</strong> Direct competitor focusing on physical security and related services</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Emulate Global Guardian’s Q&A approach for high-volume destinations and GSS LLC’s granular local targeting for U.S. regions.</li></ul><br><h4 id="competitive-keyword-analysis">Competitive Keyword Analysis</h4><br><p><strong>Keywords Where Competitors Outperform International SOS:</strong></p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th><th>Top Competitor</th></tr></thead><tbody><tr><td class="">"global security service"</td><td class="">1,600</td><td class="">LOW</td><td class="">GSS LLC, Global Security Services</td></tr><tr><td class="">"global security company"</td><td class="">390</td><td class="">LOW</td><td class="">GSS LLC, Global Security Services</td></tr><tr><td class="">"medical evacuation insurance"</td><td class="">3,600</td><td class="">HIGH</td><td class="">Global Guardian</td></tr><tr><td class="">"travel advisory brazil"</td><td class="">2,400</td><td class="">LOW</td><td class="">Global Guardian</td></tr><tr><td class="">"brazil travel warning"</td><td class="">2,400</td><td class="">LOW</td><td class="">Global Guardian</td></tr><tr><td class="">"global security jobs"</td><td class="">1,000</td><td class="">LOW</td><td class="">Global Security Services</td></tr><tr><td class="">"medical evacuation"</td><td class="">720</td><td class="">LOW</td><td class="">Global Guardian</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Target these high-value gaps with tailored content—combine direct service pages with supporting blog articles for depth.</li></ul><br><h4 id="serp-strategy-analysis">SERP Strategy Analysis</h4><br><p><strong>Title and Meta Description Patterns:</strong></p><ul><li><strong>International SOS:</strong> Often uses generic titles like "International SOS" or "Global Security Solutions" with broad meta descriptions or missing descriptions entirely</li><li><strong>GSS LLC:</strong> Includes company name in title and highlights service area and core offerings in meta descriptions</li><li><strong>Global Guardian:</strong> Uses question-based titles ("Is Brazil Safe?") that directly address user search intent</li><li><strong>Global Security Services:</strong> Includes company name in title and clearly states service offerings in meta descriptions</li></ul><br><p><strong>Successful Competitor Strategies:</strong></p><ol><li><strong>Global Guardian's "Is [Country] Safe?" Content Strategy:</strong></li></ol><ul><li>Creates dedicated articles answering specific travel safety questions for popular destinations</li><li>Directly addresses user search intent for travel safety information</li><li>Establishes authority in travel risk management</li><li>Captures high-volume, low-competition keywords</li></ul><ol><li><strong>Location-Based Targeting (GSS LLC):</strong></li></ol><ul><li>Explicitly mentions service areas in meta descriptions</li><li>Helps rank for local searches</li><li>Improves relevance for location-specific queries</li></ul><ol><li><strong>Clear Value Proposition (Global Security Services):</strong></li></ol><ul><li>Highlights core offerings in meta descriptions</li><li>Improves click-through rates by clearly communicating services</li><li>Enhances relevance for service-specific searches</li></ul><ol><li><strong>Dedicated Careers Page (Global Security Services):</strong></li></ol><ul><li>Ranks highly for "global security jobs"</li><li>Captures job-seeker traffic</li><li>Enhances brand visibility</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Update title/meta templates to include question-based titles for info pages and location+service for transactional pages.</li></ul><br><h3 id="4-backlink-authority-analysis">4. Backlink & Authority Analysis</h3><br><h4 id="backlink-profile-overview">Backlink Profile Overview</h4><p>International SOS has established a substantial backlink profile with <strong>148,601 backlinks</strong> from <strong>8,025 referring domains</strong>. The site has a domain rank of <strong>409</strong>, indicating moderate domain authority.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The volume of broken links (253) and pages (239) presents an immediate reclaim opportunity—fixing these could restore substantial link equity.</li></ul><br><h4 id="backlink-quality-assessment">Backlink Quality Assessment</h4><ul><li><strong>Backlink Spam Score</strong>: 9 out of 100 (medium risk)</li><li><strong>Target Spam Score</strong>: 14 out of 100 (medium risk)</li><li><strong>Broken Backlinks</strong>: 253 identified</li><li><strong>Broken Pages</strong>: 239 pages with broken links</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Disavow the handful of high-spam domains immediately; plan page-level fixes within the next sprint.</li></ul><br><h4 id="referring-domain-analysis">Referring Domain Analysis</h4><p>The referring domains show a diverse mix of sources:</p><ul><li><strong>Educational Institutions</strong>: Strong presence with domains like harvard.edu, uab.edu, and yale.edu</li><li><strong>Government Sites</strong>: Valuable links from cia.gov and usmission.gov</li><li><strong>Travel Industry</strong>: Links from lonelyplanet.com and wikivoyage.org</li><li><strong>News Sources</strong>: Links from theglobeandmail.com and scmp.com</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Construct authoritative resource pages to attract more .edu and .gov links, leveraging existing partnerships.</li></ul><br><h4 id="top-referring-tlds">Top Referring TLDs</h4><ol><li>.com (60,145 links)</li><li>.org (29,160 links)</li><li>.edu (10,668 links) - particularly valuable for authority</li><li>.college (7,667 links)</li><li>blogspot.com (4,425 links)</li></ol><br><h4 id="toxic-backlinks">Toxic Backlinks</h4><p>Several potentially harmful backlinks were identified:</p><ul><li>fc2.com (77% spam score)</li><li>internationalsosfoundation.org (61% spam score)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Queue these domains for immediate disavow and monitor impact on backlink profile health.</li></ul><br><h4 id="competitor-backlink-comparison">Competitor Backlink Comparison</h4><p>Analysis of backlink competitors reveals several sites with significant link intersections:</p><ul><li>wikivoyage.org (1,061 intersections)</li><li>uab.edu (848 intersections)</li><li>nbcuni.com (718 intersections)</li><li>wikiversity.org (535 intersections)</li><li>lonelyplanet.com (224 intersections)</li><li>mycwt.com (203 intersections) - a corporate travel management competitor</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>These shared intersections highlight co-link opportunities—reach out for guest content or data partnerships to secure placements.</li></ul><br><h4 id="anchor-text-analysis">Anchor Text Analysis</h4><p>The anchor text profile shows:</p><ul><li>Brand-focused anchors ("International SOS", "ISOS")</li><li>Service-related anchors ("ISOS COVID Trip Planner", "SOS Medical Insurance")</li><li>Generic anchors ("Terms & Conditions", "Privacy Policy")</li><li>Notable presence of COVID-related anchor text, indicating relevance to pandemic travel safety</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Diversify anchor profiles by creating targeted content pieces (e.g., infographics) to attract more varied, context-rich anchors.</li></ul><br><h3 id="5-content-strategy-recommendations">5. Content Strategy Recommendations</h3><br><p>Based on our comprehensive analysis, we recommend the following content strategy initiatives:</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Align all content efforts around three pillars: Travel Safety Guides, Service Deep Dives, and Thought Leadership (Duty of Care).</li></ul><br><h4 id="1-address-declining-organic-visibility">1. Address Declining Organic Visibility</h4><ul><li>Conduct a comprehensive content audit to identify and update underperforming pages</li><li>Develop a recovery strategy to regain lost rankings</li><li>Focus on improving rankings for keywords in positions 2-30 which have seen significant declines</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign content audit owners by Thursday and set review templates for each page category.</li></ul><br><h4 id="2-implement-global-guardian-s-is-country-safe-strategy">2. Implement Global Guardian's "Is [Country] Safe?" Strategy</h4><ul><li>Create a series of in-depth articles answering specific travel safety questions for high-volume destinations</li><li>Example titles: "Is Mexico City Safe for Tourists?", "Travel Advisory for Argentina", "Is Brazil Safe for Business Travel?"</li><li>Optimize these articles for high-volume, low-competition keywords like "travel advisory brazil" (2,400 monthly searches)</li><li>Structure content to address specific safety concerns, emergency contacts, and International SOS services available in each location</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft outlines for the first five country guides by next week and schedule publication over the following month.</li></ul><br><h4 id="3-optimize-medical-evacuation-service-pages">3. Optimize Medical Evacuation Service Pages</h4><ul><li>Revamp the "Medical and Security Evacuations" page with detailed information about medical evacuation services</li><li>Create dedicated content targeting "medical evacuation insurance" (3,600 monthly searches)</li><li>Include pricing information, coverage areas, and emergency contact information</li><li>Develop case studies highlighting successful medical evacuations</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Collect three case studies from the field team and integrate them into the new page structure.</li></ul><br><h4 id="4-enhance-meta-descriptions-and-titles">4. Enhance Meta Descriptions and Titles</h4><ul><li>Rewrite meta descriptions for key service pages to clearly highlight services offered and geographic areas served</li><li>Move away from generic descriptions to specific value propositions</li><li>Implement question-based titles for informational content to better match search intent</li><li>Ensure all pages have properly optimized meta descriptions (currently missing on some pages)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create a meta description template and update the top 20 service pages this sprint.</li></ul><br><h4 id="5-create-a-comprehensive-careers-page">5. Create a Comprehensive Careers Page</h4><ul><li>Develop an enhanced careers section targeting "global security jobs" (1,000 monthly searches)</li><li>List available security-related positions within International SOS</li><li>Include employee testimonials, benefits information, and clear application processes</li><li>Optimize for keywords like "security careers" and "international security jobs"</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Gather HR-approved testimonials and job descriptions by end of month to build the new page.</li></ul><br><h4 id="6-expand-duty-of-care-content">6. Expand "Duty of Care" Content</h4><ul><li>Create more in-depth content addressing specific duty of care obligations for different industries and regions</li><li>Develop a comprehensive guide or resource center on duty of care</li><li>Target long-tail variations of "duty of care" keywords where the company already shows authority</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Outline the duty of care resource center architecture and assign sections to SMEs.</li></ul><br><h4 id="7-optimize-location-specific-pages">7. Optimize Location-Specific Pages</h4><ul><li>Enhance location pages with detailed service information, contact details, and case studies</li><li>Implement local SEO best practices for each location</li><li>Create location-specific content that addresses unique health and security challenges in each region</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prepare a local SEO checklist and conduct a crawl of all location pages to flag missing elements.</li></ul><br><h4 id="8-develop-cost-justification-content">8. Develop Cost-Justification Content</h4><ul><li>Create content that addresses the value proposition and ROI of International SOS services</li><li>Develop case studies highlighting cost savings and risk mitigation</li><li>Create comparison tools or calculators to demonstrate value</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Work with finance to draft ROI calculator metrics and design wireframes for the tool.</li></ul><br><h4 id="9-align-organic-and-paid-strategies">9. Align Organic and Paid Strategies</h4><ul><li>Create organic content for keywords where paid campaigns are currently running, such as:</li><li>"cyberthreat report"</li><li>"international sos clinic"</li><li>"international sos government services"</li><li>This dual approach will maximize visibility and potentially reduce ad spend over time</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Coordinate with the paid media team to map overlapping keywords and set performance benchmarks.</li></ul><br><h4 id="10-backlink-improvement-strategy">10. Backlink Improvement Strategy</h4><ul><li><strong>Toxic Link Remediation</strong>: Disavow harmful backlinks from domains with high spam scores (fc2.com, internationalsosfoundation.org)</li><li><strong>Broken Link Recovery</strong>: Fix the 239 broken pages to recapture value from 253 broken backlinks</li><li><strong>Educational Outreach</strong>: Develop targeted content for educational institutions to strengthen existing .edu backlinks</li><li><strong>Travel Industry Partnerships</strong>: Pursue additional backlinks from travel industry sites like lonelyplanet.com and wikivoyage.org</li><li><strong>Government Partnerships</strong>: Leverage existing government links (cia.gov, usmission.gov) to build additional authoritative backlinks</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign backlink remediation tasks and outreach responsibilities in the next link-building meeting.</li></ul><br><h4 id="11-technical-seo-improvements">11. Technical SEO Improvements</h4><ul><li>Address identified technical issues including title length optimization</li><li>Improve page load speed by addressing render-blocking resources</li><li>Enhance mobile optimization</li><li>Strengthen internal linking between related service pages, insights articles, and location pages</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a full technical audit with engineering—set bug tickets for each priority item this sprint.</li></ul><br></div></section>
+                <section id="quick-wins-and-implementation-timeline" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Quick Wins and Implementation Timeline</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="quick-wins-1-2-months-">Quick Wins (1-2 Months)</h3><ol><li>Optimize meta descriptions for existing service pages using competitor patterns</li><li>Create 3-5 "Is [Country] Safe?" articles targeting high-volume destinations</li><li>Enhance the existing careers page with more detailed information about security positions</li><li>Improve title tags on underperforming pages</li><li>Begin disavowing toxic backlinks with high spam scores</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign each quick win to a squad and set 2-week deliverables to maintain momentum.</li></ul><br><h3 id="medium-term-projects-3-6-months-">Medium-Term Projects (3-6 Months)</h3><ol><li>Develop comprehensive medical evacuation insurance content</li><li>Create a full series of country safety guides (15-20 countries)</li><li>Implement technical SEO improvements</li><li>Launch cost-justification content and ROI calculators</li><li>Fix broken pages to recover value from broken backlinks</li><li>Begin outreach to educational institutions for backlink building</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Hold a mid-point review at month 4 to adjust priorities based on early performance data.</li></ul><br><h3 id="long-term-strategy-6-12-months-">Long-Term Strategy (6-12 Months)</h3><ol><li>Build a comprehensive travel safety content hub</li><li>Develop location-specific service pages for all major markets</li><li>Create industry-specific duty of care content</li><li>Implement full alignment between organic and paid strategies</li><li>Establish partnerships with travel industry sites for authoritative backlinks</li><li>Develop government-focused content to leverage existing government backlinks</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Consistent execution across these initiatives will transform International SOS into the go-to authority for travel risk and emergency assistance over the next year.</li></ul><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><br><p>International SOS has a strong foundation for SEO success with substantial domain authority and valuable backlinks from educational and government institutions. However, the company faces significant challenges with declining organic visibility and strong competition in key service areas.</p><br><p>By implementing the recommended strategies, International SOS can:</p><ol><li>Reverse the declining trend in organic visibility</li><li>Capture high-value keywords currently dominated by competitors</li><li>Strengthen their backlink profile while remediating toxic links</li><li>Develop content that directly addresses user search intent</li><li>Establish stronger authority in travel safety and medical evacuation services</li></ol><br><p>These improvements will position International SOS as the authoritative source for travel risk management and emergency assistance services in the United States market.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - International SOS',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

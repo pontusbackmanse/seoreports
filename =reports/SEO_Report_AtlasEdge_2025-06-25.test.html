@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - AtlasEdge</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">AtlasEdge • Atlasedge.com</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> United states Market</span>
+                        <span><i class="fas fa-calendar"></i> June 25, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value (June 2025)</th><th>12-Month Change</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">374.49</td><td class="negative">-31.32%</td></tr><tr><td class="">Keywords in Position 1</td><td class="">1</td><td class="">-</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">1</td><td class="">-</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">10</td><td class="">-</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="">31</td><td class="">-</td></tr><tr><td class="">Keywords in Positions 21-30</td><td class="">28</td><td class="">-</td></tr><tr><td class="">Keywords in Positions 31-40</td><td class="">25</td><td class="">-</td></tr><tr><td class="">Keywords in Positions 41-50</td><td class="">15</td><td class="">-</td></tr><tr><td class="">Keywords in Positions 51-100</td><td class="">37</td><td class="">-</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The steep 31% drop in ETV underscores broader content and technical gaps.</li><li>Strong long-tail visibility (positions 11–30) can be leveraged to push pages into top 10 with focused optimization.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Top Keywords They Rank Well For (AtlasEdge Ranks Poorly)</th></tr></thead><tbody><tr><td class="">Digital Realty</td><td class="">"european data centre" (210 SV, LOW), "data centre london" (110 SV, LOW), "data centre amsterdam" (110 SV, LOW)</td></tr><tr><td class="">Equinix</td><td class="">"edge computing data centers" (90 SV, LOW), "edge data center companies" (70 SV, MEDIUM), "edge data center solutions" (50 SV, LOW)</td></tr><tr><td class="">Telecom Ramblings</td><td class="">"cogent network map" (70 SV, LOW), "telia carrier" (50 SV, LOW), "zayo europe" (50 SV, LOW)</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Analyze competitor landing pages for “european data centre” and “edge computing data centers” to identify on-page elements (H1, meta) and content depth to replicate or improve upon.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Avg. Monthly Search Volume</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">european data center</td><td class="">238</td><td class="">LOW</td><td class="">High relevance, low competition, aligns with core service offering</td></tr><tr><td class="">data center connectivity</td><td class="">164</td><td class="">LOW</td><td class="">Strong intent for connectivity solutions, fits AtlasEdge’s offerings</td></tr><tr><td class="">connectivity data center</td><td class="">179</td><td class="">LOW</td><td class="">Similar to above, good volume and low competition</td></tr><tr><td class="">data center connectivity solutions</td><td class="">80</td><td class="">LOW</td><td class="">More specific, targets solution seekers</td></tr><tr><td class="">distributed data centers</td><td class="">37</td><td class="">LOW</td><td class="">Matches AtlasEdge’s distributed portfolio</td></tr><tr><td class="">data center network connectivity</td><td class="">43</td><td class="">LOW</td><td class="">Niche but relevant, low competition</td></tr><tr><td class="">european data center companies</td><td class="">20</td><td class="">LOW</td><td class="">Targets buyers researching providers</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize “european data center” and “data center connectivity” with dedicated landing pages and optimized title tags.</li><li>Use internal linking from high-traffic pages to boost new keyword pages.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>AtlasEdge’s US organic traffic declined by 31.32% over the past year, with only 1 keyword ranking #1.</li><li>Homepage and sign-in pages are top performers; many location and carrier pages underperform.</li><li>Technical SEO issues include missing image attributes, render-blocking resources, and HTML errors.</li><li>Current keyword rankings are mostly brand or login-related, with limited presence on high-value industry terms.</li><li>Significant keyword and content gaps exist around edge computing education and industry-specific solutions.</li><li>Competitors Digital Realty and Equinix dominate location-based and edge computing keywords with optimized landing pages and educational content.</li><li>Backlink profile is moderate with 742 backlinks; 11 toxic domains identified and should be disavowed.</li><li>Opportunities exist to improve anchor text diversity and acquire backlinks from industry publications linking to competitors.</li><li>Content strategy should focus on location page optimization, edge computing educational content, carrier partnership stories, and clarifying login portal confusion.</li><li>Seasonal event-related keywords offer timely content opportunities.</li><li>Immediate priorities: disavow toxic backlinks and optimize location pages for US market relevance.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Immediately disavow the 11 toxic backlinks and audit login portal flows to reduce user confusion.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-atlasedge" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: AtlasEdge</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>AtlasEdge is a European data center provider offering colocation services, connectivity solutions, and technical support through their AtlasEdge Assist program. They operate a distributed data center portfolio across Europe and currently serve over 800 customers. (<a href="https://atlasedge.com" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-united-states" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the United States</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-traffic-trends">Organic Visibility and Traffic Trends</h3><p>AtlasEdge has experienced a concerning 31.32% decrease in estimated traffic volume (ETV) over the past 12 months in the United States market. The latest data shows an ETV of 374.49, down from 545.24 a year ago.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Such a significant decline suggests not just seasonal fluctuation but potential gaps in site architecture, content relevance, and speed.</li></ul><br><h3 id="current-organic-visibility-positions-june-2025-">Current Organic Visibility Positions (June 2025)</h3><ul><li>Position 1: 1 keyword</li><li>Positions 2-3: 1 keyword</li><li>Positions 4-10: 10 keywords</li><li>Positions 11-20: 31 keywords</li><li>Positions 21-30: 28 keywords</li><li>Positions 31-40: 25 keywords</li><li>Positions 41-50: 15 keywords</li><li>Positions 51-100: 37 keywords</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize keywords in positions 11–20 to push them into top 10 with content refresh and internal linking.</li></ul><br><h3 id="page-performance-analysis">Page Performance Analysis</h3><ul><li><strong>Top Performer</strong>: The homepage (/) is the best-performing page, securing the #1 position for some keywords and generating the highest estimated traffic volume (ETV: 220.57).</li><li><strong>Good Performer</strong>: The sign-in page (/SignIn?returnUrl=%2F) also performs well with an ETV of 112.93.</li><li><strong>Underperforming Pages</strong>: Many data center location pages (e.g., /data-centres/paris/, /data-centres/berlin/, /data-centres/madrid/) and carrier list pages (e.g., /carrier-list/cogent/, /carrier-list/telenet/) have low ETV and rank beyond the top 20 positions.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Underperforming location pages lack local SEO signals—add detailed addresses, customer testimonials, and geo-targeted content.</li></ul><br><h3 id="technical-seo-issues-identified">Technical SEO Issues Identified</h3><p>Several technical issues were detected that could be hindering performance:</p><ul><li>Missing "alt" and "title" attributes for images</li><li>Render-blocking resources affecting page load speed</li><li>HTML validation errors</li><li>Limited keyword targeting across many pages</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Implement sitewide fixes for image attributes and defer or async non-critical scripts to improve page speed scores.</li></ul><br><h3 id="content-strategy-analysis">Content Strategy Analysis</h3><p>AtlasEdge's current content strategy focuses on:</p><ol><li>Data center location pages</li><li>Carrier list pages</li><li>News/press releases</li><li>Event pages</li><li>Solution pages</li></ol><br><p>This strategy has resulted in narrow keyword targeting, with many pages ranking for only a small number of keywords, indicating a need for broader keyword coverage and content optimization.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Adopt a pillar-cluster model: create an “Edge Computing Hub” pillar page linking to in-depth industry solution pages and location clusters.</li></ul><br></div></section>
+                <section id="2-keyword-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><p>AtlasEdge is currently ranking for the following keywords in the top positions (1-10) in the US market:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Current Position</th></tr></thead><tbody><tr><td class="">atlas edge</td><td class="">720</td><td class="">1</td></tr><tr><td class="">tesh durvasula</td><td class="">40</td><td class="">3</td></tr><tr><td class="">atlas cogentco</td><td class="">40</td><td class="">5</td></tr><tr><td class="">wilhelm tel</td><td class="">30</td><td class="">5</td></tr><tr><td class="">lyntia</td><td class="">40</td><td class="">8</td></tr><tr><td class="">atlas loans login</td><td class="">3600</td><td class="">9</td></tr><tr><td class="">my atlas login</td><td class="">590</td><td class="">8</td></tr><tr><td class="">netcologne</td><td class="">110</td><td class="">9</td></tr><tr><td class="">itenos</td><td class="">50</td><td class="">10</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Dominance in brand/Login queries is clear, but expanding into generic industry terms will diversify traffic sources and reduce reliance on branded searches.</li></ul><br><h3 id="high-value-keyword-opportunities">High-Value Keyword Opportunities</h3><p>Based on our analysis, the following keywords represent significant opportunities for AtlasEdge due to their relevance, search volume, and low competition:</p><br><p><strong>Top Priority Keywords:</strong></p><ul><li>european data center (Avg. Monthly Search Volume: 238, Competition: LOW)</li><li>data center connectivity (Avg. Monthly Search Volume: 164, Competition: LOW)</li><li>connectivity data center (Avg. Monthly Search Volume: 179, Competition: LOW)</li></ul><br><p><strong>Secondary Keywords:</strong></p><ul><li>data center connectivity solutions (Avg. Monthly Search Volume: 80, Competition: LOW)</li><li>distributed data centers (Avg. Monthly Search Volume: 37, Competition: LOW)</li><li>data center network connectivity (Avg. Monthly Search Volume: 43, Competition: LOW)</li><li>european data center companies (Avg. Monthly Search Volume: 20, Competition: LOW)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Build dedicated landing pages for each Top Priority keyword, optimizing title tags, H1s, and internal link structures.</li></ul><br><h3 id="content-and-keyword-gaps">Content and Keyword Gaps</h3><p>Our analysis revealed several key content and keyword gaps:</p><br><ol><li><strong>Edge Computing Education</strong>: While AtlasEdge ranks for "edge login portal," there's a significant opportunity to create educational content around edge computing itself, explaining benefits, use cases, and how AtlasEdge's services fit into the edge computing ecosystem.</li><li><strong>Industry-Specific Solutions</strong>: There's a lack of content targeting specific industries (finance, healthcare) or use cases (low-latency applications, IoT) that could attract more qualified leads.</li><li><strong>Login Portal Confusion</strong>: A significant portion of searches are related to "Atlas [something] login" (loans, payday loans, personal finance), leading users to the AtlasEdge Customer Portal, which is clearly not what they're looking for. This indicates a need for clarification and potentially negative keywords in paid campaigns.</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Industry-specific pages (e.g., “Edge Solutions for Finance”) will capture high-intent queries and improve lead quality.</li></ul><br><h3 id="seasonal-keyword-trends">Seasonal Keyword Trends</h3><p>The data shows clear seasonal trends for event-related keywords, with search volume peaking in the months leading up to industry events like "International Telecoms Week" and "Datacloud Global Congress." This presents an opportunity for timely content creation and promotion.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Map an editorial calendar around major events and prepare long-form previews 2–3 months in advance to capture pre-event traffic.</li></ul><br></div></section>
+                <section id="3-competitive-landscape" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors-identified">Key Competitors Identified</h3><p>Our analysis has identified three main competitors in the US market:</p><br><ol><li><strong>Digital Realty (digitalrealty.com)</strong>: A strong, direct competitor focusing on data center and colocation services, particularly in the EMEA region. (<a href="https://www.digitalrealty.com" class="link-reference" target="_blank" rel="noopener">Competitor Website</a>)</li><li><strong>Equinix (equinix.com)</strong>: Another very strong, direct competitor with a focus on data centers and colocation, especially in Europe. (<a href="https://www.equinix.com" class="link-reference" target="_blank" rel="noopener">Competitor Website</a>)</li><li><strong>Telecom Ramblings (telecomramblings.com)</strong>: An indirect competitor that provides news and analysis for the telecom and internet infrastructure sectors. (<a href="https://www.telecomramblings.com" class="link-reference" target="_blank" rel="noopener">Competitor Website</a>)</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Direct competitors leverage highly optimized city landing pages with numeric claims; adopting similar tactics (e.g., “5 Edge Sites in London”) could boost click-through rates.</li></ul><br><h3 id="competitor-seo-strengths-and-weaknesses">Competitor SEO Strengths and Weaknesses</h3><br><h4 id="digital-realty-equinix-direct-competitors-">Digital Realty & Equinix (Direct Competitors)</h4><p><strong>Strengths:</strong></p><ul><li>Strong location-specific keyword rankings (e.g., "london data center," "amsterdam data center")</li><li>Explicit use of "colocation" in titles and meta descriptions</li><li>Quantifiable claims in content (e.g., "largest provider," specific number of data centers)</li><li>Highly optimized location-specific landing pages</li></ul><br><p><strong>Weaknesses:</strong></p><ul><li>Less focus on edge computing terminology</li><li>Limited educational content compared to industry news</li></ul><br><h4 id="telecom-ramblings-indirect-competitor-">Telecom Ramblings (Indirect Competitor)</h4><p><strong>Strengths:</strong></p><ul><li>Strong backlink profile</li><li>Ranks well for informational keywords related to telecom networks and carriers</li><li>Comprehensive news and analysis content</li></ul><br><p><strong>Weaknesses:</strong></p><ul><li>Not a direct service provider</li><li>Lacks transactional content</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Perform a meta description audit on top three competitor pages to identify patterns in benefit-driven copy and include numeric or geographic details.</li></ul><br><h3 id="competitor-keyword-analysis">Competitor Keyword Analysis</h3><p>Our competitors are outperforming AtlasEdge for numerous valuable keywords, including:</p><br><p><strong>Location-Based Keywords:</strong></p><ul><li>"european data centre" (Search Volume: 210, Competition: LOW)</li><li>"data centre london" (Search Volume: 110, Competition: LOW)</li><li>"data centre amsterdam" (Search Volume: 110, Competition: LOW)</li><li>"london data centers" (Search Volume: 110, Competition: LOW)</li><li>"amsterdam data center" (Search Volume: 110, Competition: LOW)</li></ul><br><p><strong>Edge Computing Keywords:</strong></p><ul><li>"edge computing data centers" (Search Volume: 90, Competition: LOW)</li><li>"edge data center companies" (Search Volume: 70, Competition: MEDIUM)</li><li>"edge data center solutions" (Search Volume: 50, Competition: LOW)</li><li>"edge data centre" (Search Volume: 40, Competition: LOW)</li></ul><br><p><strong>Carrier-Related Keywords:</strong></p><ul><li>"cogent network map" (Search Volume: 70, Competition: LOW)</li><li>"telia carrier" (Search Volume: 50, Competition: LOW)</li><li>"zayo europe" (Search Volume: 50, Competition: LOW)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Carrier-specific pages present quick-win opportunities—expand carrier directory entries with detailed FAQs and network maps.</li></ul><br><h3 id="competitor-content-strategy-analysis">Competitor Content Strategy Analysis</h3><p>Our competitors are employing several effective content strategies:</p><br><ol><li><strong>Digital Realty & Equinix:</strong></li></ol><ul><li>Location-specific landing pages with city names and even street addresses in meta descriptions</li><li>Titles often follow the pattern "[Location] Data Center & Colocation, [Country]"</li><li>Meta descriptions emphasize specific features like "interconnected campuses" or hosting "content, media, financial services and multicloud ecosystems"</li></ul><br><ol><li><strong>Equinix Educational Content:</strong></li></ol><ul><li>Blog post "What Is an Edge Data Center?" ranks well for related keywords</li><li>Educational content establishes thought leadership and captures informational search intent</li></ul><br><ol><li><strong>Telecom Ramblings:</strong></li></ol><ul><li>News and analysis content about carrier networks attracts industry professionals</li><li>Comprehensive coverage of industry developments builds authority</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><p>AtlasEdge has a respectable backlink profile with 742 backlinks from 228 referring domains, with 214 unique main domains. The company has a domain rank of 222, which is moderate but could be improved.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Improving link velocity through targeted campaigns can elevate domain rank and overall trust.</li></ul><br><h3 id="backlink-quality-assessment">Backlink Quality Assessment</h3><ul><li><strong>High-Quality Backlinks</strong>: The majority of AtlasEdge's backlinks come from reputable industry sources with low spam scores (0-30%), including:</li><li>dc1.com (0% spam score)</li><li>datacenterhawk.com (0% spam score)</li><li>peeringdb.com (0% spam score)</li><li>cloudscene.com (0% spam score)</li><li>datacenterdynamics.com (16% spam score)</li></ul><br><ul><li><strong>Potentially Harmful Backlinks</strong>: We identified 11 domains with high spam scores (61-100%) linking to AtlasEdge, including:</li><li>belonnanotservice.ga (85% spam score)</li><li>thebestbacklinksavailable.click (65% spam score)</li><li>what-happens-next.xyz (85% spam score)</li></ul><br><p>These toxic backlinks should be disavowed to prevent potential negative SEO impact.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Generate and submit a disavow file for the identified 11 toxic domains via Google Search Console.</li></ul><br><h3 id="geographic-distribution-of-backlinks">Geographic Distribution of Backlinks</h3><p>AtlasEdge's backlink profile shows a strong international presence with referring links from:</p><ul><li>United States: 195 links</li><li>Germany: 74 links</li><li>United Kingdom: 38 links</li><li>Other European countries: significant representation</li></ul><br><p>This distribution aligns well with AtlasEdge's European market focus but could be strengthened in the US market.</p><br><h3 id="backlink-competitors-analysis">Backlink Competitors Analysis</h3><p>Several competitors have overlapping backlink sources with AtlasEdge, presenting opportunities for targeted outreach:</p><br><ol><li><strong>telecomramblings.com</strong>: 52 shared backlink sources</li><li><strong>datacenterdynamics.com</strong>: 39 shared backlink sources</li><li><strong>consoleconnect.com</strong>: 31 shared backlink sources</li><li><strong>digitalrealty.com</strong>: 11 shared backlink sources</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize outreach to the top three shared domains, offering exclusive case studies or expert commentary to earn new links.</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><p>The anchor text analysis reveals that many backlinks use generic anchor text like "Read more" or simply "www.atlasedge.com" rather than keyword-rich anchors. Notable exceptions include:</p><ul><li>"AtlasEdge" in the context of partnerships and expansions</li><li>"AtlasEdge Selects Carma's Operational Platform"</li></ul><br><p>This indicates an opportunity to improve anchor text diversity and keyword relevance in future link building efforts.</p><br><h3 id="backlink-opportunities">Backlink Opportunities</h3><p>Based on our analysis, we've identified several high-authority websites that link to competitors but not to AtlasEdge:</p><ul><li>Industry publications like Data Center Frontier and Data Center Knowledge</li><li>Technology news sites covering edge computing and data center infrastructure</li><li>European business publications covering technology infrastructure</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="location-based-page-optimization">Location-Based Page Optimization</h3><ul><li>Revise titles and meta descriptions for all location pages to include city names, "colocation" terminology, and specific features</li><li>Example: Change "Top-Notch London Data Centre for Your Business Needs" to "London Data Center & Colocation | Secure & Reliable | AtlasEdge"</li><li>Include specific addresses and key features in meta descriptions</li><li>Create more in-depth content about each location, such as case studies or virtual tours</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Perform A/B tests on updated meta descriptions to measure CTR improvements within four weeks.</li></ul><br><h3 id="edge-computing-educational-content">Edge Computing Educational Content</h3><ul><li>Develop a comprehensive guide explaining what edge data centers are, their benefits, and how AtlasEdge's solutions fit into the edge computing landscape</li><li>Create content targeting keywords like "edge data center definition," "edge data center solutions," and "edge data center companies"</li><li>Establish thought leadership in the edge computing space through educational blog posts and whitepapers</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Publish the “Ultimate Guide to Edge Data Centers” and promote via LinkedIn groups and targeted newsletters.</li></ul><br><h3 id="carrier-partnership-enhancement">Carrier Partnership Enhancement</h3><ul><li>Expand the carrier directory with more detailed information about each carrier's services, network coverage, and benefits</li><li>Create blog posts or case studies highlighting successful carrier partnerships</li><li>Example: "Top 5 Reasons to Choose [Carrier Name] for Your Data Center Connectivity"</li><li>Link these posts to the corresponding carrier directory pages</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Real-world case studies build trust and improve conversion rates on carrier pages.</li></ul><br><h3 id="acquisition-content-strategy">Acquisition Content Strategy</h3><ul><li>Leverage the Datacenter One acquisition by creating content around the expanded capabilities</li><li>Develop case studies or success stories showcasing how the acquisition has improved AtlasEdge's services</li><li>Target keywords related to data center acquisitions and expansion</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft and distribute a press release to industry outlets, then repurpose content for blogs and social channels.</li></ul><br><h3 id="address-login-portal-confusion">Address Login Portal Confusion</h3><ul><li>Implement negative keywords in any paid campaigns to exclude loan-related searches</li><li>Add a disclaimer to the login page stating that this portal is not for loan or financial services</li><li>Monitor brand mentions online to identify the source of this confusion and address it directly</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Negative keywords for organic search aren’t supported, but on-site FAQs and clear microcopy can serve a similar filter function.</li></ul><br><h3 id="seasonal-event-content-strategy">Seasonal Event Content Strategy</h3><ul><li>Optimize event pages with relevant keywords, dates, location, and clear calls to action</li><li>Create post-event content summarizing key takeaways and highlighting AtlasEdge's participation</li><li>Plan content and promotion around industry events well in advance to capitalize on seasonal search trends</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop downloadable assets (slide decks, eBooks) for each major event to capture leads and generate backlinks.</li></ul><br><h3 id="backlink-improvement-strategy">Backlink Improvement Strategy</h3><ul><li><strong>Disavow Toxic Backlinks</strong>: Submit a disavow file to Google containing the 11 high-spam-score domains to prevent negative SEO impact</li><li><strong>Strategic Partnership Content</strong>: Create more content highlighting partnerships (like the existing DC1.com relationship) to naturally generate high-quality backlinks</li><li><strong>Industry Publication Outreach</strong>: Develop a targeted outreach campaign to secure backlinks from industry publications that currently link to competitors but not to AtlasEdge</li><li><strong>Anchor Text Optimization</strong>: Work with partners and media outlets to use more keyword-rich anchor text in backlinks</li><li><strong>Broken Link Recovery</strong>: Fix the 25 broken backlinks identified in our analysis to recapture lost link equity</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign a team member to track weekly outreach progress and backlink acquisition metrics in the SEO dashboard.</li></ul><br></div></section>
+                <section id="conclusion-and-next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion and Next Steps</h2>
+                    </div>
+                    <div class="section-content"><br><p>AtlasEdge has a solid foundation in the European data center market but faces challenges in the US market with declining organic visibility and traffic. By implementing our recommended strategies, AtlasEdge can:</p><br><ol><li>Reverse the declining traffic trend by optimizing existing content and creating new, targeted content</li><li>Improve keyword rankings for high-value terms related to edge computing and data center services</li><li>Strengthen their backlink profile by disavowing toxic links and acquiring new, high-quality backlinks</li><li>Better differentiate from competitors through enhanced location pages and educational content</li><li>Address the login portal confusion that may be affecting user experience</li></ol><br><p>We recommend prioritizing the location-based page optimization and toxic backlink disavowal as immediate actions, followed by the development of edge computing educational content and strategic backlink acquisition efforts.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>A phased approach—starting with quick technical fixes and low-hanging link opportunities—will build momentum and demonstrate value to stakeholders, paving the way for larger content and outreach initiatives.</li></ul></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - AtlasEdge',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

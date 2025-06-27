@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - OneSeed</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">OneSeed • https://oneseed.eco/</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> United States Market</span>
+                        <span><i class="fas fa-calendar"></i> June 27, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Growth</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="positive">141.08 (123.01% growth last 12 months)</td></tr><tr><td class="">Total Ranking Keywords</td><td class="">98</td></tr><tr><td class="">Keywords in Top 3 Positions</td><td class="">3</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">9</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="">14</td></tr><tr><td class="">Keywords in Positions 21-30</td><td class="">14</td></tr><tr><td class="">Keywords in Positions 31-100</td><td class="">58</td></tr><tr><td class="">Estimated Paid Traffic Cost</td><td class="">$164.70</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>With a 123% growth in ETV, prioritize pushing mid‐range keywords (positions 11–30) into top 10 slots to maximize immediate click‐through gains.</li><li>Identify quick‐win content opportunities around low‐competition, high‐volume terms highlighted below.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Strengths / Top Keywords They Rank Well For (Where OneSeed Ranks Poorly)</th></tr></thead><tbody><tr><td class="">FSC.org</td><td class="">High authority on sustainability; ranks well for "sustainable forestry" related terms</td></tr><tr><td class="">AWorld.org</td><td class="">Employee engagement in sustainability; uses how-to guides and practical content</td></tr><tr><td class="">Net0.com</td><td class="">Enterprise AI sustainability solutions; strong in corporate sustainability keywords</td></tr><tr><td class="">iCrowdNewswire.com (backlink competitor)</td><td class="">Strong backlink profile with 126 intersecting backlinks, opportunity for link acquisition</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit competitor content formats (listicles, how-to guides) and adapt high-impact structures for OneSeed’s core topics.</li><li>Map competitor backlink sources for outreach priorities.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">sustainable forestry practices</td><td class="">4,400</td><td class="">Low</td><td class="">High volume, low competition, core to OneSeed’s mission</td></tr><tr><td class="">sustainable forestry</td><td class="">2,900</td><td class="">Low</td><td class="">Broad, high-volume keyword with strong intent</td></tr><tr><td class="">reforestation projects</td><td class="">2,900</td><td class="">Low</td><td class="">Aligns with OneSeed’s core offerings</td></tr><tr><td class="">sustainable forestry management</td><td class="">2,900</td><td class="">Low</td><td class="">High intent, educational content opportunity</td></tr><tr><td class="">tree tracker</td><td class="">210</td><td class="">Low</td><td class="">App-related keyword with growth potential</td></tr><tr><td class="">planting tree app</td><td class="">140</td><td class="">Low</td><td class="">Underutilized, relevant to product offering</td></tr><tr><td class="">corporate tree planting</td><td class="">110</td><td class="">Low</td><td class="">Business-focused, untapped niche</td></tr><tr><td class="">deforestation in Japan</td><td class="">70</td><td class="">Low</td><td class="">Content gap with growing search interest</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The top four keywords offer immediate content development focus. Draft pillar pages or comprehensive guides to capture broad user intent.</li><li>App-related keywords (“tree tracker”, “planting tree app”) should be integrated into the mobile experience section for cross-promotion.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>OneSeed’s organic visibility and traffic have grown by 123% in the last 12 months, but most keywords rank outside the top 10, indicating room for ranking improvements.</li><li>The company currently has no keywords in position 1 and only 3 in positions 2-3, highlighting a need to push more keywords into top SERP spots.</li><li>Top competitors like FSC.org and AWorld.org dominate sustainability and employee engagement keywords with strong content strategies (listicles, how-to guides).</li><li>High-value, low-competition keywords such as "sustainable forestry practices" (4,400 SV) and "reforestation projects" (2,900 SV) represent prime opportunities for content development.</li><li>Technical SEO is strong overall, but fixing broken backlinks and pages is critical to recapture lost link equity.</li><li>The Tree Tracker App page is underperforming and should be optimized with multimedia and targeted keywords.</li><li>Content gaps exist around "deforestation in Japan" and broader Japanese forestry techniques, which can be leveraged for topical authority.</li><li>Backlink profile is healthy but can be expanded by targeting authoritative environmental publications and competitor backlink sources.</li><li>Implementing a Digital PR strategy and leveraging partnerships will enhance brand authority and organic reach.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize a sprint to optimize pages ranking in positions 11–30. Assign owners to each target keyword cluster for accountability.</li><li>Launch a backlink repair initiative to recover link equity from 19 broken pages immediately.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-oneseed" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: OneSeed</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>OneSeed (https://oneseed.eco/) is a company dedicated to integrating climate action into everyday life by making it simple, impactful, and affordable. They help businesses incorporate tree planting initiatives into various aspects of their operations, including e-commerce checkouts, customer loyalty programs, employee engagement initiatives, lead generation campaigns, and event registrations (<a href="https://oneseed.eco/" class="link-reference" target="_blank" rel="noopener">Company Website</a>).</p><br><p>Their unique offering includes "virtual seedlings," which are reservations for trees that will be planted when conditions are optimal, ensuring effective reforestation efforts. OneSeed's mission centers on turning individuals and businesses into "climate heroes" by supporting forest restoration and community development through everyday actions.</p><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>The impact.oneseed.eco subdomain is responsible for most article traffic; ensure it remains seamlessly integrated with the main domain for link equity.</li></ul><br></div></section>
+                <section id="1-overall-seo-performance" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-growth">Organic Visibility Growth</h3><p>OneSeed has demonstrated impressive growth in organic visibility over the past 12 months, with a <strong>123.01% increase in Estimated Traffic Volume (ETV)</strong>. This significant improvement indicates that their SEO efforts are gaining traction, but there remains substantial room for further optimization.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Leverage this momentum by expanding content clusters around high‐growth topics to sustain the upward trajectory.</li></ul><br><h3 id="current-organic-visibility-metrics-latest-data-">Current Organic Visibility Metrics (Latest Data)</h3><ul><li><strong>Total ETV</strong>: 141.08</li><li><strong>Total Ranking Keywords</strong>: 98</li><li><strong>Estimated Paid Traffic Cost</strong>: $164.70</li><li><strong>Position Distribution</strong>:</li><li>Position 1: 0 keywords</li><li>Positions 2-3: 3 keywords</li><li>Positions 4-10: 9 keywords</li><li>Positions 11-20: 14 keywords</li><li>Positions 21-30: 14 keywords</li><li>Positions 31-100: 58 keywords</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assemble a keyword‐ranking task force to move 20+ keywords into positions 1–10 within the next quarter.</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ol><li><strong>Homepage (https://oneseed.eco/)</strong> - ETV: 39.42</li><li><strong>Article: "A Reality Check on Claims Made by Kiss the Ground"</strong> - ETV: 35.39</li><li><strong>Article: "Daisugi: Japan's Ancient Forestry Technique"</strong> - ETV: 29.63</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a content audit of these pages to identify common elements (structure, media, CTAs) and replicate in underperforming pages.</li></ul><br><h3 id="underperforming-pages">Underperforming Pages</h3><ol><li><strong>Many article pages</strong> rank in positions 61-100 with ETVs below 1.0</li><li><strong>Key service pages</strong> have relatively low visibility</li><li><strong>Tree Tracker App page</strong> ranks lower than expected for app-related keywords</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Focus on gap analysis for underperforming pages; prioritize ones with existing backlinks or internal links to accelerate uplift.</li></ul><br><h3 id="technical-seo-insights">Technical SEO Insights</h3><ul><li>The impact.oneseed.eco subdomain (hosting articles) is a key driver of organic traffic</li><li>The site has a strong technical foundation with a high on-page score of 97.07</li><li>Areas for technical improvement include optimizing title length, fixing render-blocking resources, and addressing deprecated HTML tags</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Coordinate with development to resolve title length issues and render-blocking scripts in the next sprint. Assign QA checks post‐deployment.</li></ul><br></div></section>
+                <section id="2-keyword-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>With 98 ranking keywords, the focus should shift from expansion to deepening relevance for high‐value, low‐competition terms.</li></ul><br><h3 id="top-performing-keywords-positions-1-10-">Top Performing Keywords (Positions 1-10)</h3><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">cutch tree</td><td class="">50</td><td class="">6</td></tr><tr><td class="">kiss the ground debunked</td><td class="">70</td><td class="">5</td></tr><tr><td class="">shak shak tree</td><td class="">30</td><td class="">5</td></tr><tr><td class="">oneseed</td><td class="">590</td><td class="">5</td></tr><tr><td class="">viettourist</td><td class="">320</td><td class="">6</td></tr><tr><td class="">daisugi forest</td><td class="">40</td><td class="">9</td></tr><tr><td class="">one seed management</td><td class="">90</td><td class="">8</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Optimize title tags and H1s for these pages to target richer keyword variations and improve semantic relevance.</li></ul><br><h3 id="keyword-opportunities-positions-11-30-">Keyword Opportunities (Positions 11-30)</h3><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">daisugi trees</td><td class="">390</td><td class="">11</td></tr><tr><td class="">one seed</td><td class="">590</td><td class="">11</td></tr><tr><td class="">daisugi technique</td><td class="">880</td><td class="">18</td></tr><tr><td class="">tree tracker</td><td class="">210</td><td class="">14</td></tr><tr><td class="">tree tracking</td><td class="">210</td><td class="">16</td></tr><tr><td class="">planting tree app</td><td class="">140</td><td class="">25</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Pages ranking in the 11–18 range can often jump to top 5 with small on-page tweaks and targeted internal linking.</li></ul><br><h3 id="seasonal-trends">Seasonal Trends</h3><ul><li><strong>"Coconuts of long beach island"</strong>: Shows strong seasonal trend, peaking in summer months (June-August)</li><li><strong>"Kiss the ground"</strong> related terms: While decreasing overall, still maintain significant search volume</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Schedule seasonal content updates and promotional campaigns for summer months to capture peak interest.</li></ul><br><h3 id="recommended-high-value-keywords">Recommended High-Value Keywords</h3><br><p><strong>Top Priority Keywords:</strong></p><ul><li><strong>"sustainable forestry practices"</strong> (Volume: 4400, Competition: LOW)</li><li><strong>"sustainable forestry"</strong> (Volume: 2900, Competition: LOW)</li><li><strong>"reforestation projects"</strong> (Volume: 2900, Competition: LOW)</li><li><strong>"sustainable forestry management"</strong> (Volume: 2900, Competition: LOW)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Develop cornerstone content assets for each priority keyword, supported by cluster articles and internal links.</li></ul><br><p><strong>Secondary Keywords:</strong></p><ul><li><strong>"sustainable forestry initiative"</strong> (Volume: 1300, Competition: LOW)</li><li><strong>"carbon offset programs"</strong> (Volume: 390, Competition: LOW)</li><li><strong>"what is sustainable forestry"</strong> (Volume: 390, Competition: LOW)</li><li><strong>"eden reforestation projects"</strong> (Volume: 480, Competition: LOW)</li></ul><br><p><strong>Long-term Opportunities:</strong></p><ul><li><strong>"corporate tree planting"</strong> (Volume: 110, Competition: LOW)</li><li><strong>"corporate social responsibility tree planting"</strong> (Volume: 70, Competition: LOW)</li><li><strong>"reforestation and afforestation projects"</strong> (Volume: 210, Competition: LOW)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign content owners for each keyword cluster and set publication timelines in a shared editorial calendar.</li></ul><br></div></section>
+                <section id="3-competitive-landscape" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><p>Based on keyword overlap and market positioning, OneSeed's main competitors include:</p><br><ol><li><strong>FSC.org (Forest Stewardship Council)</strong></li></ol><ul><li>Strengths: High authority in sustainability, strong brand recognition</li><li>Type: Indirect competitor (focuses on certification and standards)</li></ul><br><ol><li><strong>AWorld.org</strong></li></ol><ul><li>Strengths: Focuses on employee engagement in sustainability</li><li>Type: Direct competitor for content related to employee engagement and sustainability</li></ul><br><ol><li><strong>Net0.com</strong></li></ol><ul><li>Strengths: Enterprise AI platform for corporate sustainability</li><li>Type: Indirect competitor (focuses on specific AI solutions)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>OneSeed can differentiate by blending practical how-to content with technical insights, bridging the gap between FSC’s standards and AWorld’s guides.</li></ul><br><h3 id="competitor-serp-strategies">Competitor SERP Strategies</h3><ul><li><strong>Keyword-rich titles</strong>: Competitors use clear, concise titles that incorporate target keywords</li><li><strong>Benefit-oriented meta descriptions</strong>: Descriptions highlight the value proposition of the content</li><li><strong>Listicle format</strong>: FSC.org effectively uses listicles to attract clicks (e.g., "9 sustainable business practices")</li><li><strong>How-to guides</strong>: AWorld.org uses practical guide formats for topics like "workforce sustainability"</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Revamp meta descriptions and title tags to include benefits (e.g., “How OneSeed’s Reforestation Projects Save X Trees Annually”).</li></ul><br><h3 id="content-gaps-vs-competitors">Content Gaps vs. Competitors</h3><ul><li><strong>"Deforestation in Japan"</strong>: Growing search trend (70 monthly searches) with no strong competitor content</li><li><strong>"Japanese forestry techniques"</strong>: OneSeed already ranks well for "daisugi" related terms but could expand to broader Japanese forestry topics</li><li><strong>App-related content</strong>: Competitors have more comprehensive app landing pages with screenshots, videos, and testimonials</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create a tri-section landing page for "Deforestation in Japan": overview → techniques → solutions, linking to deeper dives on each subtopic.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><p>OneSeed has established a solid foundation with its backlink profile, demonstrating both quality and growth potential:</p><br><ul><li><strong>Total Backlinks</strong>: 207</li><li><strong>Referring Domains</strong>: 67 (64 main domains)</li><li><strong>Domain Rank</strong>: 173</li><li><strong>Backlink Spam Score</strong>: 9% (indicating a healthy, low-spam profile)</li><li><strong>Broken Backlinks</strong>: 6</li><li><strong>Broken Pages</strong>: 19 (requiring immediate attention)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Recovering broken pages with high-authority links can restore a significant portion of domain authority.</li></ul><br><h3 id="backlink-quality-assessment">Backlink Quality Assessment</h3><p>The majority of OneSeed's backlinks come from reputable sources:</p><ul><li><strong>High-Quality Referring Domains</strong>: HubSpot (0% spam score), Glarity.app (5% spam score), and Asia Sustainable Travel (0% spam score)</li><li><strong>Geographic Distribution</strong>: Diverse backlink profile with links from multiple countries (US, India, Vietnam, Colombia, France, Brazil)</li><li><strong>TLD Distribution</strong>: Strong presence across various TLDs (.com, .green, .marketing, .org, .co)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize outreach to similar high-authority domains and request guest post opportunities or resource page inclusions.</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><p>OneSeed's anchor text profile shows healthy diversity with natural linking patterns:</p><ul><li><strong>Brand anchors</strong>: "OneSeed", "One Seed"</li><li><strong>Product/service anchors</strong>: "Tree Experience", "OneSeed Mobile Tree Tracking"</li><li><strong>Generic anchors</strong>: "Learn more", "Request a demo"</li></ul><br><p>Notable anchor text examples include partnership mentions like: "We plant a tree to welcome every new subscriber through our partnership with OneSeed" from Asia Sustainable Travel and Sainha.co.</p><br><h3 id="backlink-competitors">Backlink Competitors</h3><p>Key competitors in the backlink space include:</p><ol><li><strong>iCrowdNewswire.com</strong> (126 intersecting backlinks)</li><li><strong>OneSeed.marketing</strong> (21 intersecting backlinks)</li><li><strong>OneSeed.green</strong> (9 intersecting backlinks)</li><li><strong>Bubble.io</strong> (8 intersecting backlinks)</li><li><strong>EinPressWire.com</strong> (5 intersecting backlinks)</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Target sites linking to top competitor sources; craft tailored pitches showcasing unique OneSeed case studies.</li></ul><br><h3 id="link-building-opportunities">Link Building Opportunities</h3><p>Based on competitor analysis and industry research, these opportunities should be prioritized:</p><br><ol><li><strong>Target High-Authority Sites</strong>:</li></ol><ul><li>Environmental publications and sustainability blogs</li><li>Corporate social responsibility directories</li><li>Business partners' websites (similar to existing partnerships with Asia Sustainable Travel)</li></ul><br><ol><li><strong>Address Technical Issues</strong>:</li></ol><ul><li>Fix 6 broken backlinks to recapture lost link equity</li><li>Repair 19 broken pages that are currently receiving backlinks</li></ul><br><ol><li><strong>Competitor Gap Analysis</strong>:</li></ol><ul><li>Pursue backlinks from sites linking to iCrowdNewswire.com but not to OneSeed</li><li>Develop content specifically designed to attract links from environmental and sustainability publications</li></ul><br><ol><li><strong>Toxic Backlink Cleanup</strong>:</li></ol><ul><li>Monitor and potentially disavow the 3 high-spam-score backlinks identified (75%, 65%, and 65% spam scores)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create a prioritized outreach list of 20 target domains this quarter and assign link-building tasks with clear deadlines.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="quick-wins">Quick Wins</h3><ol><li><strong>Optimize existing content</strong>:</li></ol><ul><li>Rewrite titles to be shorter, more keyword-focused, and include a clear value proposition</li><li>Improve meta descriptions to be concise, benefit-oriented, and avoid truncation</li><li>Shorten URL structures for better user experience and SEO</li></ul><br><ol><li><strong>Enhance Tree Tracker App page</strong>:</li></ol><ul><li>Add screenshots, videos, and user testimonials</li><li>Optimize for app-related keywords like "tree tracker" (210 searches) and "planting tree app" (140 searches)</li><li>Create dedicated landing pages for specific app features</li></ul><br><ol><li><strong>Develop content on "Deforestation in Japan"</strong>:</li></ol><ul><li>Create a comprehensive guide addressing causes, impacts, and solutions</li><li>Link to existing content about Japanese forestry techniques like "daisugi"</li><li>Target the keyword "deforestation in Japan" (70 searches) and related terms</li></ul><br><ol><li><strong>Fix Technical Backlink Issues</strong>:</li></ol><ul><li>Implement 301 redirects for the 19 broken pages receiving backlinks</li><li>Reach out to referring domains with broken links to update them</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Executing these quick wins can yield a measurable traffic uptick within 4–6 weeks, demonstrating early ROI to stakeholders.</li></ul><br><h3 id="medium-term-opportunities">Medium-Term Opportunities</h3><ol><li><strong>Create content targeting high-value keywords</strong>:</li></ol><ul><li>Develop comprehensive guides on "sustainable forestry practices" (4400 searches)</li><li>Create case studies showcasing successful "reforestation projects" (2900 searches)</li><li>Publish educational content about "sustainable forestry management" (2900 searches)</li></ul><br><ol><li><strong>Expand "Kiss the Ground" content series</strong>:</li></ol><ul><li>Develop additional articles addressing specific claims and topics from the documentary</li><li>Create a resource hub for regenerative agriculture information</li><li>Target related keywords like "kiss the ground netflix" (590 searches)</li></ul><br><ol><li><strong>Leverage Existing Partnerships for Content Collaboration</strong>:</li></ol><ul><li>Create co-branded content with Asia Sustainable Travel and other partners</li><li>Develop case studies highlighting successful tree-planting initiatives with partners</li><li>Implement a guest posting strategy with complementary businesses in the sustainability space</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft a six-month editorial roadmap with quarterly milestones for each medium-term initiative.</li></ul><br><h3 id="long-term-opportunities">Long-Term Opportunities</h3><ol><li><strong>Develop a comprehensive content strategy</strong> focused on sustainability topics where OneSeed has expertise</li><li><strong>Build relationships with influencers and industry experts</strong> to promote content and build brand authority</li><li><strong>Create a free tool or resource</strong> to attract leads and build authority in the sustainability space</li><li><strong>Target business-focused keywords</strong> like "corporate tree planting" (110 searches) and "corporate social responsibility tree planting" (70 searches)</li><li><strong>Implement a Digital PR Strategy</strong>:</li></ol><ul><li>Develop newsworthy content about reforestation initiatives</li><li>Create data-driven reports on sustainability trends</li><li>Leverage existing partnerships (like those with Asia Sustainable Travel) for broader reach</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Position OneSeed as the go-to resource in corporate sustainability by aligning long-term content with industry events and news cycles, ensuring continual relevance and link attraction.</li></ul></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - OneSeed',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

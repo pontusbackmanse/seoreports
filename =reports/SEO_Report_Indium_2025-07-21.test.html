@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Indium</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Indium • https://www.indium.tech/data-analytics-services/</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> USA Market</span>
+                        <span><i class="fas fa-calendar"></i> July 21, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th><th>Notes</th></tr></thead><tbody><tr><td class="">Organic Traffic Growth (8 mo)</td><td class="positive">+193.90%</td><td class="">From Nov 2024 to July 2025</td></tr><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">3,458.79</td><td class="">As of July 2025</td></tr><tr><td class="">Total Ranking Keywords</td><td class="">1,698</td><td class=""></td></tr><tr><td class="">Keywords in Position 1</td><td class="positive">6 (↓ 57.14%)</td><td class="">Significant drop in top rankings</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="positive">15 (↓ 58.33%)</td><td class="">Significant drop in high rankings</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="positive">55 (↑ 139.13%)</td><td class="">Growth in mid-first page rankings</td></tr><tr><td class="">Homepage ETV</td><td class="positive">2,660.64 (≈77% of total traffic)</td><td class="">Heavy traffic concentration on homepage</td></tr><tr><td class="">Technical SEO Score (Core Page)</td><td class="">97.07</td><td class="">Strong, but with some issues to fix</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>With 77% of traffic on the homepage and a steep drop in positions 1–3, prioritize optimizing high-value service pages and reclaiming top-three rankings to diversify traffic sources and reduce overreliance on the homepage.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Keywords They Rank Well For (Indium Ranks Poorly)</th></tr></thead><tbody><tr><td class="">Intellias.com</td><td class="">Cloud migration, AI/ML solutions, data modernization, automotive IoT, low-code development</td></tr><tr><td class="">SGAnalytics.com</td><td class="">Text analytics, DevOps, retail analytics</td></tr><tr><td class="">IBM.com</td><td class="">Software testing, cloud migration, data virtualization, generative BI, foundational "What is..." content</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Leverage competitor meta strategies—concise, benefit-oriented titles and “What is…” formats—to develop pages that capture share in cloud migration, AI/ML, and foundational analytics searches.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Monthly Search Volume</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">data and analytics company</td><td class="">1,000 - 6,600</td><td class="">Low</td><td class="">High commercial intent, core business focus</td></tr><tr><td class="">company data analytics</td><td class="">1,000 - 6,600</td><td class="">Low</td><td class="">High intent, currently underutilized</td></tr><tr><td class="">data analytics consulting company</td><td class="">390 - 1,000</td><td class="">Low</td><td class="">Strong alignment with services offered</td></tr><tr><td class="">data engineering services</td><td class="">260 - 880</td><td class="">Low</td><td class="">Service page needs optimization</td></tr><tr><td class="">ai ml solutions</td><td class="">90 - 320</td><td class="">Low</td><td class="">Emerging tech focus, growth potential</td></tr><tr><td class="">data modernization solutions</td><td class="">10 - 90</td><td class="">Low</td><td class="">Long-tail, low competition</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop a content calendar targeting the top-priority terms ("data and analytics company," "company data analytics").</li><li>Audit and optimize existing service pages (meta tags, headers, CTAs) to align with these high-intent keywords.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Indium’s organic traffic has grown impressively (+193.90%) but top 1–3 keyword rankings have dropped significantly.</li><li>Homepage dominates traffic (~77%), while core service pages like data analytics services underperform.</li><li>Strong brand keyword rankings but major gaps in high-value, non-branded keywords related to data analytics and AI/ML.</li><li>Competitors Intellias, SGAnalytics, and IBM outperform Indium on key service and industry-specific keywords.</li><li>Technical SEO is generally strong but needs fixes on image alt tags, render-blocking scripts, and page speed.</li><li>Backlink profile is large but contains toxic links and lacks US-focused authoritative links; anchor text is overly branded.</li><li>Content gaps exist in foundational "What is..." content, industry-specific analytics, and service page optimization.</li><li>Clear opportunities to improve rankings by targeting high-intent keywords, optimizing service pages, and expanding content clusters.</li><li>Backlink strategy should focus on disavowing toxic links, reclaiming broken links, and acquiring links from high-authority US domains.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Convert these findings into a phased project roadmap with clear ownership and deadlines—for keyword optimization, technical fixes, content development, and link-building initiatives.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-indium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Indium</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This research report examines Indium's current SEO performance and identifies opportunities for improvement in the US market. Indium specializes in data analytics services, offering solutions in Data Engineering, Data Modernization, Data Analytics, and AI/ML. Our analysis reveals significant organic traffic growth of 193.90% over the past 8 months, but also highlights concerning decreases in top position rankings and technical SEO issues that need addressing. The keyword analysis shows strong performance for branded terms but significant gaps in ranking for high-value data analytics keywords. Competitive analysis reveals that Intellias, SGAnalytics, and IBM are outperforming Indium in several key areas. Additionally, our backlink analysis identifies both strengths and weaknesses in Indium's link profile that require attention. This report provides actionable insights to enhance their search visibility and competitive positioning in the US market.</p><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Indium is a data analytics service provider that focuses on transforming data into tangible business results. Their core offerings include:</p><br><ul><li><strong>Data Engineering:</strong> Data modeling, architecture, integration, migration, lakehouse implementation, and governance (<a href="https://www.indium.tech/data-analytics-services/" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</li><li><strong>Data Modernization:</strong> Architecture migrations, re-platforming, cost optimization, and DataOps (<a href="https://www.indium.tech/data-analytics-services/" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</li><li><strong>Data Analytics:</strong> Agile BI, analytics engineering, semantic layer modeling, and data visualization (<a href="https://www.indium.tech/data-analytics-services/" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</li><li><strong>AI/ML Solutions:</strong> Generative AI, NLP, MLOps, custom AI/ML solutions, predictive modeling (<a href="https://www.indium.tech/data-analytics-services/" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</li></ul><br><p>They also offer proprietary accelerators including teX.ai for NLP and LLM requirements, ibriX for Databricks implementation, and iDAF for data assurance. The company employs over 800 Data & AI associates, indicating significant expertise and capacity in the field.</p><br></div></section>
+                <section id="research-scope" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Research Scope</h2>
+                    </div>
+                    <div class="section-content"><p>Our comprehensive SEO analysis focuses on the following areas within the US market:</p><br><h3 id="1-overall-seo-performance">1. Overall SEO Performance</h3><h4 id="organic-visibility-and-traffic-growth">Organic Visibility and Traffic Growth</h4><ul><li><strong>Impressive Growth:</strong> Indium has achieved a remarkable 193.90% increase in estimated traffic volume (ETV) from November 2024 to July 2025 (<a href="https://wpseoai.com" class="link-reference" target="_blank" rel="noopener">SEO Performance Data</a>)</li><li><strong>Current Traffic Metrics:</strong> As of July 2025, Indium's organic visibility shows an ETV of 3,458.79 with 1,698 ranking keywords (<a href="https://wpseoai.com" class="link-reference" target="_blank" rel="noopener">SEO Performance Data</a>)</li><li><strong>Position Distribution:</strong> Current organic visibility across position ranges:</li><li>Position 1: 6 keywords (57.14% decrease from November 2024)</li><li>Positions 2-3: 15 keywords (58.33% decrease)</li><li>Positions 4-10: 55 keywords (139.13% increase)</li><li>Positions 11-100: 1,622 keywords (various increases)</li></ul><br><h4 id="top-performing-and-underperforming-pages">Top-Performing and Underperforming Pages</h4><ul><li><strong>Homepage Dominance:</strong> The homepage (https://www.indium.tech/) is the top performer with an ETV of 2,660.64, accounting for approximately 77% of total organic traffic (<a href="https://wpseoai.com" class="link-reference" target="_blank" rel="noopener">SEO Performance Data</a>)</li><li><strong>Strong Blog Content:</strong> The "Why Software Testing" blog post generates significant traffic with an ETV of 64.78 (<a href="https://wpseoai.com" class="link-reference" target="_blank" rel="noopener">SEO Performance Data</a>)</li><li><strong>Underperforming Service Pages:</strong> Most service pages, including the data analytics services page, have relatively low ETVs compared to the homepage, indicating optimization opportunities (<a href="https://wpseoai.com" class="link-reference" target="_blank" rel="noopener">SEO Performance Data</a>)</li><li><strong>Content Distribution:</strong> Blog posts make up a significant portion of ranking pages but many have ETVs under 10, suggesting content optimization needs (<a href="https://wpseoai.com" class="link-reference" target="_blank" rel="noopener">SEO Performance Data</a>)</li></ul><br><h4 id="technical-seo-evaluation">Technical SEO Evaluation</h4><ul><li><strong>Overall Technical Score:</strong> The data analytics services page has a strong technical SEO score of 97.07 (<a href="https://wpseoai.com" class="link-reference" target="_blank" rel="noopener">SEO Performance Data</a>)</li><li><strong>Key Technical Strengths:</strong></li><li>Mobile-friendly design</li><li>Proper HTTPS implementation</li><li>SEO-friendly URL structure</li><li>Appropriate title and meta description</li><li>Social media tags present</li><li>Caching enabled</li><li>No duplicate content issues</li><li>Good balance of internal (90) and external (9) links</li><li><strong>Technical Issues Requiring Attention:</strong></li><li>Missing alt attributes for images</li><li>Render-blocking scripts affecting page load speed</li><li>Low content rate</li><li>Resource errors including a missing paragraph</li><li>One warning related to a node with more than 60 children</li></ul><br><h3 id="2-keyword-analysis">2. Keyword Analysis</h3><h4 id="current-ranking-keywords">Current Ranking Keywords</h4><p>Indium's top-performing keywords (positions 1-10) include:</p><br><p><strong>Branded Keywords:</strong></p><ul><li>"indium software" (480 monthly searches, position 1)</li><li>"indium software careers" (40 monthly searches, position 1)</li><li>"indium tech" (50 monthly searches, position 1)</li><li>"indium technologies" (50 monthly searches, position 1)</li><li>"indium career" (140 monthly searches, position 2)</li><li>"indium company" (2900 monthly searches, position 3)</li><li>"indium" (18100 monthly searches, position 8)</li></ul><br><p><strong>Non-Branded Keywords:</strong></p><ul><li>"end-to-end product lifecycle" (40 monthly searches, position 3)</li><li>"end-to-end product life cycle" (40 monthly searches, position 4)</li><li>"end-to-end product management" (30 monthly searches, position 4)</li><li>"indian software" (170 monthly searches, position 4)</li><li>"why is testing important" (140 monthly searches, position 6)</li><li>"domo data visualization" (170 monthly searches, position 7)</li></ul><br><h4 id="keyword-performance-patterns">Keyword Performance Patterns</h4><ul><li><strong>Branded Dominance:</strong> Indium performs exceptionally well for branded keywords, indicating strong brand recognition and effective SEO for direct searches</li><li><strong>"End-to-End" Content Success:</strong> The site ranks well for various "end-to-end" product/lifecycle keywords, suggesting their blog content is resonating with users searching for comprehensive solutions</li><li><strong>Career-Related Strength:</strong> The careers page ranks well for relevant job-related searches, indicating a successful recruitment strategy</li><li><strong>Blog Content Performance:</strong> The "Why Software Testing" blog post consistently ranks for multiple variations of "why software testing is important"</li><li><strong>Domo Content Effectiveness:</strong> The "Domo for Dummies" blog post ranks for several Domo-related keywords, showing successful targeting of this BI tool</li></ul><br><h4 id="high-value-keyword-opportunities">High-Value Keyword Opportunities</h4><p>Our analysis identified several high-priority keywords that align with Indium's core business and have strong commercial intent:</p><br><p><strong>Top Priority Keywords:</strong></p><ul><li>"data and analytics company" (1000-6600 monthly searches, low competition)</li><li>"company data analytics" (1000-6600 monthly searches, low competition)</li><li>"data analytics consulting company" (390-1000 monthly searches, low competition)</li></ul><br><p><strong>Secondary Keywords:</strong></p><ul><li>"data engineering services" (260-880 monthly searches, low competition)</li><li>"ai ml solutions" (90-320 monthly searches, low competition)</li><li>"data analytics services company" (70-390 monthly searches, low competition)</li></ul><br><p><strong>Long-term Opportunities:</strong></p><ul><li>"data modernization solutions" (10-90 monthly searches, low competition)</li><li>"data engineering consulting services" (50-320 monthly searches, low competition)</li></ul><br><h4 id="content-gaps">Content Gaps</h4><ul><li><strong>Data Analytics Services Page:</strong> Despite being a core service offering, the data analytics services page is not ranking for any relevant keywords, representing a significant missed opportunity</li><li><strong>Limited Industry-Specific Content:</strong> Few rankings for industry-specific data analytics terms that potential clients might search for</li><li><strong>Technical Data Terms:</strong> Limited visibility for technical terms related to data engineering, modernization, and AI/ML solutions</li></ul><br><h3 id="3-competitive-landscape">3. Competitive Landscape</h3><h4 id="top-competitors-overview">Top Competitors Overview</h4><p>Our analysis identified three key competitors in the data analytics services space:</p><br><ol><li><strong>Intellias.com (Direct Competitor)</strong></li></ol><ul><li><strong>Key Strengths:</strong> Consistently ranks higher for cloud migration, AI/ML, data modernization, low-code development, and automotive IoT keywords</li><li><strong>SERP Strategy:</strong> Uses concise, keyword-rich titles and benefit-oriented meta descriptions that highlight specific solutions</li><li><strong>Content Focus:</strong> Strong technical content with clear benefit statements</li></ul><br><ol><li><strong>SGAnalytics.com (Direct Competitor)</strong></li></ol><ul><li><strong>Key Strengths:</strong> Outperforms Indium in text analytics, DevOps, and retail analytics</li><li><strong>Content Strategy:</strong> Blog content focuses on defining key concepts and providing practical examples</li><li><strong>Industry Focus:</strong> Strong performance with industry-specific analytics content</li></ul><br><ol><li><strong>IBM.com (Indirect Competitor)</strong></li></ol><ul><li><strong>Key Strengths:</strong> Dominates search results for broad technical terms related to software testing, cloud migration, data virtualization, and emerging technologies like Generative BI</li><li><strong>Content Strategy:</strong> Extensive use of "What is..." content that provides foundational definitions and overviews</li><li><strong>SERP Elements:</strong> Question-based titles and clear, concise meta descriptions</li></ul><br><h4 id="keyword-performance-comparison">Keyword Performance Comparison</h4><p>Our analysis revealed several areas where competitors are outperforming Indium:</p><br><p><strong>Cloud Migration Services:</strong></p><ul><li>Search Volume: 40-1000 monthly searches</li><li>Competition: LOW</li><li>Current Status: Intellias and IBM consistently rank higher</li></ul><br><p><strong>AI/ML Solutions:</strong></p><ul><li>Search Volume: 210 monthly searches</li><li>Competition: LOW</li><li>Current Status: Intellias and IBM rank higher</li></ul><br><p><strong>Text Analytics:</strong></p><ul><li>Search Volume: 30-1000 monthly searches</li><li>Competition: LOW</li><li>Current Status: SGAnalytics and IBM rank higher</li></ul><br><p><strong>Software Testing:</strong></p><ul><li>Search Volume: 260-4400 monthly searches</li><li>Competition: LOW-MEDIUM</li><li>Current Status: IBM ranks higher</li></ul><br><p><strong>Generative AI Services:</strong></p><ul><li>Search Volume: 50 monthly searches</li><li>Competition: LOW</li><li>Current Status: Intellias and SGAnalytics rank higher</li></ul><br><p><strong>DevOps Services:</strong></p><ul><li>Search Volume: 260 monthly searches</li><li>Competition: LOW</li><li>Current Status: SGAnalytics and IBM rank higher</li></ul><br><p><strong>Automotive Internet of Things:</strong></p><ul><li>Search Volume: 720 monthly searches</li><li>Competition: LOW</li><li>Current Status: Intellias ranks higher</li></ul><br><h4 id="competitor-content-strategies">Competitor Content Strategies</h4><p>Our analysis identified several successful content strategies employed by competitors:</p><br><ol><li><strong>IBM's "What is..." Content Strategy</strong></li></ol><ul><li>IBM successfully targets informational searches with question-based titles like "What is Software Testing?" and "What is Data Virtualization?"</li><li>These pages provide foundational definitions and overviews that attract users early in their buyer journey</li><li>The content typically ranks well for both the question format and the core term</li></ul><br><ol><li><strong>Intellias's Benefit-Oriented Approach</strong></li></ol><ul><li>Titles are concise and keyword-rich</li><li>Meta descriptions highlight specific benefits (e.g., "seamlessly navigate the complexities of transitioning to a cloud environment")</li><li>Content focuses on solutions rather than just describing services</li></ul><br><ol><li><strong>SGAnalytics's Industry-Specific Content</strong></li></ol><ul><li>Strong performance with keywords like "business analytics in retail industry"</li><li>Blog content includes practical examples and real-world applications</li><li>Content defines key concepts while demonstrating expertise</li></ul><br><h3 id="4-backlink-authority-analysis">4. Backlink & Authority Analysis</h3><h4 id="backlink-profile-overview">Backlink Profile Overview</h4><ul><li><strong>Substantial Link Volume:</strong> Indium has accumulated 58,574 backlinks from 1,704 referring domains, indicating a strong overall link presence (<a href="https://wpseoai.com" class="link-reference" target="_blank" rel="noopener">Backlink Analysis Data</a>)</li><li><strong>Domain Authority:</strong> Indium has a rank of 366, which is respectable but leaves room for improvement compared to some competitors (<a href="https://wpseoai.com" class="link-reference" target="_blank" rel="noopener">Backlink Analysis Data</a>)</li><li><strong>Link Quality Concerns:</strong> The backlink profile has a spam score of 15, suggesting some potential quality issues that need addressing (<a href="https://wpseoai.com" class="link-reference" target="_blank" rel="noopener">Backlink Analysis Data</a>)</li><li><strong>Broken Links:</strong> 110 broken backlinks and 249 broken pages were identified, representing lost link equity that should be reclaimed (<a href="https://wpseoai.com" class="link-reference" target="_blank" rel="noopener">Backlink Analysis Data</a>)</li><li><strong>Nofollow Ratio:</strong> 665 referring domains use nofollow attributes, which is approximately 39% of all referring domains, indicating a need for more followed links from authoritative sources (<a href="https://wpseoai.com" class="link-reference" target="_blank" rel="noopener">Backlink Analysis Data</a>)</li></ul><br><h4 id="link-quality-analysis">Link Quality Analysis</h4><p>Our analysis identified several concerning patterns in Indium's backlink profile:</p><br><p><strong>Low-Quality Links:</strong></p><ul><li>Several referring domains with medium spam scores (31-60%) were identified, including:</li><li>zohorecruit.com (60% spam score)</li><li>indiumsoft.com (60% spam score)</li><li>dofollowwebsite.xyz (45% spam score)</li><li>megastargossip.com (37% spam score)</li><li>lissah.com (40% spam score)</li></ul><br><p><strong>Potentially Harmful Links:</strong></p><ul><li>Some referring domains appear to be unrelated to Indium's industry or have questionable content, such as:</li><li>escort-fethiye.com (22% spam score)</li><li>dofollowseo.xyz (45% spam score)</li><li>backlinko.xyz (45% spam score)</li></ul><br><p><strong>Geographic Distribution:</strong></p><ul><li>While Indium has links from various countries, the US represents only 3,713 of their backlinks (approximately 6.5% of total backlinks), suggesting a need for more US-focused link building to improve rankings in the US market</li></ul><br><h4 id="anchor-text-analysis">Anchor Text Analysis</h4><ul><li><strong>Brand-Heavy Anchors:</strong> Most backlinks use branded anchor text like "Indium" or "Indium, an AI-driven digital engineering company," indicating limited keyword diversity</li><li><strong>Service-Related Anchors:</strong> Some backlinks use service-related anchor text like "Mobile App Development Services," "Mendix Developers," and "Product engineering services," but these represent a small percentage of total links</li><li><strong>Optimization Opportunity:</strong> There's significant room to improve anchor text diversity with more keyword-rich anchors related to data analytics, AI/ML, and other core services</li></ul><br><h4 id="competitor-backlink-comparison">Competitor Backlink Comparison</h4><p>Our analysis identified several high-authority domains that link to competitors but not to Indium:</p><br><p><strong>Key Link Opportunities:</strong></p><ul><li>udemy.com (rank: 18) - Links to competitors but not to Indium</li><li>builtin.com (rank: 91) - Has 201 intersections with competitors</li><li>hackernoon.com (rank: 95) - Has 140 intersections with competitors</li><li>guvi.in (rank: 79) - Has 95 intersections with competitors</li><li>comfygen.com (rank: 46) - Has 87 intersections with competitors</li></ul><br><p><strong>Competitor Link Advantages:</strong></p><ul><li>indiumsoftware.com (rank: 260) - Has 2,730 intersections with competitors, suggesting they may be leveraging similar link building strategies</li><li>postech.ac.kr (rank: 144) - Has 254 intersections with competitors</li><li>linklist.bio (rank: 99) - Has 218 intersections with competitors</li><li>feedspot.com (rank: 169) - Has 213 intersections with competitors</li></ul><br><h3 id="5-recommendations-based-on-current-findings">5. Recommendations Based on Current Findings</h3><br><h4 id="keyword-strategy-recommendations">Keyword Strategy Recommendations</h4><ul><li><strong>Target High-Value Data Analytics Keywords:</strong> Create optimized content targeting "data and analytics company," "company data analytics," and "data analytics consulting company" to capture high-intent traffic (1000-6600 monthly searches each)</li><li><strong>Optimize Data Analytics Services Page:</strong> Completely revamp this page to target relevant keywords, as it currently doesn't rank for any data analytics terms despite being a core service</li><li><strong>Leverage "End-to-End" Momentum:</strong> Create a comprehensive pillar page on "end-to-end" data services that links to all related blog content</li><li><strong>Expand Domo Content Strategy:</strong> Develop additional Domo tutorials and use case content to build on existing ranking success</li></ul><br><h4 id="content-strategy-recommendations">Content Strategy Recommendations</h4><ul><li><strong>Create Foundational "What is..." Content:</strong> Develop a series of blog posts or resource pages that define key concepts related to data analytics, cloud migration, AI/ML, and DevOps, following IBM's successful model</li><li><strong>Develop Industry-Specific Content:</strong> Create dedicated content for key industries that Indium serves, targeting keywords like "data analytics in [industry]" to compete with SGAnalytics</li><li><strong>Improve Title and Meta Description Optimization:</strong> Revise titles to be more concise and keyword-focused, and rewrite meta descriptions to highlight key benefits with clear calls to action, similar to Intellias's approach</li><li><strong>Create Dedicated Service Pages:</strong> Develop optimized pages for key services where competitors are outperforming Indium:</li><li>Data Engineering Services</li><li>Data Migration Services</li><li>Generative AI Services</li><li>Software Testing Services</li><li>DevOps Services</li></ul><br><h4 id="content-optimization-recommendations">Content Optimization Recommendations</h4><ul><li><strong>Update "Why Software Testing" Blog:</strong> Refresh this successful content with current statistics and expanded information to maintain and improve rankings</li><li><strong>Create Supporting Content:</strong> Develop related blog posts that explore specific aspects of software testing in greater depth</li><li><strong>Address Data Analytics Content Gaps:</strong> Create industry-specific content showing how data analytics solutions apply to different sectors</li><li><strong>Develop Long-Form Content:</strong> Create comprehensive guides targeting "data engineering services" and "ai ml solutions" keywords</li></ul><br><h4 id="technical-seo-recommendations">Technical SEO Recommendations</h4><ul><li><strong>Address Top Position Losses:</strong> Investigate and optimize for keywords that previously ranked in positions 1–3, which have seen significant decreases (57–58%)</li><li><strong>Fix Technical Issues:</strong> Address image alt tags, render-blocking scripts, and other technical issues identified in the audit</li><li><strong>Improve Page Speed:</strong> Optimize page loading times, particularly for the data analytics services page</li><li><strong>Enhance Internal Linking:</strong> Implement a more strategic internal linking structure to distribute link equity to service pages</li></ul><br><h4 id="backlink-strategy-recommendations">Backlink Strategy Recommendations</h4><ul><li><strong>Disavow Toxic Links:</strong> Create a disavow file for potentially harmful backlinks from domains with high spam scores or irrelevant content (e.g., escort-fethiye.com)</li><li><strong>Fix Broken Backlinks:</strong> Implement 301 redirects for the 110 identified broken backlinks to reclaim lost link equity</li><li><strong>Diversify Anchor Text:</strong> Work with referring domains to update anchor text from purely branded terms to include relevant keywords related to data analytics services</li><li><strong>Target High-Authority Domains:</strong> Develop a targeted outreach campaign to acquire backlinks from high-authority domains that link to competitors but not to Indium, particularly:</li><li>udemy.com (rank: 18)</li><li>builtin.com (rank: 91)</li><li>hackernoon.com (rank: 95)</li><li>guvi.in (rank: 79)</li><li><strong>Increase US-Based Links:</strong> Focus link building efforts on US-based websites to improve rankings specifically in the US market, as currently only 6.5% of backlinks come from US domains</li></ul><br><h4 id="strategic-recommendations">Strategic Recommendations</h4><ul><li><strong>Diversify Traffic Sources:</strong> Reduce reliance on homepage traffic by optimizing service pages and blog content</li><li><strong>Featured Snippet Opportunities:</strong> Develop content specifically formatted to capture featured snippets, which are currently absent from Indium's visibility profile</li><li><strong>Monitor Keyword Trends:</strong> Regularly track search volume changes for target keywords to identify emerging trends and adjust content strategy accordingly</li><li><strong>Create a Comprehensive Resource Center:</strong> Following IBM's model, develop a data analytics glossary or resource center that provides definitions, explanations, and best practices</li><li><strong>Implement Link Reclamation Strategy:</strong> Regularly monitor for unlinked brand mentions and reach out to convert them into actual backlinks</li></ul><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><p>Indium has established a solid foundation for SEO success, as evidenced by their impressive 193.90% growth in organic traffic over the past 8 months. However, significant opportunities exist to improve their search visibility and competitive positioning in the US market. By addressing the identified keyword gaps, content optimization needs, technical issues, and backlink quality concerns, Indium can substantially enhance their organic search performance.</p><br><p>The most pressing priorities should be:</p><br><ol><li>Optimizing the data analytics services page to rank for high-value, low-competition keywords</li><li>Creating foundational "What is..." content to compete with IBM's successful strategy</li><li>Developing industry-specific content to showcase expertise in various sectors</li><li>Implementing a targeted backlink acquisition strategy focused on high-authority US domains</li><li>Disavowing toxic backlinks and reclaiming broken link equity</li></ol><br><p>By implementing these recommendations, Indium can build on their current momentum, recover lost top positions, outrank key competitors, and establish themselves as a leading authority in the data analytics services space within the US market.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Indium',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

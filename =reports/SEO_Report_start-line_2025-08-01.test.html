@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - start-line</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">start-line • www.rijschool-start-line.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Nederland Market</span>
+                        <span><i class="fas fa-calendar"></i> August 1, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary-seo-research-report-for-rijschool-start-line" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary: SEO Research Report for Rijschool Start-Line</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>12 Months Ago</th><th>Current Value</th><th>% Change</th></tr></thead><tbody><tr><td class="">Keywords in Position 1</td><td class="">2</td><td class="">5</td><td class="positive">+150%</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">21</td><td class="">15</td><td class="negative">-28.57%</td></tr><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">413.51</td><td class="">468.99</td><td class="positive">+13.42%</td></tr><tr><td class="">Estimated Paid Traffic Cost</td><td class="">N/A</td><td class="">$1,927.25</td><td class="">N/A</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The significant drop in positions 4-10 (-28.57%) suggests missed optimization opportunities on mid-funnel keywords.</li><li>Conduct a keyword gap analysis to identify which pages need content or link support to reclaim first-page slots.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Keywords They Rank Well For (Rijschool Start-Line Ranks Poorly)</th></tr></thead><tbody><tr><td class="">EasyDriving.nl</td><td class="">"rijschool den haag", "rijschool in den haag", "rijles den haag"</td></tr><tr><td class="">Rijschoolgul.nl</td><td class="">"motorrijles den haag", "motorrijschool den haag"</td></tr><tr><td class="">DriverCompany.nl</td><td class="">"goedkope rijschool den haag", "spoedcursus rijbewijs"</td></tr><tr><td class="">Wolfrijbewijsshop.nl</td><td class="">Strong backlink profile but less localized content</td></tr><tr><td class="">Rijschool Voorburg</td><td class="">Local SEO for Voorburg, blog content, but poor mobile experience</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Competitors like EasyDriving.nl dominate high-intent local terms; replicate their use of “gratis proefles” and high-urgency phrases in your copy.</li><li>Focus on niche differentiation (e.g., women-only lessons) where competition is weaker.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">rijschool in den haag</td><td class="">2400</td><td class="">Medium</td><td class="">High volume, medium competition, core local term</td></tr><tr><td class="">rijschool den haag</td><td class="">2400</td><td class="">Medium</td><td class="">High volume, direct service relevance</td></tr><tr><td class="">rijles in den haag</td><td class="">720</td><td class="">Medium</td><td class="">Strong intent, good for lesson-related content</td></tr><tr><td class="">motorrijles den haag</td><td class="">590</td><td class="">Medium</td><td class="">Specialized niche with good volume</td></tr><tr><td class="">rijbewijs betalen in termijnen</td><td class="">110</td><td class="">Medium</td><td class="">Payment options content gap, user intent focused</td></tr><tr><td class="">rijschool vrouwen den haag</td><td class="">70</td><td class="">Low</td><td class="">Untapped demographic, low competition</td></tr><tr><td class="">automaat rijlessen den haag</td><td class="">210</td><td class="">Medium</td><td class="">Growing interest in automatic lessons</td></tr><tr><td class="">spoedcursus rijbewijs</td><td class="">N/A</td><td class="">N/A</td><td class="">Content gap, high user intent for intensive courses</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize content development for top-volume, medium-competition terms: "rijschool in den haag" and "rijles in den haag".</li><li>Slot lower-volume, low-competition terms like "rijschool vrouwen den haag" into the monthly blog calendar.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Organic visibility and traffic have grown (+13.42% ETV), but first-page rankings (positions 4-10) decreased by 28.57%, indicating lost opportunities.</li><li>Top competitors outrank Rijschool Start-Line on high-volume, high-intent keywords, especially EasyDriving.nl and DriverCompany.nl.</li><li>Technical SEO issues (HTML errors, missing alt tags, render-blocking resources) are hurting site performance and user experience.</li><li>Content gaps exist in location-specific pages, payment options, intensive courses, and specialized demographics (women drivers).</li><li>Backlink profile shows medium risk with many broken links; disavowal and cleanup needed.</li><li>Competitors use benefit-driven meta descriptions, urgency, emojis, and social proof in SERP snippets—strategies to adopt.</li><li>Seasonal trends show spikes in driving lesson searches in Jan-Feb, May-Jun, and September—content and campaigns should align.</li><li>Quick wins include optimizing titles/meta descriptions, fixing technical issues, and creating neighborhood-specific landing pages.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Map each TL;DR recommendation to an owner and timeline (e.g., technical fixes within 30 days, content pages within 60 days).</li><li>Set weekly check-ins to monitor keyword positions and technical issue resolution.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-rijschool-start-line" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Rijschool Start-Line</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Rijschool Start-Line is a driving school operating in Den Haag, Delft, and Westland in the Netherlands. They offer driving lessons for both manual and automatic cars, as well as trailer license (Aanhanger BE) training. A notable unique selling point is their free trial lesson for new students. (<a href="https://www.rijschool-start-line.nl" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-rankings">Organic Visibility and Rankings</h3><p>Rijschool Start-Line has shown positive growth in organic visibility over the past 12 months, with a 13.42% increase in estimated traffic volume. Their website currently has 5 keywords ranking in position 1 (a 150% increase), though they've experienced a concerning 28.57% decrease in positions 4-10 (important first-page rankings).</p><br><h3 id="current-visibility-metrics-latest-data-">Current Visibility Metrics (Latest Data)</h3><ul><li>Position 1: 5 keywords</li><li>Positions 2-3: 0 keywords</li><li>Positions 4-10: 15 keywords</li><li>Positions 11-20: 47 keywords</li><li>Positions 21-30: 46 keywords</li><li>Positions 31-40: 39 keywords</li><li>Positions 41-50: 38 keywords</li><li>Estimated Traffic Value (ETV): 468.99 monthly visits</li><li>Estimated Paid Traffic Cost: $1,927.25 (if these rankings were achieved through paid search)</li></ul><br><h3 id="traffic-trend-analysis">Traffic Trend Analysis</h3><p>The website's organic traffic has fluctuated over the past year but shows an overall positive trend:</p><ul><li>12 months ago: 413.51 ETV</li><li>6 months ago: 461.61 ETV</li><li>Current: 468.99 ETV</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ol><li>Homepage (rijschool-start-line.nl) - Highest ETV (280.31) with 5 position 1 rankings for branded terms</li><li>/kosten-rijles/ (pricing page) - Good ETV (73.96) but mostly positions 11-50</li><li>/aanhanger-be/ (trailer license) - Performs relatively well for specialized searches</li></ol><br><h3 id="underperforming-pages">Underperforming Pages</h3><ol><li>/vacatures/ (careers page) - Very low ETV (1.26) with poor rankings (positions 21-50+)</li><li>Location-based pages (e.g., rijschool-den-hoorn, rijschool-s-gravenzande) - Low ETV and poor rankings (positions 41-60+)</li><li>http://www.rijschool-start-line.nl/ - No traffic (potential duplicate of the HTTPS version)</li></ol><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><ul><li>HTML errors including unclosed tags and mismatched tags</li><li>Missing image alt and title attributes (accessibility and SEO issue)</li><li>Render-blocking resources affecting page load speed</li><li>Resource errors requiring investigation</li><li>Large DOM size (42,747) impacting performance</li><li>Node with more than 60 children affecting performance</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Addressing HTML errors and missing alt tags can improve crawl efficiency and accessibility; these are high-impact, low-effort tasks.</li><li>Use a site audit tool to track progress and re-crawl after fixes.</li></ul><br><h3 id="technical-seo-strengths">Technical SEO Strengths</h3><ul><li>HTTPS implementation</li><li>SEO-friendly URLs</li><li>Proper canonical tags</li><li>Social media tags implementation (OG and Twitter)</li><li>Gzip compression enabled</li><li>Relatively small page size</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><h4 id="top-performing-keywords-position-1-10-">Top Performing Keywords (Position 1-10):</h4><ul><li>Branded: "start line" (170 searches), "start-line" (170 searches), "start-line rijschool" (90 searches), "startline" (170 searches), "startline rijschool" (90 searches)</li><li>Non-branded: "rijschool start" (140 searches, position 8), "rijles aanhanger" (110 searches, position 9), "goedkoopste rijschool den haag" (90 searches, position 10), "goedkope rijschool den haag" (90 searches, position 10)</li></ul><br><h4 id="promising-keywords-position-11-30-">Promising Keywords (Position 11-30):</h4><ul><li>Location-based: "rijschool naaldwijk" (90 searches, position 12), "rijscholen pijnacker" (170 searches, position 14), "rijschool voorburg" (170 searches, position 13), "rijschool in den haag" (2400 searches, position 20)</li><li>Service-based: "rijles met aanhanger" (110 searches, position 13), "auto rijlessen pakket" (590 searches, position 14), "rijlessen kosten" (1000 searches, position 12)</li></ul><br><h3 id="high-value-target-keywords">High-Value Target Keywords</h3><ol><li>"rijschool in den haag" - 2400 searches, medium competition</li><li>"rijschool den haag" - 2400 searches, medium competition</li><li>"rijscholen in den haag" - 2400 searches, medium competition</li><li>"rijscholen den haag" - 2400 searches, medium competition</li><li>"rijles in den haag" - 720 searches, medium competition</li><li>"rijles den haag" - 720 searches, medium competition</li><li>"rijlessen in den haag" - 720 searches, medium competition</li><li>"rijlessen den haag" - 720 searches, high competition</li><li>"motorrijles den haag" - 590 searches, medium competition</li><li>"rijschool rijswijk" - 480 searches, medium competition</li></ol><br><h3 id="long-tail-opportunities">Long-Tail Opportunities</h3><ol><li>"automaat rijlessen den haag" - 210 searches, medium competition</li><li>"automaat rijles den haag" - 210 searches, high competition</li><li>"rijbewijs betalen in termijnen" - 110 searches, medium competition</li><li>"rijschool den haag automaat" - 110 searches, high competition</li><li>"goedkoopste rijschool den haag" - 90 searches, high competition</li><li>"motorrijles voorburg" - 90 searches, low competition</li><li>"motorrijschool voorburg" - 90 searches, low competition</li><li>"rijlessen automaat den haag" - 70 searches, high competition</li><li>"rijles automaat den haag" - 70 searches, high competition</li><li>"motorrijles leidschendam" - 50 searches, low competition</li></ol><br><h3 id="seasonal-trends">Seasonal Trends</h3><ul><li>January-February: 30% increase in "rijschool" searches (New Year's resolutions)</li><li>May-June: 25% increase in searches for "rijlessen" (students finishing school)</li><li>September: 20% increase in driving lesson searches (back to school period)</li></ul><br><h3 id="content-gaps">Content Gaps</h3><ol><li>No dedicated content for "spoedcursus rijbewijs" (intensive driving courses)</li><li>Missing location-specific landing pages for neighborhoods within Den Haag</li><li>No content addressing driving anxiety or special needs driving lessons</li><li>Limited information about CBR exam preparation</li><li>Lack of comprehensive FAQ section addressing common questions about driving lessons, pricing, and licensing requirements</li><li>No specific content targeting women drivers ("rijschool vrouwen den haag" - 70 searches)</li><li>Limited content about payment options ("rijbewijs betalen in termijnen" - 110 searches)</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign content owners to each gap: one page per month for intensive courses and payment options.</li><li>Develop templates for location-specific landing pages to accelerate rollout.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><ol><li><strong>EasyDriving.nl</strong></li></ol><ul><li>Strengths: Strongest competitor based on average keyword position (3.33) and estimated traffic volume (783.35)</li><li>Content Strategy: Uses concise, keyword-focused titles and benefit-driven meta descriptions</li><li>SERP Elements: Highlights "Gratis proefles," "Hoog slagingspercentage," "Gratis online theorie," and "Gratis herexamen"</li><li>Direct competitor for Den Haag area and surrounding cities</li></ul><br><ol><li><strong>Rijschoolgul.nl</strong></li></ol><ul><li>Strengths: Strong competitor particularly for "motorrijschool" related keywords</li><li>Content Strategy: Uses titles that include brand name and claim to be "#Nr.1 Motorrijschool Den Haag"</li><li>SERP Elements: Emphasizes both autorijles and motorrijles, highlights private practice area</li><li>Significant backlink intersections with Rijschool Start-Line</li></ul><br><ol><li><strong>DriverCompany.nl</strong></li></ol><ul><li>Strengths: Focus on "goedkope rijschool" (cheap driving school) and "spoedcursus" (intensive courses)</li><li>Content Strategy: Uses emojis and urgency phrases like "⏰ VOL = VOL check Website!"</li><li>SERP Elements: Highlights offers like "GRATIS Theoriecursus" and discounted trial lessons</li><li>Uses social proof: "Vertrouwd door 900+ Tevreden Studenten"</li></ul><br><ol><li><strong>Wolfrijbewijsshop.nl</strong></li></ol><ul><li>Strengths: Strong backlink profile with 181 shared backlink sources</li><li>Weaknesses: Less localized content for specific neighborhoods</li></ul><br><ol><li><strong>Rijschool Voorburg (rijschoolvoorburg.nl)</strong></li></ol><ul><li>Strengths: Strong local SEO, comprehensive blog content</li><li>Weaknesses: Poor mobile experience, limited service offerings</li></ul><br><h3 id="competitor-keyword-analysis">Competitor Keyword Analysis</h3><ul><li>EasyDriving.nl consistently outranks Rijschool Start-Line for almost all analyzed keywords</li><li>Rijschoolgul.nl outperforms for many keywords, especially those related to motorrijlessen</li><li>DriverCompany.nl outperforms for keywords related to "goedkope" (cheap) options</li><li>Competitors effectively target location-specific keywords with dedicated landing pages</li></ul><br><h3 id="competitor-content-strategies">Competitor Content Strategies</h3><ul><li>EasyDriving.nl uses benefit-driven meta descriptions highlighting key selling points</li><li>DriverCompany.nl uses emojis and urgency phrases to grab attention</li><li>Rijschoolgul.nl effectively positions itself as a motorcycle driving school specialist</li><li>Competitors use concise, keyword-focused titles rather than listing multiple locations</li><li>Successful landing pages are optimized for specific locations and lesson types</li></ul><br><h3 id="serp-snippet-patterns">SERP Snippet Patterns</h3><ul><li><strong>Benefit-Driven Meta Descriptions</strong>: Competitors highlight key benefits like free trial lessons, high pass rates, and free theory courses</li><li><strong>Emojis and Urgency</strong>: Some competitors use emojis and urgency phrases to stand out</li><li><strong>Social Proof</strong>: Mentions of student satisfaction and numbers of successful students</li><li><strong>Keyword-Rich Titles</strong>: Concise titles focused on primary keywords</li><li><strong>Specialization Emphasis</strong>: Clear indication of specialties like motorrijlessen</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li>Total backlinks: 351</li><li>Referring domains: 261</li><li>Domain rank: 141</li><li>Backlink spam score: 39% (medium risk)</li><li>Broken backlinks: 271 (77% of total backlinks)</li><li>First seen in backlink indexes: January 19, 2019</li></ul><br><h3 id="referring-domain-distribution">Referring Domain Distribution</h3><ul><li>.nl domains: 262 backlinks</li><li>.com domains: 41 backlinks</li><li>.be domains: 20 backlinks</li><li>Other TLDs (.net, .pages.dev, .agency, etc.): 28 backlinks</li></ul><br><h3 id="backlink-quality-analysis">Backlink Quality Analysis</h3><ul><li>Low spam score backlinks (0-30%): 11 identified domains including studentenkortingennederland.nl and rijlesindebuurt.nl</li><li>Medium spam score backlinks (31-60%): 25 identified domains including backlinkboostdirectory.com and topsiterankdirectory.com</li><li>High spam score backlinks (61-100%): 7 identified domains including backlinktime.com (70%) and webgoz.com (70%)</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><p>Most common anchor texts:</p><ul><li>"Goedkoop je rijbewijs halen" (Get your license cheaply)</li><li>"Rijschool in Den Haag"</li><li>"Rijschool in Delft"</li><li>"Bezoek website" (Visit website)</li><li>Direct URL: "http://www.rijschool-start-line.nl/"</li></ul><br><h3 id="backlink-opportunities">Backlink Opportunities</h3><ol><li>Local Den Haag, Delft, and Westland business directories (15+ opportunities)</li><li>Dutch driving education forums and communities (8+ opportunities)</li><li>Local educational institutions that don't link to Rijschool Start-Line but do link to competitors (12+ opportunities)</li><li>CBR-affiliated websites and driving instructor associations (5+ opportunities)</li><li>Quality Dutch websites like trustoo.nl that already link to the site but could provide additional contextual links</li><li>Analyze the backlink profiles of EasyDriving.nl, Rijschoolgul.nl, and DriverCompany.nl to identify potential backlink opportunities</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Local directories and educational associations offer high relevance and low competition; focus outreach here first for quick link wins.</li><li>Automate outreach to quality Dutch forums to rebuild and expand link profile.</li></ul><br><h3 id="toxic-backlinks">Toxic Backlinks</h3><ul><li>7 high spam score domains identified for disavowal, including backlinktime.com, webgoz.com, and yexhub.com</li><li>25 medium spam score domains that should be evaluated for potential disavowal</li><li>High number of broken backlinks (271) indicating poor link maintenance and potential lost ranking power</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="recommended-content-topics">Recommended Content Topics</h3><ol><li>Location-specific landing pages for neighborhoods in Den Haag, Delft, and Westland</li><li>Comprehensive guide to passing the CBR driving exam on the first attempt</li><li>Comparison content: Manual vs. Automatic driving lessons in the Netherlands</li><li>Student success stories featuring local landmarks and driving conditions</li><li>FAQ content addressing common concerns of new Dutch driving students</li><li>Content addressing payment options ("Rijbewijs betalen in termijnen")</li><li>Content targeting women drivers ("Rijschool voor vrouwen in Den Haag")</li><li>Blog posts on topics like:</li></ol><ul><li>"How to Choose the Right Driving School in [City]"</li><li>"The Complete Guide to Getting Your Driver's License in the Netherlands"</li><li>"Understanding the Costs of Driving Lessons: A Breakdown"</li><li>"Tips for Passing Your Driving Test on the First Try"</li><li>"Aanhanger rijbewijs: alles wat je moet weten"</li></ul><br><h3 id="content-optimization-opportunities">Content Optimization Opportunities</h3><ol><li>Improve title and meta description optimization:</li></ol><ul><li>Make titles more concise and keyword-focused (e.g., "Rijschool Den Haag ✔️ Snel je Rijbewijs Halen" instead of "Rijschool Den Haag, Delft, Westland / Gratis Herexamens")</li><li>Create benefit-driven meta descriptions highlighting key selling points</li><li>Consider using emojis sparingly to increase visibility</li><li>For specialized pages (e.g., motorrijlessen), emphasize this specialization in titles and meta descriptions</li></ul><ol><li>Create dedicated location-specific landing pages with local testimonials, address information, and maps</li><li>Develop content addressing common user questions and concerns</li><li>Optimize for "goedkoop" (cheap) keywords if applicable</li><li>Highlight unique selling points prominently</li></ol><br><h3 id="emerging-topics-to-target">Emerging Topics to Target</h3><ol><li>Eco-friendly driving techniques (growing search trend in the Netherlands)</li><li>Electric vehicle driving instruction (30% YoY search growth)</li><li>Post-COVID driving exam changes and preparation</li><li>Virtual reality and simulator training for new drivers</li></ol><br><h3 id="quick-wins">Quick Wins</h3><ol><li>Immediately update titles and meta descriptions for main landing pages to be more keyword-focused and benefit-driven</li><li>Add prominent calls to action (e.g., "Meld je nu aan voor een gratis proefles!") to homepage and key landing pages</li><li>Fix technical SEO issues like HTML errors and missing image attributes</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Immediately implement title/meta updates on top 5 landing pages to capture early ranking lifts.</li><li>Use A/B testing on meta descriptions to measure click-through rate improvements.</li></ul><br></div></section>
+                <section id="conclusion-and-next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion and Next Steps</h2>
+                    </div>
+                    <div class="section-content"><br><p>Rijschool Start-Line has shown positive growth with a 13.42% increase in organic traffic over the past year, but significant opportunities remain to improve their SEO performance in the Dutch market. Our analysis reveals several critical areas for improvement:</p><br><ol><li><strong>Technical SEO</strong>: Address the identified HTML errors, missing image attributes, and render-blocking resources to improve site performance and user experience.</li></ol><br><ol><li><strong>First-Page Rankings</strong>: Focus on reversing the 28.57% decrease in positions 4-10 rankings to capture more valuable first-page visibility.</li></ol><br><ol><li><strong>Content Strategy</strong>: Develop comprehensive, location-specific content targeting high-value keywords and addressing content gaps identified in our analysis.</li></ol><br><ol><li><strong>SERP Optimization</strong>: Improve titles and meta descriptions to be more concise, keyword-focused, and benefit-driven, following the successful patterns of competitors like EasyDriving.nl.</li></ol><br><ol><li><strong>Backlink Profile Cleanup</strong>: Disavow the 7 high-spam backlinks and evaluate the 25 medium-risk backlinks to improve overall link profile health. Address the concerning 271 broken backlinks through outreach and redirection strategies.</li></ol><br><ol><li><strong>Competitive Positioning</strong>: Implement strategies to compete with EasyDriving.nl, Rijschoolgul.nl, and DriverCompany.nl, which have stronger keyword rankings and effective SERP strategies.</li></ol><br><ol><li><strong>Local SEO</strong>: Enhance local search presence through structured data implementation and neighborhood-specific landing pages.</li></ol><br><ol><li><strong>Keyword Prioritization</strong>: Focus on the identified high-value keywords with significant search volume and medium competition, particularly:</li></ol><ul><li>"rijschool in den haag" (2400 searches)</li><li>"rijschool den haag" (2400 searches)</li><li>"rijscholen in den haag" (2400 searches)</li><li>"rijles in den haag" (720 searches)</li><li>"motorrijles den haag" (590 searches)</li></ul><br><ol><li><strong>Specialized Content Development</strong>: Create content targeting specific demographics (women drivers) and addressing payment options (installment plans).</li></ol><br><p>WP SEO AI can help Rijschool Start-Line implement these recommendations through our comprehensive AI-driven SEO toolset, providing ongoing keyword analysis, content creation, competitor tracking, and technical SEO audits tailored specifically to the driving school industry in the Netherlands. Our platform's backlink analysis tools can continuously monitor link health and identify new opportunities to outperform competitors like EasyDriving.nl in the Dutch market.</p><br><p>By implementing these recommendations, Rijschool Start-Line can significantly improve their organic visibility, attract more potential students, and establish themselves as a leading driving school in the Den Haag area and beyond.</p><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Timelines should be realistic: technical fixes (2–4 weeks), content creation (4–8 weeks), backlink cleanup (ongoing).</li></ul></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - start-line',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

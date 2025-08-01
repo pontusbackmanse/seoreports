@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - JG Webmarketing</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">JG Webmarketing • Jgwebmarketing.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 1, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>SEO Performance Metrics (Last 12 Months)</strong></th><th><strong>Value / Change</strong></th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV) Growth</td><td class="positive">+20.95%</td></tr><tr><td class="">Keywords Ranking Position 1</td><td class="positive">3 (+200% increase)</td></tr><tr><td class="">Keywords Ranking Positions 2-3</td><td class="positive">5 (+66.67% increase)</td></tr><tr><td class="">Keywords Ranking Positions 4-10</td><td class="positive">24 (+100% increase)</td></tr><tr><td class="">Total Ranking Keywords</td><td class="">459</td></tr><tr><td class="">Estimated Paid Traffic Cost</td><td class="">$4,052.33</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Sustained ETV growth (+20.95%) and ranking gains at the top of the SERPs demonstrate strong recent content and optimization efforts.</li><li>Monitor paid traffic cost efficiency: with $4K in estimated spend, evaluate ROI of PPC versus organic channels.</li><li>Focus ongoing efforts on maintaining momentum for top-performing pages and service-specific keywords.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Top Competitors & Keywords They Rank Better For</strong></th><th><strong>Search Volume</strong></th><th><strong>Competitor(s)</strong></th></tr></thead><tbody><tr><td class="">indexeren</td><td class="">33,100</td><td class="">Doelbewust.nl, Frankwatching.com</td></tr><tr><td class="">seo optimalisatie</td><td class="">1,600</td><td class="">Doelbewust.nl</td></tr><tr><td class="">seo optimaliseren</td><td class="">1,600</td><td class="">Doelbewust.nl</td></tr><tr><td class="">website optimaliseren</td><td class="">1,000</td><td class="">Doelbewust.nl</td></tr><tr><td class="">hoger op google</td><td class="">1,000</td><td class="">Doelbewust.nl</td></tr><tr><td class="">zoekmachine optimalisatie bureau</td><td class="">720</td><td class="">Doelbewust.nl, Dofollow.nl</td></tr><tr><td class="">lokale seo</td><td class="">720</td><td class="">Doelbewust.nl</td></tr><tr><td class="">seo strategieën</td><td class="">720</td><td class="">Frankwatching.com</td></tr><tr><td class="">affiliate marketing</td><td class="">8,100</td><td class="">Frankwatching.com</td></tr><tr><td class="">marketing</td><td class="">9,900</td><td class="">Frankwatching.com</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a targeted gap analysis for the top 5 competitor keywords (e.g., “indexeren”, “seo optimalisatie”).</li><li>Develop or expand “Wat is…” glossary pages to directly compete with Doelbewust.nl and Frankwatching.com.</li><li>Incorporate benefit-driven CTAs and free audit offers in meta descriptions to match competitor tactics.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Opportunity Keywords to Target</strong></th><th><strong>Search Volume</strong></th><th><strong>Competition</strong></th><th><strong>Reason to Target</strong></th></tr></thead><tbody><tr><td class="">website laten maken</td><td class="">8,100 - 14,800</td><td class="">Medium</td><td class="">High volume, relevant to core service, medium competition</td></tr><tr><td class="">wordpress website laten maken</td><td class="">590 - 4,400</td><td class="">Low</td><td class="">Niche, low competition, strong conversion potential</td></tr><tr><td class="">kosten website laten maken</td><td class="">720 - 2,900</td><td class="">Medium</td><td class="">High commercial intent, pricing-related queries</td></tr><tr><td class="">website laten maken rotterdam</td><td class="">590 - 2,900</td><td class="">Low</td><td class="">Local SEO expansion opportunity</td></tr><tr><td class="">seo teksten laten schrijven</td><td class="">210 - 1,300</td><td class="">Low</td><td class="">Content creation service, low competition</td></tr><tr><td class="">professioneel website laten maken</td><td class="">590 - 2,400</td><td class="">Low</td><td class="">Quality-focused keyword, good conversion potential</td></tr><tr><td class="">online marketing uitbesteden</td><td class="">20 - 110</td><td class="">Low</td><td class="">Service outsourcing keyword, niche but relevant</td></tr><tr><td class="">chatgpt 4o</td><td class="">2,900</td><td class="">Medium</td><td class="">Trending AI topic, currently ranking #15, growth potential</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize “website laten maken” cluster (high volume + commercial intent) with a dedicated pillar page and supporting subpages for location and pricing.</li><li>Leverage the trending “chatgpt 4o” keyword by refreshing and expanding AI-focused content to capture rapid interest.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>JG Webmarketing shows strong organic growth (+20.95% ETV) and improved keyword rankings, especially in local SEO (Arnhem) and linkbuilding services.</li><li>Top competitors Doelbewust.nl and Dofollow.nl outperform JG Webmarketing on high-volume, high-value keywords related to SEO optimization and local marketing.</li><li>Significant keyword opportunities exist in website development ("website laten maken") and emerging AI-related topics ("chatgpt 4o").</li><li>Several knowledge base articles underperform and require optimization or consolidation.</li><li>Technical SEO issues such as "no paragraph found" errors and cache control need urgent fixes.</li><li>Backlink profile is solid but contains 27% medium-risk spammy links; disavowal and quality link acquisition are recommended.</li><li>Competitors use benefit-driven meta descriptions and targeted "Wat is..." content that JG Webmarketing can emulate.</li><li>Expanding local SEO beyond Arnhem and focusing on MKB (small and medium businesses) can capture untapped market segments.</li><li>Immediate actions include toxic backlink disavowal, technical fixes, and updating outdated content (e.g., "SEO 2024" to "SEO 2025").</li><li>Long-term strategy should focus on content diversification, backlink outreach, and continuous competitive monitoring.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Convene a cross-functional SEO and content team to allocate resources for high-priority tasks (disavow, technical audit, content updates) within the next 30 days.</li><li>Set up bi-weekly check-ins to track progress against the TL;DR action items.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-jg-webmarketing" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: JG Webmarketing</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for JG Webmarketing, a digital marketing agency based in the Netherlands. The company offers services including SEO (Zoekmachine optimalisatie), e-commerce development (Webshop laten maken), website development (Website laten maken), website maintenance (Website onderhoud), and Google Ads <a href="https://jgwebmarketing.nl" class="link-reference" target="_blank" rel="noopener">Company Website</a>.</p><br><p>Our analysis reveals that JG Webmarketing has experienced significant growth in organic visibility over the past year, with a 20.95% increase in estimated traffic volume. However, we've identified several opportunities for improvement, particularly in optimizing underperforming knowledge base content, addressing technical SEO issues, and targeting high-potential keywords with dedicated content strategies. The competitive analysis reveals that direct competitors like Doelbewust.nl and Dofollow.nl are outperforming JG Webmarketing for several high-value keywords, particularly in "Wat is..." content and MKB-focused marketing. Additionally, our backlink analysis shows a solid foundation with 1,145 backlinks, but opportunities exist to improve backlink quality and reduce potentially harmful links.</p><br></div></section>
+                <section id="1-company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">1. Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>JG Webmarketing is a digital marketing agency operating in the Netherlands. Their service offerings include:</p><ul><li>SEO (Zoekmachine optimalisatie)</li><li>E-commerce development (Webshop laten maken)</li><li>Website development (Website laten maken)</li><li>Website maintenance (Website onderhoud)</li><li>Google Ads campaigns</li></ul><br><p>These services are prominently featured on their homepage under "Onze diensten voor jouw online marketing" and on their dedicated services page <a href="https://jgwebmarketing.nl/diensten/" class="link-reference" target="_blank" rel="noopener">Company Website</a>.</p><br></div></section>
+                <section id="2-seo-performance-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">2. SEO Performance Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="2-1-overall-seo-performance-in-the-netherlands">2.1 Overall SEO Performance in the Netherlands</h3><p>Our analysis of JG Webmarketing's organic search performance reveals positive growth trends:</p><br><p><strong>Organic Visibility Growth:</strong></p><ul><li>20.95% increase in Estimated Traffic Volume (ETV) from August 2024 to July 2025</li><li>Significant position improvements across multiple SERP rankings:</li><li>Position 1: +200.00% increase</li><li>Positions 2-3: +66.67% increase</li><li>Positions 4-10: +100.00% increase</li></ul><br><p><strong>Latest Organic Visibility Metrics (July 2025):</strong></p><ul><li>Position 1: 3 keywords</li><li>Positions 2-3: 5 keywords</li><li>Positions 4-10: 24 keywords</li><li>Positions 11-20: 51 keywords</li><li>Total keywords: 459</li><li>Estimated Traffic Volume (ETV): 1,127.93</li><li>Estimated Paid Traffic Cost: $4,052.33</li></ul><br><p><strong>Top-Performing Pages:</strong></p><ul><li>Homepage (https://jgwebmarketing.nl/): Ranks for 18 keywords with the highest ETV (202.01)</li><li>Knowledge Base - Indexeren (https://jgwebmarketing.nl/kennisbank/indexeren/): High ETV (114.11) with 16 keywords</li><li>Knowledge Base - Chat GPT (https://jgwebmarketing.nl/kennisbank/chat-gpt/): High ETV (113.86) with 15 keywords</li><li>Linkbuilding Service (https://jgwebmarketing.nl/linkbuilding-uitbesteden/): Position 1 ranking with ETV of 69.64</li><li>Local SEO - Arnhem (https://jgwebmarketing.nl/seo-arnhem/): Position 1 ranking with ETV of 55.20</li></ul><br><p><strong>Underperforming Pages:</strong></p><ul><li>Multiple knowledge base articles and blog posts with low ETV values (below 5) and rankings between positions 41-100, including:</li><li>https://jgwebmarketing.nl/kennisbank/url/</li><li>https://jgwebmarketing.nl/kennisbank/social-media-marketing/</li><li>https://jgwebmarketing.nl/kennisbank/domain-overview/</li><li>https://jgwebmarketing.nl/kennisbank/google-search-console/</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Consolidate or expand underperforming knowledge base articles by merging related topics and improving on-page SEO (headers, internal links).</li><li>Use content audits to identify pages with similar intent and create comprehensive guides that cover multiple subtopics in one place.</li></ul><br><p><strong>Technical SEO Issues:</strong></p><ul><li>"No paragraph has been found within the local scope" errors</li><li>Large node warning affecting user experience</li><li>Cache control issues requiring investigation</li><li>Positive aspects include mobile-friendliness and lack of render-blocking resources</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Schedule a detailed technical SEO audit with development to fix paragraph errors and cache settings within the next 14 days.</li><li>Prioritize fixes that directly impact crawlability and Core Web Vitals scores.</li></ul><br><h3 id="2-2-keyword-analysis-for-the-netherlands">2.2 Keyword Analysis for the Netherlands</h3><br><p><strong>Top Performing Keywords (Rank 1-10):</strong></p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Current Position</th></tr></thead><tbody><tr><td class="">jg webmarketing</td><td class="">320</td><td class="">1</td></tr><tr><td class="">linkbuilding laten doen</td><td class="">110</td><td class="">2</td></tr><tr><td class="">seo bureau arnhem</td><td class="">110</td><td class="">1</td></tr><tr><td class="">clickbait voorbeelden</td><td class="">110</td><td class="">4</td></tr><tr><td class="">web marketing</td><td class="">210</td><td class="">3</td></tr><tr><td class="">zoekmachine marketing uitbesteden</td><td class="">70</td><td class="">3</td></tr><tr><td class="">seo specialist arnhem</td><td class="">110</td><td class="">7</td></tr><tr><td class="">website marketing specialist</td><td class="">10</td><td class="">4</td></tr><tr><td class="">b2a</td><td class="">90</td><td class="">6</td></tr><tr><td class="">internet marketing service</td><td class="">590</td><td class="">8</td></tr><tr><td class="">linkbuilding specialist</td><td class="">390</td><td class="">7</td></tr><tr><td class="">audit website</td><td class="">320</td><td class="">8</td></tr><tr><td class="">geïndexeerd</td><td class="">720</td><td class="">8</td></tr><tr><td class="">internet marketing services</td><td class="">590</td><td class="">9</td></tr><tr><td class="">pa da</td><td class="">70</td><td class="">6</td></tr><tr><td class="">seo arnhem</td><td class="">210</td><td class="">9</td></tr><tr><td class="">seo web</td><td class="">880</td><td class="">8</td></tr><tr><td class="">site audit</td><td class="">170</td><td class="">7</td></tr><tr><td class="">gastblog</td><td class="">140</td><td class="">9</td></tr><tr><td class="">linkbuilding expert</td><td class="">170</td><td class="">10</td></tr></tbody></table></div><p><strong>Key Keyword Insights:</strong></p><ul><li><strong>Branded Keyword Dominance:</strong> Strong #1 ranking for "jg webmarketing" (320 monthly searches)</li><li><strong>Local SEO Success:</strong> Top rankings for "seo bureau arnhem" (#1) and "seo specialist arnhem" (#7)</li><li><strong>Linkbuilding Focus:</strong> Multiple top-ranking keywords related to linkbuilding services</li><li><strong>Knowledge Base Visibility:</strong> Good rankings for informational keywords like "geïndexeerd" and "audit website"</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Strengthen conversion paths on top-performing service pages by adding clear CTAs, testimonials, and pricing snippets.</li><li>Leverage successful local SEO pages as templates for expansion into other Dutch cities.</li></ul><br><p><strong>Keyword Opportunities (Rank 11-30):</strong></p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Current Position</th></tr></thead><tbody><tr><td class="">chatgpt 4o</td><td class="">2900</td><td class="">15</td></tr><tr><td class="">backlinks kopen</td><td class="">720</td><td class="">14</td></tr><tr><td class="">linkbuilding bureau</td><td class="">590</td><td class="">13</td></tr><tr><td class="">online marketing specialist</td><td class="">390</td><td class="">12</td></tr><tr><td class="">linkbuilding strategie</td><td class="">390</td><td class="">16</td></tr><tr><td class="">online marketing specialisten</td><td class="">390</td><td class="">15</td></tr><tr><td class="">advies online marketing</td><td class="">390</td><td class="">14</td></tr><tr><td class="">web audit</td><td class="">320</td><td class="">12</td></tr><tr><td class="">gpt betekenis</td><td class="">260</td><td class="">13</td></tr><tr><td class="">internet marketing expert</td><td class="">210</td><td class="">14</td></tr><tr><td class="">linkbuilding tips</td><td class="">210</td><td class="">15</td></tr><tr><td class="">geïndexeerd betekenis</td><td class="">210</td><td class="">17</td></tr><tr><td class="">seo laten doen</td><td class="">170</td><td class="">8</td></tr><tr><td class="">online marketing expert</td><td class="">170</td><td class="">12</td></tr><tr><td class="">zoekmachine optimalisatie expert</td><td class="">170</td><td class="">13</td></tr><tr><td class="">chat gpt betekenis</td><td class="">170</td><td class="">14</td></tr></tbody></table></div><p><strong>High-Value Keyword Opportunities:</strong></p><br><p>Based on search volume, competition, and relevance, these keywords present significant opportunities:</p><br><p><strong>Top Priority Keywords:</strong></p><ul><li><strong>website laten maken</strong>: 8,100-14,800 monthly searches | MEDIUM competition</li><li><strong>wordpress website laten maken</strong>: 590-4,400 monthly searches | LOW competition</li><li><strong>kosten website laten maken</strong>: 720-2,900 monthly searches | MEDIUM competition</li><li><strong>website laten maken rotterdam</strong>: 590-2,900 monthly searches | LOW competition</li></ul><br><p><strong>Secondary Keywords:</strong></p><ul><li><strong>seo teksten laten schrijven</strong>: 210-1,300 monthly searches | LOW competition</li><li><strong>professioneel website laten maken</strong>: 590-2,400 monthly searches | LOW competition</li><li><strong>online marketing uitbesteden</strong>: 20-110 monthly searches | LOW competition</li></ul><br><h3 id="2-3-competitive-landscape-in-the-netherlands">2.3 Competitive Landscape in the Netherlands</h3><br><p><strong>Top Competitors Overview:</strong></p><br><ol><li><strong>Doelbewust.nl (Direct Competitor)</strong></li></ol><ul><li><strong>Key Strengths:</strong> Strong performance for SEO-related terms and "Wat is" definitions</li><li><strong>Target Audience:</strong> Specifically targets MKB (small and medium-sized businesses)</li><li><strong>SERP Strategy:</strong> Uses consistent title formula "[Keyword] | [USP] ✳️" with action-oriented meta descriptions including free scan offers</li><li><strong>Content Focus:</strong> Comprehensive glossary-style content for SEO and marketing terms</li></ul><br><ol><li><strong>Dofollow.nl (Direct Competitor)</strong></li></ol><ul><li><strong>Key Strengths:</strong> Dominates location-based keywords (Arnhem) and general "online marketing bureau" terms</li><li><strong>SERP Strategy:</strong> Uses shorter, more general titles with meta descriptions focusing on core values</li><li><strong>Content Focus:</strong> Strong local SEO content and job-related searches</li></ul><br><ol><li><strong>Frankwatching.com (Indirect Competitor)</strong></li></ol><ul><li><strong>Key Strengths:</strong> High domain authority with broad content coverage</li><li><strong>Type:</strong> Content/resource provider rather than direct service competitor</li><li><strong>Content Strategy:</strong> Consistent publication of high-quality blog posts on various marketing topics</li></ul><br><p><strong>Keyword Performance Comparison:</strong></p><br><p>The competitive analysis reveals several high-value keywords where competitors are outperforming JG Webmarketing:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competitor Ranking Better</th></tr></thead><tbody><tr><td class="">indexeren</td><td class="">33,100</td><td class="">Doelbewust.nl, Frankwatching.com</td></tr><tr><td class="">seo optimalisatie</td><td class="">1,600</td><td class="">Doelbewust.nl</td></tr><tr><td class="">seo optimaliseren</td><td class="">1,600</td><td class="">Doelbewust.nl</td></tr><tr><td class="">website optimaliseren</td><td class="">1,000</td><td class="">Doelbewust.nl</td></tr><tr><td class="">optimaliseren website</td><td class="">1,000</td><td class="">Doelbewust.nl</td></tr><tr><td class="">hoger op google</td><td class="">1,000</td><td class="">Doelbewust.nl</td></tr><tr><td class="">zoekmachine optimalisatie bureau</td><td class="">720</td><td class="">Doelbewust.nl, Dofollow.nl</td></tr><tr><td class="">lokale seo</td><td class="">720</td><td class="">Doelbewust.nl</td></tr><tr><td class="">seo strategieën</td><td class="">720</td><td class="">Frankwatching.com</td></tr><tr><td class="">affiliate marketing</td><td class="">8,100</td><td class="">Frankwatching.com</td></tr><tr><td class="">marketing</td><td class="">9,900</td><td class="">Frankwatching.com</td></tr></tbody></table></div><p><strong>Competitor Content & SERP Strategies:</strong></p><br><ol><li><strong>Doelbewust.nl's Effective Strategies:</strong></li></ol><ul><li><strong>"Wat is..." Content:</strong> Consistently ranks higher for glossary-style content</li><li><strong>MKB Focus:</strong> Specifically targets small and medium-sized businesses in keywords and meta descriptions</li><li><strong>Power Words:</strong> Uses terms like "Groeiversnellers" (Growth Accelerators) and includes emojis (✳️) to stand out</li><li><strong>Call to Action:</strong> Includes "GRATIS marketing scan" in meta descriptions</li></ul><br><ol><li><strong>Dofollow.nl's Effective Strategies:</strong></li></ol><ul><li><strong>Local SEO Dominance:</strong> Strong performance for Arnhem-based searches</li><li><strong>Clear Value Proposition:</strong> Uses phrases like "heldere en meetbare marketing" in meta descriptions</li><li><strong>Benefit-Driven Descriptions:</strong> Highlights benefits like "Meer verkeer" and "Maximale online zichtbaarheid"</li></ul><br><ol><li><strong>Frankwatching.com's Effective Strategies:</strong></li></ol><ul><li><strong>Comprehensive Content:</strong> Ranks for a broad range of general marketing terms</li><li><strong>Educational Approach:</strong> Focuses on informational content rather than service-oriented pages</li><li><strong>Content Depth:</strong> Provides in-depth articles on marketing topics</li></ul><br><h3 id="2-4-backlink-authority-analysis-for-the-netherlands">2.4 Backlink & Authority Analysis for the Netherlands</h3><br><p><strong>Backlink Profile Overview:</strong></p><ul><li><strong>Total Backlinks:</strong> 1,145</li><li><strong>Referring Domains:</strong> 653</li><li><strong>Referring Main Domains:</strong> 422</li><li><strong>Domain Rank:</strong> 230</li><li><strong>First Seen:</strong> January 17, 2019</li><li><strong>Backlink Spam Score:</strong> 27% (Low-Medium risk)</li></ul><br><p><strong>Backlink Quality Analysis:</strong></p><ul><li><strong>Geographic Distribution:</strong></li><li>.nl domains: 738 backlinks (67%)</li><li>.com domains: 198 backlinks (18%)</li><li>.be domains: 66 backlinks (6%)</li><li>Other TLDs: 9%</li><li><strong>Link Types:</strong></li><li>Anchor text links: 1,089 (95%)</li><li>Image links: 12 (5%)</li><li><strong>Link Attributes:</strong></li><li>Nofollow links: 283 (25%)</li><li>Noopener: 117 (10%)</li><li>Noreferrer: 47 (4%)</li></ul><br><p><strong>High-Quality Referring Domains:</strong></p><p>Several authoritative Dutch websites link to JG Webmarketing, including:</p><ul><li>web.nl (5% spam score)</li><li>franchiseplus.nl (0% spam score)</li><li>stagemarkt.nl (0% spam score)</li><li>nieuws-ondernemen.nl (0% spam score)</li><li>businessbox.nl (0% spam score)</li></ul><br><p><strong>Potentially Harmful Backlinks:</strong></p><p>27% of backlinks have a medium spam score, with domains like:</p><ul><li>linkplein.net (38% spam score)</li><li>onlinezakengids.nl (36% spam score)</li><li>expertpagina.nl (44% spam score)</li><li>One high-risk domain: webscountry.com (63% spam score)</li></ul><br><p><strong>Backlink Competitors Analysis:</strong></p><p>Several competitors have overlapping backlink profiles with JG Webmarketing:</p><ul><li>expertpagina.nl (440 intersections)</li><li>tipjes.nl (342 intersections)</li><li>frankwatching.com (249 intersections)</li><li>google.nl (195 intersections)</li><li>marketingfacts.nl (178 intersections)</li></ul><br><p><strong>Anchor Text Analysis:</strong></p><ul><li><strong>Brand Anchors:</strong> Most backlinks use "JG Webmarketing" as anchor text</li><li><strong>Service Anchors:</strong> Some use service-related terms like "Internet marketing bureau" and "Online marketing uitbesteden"</li><li><strong>Generic Anchors:</strong> Many use generic terms or URLs as anchor text</li></ul><br><p><strong>Link Placement Analysis:</strong></p><ul><li>Article body: 196 links</li><li>Footer: 75 links</li><li>Sidebar (aside): 23 links</li><li>Main content: 20 links</li><li>Header: 4 links</li></ul><br></div></section>
+                <section id="3-insights-and-opportunities" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">3. Insights and Opportunities</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="3-1-content-strategy-observations">3.1 Content Strategy Observations</h3><p>Based on our analysis, JG Webmarketing employs several content strategies:</p><br><ol><li><strong>Service Pages:</strong> Dedicated pages for core services (SEO, Google Ads, linkbuilding, webshop development)</li><li><strong>Knowledge Base ("Kennisbank"):</strong> Educational content targeting informational keywords</li><li><strong>"What is" Pages:</strong> Content explaining marketing concepts (e.g., "wat-is-marketing", "wat-is-seo")</li><li><strong>Location-Specific Pages:</strong> Targeting local SEO in regions like Arnhem</li><li><strong>Blog Posts:</strong> Covering various digital marketing topics</li></ol><br><h3 id="3-2-key-opportunities-for-improvement">3.2 Key Opportunities for Improvement</h3><br><ol><li><strong>Content Gap: Online Marketing Specialist/Expert</strong></li></ol><ul><li>Multiple variations of "online marketing specialist/expert" keywords (search volumes 110-390) rank on page 2</li><li>Current strategy of targeting all these variations to a single page is suboptimal</li><li>Recommendation: Create dedicated pages for each keyword variation to improve relevance and rankings</li></ul><br><ol><li><strong>ChatGPT Content Opportunity</strong></li></ol><ul><li>"chatgpt 4o" has extremely high search volume (2,900) with current ranking at position 15</li><li>Recommendation: Optimize existing article with latest information and create additional content formats about ChatGPT and AI in marketing</li></ul><br><ol><li><strong>Website Development Focus</strong></li></ol><ul><li>High-volume keywords like "website laten maken" (8,100-14,800 searches) present significant growth opportunities</li><li>Recommendation: Create dedicated content targeting these high-value keywords with low to medium competition</li></ul><br><ol><li><strong>Knowledge Base Optimization</strong></li></ol><ul><li>Many knowledge base articles are underperforming (positions 41-100)</li><li>Recommendation: Enhance these pages with more comprehensive content and better keyword targeting</li></ul><br><ol><li><strong>Technical SEO Fixes</strong></li></ol><ul><li>Address identified technical issues to improve crawlability and user experience</li></ul><br><ol><li><strong>Local SEO Expansion</strong></li></ol><ul><li>Current success with Arnhem-focused pages suggests opportunity to target additional locations</li><li>Recommendation: Create location-specific pages for other major Dutch cities</li></ul><br><ol><li><strong>Update Outdated Content</strong></li></ol><ul><li>Content targeting "seo 2024" should be updated to "SEO 2025" to maintain relevance</li><li>Recommendation: Regularly audit and update time-sensitive content</li></ul><br><ol><li><strong>"Wat is..." Content Strategy</strong></li></ol><ul><li>Competitor Doelbewust.nl consistently outranks JG Webmarketing for "Wat is..." keywords</li><li>Recommendation: Create a comprehensive glossary section with in-depth explanations of key SEO and marketing terms</li></ul><br><ol><li><strong>MKB (Small Business) Focus</strong></li></ol><ul><li>Doelbewust.nl specifically targets MKB businesses in their content and meta descriptions</li><li>Recommendation: Develop targeted content for small and medium-sized businesses to capture this market segment</li></ul><br><ol><li><strong>Meta Description Optimization</strong></li></ol><ul><li>Competitors use benefit-driven meta descriptions with clear calls to action</li><li>Recommendation: Revise meta descriptions to highlight benefits and include compelling calls to action</li></ul><br><ol><li><strong>Backlink Profile Improvement</strong></li></ol><ul><li>27% of backlinks have medium spam scores that could potentially harm rankings</li><li>Recommendation: Disavow potentially harmful links and focus on acquiring more high-quality backlinks</li></ul><br><ol><li><strong>Authoritative Link Building</strong></li></ol><ul><li>Several high-authority Dutch websites link to competitors but not to JG Webmarketing</li><li>Recommendation: Develop targeted outreach campaigns to acquire links from these authoritative domains</li></ul><br></div></section>
+                <section id="4-actionable-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tasks"></i></div>
+                        <h2 class="section-title">4. Actionable Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="4-1-content-strategy-recommendations">4.1 Content Strategy Recommendations</h3><br><ol><li><strong>Create Dedicated Pages for "Online Marketing Specialist/Expert" Keywords</strong></li></ol><ul><li>Develop separate, highly targeted pages for each keyword variation instead of targeting all to a single page</li><li>Focus on unique aspects of each keyword to improve relevance and rankings</li></ul><br><ol><li><strong>Optimize "chatgpt 4o" Content</strong></li></ol><ul><li>Conduct thorough keyword research to identify related keywords</li><li>Update existing article with latest information and insights</li><li>Consider creating additional content formats (video, infographic) about ChatGPT</li></ul><br><ol><li><strong>Develop Comprehensive Website Development Content</strong></li></ol><ul><li>Create in-depth content targeting high-volume keywords like "website laten maken"</li><li>Include pricing information to capture "kosten website laten maken" searches</li><li>Develop platform-specific content for "wordpress website laten maken"</li></ul><br><ol><li><strong>Strengthen Internal Linking</strong></li></ol><ul><li>Improve internal linking between relevant pages, especially between blog posts and service pages</li><li>Create a more structured content hierarchy to distribute link equity effectively</li></ul><br><ol><li><strong>Expand Local SEO Strategy</strong></li></ol><ul><li>Replicate the success of "seo arnhem" by creating similar pages for other Dutch cities</li><li>Incorporate local business schema markup to enhance local search visibility</li></ul><br><ol><li><strong>Update and Enhance Knowledge Base</strong></li></ol><ul><li>Audit underperforming knowledge base articles</li><li>Expand content with more comprehensive information</li><li>Improve keyword targeting and on-page optimization</li></ul><br><ol><li><strong>Address Technical SEO Issues</strong></li></ol><ul><li>Fix "no paragraph found" errors</li><li>Resolve cache control issues</li><li>Optimize page speed and mobile experience</li></ul><br><ol><li><strong>Create a Comprehensive "Wat is..." Glossary Section</strong></li></ol><ul><li>Develop a dedicated glossary section on the website</li><li>Create in-depth "Wat is..." pages for key SEO and marketing terms</li><li>Optimize titles and meta descriptions to include keywords and clear benefits</li><li>Example: For "indexeren" (33,100 search volume), create a page titled "Wat is Indexeren? De Complete Gids" with benefit-driven meta description</li></ul><br><ol><li><strong>Develop MKB-Focused Content Strategy</strong></li></ol><ul><li>Create case studies showcasing successful SEO campaigns for MKB clients</li><li>Use "MKB" in relevant keywords and meta descriptions</li><li>Develop service pages specifically addressing the needs of small and medium-sized businesses</li><li>Example: Create a service page titled "SEO Optimalisatie voor het MKB | Meer Klanten & Omzet"</li></ul><br><ol><li><strong>Optimize Meta Descriptions</strong></li></ol><ul><li>Rewrite meta descriptions to be more benefit-driven and include clear calls to action</li><li>Focus on value propositions and what users will gain by clicking</li><li>Include offers like "Gratis SEO scan" where appropriate</li><li>Example: Instead of "Wat is Indexeren? Indexeren is het proces...", use "Wat is Indexeren? Leer hoe indexeren werkt en hoe je jouw website beter vindbaar maakt in Google. Lees nu onze gids!"</li></ul><br><ol><li><strong>Target High-Value Competitor Keywords</strong></li></ol><ul><li>Prioritize creating content for keywords where competitors are ranking well:</li><li>"indexeren" (33,100 search volume)</li><li>"seo optimalisatie" (1,600 search volume)</li><li>"website optimaliseren" (1,000 search volume)</li><li>"hoger op google" (1,000 search volume)</li></ul><br><h3 id="4-2-backlink-strategy-recommendations">4.2 Backlink Strategy Recommendations</h3><br><ol><li><strong>Disavow Toxic Backlinks</strong></li></ol><ul><li>Identify and disavow potentially harmful backlinks, particularly from domains with high spam scores</li><li>Focus on the one high-risk domain (webscountry.com) and evaluate medium-risk domains for potential disavowal</li></ul><br><ol><li><strong>Target High-Authority Dutch Websites</strong></li></ol><ul><li>Develop outreach campaigns targeting authoritative Dutch websites that currently link to competitors but not to JG Webmarketing</li><li>Priority targets include:</li><li>frankwatching.com (rank: 46)</li><li>marketingfacts.nl (rank: 35)</li><li>encyclo.nl (rank: 6)</li><li>startpagina.nl (rank: 22)</li><li>adwise.nl (rank: 9)</li></ul><br><ol><li><strong>Diversify Anchor Text Profile</strong></li></ol><ul><li>Current anchor text profile is heavily branded</li><li>Create more keyword-rich anchor text by developing shareable content that naturally attracts links with relevant anchor text</li><li>Focus on service-related keywords like "SEO specialist," "linkbuilding expert," and "online marketing bureau"</li></ul><br><ol><li><strong>Leverage Client Relationships for Backlinks</strong></li></ol><ul><li>Analyze client websites for backlink opportunities</li><li>Implement a systematic approach to request testimonial links from satisfied clients</li><li>Example: The backlink from ecowooddesign.nl shows this strategy is already working but could be expanded</li></ul><br><ol><li><strong>Create Link-Worthy Content</strong></li></ol><ul><li>Develop original research, case studies, or tools that naturally attract backlinks</li><li>Focus on topics relevant to the Dutch digital marketing industry</li><li>Example topics:</li><li>"State of SEO in the Netherlands 2025"</li><li>"MKB Digital Marketing Benchmark Report"</li><li>"Dutch E-commerce SEO Best Practices"</li></ul><br><ol><li><strong>Guest Posting Strategy</strong></li></ol><ul><li>Identify high-authority Dutch marketing and business websites accepting guest posts</li><li>Develop a systematic outreach approach with tailored content pitches</li><li>Focus on websites with low spam scores and high domain authority</li></ul><br><ol><li><strong>Local Business Directories Cleanup</strong></li></ol><ul><li>Ensure consistent NAP (Name, Address, Phone) information across all business directories</li><li>Remove or update outdated listings</li><li>Target high-quality Dutch business directories while avoiding low-quality directory sites</li></ul><br><ol><li><strong>Competitor Backlink Acquisition</strong></li></ol><ul><li>Systematically target websites linking to multiple competitors but not to JG Webmarketing</li><li>Prioritize based on domain authority and relevance</li><li>Develop personalized outreach templates for each target website</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Begin the backlink phase by disavowing harmful links to protect current rankings, then shift resources to outreach efforts targeting authoritative domains.</li><li>Balance earned links with content-driven link bait (research, benchmarks) to diversify the profile and reduce reliance on branded anchors.</li></ul><br></div></section>
+                <section id="5-implementation-timeline" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">5. Implementation Timeline</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="immediate-actions-1-30-days-">Immediate Actions (1-30 Days)</h3><ul><li>Disavow toxic backlinks</li><li>Address critical technical SEO issues</li><li>Update outdated content (e.g., "SEO 2024" to "SEO 2025")</li><li>Optimize existing "chatgpt 4o" content to improve current position</li></ul><br><h3 id="short-term-actions-1-3-months-">Short-Term Actions (1-3 Months)</h3><ul><li>Create dedicated pages for "Online Marketing Specialist/Expert" keywords</li><li>Develop comprehensive "website laten maken" content</li><li>Implement internal linking improvements</li><li>Begin outreach to high-priority backlink targets</li></ul><br><h3 id="medium-term-actions-3-6-months-">Medium-Term Actions (3-6 Months)</h3><ul><li>Develop comprehensive "Wat is..." glossary section</li><li>Create MKB-focused content strategy</li><li>Expand local SEO to additional Dutch cities</li><li>Launch link-worthy content pieces</li></ul><br><h3 id="long-term-actions-6-12-months-">Long-Term Actions (6-12 Months)</h3><ul><li>Continuous backlink acquisition and monitoring</li><li>Regular content audits and updates</li><li>Competitive analysis refreshes</li><li>Performance tracking and strategy adjustments</li></ul><br><p>By implementing these recommendations, JG Webmarketing can further improve its SEO performance, capture untapped keyword opportunities, strengthen its backlink profile, and solidify its position in the competitive Dutch digital marketing landscape.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - JG Webmarketing',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

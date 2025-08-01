@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Ilionx</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Ilionx • Https://www.ilionx.com</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 1, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary-ilionx-seo-analysis-netherlands-market" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary: Ilionx SEO Analysis – Netherlands Market</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Overall SEO Performance (Last 12 Months)</strong></th><th><strong>Current Value</strong></th><th><strong>12-Month Change</strong></th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">6,889.91</td><td class="negative">-6.68%</td></tr><tr><td class="">Total Ranking Keywords</td><td class="">1,038</td><td class="">N/A</td></tr><tr><td class="">Keywords in Position 1</td><td class="">25</td><td class="positive">+150%</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">24</td><td class="positive">+26.32%</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">149</td><td class="positive">+39.25%</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="">232</td><td class="positive">+11.54%</td></tr><tr><td class="">Keywords in Positions 21-100</td><td class="negative">Significant decrease (-30.74% to -77%)</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>While Ilionx's overall traffic dipped by 6.68%, the significant gains in top 10 rankings (+39.25% in positions 4-10 and +150% in position 1) highlight strong content resonance.</li><li>Focus on developing long-tail content and internal linking strategies to recover visibility in positions 21–100.</li></ul><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Top Competitors & Keywords They Rank Well For (Ilionx Ranks Poorly)</strong></th><th><strong>Monthly Search Volume (NL)</strong></th><th><strong>Competition</strong></th></tr></thead><tbody><tr><td class="">IBM.com</td><td class=""></td><td class=""></td></tr><tr><td class="">- "etl"</td><td class="">2,400</td><td class="">Low</td></tr><tr><td class="">- "genai"</td><td class="">1,900</td><td class="">Low</td></tr><tr><td class="">- "grc"</td><td class="">1,300</td><td class="">Low</td></tr><tr><td class="">- "low code"</td><td class="">1,000</td><td class="">Medium</td></tr><tr><td class="">- "robotic process" / "robotic process automation" / "rpa robotics"</td><td class="">720</td><td class="">Medium</td></tr><tr><td class="">- "etl proces"</td><td class="">390</td><td class="">Low</td></tr><tr><td class="">- "werkopdrachten"</td><td class="">140</td><td class="">Low</td></tr><tr><td class="">- "forecasting modellen"</td><td class="">90</td><td class="">Low</td></tr><tr><td class=""><strong>Opportunity Keywords to Target</strong></td><td class=""><strong>Monthly Search Volume (NL)</strong></td><td class=""><strong>Competition</strong></td><td class=""><strong>Why Target?</strong></td></tr><tr><td class="">"data analyse tool" / "data-analyse tools"</td><td class="">170 - 12,100</td><td class="">Low</td><td class="">High volume, low competition, relevant intent</td></tr><tr><td class="">"cloud oplossingen mkb"</td><td class="">30 - 480</td><td class="">Low</td><td class="">Targets SMB market, low competition</td></tr><tr><td class="">"applicatie ontwikkeling"</td><td class="">50 - 480</td><td class="">Low</td><td class="">Commercial intent, low competition</td></tr><tr><td class="">"data-analyse" / "data analyse"</td><td class="">1,600 - 2,900</td><td class="">Low</td><td class="">Consistent search volume, foundational topic</td></tr><tr><td class="">"digitale transformatie nederland"</td><td class="">0 - 10</td><td class="">Low</td><td class="">Emerging topic, strategic long-term potential</td></tr><tr><td class="">"exploratieve data analyse"</td><td class="">170 - 390</td><td class="">Low</td><td class="">Niche technical term, low competition</td></tr><tr><td class="">"maatwerk applicatie ontwikkeling"</td><td class="">10 - 140</td><td class="">Low</td><td class="">Specific service offering, low competition</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>IBM’s stronghold on RPA, ETL, and “low code” means Ilionx should rapidly develop clear, definition-focused pages on those topics, optimized for featured snippets and internal linking.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR – Key Findings</h3><br><ul><li>Ilionx shows strong growth in top 10 keyword rankings (+39.25% in positions 4-10, +150% in position 1), but overall traffic decreased by 6.68% due to losses in lower positions.</li><li>Top-performing pages include the homepage and technical blogs on BIV classification and Slowly Changing Dimensions.</li><li>Service and client reference pages underperform and need optimization.</li><li>Technical SEO issues (render-blocking, missing alt tags, indexing) may hinder performance.</li><li>Ilionx ranks well for brand and location-based keywords but misses out on high-value technical and process automation keywords where IBM leads.</li><li>High-value keyword opportunities exist in data analysis tools, cloud solutions for SMBs, and application development with low competition.</li><li>Competitors like IBM dominate with "What is..." content and featured snippet optimization.</li><li>Ilionx’s backlink profile is strong locally but can improve anchor text diversity and disavow toxic links.</li><li>Recommended content strategy includes creating definition-focused content, optimizing underperforming pages, and targeting identified keyword gaps.</li><li>Backlink acquisition should focus on authoritative Dutch industry sites and government domains.</li><li>Avoid high-competition keywords to maximize ROI on SEO efforts.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Share this summary with stakeholders to align on quick wins: optimizing underperformers, fixing technical issues, and targeting immediate content gaps.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-ilionx" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Ilionx</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Ilionx is an IT service provider based in the Netherlands that specializes in simplifying complex IT environments for organizations. Their service portfolio includes:</p><br><ul><li><strong>Digital Strategy</strong>: Helping organizations create sustainable digital strategies with services like StrategiX</li><li><strong>Cloud Applications</strong>: Supporting cloud migration and optimization with cloud-native app development</li><li><strong>Data & AI</strong>: Enabling data-driven decision-making through reports, visualizations, and smart algorithms</li><li><strong>Hyperautomation</strong>: Streamlining processes through automation and integration</li><li><strong>Managed Services</strong>: Providing ongoing support for applications, workplace solutions, and cloud migrations</li><li><strong>Security</strong>: Offering comprehensive cybersecurity services</li><li><strong>Application Development and Modernization</strong>: Creating and updating business applications</li><li><strong>Digital Workplace</strong>: Designing and managing modern digital work environments</li></ul><br><p>Ilionx serves various industries including healthcare, government (local and central), retail, transport & logistics, energy, and telecom, with focus areas in security, digital sovereignty, generative AI, sustainability, and digital accessibility. (<a href="https://www.ilionx.com" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Leverage Ilionx’s strengths in generative AI and digital sovereignty by creating pillar pages that showcase case studies and best practices in these niches.</li></ul><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-traffic">Organic Visibility and Traffic</h3><br><ul><li><strong>Current Organic Traffic</strong>: Ilionx's website generates approximately 6,889.91 in estimated traffic volume (ETV) with 1,038 ranking keywords in the Netherlands.</li><li><strong>12-Month Trend</strong>: The data shows a 6.68% decrease in overall ETV from August 2024 to July 2025.</li><li><strong>Position Distribution</strong>:</li><li>Position 1: 25 keywords (150% increase year-over-year)</li><li>Positions 2-3: 24 keywords (26.32% increase)</li><li>Positions 4-10: 149 keywords (39.25% increase)</li><li>Positions 11-20: 232 keywords (11.54% increase)</li><li>Lower positions (21-100): Showing significant decreases (-30.74% to -77%)</li></ul><br><p>This indicates that while Ilionx is improving rankings for their most important keywords (moving into top positions), they may be losing visibility for a larger number of less competitive terms.</p><br><h3 id="top-performing-pages">Top-Performing Pages</h3><br><ol><li><strong>Homepage</strong> (https://www.ilionx.com/): Strong performance with high ETV (1,509.07) and estimated paid traffic value of $910.14</li><li><strong>BIV Classification Blog</strong> (https://www.ilionx.com/blogs/alles-over-de-biv-classificatie/): Exceptional performance with ETV of 331.38 and multiple top 3 rankings</li><li><strong>Slowly Changing Dimensions Blog</strong> (https://www.ilionx.com/blogs/welke-types-slowly-changing-dimensions-scd-zijn-er/): High ETV of 314.74 with strong keyword positions</li><li><strong>Location Pages</strong>: Particularly strong performance for Zwolle (ETV: 97.56) and Maastricht (ETV: 98.99) location pages</li></ol><br><h3 id="underperforming-pages">Underperforming Pages</h3><br><ol><li><strong>Service Pages</strong>: Many service-specific pages have lower visibility despite their commercial importance</li><li><strong>Client Reference Pages</strong>: These pages show potential but currently underperform in organic search</li><li><strong>Market-Specific Pages</strong>: Pages targeting industries like healthcare and retail/logistics have room for improvement</li></ol><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><br><p>Several technical issues were identified that may be impacting performance:</p><ul><li>Render-blocking resources affecting page load speed</li><li>Missing image alt attributes affecting accessibility and image search visibility</li><li>Potential indexing issues for certain content sections</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create a technical SEO sprint to:</li><li>Remove or defer render-blocking scripts</li><li>Audit and add alt text to all images</li><li>Ensure key pages are properly indexed and included in XML sitemaps</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><br><p>Ilionx has strong rankings for several categories of keywords:</p><br><p><strong>Brand Keywords (Position 1-3):</strong></p><ul><li>"ilionx" (3,600 monthly searches, Position 1)</li><li>"ilionx utrecht" (260 monthly searches, Position 1)</li><li>"ilionx groningen" (140 monthly searches, Position 1)</li><li>"ilionx vacatures" (210 monthly searches, Position 3)</li><li>"ilionx logo" (90 monthly searches, Position 2)</li></ul><br><p><strong>Location-Based Keywords (Position 1-3):</strong></p><ul><li>"ilionx hoofdkantoor utrecht it bedrijf" (720 monthly searches, Position 1)</li><li>"ilionx maastricht it bedrijf" (320 monthly searches, Position 1)</li><li>"ilionx amersfoort" (90 monthly searches, Position 1)</li><li>"ilionx zwolle" (90 monthly searches, Position 1)</li><li>"ilionx hoorn" (50 monthly searches, Position 1)</li></ul><br><p><strong>Technical Concept Keywords (Position 1-5):</strong></p><ul><li>"scd type 2" (110 monthly searches, Position 1)</li><li>"scd 2" (70 monthly searches, Position 1)</li><li>"scd types" (70 monthly searches, Position 1)</li><li>"slowly changing dimensions type 2" (110 monthly searches, Position 2)</li><li>"biv classificatie" (720 monthly searches, Position 4)</li><li>"biv-classificatie" (720 monthly searches, Position 4)</li><li>"hyperautomation" (260 monthly searches, Position 4)</li></ul><br><p><strong>Acquired Company Keywords (Position 1):</strong></p><ul><li>"inergy" (480 monthly searches, Position 1)</li><li>"inergy analytical solutions" (90 monthly searches, Position 1)</li><li>"le blanc advies" (170 monthly searches, Position 1)</li><li>"leblanc advies" (170 monthly searches, Position 1)</li><li>"lias software" (70 monthly searches, Position 1)</li><li>"zorgcontrol" (70 monthly searches, Position 1)</li></ul><br><h3 id="keyword-opportunities">Keyword Opportunities</h3><br><p>Based on our analysis, we've identified these high-value keyword opportunities:</p><br><p><strong>Top Priority Keywords (Low Competition):</strong></p><ul><li>"data analyse tool" (170-12,100 monthly searches, LOW competition)</li><li>"data-analyse tools" (170-12,100 monthly searches, LOW competition)</li><li>"data analyse tools" (170-12,100 monthly searches, LOW competition)</li><li>"cloud oplossingen mkb" (30-480 monthly searches, LOW competition)</li><li>"applicatie ontwikkeling" (50-480 monthly searches, LOW competition)</li></ul><br><p><strong>Secondary Keywords (Low Competition):</strong></p><ul><li>"data-analyse" (1,600-2,900 monthly searches, LOW competition)</li><li>"data analyse" (1,600-2,900 monthly searches, LOW competition)</li><li>"analyse of data" (1,600-2,900 monthly searches, LOW competition)</li><li>"analyse data" (1,600-2,900 monthly searches, LOW competition)</li><li>"zakelijke cloud oplossingen" (10-170 monthly searches, LOW competition)</li></ul><br><p><strong>Long-term Opportunities:</strong></p><ul><li>"digitale transformatie nederland" (0-10 monthly searches, LOW competition)</li><li>"exploratieve data analyse" (170-390 monthly searches, LOW competition)</li><li>"maatwerk applicatie ontwikkeling" (10-140 monthly searches, LOW competition)</li></ul><br><p><strong>Keywords to Avoid (High Competition):</strong></p><ul><li>"algemene voorwaarden it dienstverlening" (HIGH competition)</li><li>"data analyse ai / data-analyse ai / ai data-analyse" (HIGH competition)</li><li>"cloud oplossingen particulieren" (HIGH competition)</li><li>"applicatie ontwikkeling mbo / applicatie ontwikkeling opleiding" (HIGH/MEDIUM competition)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize content creation around data analysis tools and cloud solutions for SMBs to capture high intent, low-competition traffic before competitors saturate these niches.</li></ul><br><h3 id="seasonal-trends">Seasonal Trends</h3><br><p>Our analysis shows that keywords related to digital transformation and cloud solutions tend to peak in Q1 and Q4, aligning with business planning cycles. Data analysis and AI-related terms show more consistent search volume throughout the year, with slight increases during business quarters.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Align editorial calendar to launch transformation and cloud solution content in Q1 and Q4, and maintain steady AI/data analysis pieces year-round to match demand.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><br><p>Our competitive analysis identified several key competitors in the Dutch IT services market:</p><br><ol><li><strong>IBM.com</strong> (Strongest Competitor):</li></ol><ul><li>Consistently outranks Ilionx for numerous high-value keywords</li><li>Particularly strong with informational "what is..." content</li><li>Effectively targets both technical and business-oriented keywords</li><li>Content strategy focuses on clear, concise definitions and explanations</li></ul><br><ol><li><strong>nbs-partner.ru</strong>:</li></ol><ul><li>Primarily a backlinks competitor with 490 intersecting backlinks</li><li>Different target market but competing for similar keyword visibility</li></ul><br><ol><li><strong>main.nl</strong>:</li></ol><ul><li>Significant backlink competitor with 210 intersecting backlinks</li><li>Competing for visibility in the Dutch IT services market</li></ul><br><ol><li><strong>indeed.nl</strong> and <strong>nationalevacaturebank.nl</strong>:</li></ol><ul><li>Job listing sites with significant backlink overlap (168 and 104 intersections respectively)</li><li>Important for recruitment visibility in the competitive Dutch IT talent market</li></ul><br><h3 id="competitor-content-strategy-analysis">Competitor Content Strategy Analysis</h3><br><p><strong>IBM's Effective Content Strategies</strong>:</p><ol><li><strong>"What is..." Content Focus</strong>: IBM excels at creating definition-based content that directly answers user queries</li><li><strong>SERP Optimization</strong>: Uses concise titles and meta descriptions that directly address search queries</li><li><strong>Keyword Targeting</strong>: Effectively targets both technical terms and business concepts</li><li><strong>Content Structure</strong>: Provides clear definitions in meta descriptions, making them more likely to appear as featured snippets</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop a 3-month content plan to create “What is [Keyword]?” pages for top 10 technical terms where IBM currently dominates.</li></ul><br><h3 id="keyword-gap-analysis">Keyword Gap Analysis</h3><br><p>IBM outperforms Ilionx on several valuable keywords, including:</p><br><ol><li><strong>High-Volume Technical Terms</strong>:</li></ol><ul><li>"etl" (2,400 monthly searches, LOW competition)</li><li>"genai" (1,900 monthly searches, LOW competition)</li><li>"grc" (1,300 monthly searches, LOW competition)</li><li>"low code" (1,000 monthly searches, MEDIUM competition)</li></ul><br><ol><li><strong>Process Automation Keywords</strong>:</li></ol><ul><li>"robotic process" (720 monthly searches, MEDIUM competition)</li><li>"robotic process automation" (720 monthly searches, MEDIUM competition)</li><li>"rpa robotics" (720 monthly searches, MEDIUM competition)</li></ul><br><ol><li><strong>Dutch-Specific Terms</strong>:</li></ol><ul><li>"etl proces" (390 monthly searches, LOW competition)</li><li>"werkopdrachten" (140 monthly searches, LOW competition)</li><li>"forecasting modellen" (90 monthly searches, LOW competition)</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><br><p>Ilionx has established a strong backlink profile with the following metrics:</p><ul><li><strong>Total Backlinks</strong>: 14,208 backlinks</li><li><strong>Referring Domains</strong>: 1,003 unique domains</li><li><strong>Domain Rank</strong>: 336</li><li><strong>Backlink Spam Score</strong>: 28% (relatively low)</li></ul><br><p>The majority of referring domains are from the Netherlands, with 10,045 backlinks coming from .nl TLDs, demonstrating strong local authority and relevance in the Dutch market. Other significant TLDs include .com (1,046 backlinks), .eu (718 backlinks), and blogspot.com (473 backlinks).</p><br><h3 id="backlink-quality-analysis">Backlink Quality Analysis</h3><br><p>The backlink profile shows a healthy distribution across different types of websites:</p><ul><li><strong>Low Spam Score Domains (0-30%)</strong>: The majority of backlinks come from reputable sources like ledadvisor.eu, datajobs.nl, qnh.eu, computable.nl, and securitytalent.nl</li><li><strong>Medium Spam Score Domains (31-60%)</strong>: A smaller portion from sites like studiotempel.nl and c99.nl</li><li><strong>High Spam Score Domains (61%+)</strong>: A minimal number from potentially harmful sites like topbilliondirectory.com (65% spam score)</li></ul><br><h3 id="competitor-backlink-analysis">Competitor Backlink Analysis</h3><br><p>Several key competitors share backlink sources with Ilionx, presenting opportunities for targeted backlink acquisition:</p><br><ol><li><strong>nbs-partner.ru</strong>: 490 intersecting backlinks (rank: 50)</li><li><strong>sourceforge.net</strong>: 351 intersecting backlinks (rank: 28)</li><li><strong>ibm.com</strong>: 232 intersecting backlinks (rank: 26)</li><li><strong>main.nl</strong>: 210 intersecting backlinks (rank: 60)</li><li><strong>indeed.nl</strong>: 168 intersecting backlinks (rank: 16)</li></ol><br><p>High-authority sites like IBM.com (rank 26), Zendesk.com (rank 52), and Rijksoverheid.nl (rank 19) represent valuable potential backlink sources that Ilionx should target.</p><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><br><p>The majority of backlinks use branded or generic anchor texts:</p><ul><li>Most common: "Ilionx" or "www.ilionx.com"</li><li>Limited use of keyword-rich descriptive anchor texts</li></ul><br><p>This presents an opportunity to improve anchor text diversity with more descriptive, keyword-rich anchor texts that could boost rankings for target keywords.</p><br><h3 id="toxic-backlinks">Toxic Backlinks</h3><br><p>A small number of potentially harmful backlinks were identified, including:</p><ul><li><strong>topbilliondirectory.com</strong> (65% spam score)</li><li>Several medium-risk directory sites with spam scores between 40-60%</li></ul><br><p>These should be disavowed to prevent potential negative SEO impact.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Ilionx’s strong local profile can be further amplified by securing links from .gov.nl and .edu domains.</li><li>Diversify anchor texts to include service-related terms (e.g., “data analyse tool,” “cloud oplossingen mkb”).</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Disavow identified high-spam-score domains and schedule quarterly backlink audits to catch new toxic links.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our comprehensive analysis, we recommend:</p><br><ol><li><strong>Target High-Value, Low-Competition Keywords</strong>:</li></ol><ul><li>Create dedicated content for "data analyse tool" and "data-analyse tools" (170-12,100 monthly searches, LOW competition)</li><li>Develop content around "cloud oplossingen mkb" (30-480 monthly searches, LOW competition) targeting small-to-medium businesses</li><li>Optimize existing pages for "applicatie ontwikkeling" (50-480 monthly searches, LOW competition)</li></ul><br><ol><li><strong>Create "What is..." Content</strong>:</li></ol><ul><li>Develop dedicated pages that define key technical terms related to Ilionx's services, following IBM's successful approach</li><li>Focus on Dutch-language definitions of key terms like "etl proces," "robotic process automation," and "forecasting modellen"</li><li>Structure content to directly answer user queries</li><li>Optimize for featured snippets with clear, concise definitions</li></ul><br><ol><li><strong>Optimize SERP Elements</strong>:</li></ol><ul><li>Revise titles and meta descriptions to be more direct and keyword-focused</li><li>Use the "What is [Keyword]?" format where appropriate</li><li>Include concise definitions in meta descriptions</li></ul><br><ol><li><strong>Target Informational Intent</strong>:</li></ol><ul><li>Shift some content focus towards addressing informational search intent</li><li>Create definition snippets for key terms on existing service pages</li><li>Implement FAQ schema markup to improve SERP visibility</li></ul><br><ol><li><strong>Optimize Underperforming Service Pages</strong>:</li></ol><ul><li>Enhance content on service pages with more detailed information, case studies, and targeted keywords</li><li>Add clear definitions of key concepts related to each service</li></ul><br><ol><li><strong>Expand Technical Blog Content</strong>:</li></ol><ul><li>Continue developing in-depth technical content similar to the high-performing BIV classification and SCD blog posts</li><li>Focus on keywords where IBM currently outranks Ilionx</li><li>Create comparison content for "data analyse tool" that showcases Ilionx's expertise in tool selection and implementation</li></ul><br><ol><li><strong>Develop Location-Specific Content</strong>:</li></ol><ul><li>Create more content targeting Dutch cities where Ilionx operates</li><li>Combine location keywords with service offerings</li></ul><br><ol><li><strong>Enhance Client Reference Pages</strong>:</li></ol><ul><li>Improve case study content with more detailed information about solutions and results</li><li>Optimize for industry-specific keywords</li></ul><br><ol><li><strong>Address Technical SEO Issues</strong>:</li></ol><ul><li>Fix identified technical issues to improve overall site performance</li><li>Implement schema markup (e.g., FAQ schema, definition schema)</li></ul><br><ol><li><strong>Implement Strategic Backlink Acquisition</strong>:</li></ol><ul><li>Target high-authority Dutch websites that link to competitors but not to Ilionx</li><li>Focus on industry-specific publications like computable.nl and securitytalent.nl</li><li>Pursue backlinks from educational institutions and government organizations (.nl domains)</li><li>Diversify anchor text with more descriptive, keyword-rich variations</li></ul><br><ol><li><strong>Backlink Cleanup Strategy</strong>:</li></ol><ul><li>Disavow toxic backlinks with high spam scores</li><li>Monitor backlink profile regularly for new potentially harmful links</li><li>Focus on acquiring quality over quantity in new backlinks</li></ul><br><ol><li><strong>Avoid High-Competition Keywords</strong>:</li></ol><ul><li>Deprioritize efforts on terms like "algemene voorwaarden it dienstverlening" and "data analyse ai" due to high competition</li><li>Focus resources on the identified low-competition opportunities</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Narrow the above recommendations into a prioritized roadmap: identify the top 5 actions that balance quick wins with foundational improvements to maintain momentum and focus.</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Quick Wins = items 1–3; Medium-Term = items 4–7; Long-Term = items 8–12.</li></ul><br></div></section>
+                <section id="next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-arrow-right"></i></div>
+                        <h2 class="section-title">Next Steps</h2>
+                    </div>
+                    <div class="section-content"><br><p>To implement this comprehensive SEO strategy for Ilionx, we recommend:</p><br><ol><li><strong>Quick Wins</strong>:</li></ol><ul><li>Optimize existing pages that target keywords where IBM is outperforming Ilionx</li><li>Add definition snippets to existing service pages</li><li>Fix critical technical SEO issues</li><li>Disavow identified toxic backlinks</li><li>Create dedicated landing pages for top-priority keywords like "data analyse tool" and "cloud oplossingen mkb"</li></ul><br><ol><li><strong>Medium-Term Actions</strong>:</li></ol><ul><li>Create a series of "What is..." articles covering key technical concepts</li><li>Implement schema markup across the website</li><li>Develop content targeting identified keyword gaps</li><li>Begin strategic outreach to high-authority Dutch websites for backlink acquisition</li></ul><br><ol><li><strong>Long-Term Strategy</strong>:</li></ol><ul><li>Expand the content calendar to include regular technical blog posts</li><li>Build a comprehensive backlink acquisition strategy focusing on quality Dutch domains</li><li>Develop more industry-specific content targeting vertical markets</li><li>Regularly monitor and optimize anchor text distribution in backlink profile</li><li>Monitor performance of targeted keywords and adjust strategy based on results</li></ul><br><p>This data-driven SEO roadmap will help Ilionx improve search visibility, outrank competitors like IBM, and capture untapped opportunities in the Dutch IT services market.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Ilionx',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

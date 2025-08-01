@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Maxserv</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Maxserv • Maxserv.com</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 1, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="positive">397.26 (↓ 58.15% from 949.22 last year)</td></tr><tr><td class="">Total Ranking Keywords</td><td class="">109 (Positions 1-100)</td></tr><tr><td class="">Keywords in Top 10 Positions</td><td class="">13</td></tr><tr><td class="">Keywords Beyond Position 30</td><td class="positive">59.6% of total keywords</td></tr><tr><td class="">New Keywords Gained</td><td class="">42</td></tr><tr><td class="">Keywords Improved</td><td class="">26</td></tr><tr><td class="">Keywords Declined</td><td class="">36</td></tr><tr><td class="">Keywords Lost</td><td class="">39</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The 58% drop in ETV signals urgent need to prioritize high-impact keyword pages and stabilize rankings.</li><li>Focus on moving keywords from positions 11–30 into the Top 10 to recapture traffic quickly.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Keywords They Rank Well For (MaxServ Ranks Poorly)</th></tr></thead><tbody><tr><td class="">www.strato.nl</td><td class="">content management systeem (720 SV), zoeken op een website (140 SV)</td></tr><tr><td class="">typo3.com</td><td class="">typo3 (590 SV), cms typo3 (110 SV), typo3 website (70 SV)</td></tr><tr><td class="">magento.com</td><td class="">magento webshop (590 SV), webshop magento (590 SV), e commerce magento</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit competitor comparison pages (Strato) and replicate succinct comparison tables to capture research-phase queries.</li><li>Incorporate clear “VS” sections on CMS and e-commerce pages to mirror typo3.com and magento.com authority.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume (NL)</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">bynder</td><td class="">2,900</td><td class="">Medium</td><td class="">High volume, currently position 15</td></tr><tr><td class="">technical debt</td><td class="">880</td><td class="">Medium</td><td class="">High volume, position 14-15, strong intent</td></tr><tr><td class="">akeneo</td><td class="">880</td><td class="">Medium</td><td class="">High volume, position 15</td></tr><tr><td class="">content management systemen</td><td class="">720-1,000</td><td class="">Medium</td><td class="">Relevant core service, medium competition</td></tr><tr><td class="">magento 2 webshops</td><td class="">210</td><td class="">Medium</td><td class="">E-commerce focus, position 14-18</td></tr><tr><td class="">webdesign nederland</td><td class="">40-140</td><td class="">Medium</td><td class="">Localized service, medium competition</td></tr><tr><td class="">webdesign bureau nederland</td><td class="">10-40</td><td class="">Low</td><td class="">Localized, low competition</td></tr><tr><td class="">enterprise content management systemen</td><td class="">10-50</td><td class="">Low</td><td class="">Niche, low competition</td></tr></tbody></table></div><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>“Content management systemen” spans multiple SV tiers; target long-form guides to cover full range.</li><li>Prioritize “bynder” with a dedicated landing page to leverage 2,900 SV.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>MaxServ’s organic traffic has dropped by 58.15% over the last 12 months, with only 13 keywords ranking in the top 10.</li><li>Majority (59.6%) of keywords rank beyond position 30, indicating poor visibility.</li><li>Strong brand keyword presence but limited broader brand awareness.</li><li>High-value keywords like "bynder," "technical debt," and "akeneo" rank poorly (positions 11-20), representing prime growth opportunities.</li><li>Competitors (Strato, typo3.com, magento.com) dominate key CMS and e-commerce keywords with authoritative, comparison-focused content.</li><li>MaxServ’s backlink profile is weakened by 81.7% broken backlinks and 19% spam score; toxic backlinks need disavowal.</li><li>Technical SEO is strong overall but hampered by render-blocking resources, missing alt texts, and broken pages.</li><li>Content gaps exist in CMS comparisons, Magento e-commerce, and technical debt resources.</li><li>Recommendations include fixing backlinks, optimizing high-volume keywords, expanding educational and comparison content, and improving technical SEO.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Immediate priority: recover broken backlinks and fix on-page technical issues to halt further traffic loss.</li><li>Secondary focus: content expansion for high-impact keywords and competitor-style comparison pages.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-maxserv" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: MaxServ</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>MaxServ is a Dutch company specializing in developing open-source content and e-commerce platforms. They create "digitale meesterwerken" (digital masterpieces) for their clients and offer a comprehensive range of services including strategy, product discovery, web design, web development, system integrations, and support. They also provide "Continu team" and "Service Level Agreement (SLA)" options, emphasizing quality, collaboration, and continuous development in their approach to helping organizations enhance their online presence. (<a href="https://maxserv.com" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-traffic-trends">Organic Visibility and Traffic Trends</h3><p>Our analysis reveals a concerning trend in MaxServ's organic search performance. The company has experienced a significant <strong>58.15% decrease in Estimated Traffic Volume (ETV)</strong> from August 2024 to July 2025. The latest data shows an ETV of 397.26, down from 949.22 a year earlier.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct an in-depth landing page audit for the top 20 pages by traffic to identify quick optimization wins.</li><li>Implement A/B tests on underperforming CTAs and headlines to improve CTR.</li></ul><br><h3 id="current-position-distribution-july-2025-">Current Position Distribution (July 2025)</h3><ul><li>Position 1: 1 keyword</li><li>Positions 2-3: 1 keyword</li><li>Positions 4-10: 11 keywords</li><li>Positions 11-20: 16 keywords</li><li>Positions 21-30: 15 keywords</li><li>Positions 31-100: 65 keywords</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>With 65 keywords in positions 31–100, there’s a large pool of “low-hanging fruit.” Prioritize improving content relevance and internal linking for these mid-tail terms.</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ol><li>Blog post on tech debt management (<code>/over-maxserv/blog-en-nieuws/wat-is-tech-debt-en-hoe-beheers-je-het</code>) - ETV: 92.76, ranking in positions 2-3</li><li>Homepage (<code>/</code>) - ETV: 52.65, ranking in position 1</li><li>Case study for Eindhoven University of Technology (<code>/cases/technische-universiteit-eindhoven</code>) - ETV: 34.88</li><li>Product page for Tweakwise search solutions (<code>/producten/zoekoplossingen/tweakwise</code>) - ETV: 24.34</li><li>Product page for TYPO3 CMS (<code>/producten/content-management/typo3</code>) - ETV: 23.35</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Use the content structure and keyword coverage from the top blog post as a template to update underperforming technical articles.</li><li>Add internal links from high-ETV pages to medium-performing keyword pages to share authority.</li></ul><br><h3 id="underperforming-pages">Underperforming Pages</h3><p>Several pages are underperforming with very low ETVs (below 1):</p><ul><li>Blog posts about website accessibility (<code>/over-maxserv/blog-en-nieuws/wat-betekent-digitale-toegankelijkheid-voor-jouw-website</code>) - ETV: 0.15</li><li>Web design services page (<code>/diensten/webdesign-en-grafische-vormgeving</code>) - ETV: 0.29</li><li>Content management product overview (<code>/producten/content-management</code>) - ETV: 1.51</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Refresh content with updated statistics, visuals, and FAQs.</li><li>Cross-link to these pages from high-authority service and case study pages to boost visibility.</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><p>The site has a strong technical SEO foundation with an on-page score of 97.07. However, we identified several issues that could be impacting performance:</p><ul><li>Render-blocking resources affecting page load speed</li><li>Low content rate on some pages</li><li>Missing image alt texts</li><li>HTML validation errors</li><li>Large DOM size</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize render-blocking fixes by deferring non-critical CSS/JS and implementing critical CSS inline.</li><li>Run an accessibility audit to ensure alt texts and ARIA attributes are complete.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><br><h4 id="top-performing-keywords-positions-1-10-">Top Performing Keywords (Positions 1-10)</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">maxserv</td><td class="">170</td><td class="">1</td></tr><tr><td class="">tech debt</td><td class="">880</td><td class="">6</td></tr><tr><td class="">content platform</td><td class="">90</td><td class="">8</td></tr><tr><td class="">tweakwise</td><td class="">720</td><td class="">6</td></tr><tr><td class="">typo3</td><td class="">590</td><td class="">7</td></tr><tr><td class="">pim systemen</td><td class="">70</td><td class="">10</td></tr><tr><td class="">product information management</td><td class="">210</td><td class="">9</td></tr><tr><td class="">akeneo pim</td><td class="">110</td><td class="">10</td></tr><tr><td class="">cms typo3</td><td class="">110</td><td class="">10</td></tr><tr><td class="">typo3 website</td><td class="">70</td><td class="">10</td></tr><tr><td class="">wat is een pim</td><td class="">70</td><td class="">10</td></tr><tr><td class="">wat is een pim systeem</td><td class="">110</td><td class="">10</td></tr></tbody></table></div><h4 id="high-potential-keywords-positions-11-30-">High-Potential Keywords (Positions 11-30)</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">bynder</td><td class="">2900</td><td class="">15</td></tr><tr><td class="">technical debt</td><td class="">880</td><td class="">14</td></tr><tr><td class="">akeneo</td><td class="">880</td><td class="">15</td></tr><tr><td class="">pim-systeem</td><td class="">590</td><td class="">17</td></tr><tr><td class="">magento 2 webshops</td><td class="">210</td><td class="">14</td></tr><tr><td class="">magento 2 webshop</td><td class="">210</td><td class="">18</td></tr><tr><td class="">pim systeem</td><td class="">590</td><td class="">18</td></tr><tr><td class="">product informatie manager</td><td class="">210</td><td class="">25</td></tr><tr><td class="">woonexpress</td><td class="">27100</td><td class="">30</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>“woonexpress” at position 30 offers massive volume; consider a detailed case study landing page optimized for this term.</li><li>Group related mid-tail terms into hub pages to consolidate topical authority and improve positions.</li></ul><br><h3 id="keyword-performance-analysis">Keyword Performance Analysis</h3><br><ol><li><strong>Branded Keyword Dominance</strong>: MaxServ ranks #1 for its own brand name (170 monthly searches), which is expected but indicates limited brand awareness.</li><li><strong>Technical Expertise Keywords</strong>: Strong performance for "tech debt" (880 searches, position 6) and "technical debt" (880 searches, position 14) shows authority in technical development topics.</li><li><strong>CMS & Platform Keywords</strong>: Good rankings for "typo3" (590 searches, position 7), "content platform" (90 searches, position 8), and related terms demonstrate expertise in content management systems.</li><li><strong>PIM System Keywords</strong>: Multiple rankings for Product Information Management (PIM) related terms, including "product information management" (210 searches, position 9) and "wat is een pim systeem" (110 searches, position 10).</li><li><strong>E-commerce Platform Keywords</strong>: Rankings for "magento 2 webshops" (210 searches, position 14) and "magento 2 webshop" (210 searches, position 18) show potential in e-commerce development.</li><li><strong>High-Volume Opportunities</strong>: Several high-volume keywords ranking in positions 11-30 represent significant growth opportunities:</li></ol><ul><li>"bynder" (2900 searches, position 15)</li><li>"woonexpress" (27100 searches, position 30) - related to a case study</li><li>"akeneo" (880 searches, position 15)</li></ul><br><h3 id="recommended-target-keywords">Recommended Target Keywords</h3><br><p>Based on our analysis, we've identified these high-priority keywords for MaxServ to target:</p><br><p><strong>Top Priority Keywords:</strong></p><ul><li><strong>content management systemen:</strong> 720-1000 monthly searches | MEDIUM competition</li><li><strong>webdesign nederland:</strong> 40-140 monthly searches | MEDIUM competition</li><li><strong>webdesign bureau nederland:</strong> 10-40 monthly searches | LOW competition</li></ul><br><p><strong>Secondary Keywords:</strong></p><ul><li><strong>open source e commerce platform:</strong> 10-30 monthly searches | MEDIUM competition</li><li><strong>e commerce platform open source:</strong> 10-30 monthly searches | MEDIUM competition</li><li><strong>magento development:</strong> 10-70 monthly searches | MEDIUM competition</li><li><strong>enterprise content management systemen:</strong> 10-50 monthly searches | LOW competition</li></ul><br><p><strong>Long-term Opportunities:</strong></p><ul><li><strong>magento development agency:</strong> 10-50 monthly searches | LOW competition</li><li><strong>beste webdesign bureau nederland:</strong> 10 monthly searches | LOW competition</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign these keyword groups to content owners with deadlines and set up tracking dashboards to monitor progress.</li><li>Plan a three-month editorial calendar focusing on these priorities.</li></ul><br><h3 id="keyword-distribution-by-position">Keyword Distribution by Position</h3><p>The majority of MaxServ's keywords (59.6%) rank beyond position 30, indicating significant room for improvement in keyword optimization and content strategy.</p><br><h3 id="keyword-performance-trends">Keyword Performance Trends</h3><p>The data shows volatility in keyword rankings with a concerning trend:</p><ul><li>New rankings gained: 42 keywords</li><li>Rankings improved: 26 keywords</li><li>Rankings declined: 36 keywords</li><li>Rankings lost: 39 keywords</li></ul><br><p>This suggests that while MaxServ is gaining new keyword rankings, they're losing ground on existing keywords at a faster rate.</p><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-competitors-overview">Top Competitors Overview</h3><br><ol><li><strong>www.strato.nl</strong></li></ol><ul><li>Offers a broad range of hosting and website solutions, including CMS options</li><li>Strength: Content that directly compares and contrasts different CMS platforms</li><li>Effectively targets users in the research phase with question-based titles and comprehensive comparison content</li></ul><br><ol><li><strong>typo3.com</strong></li></ol><ul><li>Official website for the TYPO3 CMS</li><li>Strength: Authority and relevance for all TYPO3-related searches</li><li>Uses clear, concise titles that include the keyword "TYPO3" and descriptive meta descriptions highlighting features and benefits</li></ul><br><ol><li><strong>magento.com</strong></li></ol><ul><li>Official website for the Magento e-commerce platform</li><li>Strength: Authority and relevance for all Magento-related searches</li><li>Dominates keywords like "magento webshop," "webshop magento," and "e commerce magento"</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Competitors’ question-style content and structured comparisons are key levers—adopt similar formats on MaxServ’s blog and resource pages.</li></ul><br><h3 id="competitor-serp-strategy-analysis">Competitor SERP Strategy Analysis</h3><br><p>Our analysis of competitor search results reveals several effective patterns:</p><br><ol><li><strong>Direct Addressing of Search Intent</strong>: Competitors' titles and descriptions clearly answer the user's question or address their need. For example, Strato uses question-based titles like "wat is het beste CMS?" that directly address user queries.</li><li><strong>Keyword Optimization</strong>: Competitors effectively use target keywords in both titles and meta descriptions, ensuring strong relevance signals to search engines.</li><li><strong>Value Proposition Emphasis</strong>: Competitors highlight the benefits of their product/service in the meta description, increasing click-through rates.</li><li><strong>Content Comparison Strategy</strong>: Strato in particular excels at creating content that compares different CMS options, capturing users in the research phase of their journey.</li></ol><br><h3 id="keyword-gaps-and-opportunities">Keyword Gaps and Opportunities</h3><br><p>We've identified several areas where competitors outperform MaxServ:</p><br><ol><li><strong>CMS Comparison Content</strong>: Strato ranks higher for "content management systeem" (720 monthly searches) with comprehensive comparison content.</li><li><strong>TYPO3-Specific Content</strong>: While MaxServ offers TYPO3 services, typo3.com dominates related keywords with more authoritative content.</li><li><strong>Magento E-commerce Content</strong>: Magento.com outranks MaxServ for valuable keywords like "magento webshop" and "webshop magento" (590 monthly searches each).</li><li><strong>Website Search Functionality</strong>: Strato ranks higher for "zoeken op een website" (140 monthly searches), despite MaxServ offering Tweakwise search solutions.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create a content calendar focused on filling these gaps, starting with a “CMS vs CMS” series and a dedicated Tweakwise tutorial page.</li><li>Incorporate customer testimonials in comparison pages to boost trust signals.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><p>Our analysis reveals that MaxServ has a total of <strong>924 backlinks</strong> from <strong>201 referring domains</strong>, with a domain rank of 217. However, there are significant issues with their backlink profile:</p><br><ul><li><strong>755 broken backlinks</strong> (81.7% of total backlinks)</li><li><strong>33 broken pages</strong> identified</li><li>Medium spam score of <strong>19%</strong></li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Fixing broken backlinks and pages can quickly recover lost link equity and improve domain authority. This is a high-ROI technical fix.</li></ul><br><h3 id="referring-domain-distribution">Referring Domain Distribution</h3><p>MaxServ's backlinks come from various TLDs, with the following distribution:</p><ul><li>.com domains: 419 backlinks</li><li>.nl domains: 160 backlinks (showing strong local presence)</li><li>.org domains: 40 backlinks</li><li>.de domains: 27 backlinks</li><li>Other TLDs: 278 backlinks</li></ul><br><h3 id="backlink-quality-analysis">Backlink Quality Analysis</h3><p>The backlink profile shows a mix of quality levels:</p><ul><li><strong>Low spam score backlinks</strong> (0-30%): Include authoritative industry sites like typo3.org (5% spam score), yoast.com (0% spam score), and dutchdigitalagencies.com (0% spam score)</li><li><strong>Medium spam score backlinks</strong> (31-60%): Include directories like ictwaarborg.nl (60% spam score) and various SEO directories</li><li><strong>High spam score backlinks</strong> (61-100%): Include potentially harmful links from sites like jouwstarter.nl and jouwportaal.nl (both with 100% spam score)</li></ul><br><h3 id="competitor-backlink-comparison">Competitor Backlink Comparison</h3><p>Our analysis identified several high-authority websites that link to MaxServ's competitors but not to MaxServ:</p><ul><li>crunchbase.com (rank: 15, 205 intersections)</li><li>zendesk.com (rank: 69, 72 intersections)</li><li>un.org (rank: 184, 30 intersections)</li><li>nationalevacaturebank.nl (rank: 31, 18 intersections)</li><li>emerce.nl (rank: 38, 15 intersections)</li><li>slack.com (rank: 157, 14 intersections)</li><li>magento.com (rank: 24, 13 intersections)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop a targeted outreach campaign to request backlinks from these high-authority domains, leveraging existing case studies and partnerships.</li><li>Offer guest posts or expert commentary to secure placements on un.org and crunchbase.com.</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><p>MaxServ's anchor text distribution shows:</p><ul><li>Brand mentions ("MaxServ", "MaxServ B.V.")</li><li>URLs ("www.maxserv.com", "https://www.maxserv.com/")</li><li>Generic calls-to-action ("Bekijk resultaat")</li></ul><br><p>This indicates a natural anchor text profile but also suggests opportunities for more strategic anchor text optimization.</p><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our comprehensive analysis, we recommend the following strategic actions to improve MaxServ's SEO performance:</p><br><h3 id="1-high-value-keyword-optimization">1. High-Value Keyword Optimization</h3><br><ul><li><strong>Prioritize "Bynder," "technical debt," and "akeneo" optimization</strong>: These keywords have high search volumes (2900, 880, and 880 respectively) and are currently ranking in positions 11-20, making them prime targets for improvement.</li><li>Conduct thorough on-page and off-page SEO audits for pages targeting these keywords</li><li>Enhance content quality, keyword integration, internal linking, and backlink building</li></ul><br><ul><li><strong>Optimize Magento 2 content</strong>: Improve rankings for "magento 2 webshops" and "magento 2 webshop" (both 210 monthly searches) by creating more in-depth content about Magento 2 development, design, and optimization.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Set up a sprint to update and expand these key pages within the next 4 weeks.</li></ul><br><h3 id="2-content-development-strategy">2. Content Development Strategy</h3><br><ul><li><strong>Leverage successful case studies</strong>: The case studies for clients like "Kees Smit," "Woonexpress," and "Technische Universiteit Eindhoven" are driving traffic. Continue to create high-quality case studies and optimize them for relevant keywords.</li><li><strong>Expand "Wat is..." content</strong>: Build on the success of "wat is een pim" and "wat is een pim systeem" by creating similar educational content for other relevant topics, such as "wat is een dam systeem" or "wat is technical debt."</li><li><strong>Create in-depth comparison content</strong> for CMS platforms, targeting "content management systeem" and related keywords</li><li>Develop comprehensive comparison pages that objectively evaluate TYPO3, WordPress, and other popular CMS options</li><li>Create similar comparison content for e-commerce platforms, focusing on Magento vs. other solutions</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Educational “Wat is…” articles can be repurposed into downloadable guides to capture leads and build email lists.</li></ul><br><h3 id="3-technical-content-expansion">3. Technical Content Expansion</h3><br><ul><li><strong>Develop technical debt resources</strong>: Given the high search volume for "technical debt" and related terms, create more in-depth resources on this topic:</li><li>A comprehensive guide to understanding and managing technical debt</li><li>A calculator to estimate the cost of technical debt</li><li>Case studies showcasing how MaxServ has helped clients address technical debt</li></ul><br><ul><li><strong>Create DAM system comparison content</strong>: Develop detailed comparisons of different Digital Asset Management systems, including Bynder, to help potential customers make informed decisions.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft outlines and assign subject-matter experts to each technical topic by the next content meeting.</li></ul><br><h3 id="4-content-format-diversification">4. Content Format Diversification</h3><br><ul><li><strong>Develop video content</strong>: Create video content to supplement existing blog posts and product pages, particularly for explaining complex topics like technical debt, PIM systems, and CMS selection.</li><li><strong>Create targeted landing pages</strong>: Develop dedicated landing pages for high-volume keywords like "Bynder" and "technical debt" to improve conversion rates.</li></ul><br><h3 id="5-title-and-meta-description-optimization">5. Title and Meta Description Optimization</h3><br><ul><li><strong>Rewrite titles and meta descriptions</strong> for target keywords, focusing on directly addressing search intent and highlighting value propositions</li><li>For "content management systeem," create titles that directly address comparison intent, such as "Content Management Systemen Vergelijken: Vind de Beste CMS voor Jou"</li><li>For TYPO3 and Magento pages, ensure titles and meta descriptions clearly state MaxServ's expertise and services related to those platforms</li></ul><br><h3 id="6-backlink-strategy">6. Backlink Strategy</h3><br><ul><li><strong>Address broken backlinks</strong>: Implement proper 301 redirects for the 755 broken backlinks to recapture lost link equity</li><li><strong>Disavow toxic backlinks</strong>: Submit a disavow file for high-spam-score backlinks (particularly those with 100% spam score)</li><li><strong>Strategic backlink acquisition</strong>: Target high-authority websites that link to competitors but not to MaxServ, particularly:</li><li>Industry platforms like magento.com and typo3.org</li><li>Business directories like crunchbase.com</li><li>Dutch business publications like emerce.nl and nationalevacaturebank.nl</li><li><strong>Leverage existing partnerships</strong>: Strengthen relationships with current partners like Yoast and TYPO3 to gain more authoritative backlinks</li></ul><br><h3 id="7-technical-seo-improvements">7. Technical SEO Improvements</h3><br><ul><li>Fix the 33 broken pages identified in the backlink analysis</li><li>Implement proper canonical tags to consolidate link equity</li><li>Optimize page speed by addressing render-blocking resources</li><li>Fix missing alt text and HTML validation errors</li></ul><br><h3 id="8-quick-wins">8. Quick Wins</h3><br><ul><li>Optimize the meta description for the "content management voor al jouw merken" page to directly address the "content management systeem" query</li><li>Update titles and meta descriptions of Magento pages to include keywords like "Magento webshop" and "webshop magento"</li><li>Enhance the content on the underperforming web design services page and content management product overview page</li><li>Implement 301 redirects for the most valuable broken backlinks</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create a prioritized task list for quick wins, assign owners, and set a two-week completion target.</li></ul><br><h3 id="9-localization-strategy">9. Localization Strategy</h3><br><ul><li>Ensure all content is properly localized for the Dutch market, including using Dutch language, currency, and addressing local regulations</li><li>Create content that specifically addresses the needs and challenges of Dutch businesses</li></ul><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><br><p>MaxServ is facing significant challenges in their SEO performance, with a 58.15% decrease in organic traffic over the past year. However, our analysis has identified numerous opportunities for improvement across technical SEO, content strategy, keyword targeting, and backlink profile.</p><br><p>By implementing our recommendations, MaxServ can address the critical issues in their SEO strategy, particularly:</p><ol><li>The high number of broken backlinks (755) that are causing lost link equity</li><li>The presence of toxic backlinks with high spam scores</li><li>The lack of comprehensive content targeting high-value keywords like "Bynder" (2900 searches) and "technical debt" (880 searches)</li><li>The technical SEO issues affecting site performance</li></ol><br><p>With a strategic approach to these challenges, MaxServ can reverse their declining traffic trend, improve search visibility, outrank competitors, and capture untapped opportunities in the Netherlands.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Maxserv',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

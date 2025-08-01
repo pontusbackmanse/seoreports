@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Frame Offices</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Frame Offices • Www.frameoffices.com</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Nederland Market</span>
+                        <span><i class="fas fa-calendar"></i> August 1, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value (Aug 2024)</th><th>Value (Jul 2025)</th><th>Change (%)</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">8,237</td><td class="">1,824</td><td class="negative">-77.85%</td></tr><tr><td class="">Keywords in Position 1</td><td class="">18</td><td class="">18</td><td class="">Stable</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">12</td><td class="">12</td><td class="">Stable</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">31</td><td class="">31</td><td class="">Stable</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="">28</td><td class="">28</td><td class="">Stable</td></tr><tr><td class="">Keywords in Positions 21-100</td><td class="">174</td><td class="">174</td><td class="">Stable</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>The dramatic 77.85% traffic drop signals a mix of ranking losses and potential penalties or technical barriers. Quick identification of content gaps and crawl errors should be a priority to prevent further deterioration.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a detailed crawl audit to spot indexation issues, broken links, and server errors within the next week.</li><li>Review recent Google algorithm updates to assess any correlation with the traffic decline.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Keywords They Rank Well For (Frame Offices Ranks Poorly)</th></tr></thead><tbody><tr><td class=""><strong>Skepp.nl</strong></td><td class="">kantoor rotterdam huren, kantoor huren haarlem, kantoorruimte huren amsterdam zuidas, blaak 16 rotterdam, coolsingel 104 rotterdam</td></tr><tr><td class=""><strong>Joinmeflexoffice.nl</strong></td><td class="">kantor huren haarlem, co office, business center haarlem, bedrijfspanden haarlem</td></tr><tr><td class=""><strong>Inspirerendelocaties.nl</strong></td><td class="">vergaderruimte haarlem, rotterdam vergaderruimte, vergaderlocatie leiden, vergaderruimtes in [Location]</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Competitors are aggressively targeting non-branded, high-intent local keywords with dedicated landing pages. Frame Offices currently cedes valuable commercial queries in both office space and meeting room verticals.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Map existing content to competitor keyword gaps and plan new pages for at least the top two missing terms within 30 days.</li><li>Benchmark competitor page structures and calls to action to inform new page templates.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword to Target</th><th>Monthly Search Volume</th><th>Competition Level</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">kantoor rotterdam huren</td><td class="">320</td><td class="">Medium</td><td class="">High search volume, relevant non-branded term</td></tr><tr><td class="">kantoor huren haarlem</td><td class="">260</td><td class="">Medium</td><td class="">Strong local intent, medium competition</td></tr><tr><td class="">vergaderruimte haarlem</td><td class="">210</td><td class="">Medium</td><td class="">Meeting room niche, competitor strength</td></tr><tr><td class="">rotterdam vergaderruimte</td><td class="">320</td><td class="">Medium</td><td class="">High volume, opportunity to capture meeting room searches</td></tr><tr><td class="">vergaderruimte den haag</td><td class="">260</td><td class="">Medium</td><td class="">Important city, meeting room keyword</td></tr><tr><td class="">vergaderlocatie leiden</td><td class="">170</td><td class="">Low</td><td class="">Low competition, good for niche expansion</td></tr><tr><td class="">flexwerken</td><td class="">320</td><td class="">Medium</td><td class="">Emerging trend, opportunity to build topical authority</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Medium-competition, high-volume keywords like “flexwerken” and “kantoor rotterdam huren” present attainable quick wins. Prioritizing these can restore visibility faster than high-competition terms.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Integrate the top three target keywords into existing high-traffic pages (e.g., homepage, main city pages) within the next sprint.</li><li>Develop a mini content series or blog posts around “flexwerken” to build topical authority.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Frame Offices has suffered a <strong>77.85% drop in organic traffic</strong> over the past 12 months in the Netherlands.</li><li>The company ranks well for <strong>branded and address-specific keywords</strong> but misses out on <strong>high-value non-branded keywords</strong> with strong commercial intent.</li><li><strong>Top competitors</strong> like Skepp.nl and Inspirerendelocaties.nl dominate key location and meeting room keywords with well-structured, location-specific content.</li><li>Technical SEO issues such as <strong>broken pages, duplicate meta tags, and missing alt attributes</strong> are hurting performance.</li><li>The backlink profile is moderate but includes <strong>toxic backlinks that require disavowal</strong> and <strong>missed opportunities for authoritative Dutch backlinks</strong>.</li><li>Quick wins include fixing broken pages, optimizing meta titles/descriptions, and creating dedicated location and meeting room landing pages.</li><li>Long-term growth depends on expanding content targeting non-branded keywords, improving local SEO, and building quality backlinks from Dutch industry sites.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>This summary crystallizes urgent areas: technical fixes, non-branded content gaps, and backlink remediation. Addressing these in parallel can stabilize traffic and set a foundation for growth.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign cross-functional teams for technical SEO, content creation, and link building, with weekly progress check-ins over the next two months.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-frame-offices" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Frame Offices</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for Frame Offices, a provider of flexible office solutions across the Netherlands. The analysis reveals a concerning 77.85% decrease in estimated traffic volume over the past year, with significant opportunities for improvement in keyword targeting, content optimization, and technical SEO. Our competitive analysis identifies key players in the Dutch flexible office market and their successful strategies. By implementing the recommendations in this report, Frame Offices can reverse this negative trend and capture untapped search visibility in the competitive Dutch flexible office space market.</p><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Frame Offices provides flexible office solutions throughout the Netherlands, offering services including office spaces, meeting rooms, coworking & flex spaces, dedicated desks, and virtual offices. They operate in multiple Dutch cities including Amsterdam, Rotterdam, Zwolle, Utrecht, Alphen aan den Rijn, Amersfoort, Den Haag, Haarlem, Hoofddorp, Leeuwarden and Leiden. Their value proposition centers on providing inspiring workspaces with flexible rental options and hospitality services. <a href="https://www.frameoffices.com" class="link-reference" target="_blank" rel="noopener">Company Website</a></p><br></div></section>
+                <section id="1-overall-seo-performance" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-traffic">Organic Visibility and Traffic</h3><ul><li><strong>Significant Traffic Decline</strong>: Frame Offices has experienced a 77.85% decrease in Estimated Traffic Volume (ETV) from August 2024 to July 2025, indicating serious issues with their SEO strategy.</li><li><strong>Current Organic Traffic</strong>: As of July 2025, the site receives approximately 1,824 monthly organic visits, down from 8,237 visits in August 2024.</li><li><strong>Position Distribution</strong>: The site currently has:</li><li>18 keywords ranking in position 1</li><li>12 keywords in positions 2-3</li><li>31 keywords in positions 4-10</li><li>28 keywords in positions 11-20</li><li>174 keywords in positions 21-100</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ol><li><strong>Homepage</strong> (https://www.frameoffices.com/nl/): The best-performing page with an ETV of approximately 380, ranking in position 1 for 2 high-value search terms.</li><li><strong>Haarlem Location Page</strong> (https://www.frameoffices.com/nl/locatie/haarlem-kennemerplein): Strong performer with ETV of approximately 120.</li><li><strong>Rotterdam Blaak Location</strong> (https://www.frameoffices.com/nl/locatie/rotterdam-blaak-16): High ETV (80.5) with good positions for 3 valuable search terms.</li><li><strong>Rotterdam Coolsingel Location</strong> (https://www.frameoffices.com/nl/locatie/rotterdam-coolsingel): High ETV (200.2) with position 1 rankings for 2 search terms.</li><li><strong>Utrecht Location</strong> (https://www.frameoffices.com/nl/locatie/utrecht-atoomweg): Strong performer with ETV of 180.9, ranking in position 1 for 3 search terms.</li></ol><br><h3 id="underperforming-pages">Underperforming Pages</h3><ol><li><strong>English Language Pages</strong>: All English-language location pages show minimal traffic and poor rankings, despite potential value for international clients.</li><li><strong>Smaller City Locations</strong>: Pages for smaller cities like Alphen aan den Rijn have very low ETV values (below 2) and rank in positions 41-100.</li><li><strong>Meeting Room Pages</strong>: Several meeting room-specific pages show poor traffic and rankings despite targeting valuable keywords.</li></ol><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><ul><li>Long title tags on multiple pages</li><li>Missing meta titles on some pages</li><li>Duplicate meta tags across location pages</li><li>Missing image alt attributes</li><li>Limited structured data implementation</li><li><strong>20 broken pages</strong> identified in the backlink analysis that need immediate attention</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>The accumulation of minor technical issues (meta tags, alt text, structured data) compounds ranking volatility. Addressing these at scale will bolster crawlability and on-page relevance.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create a prioritized technical backlog, assigning each issue type to the development team for resolution over the next 4 weeks.</li></ul><br></div></section>
+                <section id="2-keyword-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><p>Frame Offices currently ranks for approximately 276 keywords in the Netherlands, with only 61 keywords in the top 10 positions. This represents a significant opportunity for improvement.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Ranking distribution skewed toward positions 11–100 suggests low click-through rate for most target queries. Pushing mid–tail keywords into top 10 can yield immediate traffic boosts.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Identify 10 keywords currently in positions 11–20 with at least 100 monthly searches and optimize on-page signals (title, headings, content) to improve rankings.</li></ul><br><h3 id="top-performing-keywords-positions-1-10-">Top Performing Keywords (Positions 1-10)</h3><p>Our analysis reveals that Frame Offices dominates in branded and location-specific keywords:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">frame offices</td><td class="">1000</td><td class="">1</td></tr><tr><td class="">frame offices arena</td><td class="">210</td><td class="">1</td></tr><tr><td class="">frame offices coolsingel</td><td class="">90</td><td class="">1</td></tr><tr><td class="">frame offices courtyard</td><td class="">170</td><td class="">1</td></tr><tr><td class="">frame offices haarlem</td><td class="">170</td><td class="">1</td></tr><tr><td class="">hoek 3 amersfoort</td><td class="">90</td><td class="">1</td></tr><tr><td class="">the mayor zwolle</td><td class="">90</td><td class="">1</td></tr><tr><td class="">atoomweg 63</td><td class="">110</td><td class="">2</td></tr><tr><td class="">atoomweg 63 utrecht</td><td class="">260</td><td class="">3</td></tr><tr><td class="">coolsingel 104</td><td class="">260</td><td class="">3</td></tr><tr><td class="">coolsingel 104 rotterdam</td><td class="">260</td><td class="">3</td></tr><tr><td class="">frame office rotterdam</td><td class="">140</td><td class="">4</td></tr><tr><td class="">blaak 16 rotterdam</td><td class="">260</td><td class="">4</td></tr><tr><td class="">pharos hoofddorp</td><td class="">210</td><td class="">3</td></tr><tr><td class="">alexanderveld 5 den haag</td><td class="">390</td><td class="">5</td></tr><tr><td class="">virtueel kantoor rotterdam</td><td class="">90</td><td class="">6</td></tr></tbody></table></div><p><strong>Key Observations:</strong></p><ul><li><strong>Branded Keywords Dominate:</strong> The top positions are largely held by branded keywords ("frame offices" + location), indicating strong brand recognition.</li><li><strong>Location-Specific Keywords:</strong> Many top keywords include specific addresses or locations, showing users are often searching for Frame Offices at particular places.</li><li><strong>Address-Specific Keywords:</strong> Many keywords are address-specific, indicating users are looking for specific locations.</li></ul><br><h3 id="recommended-keywords-to-target">Recommended Keywords to Target</h3><br><p><strong>Top Priority Keywords:</strong></p><ul><li><strong>kantoor rotterdam huren:</strong> 320 monthly searches | MEDIUM competition</li><li><strong>kantoor huren haarlem:</strong> 260 monthly searches | MEDIUM competition</li><li><strong>kantoor den haag:</strong> 210 monthly searches | HIGH competition</li><li><strong>vergaderruimte haarlem:</strong> 210 monthly searches | MEDIUM competition</li><li><strong>rotterdam vergaderruimte:</strong> 320 monthly searches | MEDIUM competition</li><li><strong>vergaderruimte den haag:</strong> 260 monthly searches | MEDIUM competition</li></ul><br><p><strong>Secondary Keywords:</strong></p><ul><li><strong>kantoorruimte huren haarlem:</strong> 170 monthly searches | MEDIUM competition</li><li><strong>kantoorruimte amsterdam zuidas:</strong> 140 monthly searches | MEDIUM competition</li><li><strong>kantoorruimte rotterdam te huur:</strong> 140 monthly searches | MEDIUM competition</li><li><strong>werkplek haarlem:</strong> 140 monthly searches | MEDIUM competition</li><li><strong>werkplek rotterdam:</strong> 210 monthly searches | HIGH competition</li><li><strong>vergaderlocatie leiden:</strong> 170 monthly searches | LOW competition</li></ul><br><p><strong>Long-term Opportunities:</strong></p><ul><li><strong>Location-specific address keywords:</strong> (e.g., "rijnzathe 12 de meern," "keizersgracht 482 amsterdam") 70-260 monthly searches | LOW-MEDIUM competition</li><li><strong>flexwerken:</strong> 320 monthly searches | MEDIUM competition</li><li><strong>vergaderzalen rotterdam:</strong> 140 monthly searches | MEDIUM competition</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Balancing high- and low-competition keywords ensures steady gains: target low-competition “vergaderlocatie leiden” for quick wins, while building authority for tougher terms like “kantoor den haag.”</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Populate the content calendar for the next quarter with topic clusters around top-priority and long-term opportunity keywords.</li></ul><br></div></section>
+                <section id="3-competitive-landscape" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><br><ol><li><strong>Skepp.nl</strong></li></ol><ul><li><strong>Strengths:</strong> Strongest competitor based on keyword rankings and traffic volume. Excellent targeting of location-specific keywords and building/address-specific terms.</li><li><strong>Content Strategy:</strong> Creates dedicated pages for specific buildings and addresses with optimized titles like "Kantoorruimte huren aan [Address] in [Location]?"</li><li><strong>SERP Elements:</strong> Clear value propositions in meta descriptions emphasizing "gratis vergelijken," "scherpste prijs," and "vrijblijvend contact" with strong calls to action.</li><li><strong>Top Keywords:</strong> Dominates for "kantoor rotterdam huren," "kantoor huren haarlem," and numerous specific address keywords.</li></ul><br><ol><li><strong>Joinmeflexoffice.nl</strong></li></ol><ul><li><strong>Strengths:</strong> Direct competitor focusing on flexible office solutions.</li><li><strong>Weaknesses:</strong> Limited meta titles and descriptions, suggesting SEO implementation gaps.</li><li><strong>Top Keywords:</strong> Outranks Frame Offices for "kantoor huren haarlem," "co office," "business center haarlem," and "bedrijfspanden haarlem."</li></ul><br><ol><li><strong>Inspirerendelocaties.nl</strong></li></ol><ul><li><strong>Strengths:</strong> Specializes in meeting locations ("vergaderlocaties"), with strong performance for meeting room keywords.</li><li><strong>Content Strategy:</strong> Creates location-specific pages for meeting venues with titles like "Vergaderlocaties [Location]" or "Vergaderruimtes in [Location]."</li><li><strong>SERP Elements:</strong> Emphasizes the inspiring and unique nature of their meeting locations in meta descriptions.</li><li><strong>Top Keywords:</strong> Dominates for "vergaderruimte haarlem," "rotterdam vergaderruimte," "vergaderlocatie leiden," and other meeting room keywords.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Successful competitors leverage hyper-local, building-specific landing pages plus compelling CTAs. Their meta descriptions consistently highlight benefits and urgency, which Frame Offices can emulate.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit competitor landing pages for structure, tone, and length, then develop a template guideline for new Frame Offices pages to match best practices.</li></ul><br><h3 id="competitor-content-strategy-analysis">Competitor Content Strategy Analysis</h3><br><p><strong>Successful Content Types/Formats:</strong></p><ul><li><strong>Listing/Directory Pages:</strong> Both Skepp.nl and Inspirerendelocaties.nl use listing-style pages that showcase multiple office spaces or meeting locations in a specific area, which rank well for location-based keywords.</li><li><strong>Building-Specific Pages:</strong> Skepp.nl creates dedicated pages for individual buildings or addresses, capturing specific navigational searches.</li><li><strong>City-Based Landing Pages:</strong> Competitors create optimized landing pages for each city they serve, with comprehensive information about available spaces.</li></ul><br><p><strong>Effective SERP Elements:</strong></p><ul><li><strong>Title Patterns:</strong> Competitors use formats like "Kantoorruimte huren in [Location]? - Bekijk en vergelijk gratis!" or "Vergaderlocaties [Location]"</li><li><strong>Meta Description Patterns:</strong> Include benefits (e.g., "scherpste prijs"), unique selling points, and clear calls to action.</li><li><strong>Value Proposition Focus:</strong> Emphasis on free comparisons, best prices, and no-obligation inquiries.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft a competitive content audit spreadsheet to track format, word count, and CTA usage across top 10 competitor pages, then refine Frame Offices’ templates accordingly.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li><strong>Domain Rank:</strong> 209</li><li><strong>Total Backlinks:</strong> 414 from 131 referring domains (107 unique main domains)</li><li><strong>Backlink Quality:</strong> 10 spam score for backlinks (relatively low)</li><li><strong>Geographic Distribution:</strong> Majority of backlinks (170) come from Dutch (.nl) domains, followed by .com domains (86)</li><li><strong>Broken Pages:</strong> 20 broken pages identified that need immediate attention</li></ul><br><h3 id="backlink-quality-analysis">Backlink Quality Analysis</h3><ul><li><strong>Low Spam Score Backlinks (Valuable):</strong> Frame Offices has quality backlinks from reputable Dutch websites including:</li><li>stagemarkt.nl (0% spam score)</li><li>virtueelkantoorvergelijken.com (0% spam score)</li><li>intobusiness.nu (0% spam score)</li><li>locaties.nl (9% spam score)</li><li>inspirerendelocaties.nl (19% spam score)</li></ul><br><ul><li><strong>Medium Spam Score Backlinks (Monitor):</strong> Several backlinks from domains with moderate spam scores:</li><li>bedrijvenopdekaart.nl (32% spam score)</li><li>hcbloemendaal.nl (46% spam score)</li><li>openstreetmap.app (35% spam score)</li></ul><br><ul><li><strong>High Spam Score Backlinks (Toxic):</strong> Some potentially harmful backlinks that should be disavowed:</li><li>thebestbacklinksavailable.click (65% spam score)</li><li>australianwebdirectory.shop (65% spam score)</li><li>belonnanotservice.ga (85% spam score)</li><li>what-happens-next.xyz (85% spam score)</li></ul><br><h3 id="backlink-competitors-analysis">Backlink Competitors Analysis</h3><p>Several competitors have backlinks from authoritative domains that Frame Offices doesn't have:</p><ul><li><strong>regus.com</strong> (Domain Rank: 17) - Direct competitor with 14 intersecting backlinks</li><li><strong>meetingselect.com</strong> (Domain Rank: 42) - 18 intersecting backlinks</li><li><strong>kpn.com</strong> (Domain Rank: 24) - 15 intersecting backlinks</li><li><strong>fastbase.com</strong> (Domain Rank: 9) - 11 intersecting backlinks</li><li><strong>calendly.com</strong> (Domain Rank: 7) - 1 intersecting backlink</li></ul><br><h3 id="backlink-acquisition-opportunities">Backlink Acquisition Opportunities</h3><ul><li><strong>Business Directories:</strong> Many backlinks come from business directories like bedrijvenopdekaart.nl, suggesting a strategy to pursue more Dutch business directory listings</li><li><strong>Partner Websites:</strong> Existing partnerships with sites like mtconline.nl ("we are a proud member of the frame offices community") can be expanded</li><li><strong>Local Business Organizations:</strong> Potential for backlinks from local chambers of commerce and business associations in cities where Frame Offices operates</li><li><strong>Real Estate Platforms:</strong> Opportunities for listings and backlinks from Dutch real estate platforms and office space directories</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Leveraging partnerships and directories with high local relevance can both diversify and strengthen the backlink profile quickly. Simultaneously, disavowing toxic links protects domain health.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prepare and submit a disavow file for the identified toxic domains within the next 2 weeks.</li><li>Compile a prospect list of 30 high-authority Dutch sites for backlink outreach, prioritizing those linking to competitors but not to Frame Offices.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our findings, we recommend:</p><br><ol><li><strong>Improve Location-Based Landing Pages:</strong></li></ol><ul><li>Create or optimize landing pages for each city and specific location (e.g., "Rotterdam," "Haarlem," "Amsterdam Zuidas").</li><li>Use titles like "Kantoorruimte huren in [Location]? - Frame Offices"</li><li>Write meta descriptions that highlight benefits and include clear calls to action.</li><li>Ensure content is highly relevant to the location, including information about local amenities, transportation, and nearby businesses.</li></ul><br><ol><li><strong>Target Specific Building/Address Keywords:</strong></li></ol><ul><li>Create dedicated pages for individual buildings or addresses where Frame Offices has locations.</li><li>Use titles like "Kantoorruimte huren aan [Address] in [Location] - Frame Offices"</li><li>Include high-quality photos, virtual tours, and maps showing the building's location.</li></ul><br><ol><li><strong>Optimize Meta Descriptions with Value Propositions:</strong></li></ol><ul><li>Revise meta descriptions across the site to include clear value propositions (e.g., "flexible terms," "all-inclusive pricing," "premium amenities") and strong calls to action.</li><li>Study successful meta descriptions from Skepp.nl and Inspirerendelocaties.nl for inspiration.</li></ul><br><ol><li><strong>Create "Vergaderruimte" Landing Pages:</strong></li></ol><ul><li>Develop dedicated landing pages for "vergaderruimte" + [City/Region] keywords, similar to Inspirerendelocaties.nl's approach.</li><li>Showcase meeting rooms available in each city with amenities, features, pricing information, and booking options.</li></ul><br><ol><li><strong>Improve Content on "Flexwerken" Page:</strong></li></ol><ul><li>Revamp the "Flexwerken" page to provide more comprehensive information about flexible working arrangements.</li><li>Define what "flexwerken" means, explain benefits, and showcase flex desk options available at Frame Offices.</li></ul><br><ol><li><strong>Local SEO Optimization:</strong></li></ol><ul><li>Optimize Google My Business profiles for each location to improve local search visibility.</li><li>Ensure consistent NAP (Name, Address, Phone) information across all online directories.</li></ul><br><ol><li><strong>Technical SEO Improvements:</strong></li></ol><ul><li>Address identified technical issues including meta tags, image alt attributes, and structured data implementation.</li><li>Implement schema markup for office locations and meeting rooms.</li><li><strong>Fix the 20 broken pages</strong> identified in the backlink analysis to recover lost link equity.</li></ul><br><ol><li><strong>Backlink Strategy:</strong></li></ol><ul><li><strong>Disavow Toxic Backlinks:</strong> Submit a disavow file for the 7 high spam score domains identified.</li><li><strong>Directory Listings:</strong> Secure listings on reputable Dutch business directories not currently linking to Frame Offices.</li><li><strong>Competitor Backlink Acquisition:</strong> Target websites linking to competitors like regus.com and meetingselect.com but not to Frame Offices.</li><li><strong>Local Partnerships:</strong> Develop partnerships with local businesses near each Frame Offices location for mutual backlink opportunities.</li><li><strong>Content Marketing:</strong> Create shareable content about flexible working trends in the Netherlands to attract natural backlinks from industry publications.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign owners for each recommendation, set deadlines for deliverables (e.g., page launches, link outreach), and track progress in a shared project management tool.</li></ul><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><br><p>Frame Offices is experiencing a significant decline in organic search visibility and traffic in the Netherlands, with a 77.85% decrease in estimated traffic volume over the past year. While the homepage and some major city location pages perform well, there are substantial opportunities for improvement across the site.</p><br><p>Our keyword analysis reveals that Frame Offices dominates in branded and location-specific keywords but is missing opportunities to rank for high-value non-branded keywords like "kantoor rotterdam huren" (320 searches/month) and "vergaderruimte haarlem" (210 searches/month).</p><br><p>The competitive landscape analysis identifies Skepp.nl as the strongest competitor, with excellent targeting of location-specific keywords and building/address-specific terms. Their content strategy of creating dedicated pages for specific buildings and addresses with optimized titles and meta descriptions is proving highly effective. Inspirerendelocaties.nl dominates the meeting room niche with well-optimized location-specific pages.</p><br><p>The backlink analysis reveals a moderate backlink profile with 414 backlinks from 131 referring domains, primarily from Dutch websites. While Frame Offices has some quality backlinks from reputable Dutch sites, there are also potentially harmful backlinks that should be disavowed. Additionally, 20 broken pages were identified that need immediate attention to recover lost link equity.</p><br><p>Quick wins for Frame Offices include:</p><ol><li>Fixing the 20 broken pages identified in the backlink analysis</li><li>Optimizing titles and meta descriptions for high-priority keywords</li><li>Creating location-specific landing pages focusing on cities with the most Frame Offices locations</li><li>Disavowing toxic backlinks with high spam scores</li></ol><br><p>Longer-term strategies should include:</p><ol><li>Content marketing targeting informational keywords related to office space and flexible working</li><li>Building backlinks from relevant Dutch websites, particularly those linking to competitors</li><li>Developing comprehensive location pages with detailed information about each Frame Offices location</li><li>Potentially expanding to new locations based on keyword research and market demand</li></ol><br><p>By implementing these recommendations, Frame Offices can reverse their negative traffic trend and capture untapped search visibility in the competitive Dutch flexible office space market.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Establish clear KPIs (e.g., monthly organic sessions, keyword position improvements, backlink growth) and a 6-month roadmap to measure the impact of each initiative. Continuous monitoring and agile adjustments will ensure sustainable growth.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Launch a monthly SEO performance dashboard to present progress to stakeholders and identify areas requiring course correction.</li></ul></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Frame Offices',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

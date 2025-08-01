@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Foursmileys</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Foursmileys • Foursmileys.com</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands and Belgium Market</span>
+                        <span><i class="fas fa-calendar"></i> August 1, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary-foursmileys-seo-research" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary: Foursmileys SEO Research</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>August 2024</th><th>July 2025</th><th>Change (%)</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">116.24</td><td class="">21.27</td><td class="negative">-81.70%</td></tr><tr><td class="">Keywords in Position 1</td><td class="">0</td><td class="">0</td><td class="">0</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">0</td><td class="">0</td><td class="">0</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">10+ (approx.)</td><td class="">4</td><td class="">Significant decline</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="">5+ (approx.)</td><td class="">1</td><td class="">Decline</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize restoring traffic to core pages that historically drove the highest ETV.</li><li>Set up a rapid audit to identify why top 10 rankings dropped, focusing on lost backlinks or on-page changes.</li><li>Allocate resources to reclaim at least half of the 81.7% lost traffic within three months.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Strong Ranking Keywords (Foursmileys Ranks Poorly)</th><th>Notes on Competitor Strengths</th></tr></thead><tbody><tr><td class="">HappyOrNot</td><td class="">"happy or not", "smiley terminal"</td><td class="">Strong brand, product-focused pages, benefit-driven titles</td></tr><tr><td class="">Feedbacksmiley.nl</td><td class="">"feedback smileys", "feedback smiley"</td><td class="">Localized Dutch content, domain name advantage</td></tr><tr><td class="">HelloCustomer</td><td class="">Broad CX management keywords, high average keyword position</td><td class="">Highest traffic volume among competitors</td></tr></tbody></table></div><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">klanttevredenheid meten</td><td class="">250</td><td class="">Low</td><td class="">High volume, core business relevance</td></tr><tr><td class="">meten klanttevredenheid</td><td class="">250</td><td class="">Low</td><td class="">High volume, strong intent to measure satisfaction</td></tr><tr><td class="">meten van klanttevredenheid</td><td class="">250</td><td class="">Low</td><td class="">High volume, semantic variation for coverage</td></tr><tr><td class="">medewerkerstevredenheid verhogen</td><td class="">36</td><td class="">Low</td><td class="">Employee satisfaction focus, niche opportunity</td></tr><tr><td class="">real time feedback / real-time feedback</td><td class="">53</td><td class="">Low</td><td class="">Relevant to product offering, growing interest</td></tr><tr><td class="">klanttevredenheid meten app</td><td class="">10</td><td class="">Null</td><td class="">Emerging trend, low competition</td></tr><tr><td class="">klanttevredenheid meten kpi</td><td class="">16</td><td class="">Low</td><td class="">KPI-focused, valuable for business decision makers</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Build dedicated landing pages for the top three Dutch keywords with clear calls to action.</li><li>Map each keyword to a specific page or blog post to avoid cannibalization.</li><li>Monitor ranking shifts weekly and adjust internal linking to boost page authority.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li><strong>Organic Visibility & Traffic</strong>: Foursmileys experienced an 81.7% drop in estimated traffic volume over the last 12 months in the Netherlands, with no keywords in top 3 positions.</li><li><strong>Top Pages</strong>: The best performing page ranks only in positions 4-10; homepage and other pages show moderate to poor performance.</li><li><strong>Technical SEO</strong>: Good overall score (95.24) but critical issues like missing H1 tags, lack of image alt text, and HTML errors need fixing.</li><li><strong>Keyword Gaps</strong>: Missing out on high-volume, low-competition Dutch keywords related to customer satisfaction measurement and employee satisfaction.</li><li><strong>Competitors</strong>: Feedbacksmiley.nl outranks Foursmileys on key Dutch terms; HappyOrNot leads with strong product pages and brand presence.</li><li><strong>Backlinks</strong>: 51 backlinks from 29 domains with medium spam risk; toxic backlinks identified and need disavowal.</li><li><strong>Content Strategy</strong>: Need for Dutch-language pages, optimized product pages, and new content around VR initiative and sector-specific benefits.</li><li><strong>Quick Wins</strong>: Fix technical SEO issues, optimize homepage metadata, translate and optimize key blog posts, disavow toxic backlinks.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Use this TL;DR as a roadmap for cross-functional teams: IT for technical fixes, Content for translations, and Outreach for backlink disavowal.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-foursmileys" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Foursmileys</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><br><p>Foursmileys (foursmileys.com) is an authorized reseller of HappyOrNot, providing customer and employee feedback solutions. Their core business revolves around offering feedback terminals and analytical dashboards that help businesses measure, understand, and improve satisfaction levels. The company emphasizes a continuous improvement process, enabling organizations to leverage feedback data to drive growth and enhance performance. Additionally, they operate a unique initiative called "Virtuele Dromen," which uses virtual reality technology to help elderly people in nursing homes experience virtual travel and relive memories. Foursmileys is based in Heinenoord, Netherlands (<a href="https://www.foursmileys.com/contact" class="link-reference" target="_blank" rel="noopener">Company Website</a>), which confirms our focus on the Netherlands as their primary market, with Belgium as a secondary market.</p><br></div></section>
+                <section id="overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p>Our analysis of Foursmileys' SEO performance in the Netherlands reveals concerning trends that require immediate attention:</p><br><h3 id="organic-visibility-and-traffic">Organic Visibility and Traffic</h3><ul><li><strong>Significant Decline</strong>: The company has experienced an alarming 81.70% decrease in Estimated Traffic Volume (ETV) from August 2024 to July 2025.</li><li><strong>Current Traffic Metrics</strong>: As of July 2025, the website has an ETV of just 21.27, down from 116.24 in August 2024.</li><li><strong>Position Distribution</strong>: The site currently has:</li><li>0 keywords ranking in position 1</li><li>0 keywords ranking in positions 2-3</li><li>4 keywords ranking in positions 4-10</li><li>1 keyword ranking in positions 11-20</li><li>3 keywords ranking in positions 21-30</li><li>And several more in lower positions</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Focus on recovering mid-ranking keywords (positions 4–10) to push them into the top 3; requires on-page optimization and targeted link building.</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ul><li><strong>Best Performer</strong>: The page "wat-kunnen-feedback-smileys-betekenen-voor-jouw-sector" has the highest ETV (7.667) and estimated paid traffic cost (78.27), ranking in positions 4-10 for two keywords.</li><li><strong>Homepage Performance</strong>: The homepage ranks in positions 4-10 with an ETV of 3.718, showing moderate performance.</li><li><strong>Other Notable Pages</strong>: "partnerschap-happy-or-not" ranks in positions 4-10 with an ETV of 2.816.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Refresh on-page content for these pages with updated statistics, customer quotes, and optimized headers to improve relevance.</li></ul><br><h3 id="underperforming-pages">Underperforming Pages</h3><ul><li>Several blog posts show poor performance with low visibility and declining rankings, including:</li><li>"medewerkerstevredenheid-het-belang-van-tevreden-medewerkers" (very low ETV of 0.154)</li><li>"ret-service-en-verkoop" (ranks in positions 11-30 and 71-100)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Consolidate or prune underperforming content; redirect outdated posts to stronger, updated pages to consolidate authority.</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><ul><li><strong>Overall Score</strong>: The site received a technical SEO score of 95.24, which is good but has room for improvement.</li><li><strong>Critical Issues</strong>:</li><li>Missing H1 tags across the site</li><li>No alt text or title attributes on images (major accessibility and SEO issue)</li><li>Multiple HTML errors including bogus comments and unexpected tag closures</li><li><strong>Platform</strong>: The site is built on Wix, which may present some SEO limitations.</li><li><strong>Performance</strong>: Good page timing metrics but has render-blocking resources that could be optimized.</li><li><strong>Content Rate</strong>: Low ratio of text to code, indicating potential content thinness issues.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize fixing H1 and alt-text errors within two weeks; engage a developer familiar with Wix’s SEO quirks to address render-blocking scripts.</li></ul><br></div></section>
+                <section id="keyword-analysis-in-the-netherlands-and-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">Keyword Analysis in the Netherlands and Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><p>Our detailed keyword analysis reveals that Foursmileys is performing well for certain core business keywords but missing opportunities in others:</p><br><h4 id="top-performing-keywords-positions-4-10-">Top Performing Keywords (Positions 4-10)</h4><ul><li>"feedback smileys": Position 7, Search Volume: 110</li><li>"smiley feedback": Position 7, Search Volume: 110</li><li>"feedback smiley": Position 8, Search Volume: 110</li><li>"happy or not": Position 7, Search Volume: 110</li></ul><br><h3 id="high-value-keyword-recommendations">High-Value Keyword Recommendations</h3><p>Based on search volume, competition, and relevance to Foursmileys' business, we recommend targeting these keywords:</p><br><h4 id="top-priority-keywords">Top Priority Keywords</h4><ul><li>"klanttevredenheid meten": 2025 Avg: 250, Competition: LOW</li><li>"meten klanttevredenheid": 2025 Avg: 250, Competition: LOW</li><li>"meten van klanttevredenheid": 2025 Avg: 250, Competition: LOW</li></ul><br><h4 id="secondary-keywords">Secondary Keywords</h4><ul><li>"medewerkerstevredenheid verhogen": 2025 Avg: 36, Competition: LOW</li><li>"real time feedback": 2025 Avg: 53, Competition: LOW</li><li>"real-time feedback": 2025 Avg: 53, Competition: LOW</li><li>"klanttevredenheid meten model": 2025 Avg: 14, Competition: LOW</li></ul><br><h4 id="long-term-opportunities">Long-term Opportunities</h4><ul><li>"klanttevredenheid meten app": 2025 Avg: 10, Competition: NULL (trending upward)</li><li>"klanttevredenheid meten kpi": 2025 Avg: 16, Competition: LOW</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Develop pillar content frameworks for each top-priority keyword, then spin off cluster content to support link equity and topical authority.</li></ul><br><h3 id="content-performance-insights">Content Performance Insights</h3><ul><li><strong>Ranking Content Type</strong>: Blog posts (indicated by the <code>/post/</code> URL structure) are the primary content type ranking for these keywords.</li><li><strong>Ranking Snippet Patterns</strong>:</li><li>Keywords appear prominently in snippets</li><li>Descriptions are concise and attempt to match user search intent</li><li>Blog post dates are displayed in snippets</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Update meta descriptions to include targeted keywords and a compelling call to action to improve click-through rates.</li></ul><br><h3 id="keyword-gaps-and-opportunities">Keyword Gaps and Opportunities</h3><ul><li><strong>Dutch-Language Optimization</strong>: Foursmileys is losing ground to competitors like Feedbacksmiley.nl on Dutch-language keywords such as "feedback smiley" and "feedback smileys".</li><li><strong>Long-Tail Keywords</strong>: There's significant opportunity to target long-tail variations like "feedback smiley for retail" or "best feedback smiley system Netherlands" that have lower competition.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Conduct segmented long-tail keyword research for each industry vertical (retail, healthcare, hospitality) to capture highly qualified traffic.</li></ul><br></div></section>
+                <section id="competitive-landscape-in-the-netherlands-and-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">Competitive Landscape in the Netherlands and Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><br><h4 id="1-happyornot-www-happy-or-not-com-">1. HappyOrNot (www.happy-or-not.com)</h4><ul><li><strong>Strengths</strong>: Strong brand recognition, clear focus on customer feedback solutions, ranks higher for multiple relevant keywords including "happy or not" and "feedback smiley".</li><li><strong>Content Strategy</strong>: Uses benefit-driven titles and descriptions that highlight value propositions (e.g., "Improve your business one Smiley feedback button at a time"). Their dedicated product pages like "Smiley Terminal" rank well, indicating effective product-focused content.</li></ul><br><h4 id="2-feedbacksmiley-nl-www-feedbacksmiley-nl-">2. Feedbacksmiley.nl (www.feedbacksmiley.nl)</h4><ul><li><strong>Strengths</strong>: Strong localized Dutch content, domain name advantage for key terms, outranking Foursmileys for "feedback smileys" and "feedback smiley".</li><li><strong>Content Strategy</strong>: Uses titles that include the brand name and brief descriptions of their offering. Their homepage ranks well for multiple keywords, showing strong landing page optimization.</li></ul><br><h4 id="3-hellocustomer-www-hellocustomer-com-">3. HelloCustomer (www.hellocustomer.com)</h4><ul><li><strong>Strengths</strong>: Highest average keyword position (1) and estimated traffic volume (51.68) among competitors.</li><li><strong>Note</strong>: Limited keyword match data available, suggesting they may offer broader customer experience management tools beyond just feedback solutions.</li></ul><br><h3 id="serp-strategy-analysis">SERP Strategy Analysis</h3><ul><li><strong>Effective Title Patterns</strong>: Competitors use benefit-oriented titles, integrate keywords naturally, and prominently feature their brand names.</li><li><strong>Meta Description Effectiveness</strong>: Competitors include clear calls to action and value propositions in their meta descriptions.</li><li><strong>Content Types</strong>: Product pages and well-optimized landing pages are the most effective content types for ranking in this industry.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit current titles and descriptions against competitor best practices, then A/B test updated meta tags for high-volume pages.</li></ul><br></div></section>
+                <section id="backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><p>Our detailed backlink analysis reveals several important insights about Foursmileys' link profile:</p><br><ul><li><strong>Overall Metrics</strong>: Foursmileys has 51 backlinks from 29 referring domains, with a domain rank of 145.</li><li><strong>Spam Score</strong>: The site has a medium spam score of 28%, indicating some potential issues with link quality that need to be addressed.</li><li><strong>Geographic Distribution</strong>: The majority of backlinks (20) come from Dutch (.nl) domains, which aligns well with their target market, followed by .com domains (5).</li><li><strong>Link Attributes</strong>: 13 of the referring domains use nofollow links, which provide less SEO value than dofollow links.</li><li><strong>Link Types</strong>: Most backlinks (39) are anchor text links, with only 4 image-based links, suggesting opportunities for more diverse link types.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize outreach to convert high-authority nofollow links into dofollow, especially from Dutch industry sites and business associations.</li></ul><br><h3 id="backlink-quality-assessment">Backlink Quality Assessment</h3><ul><li><strong>High-Quality Links</strong>: Several valuable backlinks come from relevant Dutch websites:</li><li>virtueledromen.nl (2% spam score) – Multiple links with "Powered by FourSmileys" anchor text</li><li>diagnovum.nl (0% spam score) – Link from a news article about feedback terminals</li><li>ondernemen010.nl (20% spam score) – Links from business articles mentioning FourSmileys</li><li><strong>Problematic Links</strong>: Several potentially harmful backlinks were identified:</li><li>thebestbacklinksavailable.click (65% spam score)</li><li>australianwebdirectory.shop (65% spam score)</li><li>what-happens-next.xyz (85% spam score)</li><li>belonnanotservice.ga (85% spam score)</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><ul><li><strong>Limited Diversity</strong>: Most backlinks use either "Powered by FourSmileys" or just the URL as anchor text, indicating a lack of keyword-rich anchor text diversity.</li><li><strong>Brand Mentions</strong>: Several quality links use "FourSmileys" as anchor text, which helps with brand recognition but misses opportunities for keyword optimization.</li></ul><br><h3 id="link-building-opportunities">Link Building Opportunities</h3><ul><li><strong>Competitor Backlink Analysis</strong>: Competitors like yoys.net have 4 overlapping backlinks with Foursmileys, suggesting potential opportunities to acquire similar high-quality backlinks.</li><li><strong>Partnership Leverage</strong>: The strong relationship with virtueledromen.nl could be expanded to other potential partners in the healthcare and customer experience sectors.</li><li><strong>Local Business Associations</strong>: Connect with more Dutch business organizations for local authority signals, similar to the existing link from ondernemen010.nl.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Compile a list of 10–15 targeted Dutch industry sites for outreach this quarter, focusing on dofollow placements and guest post opportunities.</li><li>Prepare a disavow file for identified toxic domains and schedule regular backlink audits every two months.</li></ul><br></div></section>
+                <section id="content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our comprehensive analysis, we recommend the following strategic actions:</p><br><h3 id="technical-seo-improvements">Technical SEO Improvements</h3><ul><li>Address missing H1 tags across the site</li><li>Add alt text and title attributes to all images</li><li>Fix HTML errors including bogus comments and unexpected tag closures</li><li>Optimize render-blocking resources to improve page load speed</li></ul><br><h3 id="dutch-language-optimization">Dutch-Language Optimization</h3><ul><li><strong>Create Dedicated Dutch Pages</strong>: Develop content specifically targeting keywords like "feedback smileys," "feedback smiley," and "smiley feedback" in Dutch to compete with Feedbacksmiley.nl.</li><li><strong>Translate Existing Content</strong>: Convert high-performing English content into Dutch and optimize it for Dutch search terms.</li></ul><br><h3 id="serp-element-optimization">SERP Element Optimization</h3><ul><li><strong>Rewrite Titles and Meta Descriptions</strong>: Update these elements to incorporate relevant keywords, highlight benefits, and include clear calls to action. For example, the homepage title could be: "FourSmileys: Smiley Feedback Solutions to Improve Customer Satisfaction."</li><li><strong>Structured Data Implementation</strong>: Add structured data to enhance SERP appearance and potentially gain rich snippets.</li></ul><br><h3 id="content-development">Content Development</h3><ul><li><strong>Create Dedicated Product Pages</strong>: Develop detailed pages for each feedback solution offered, similar to HappyOrNot's "Smiley Terminal" page. Include high-quality images, videos, and customer testimonials.</li><li><strong>Optimize Existing Blog Content</strong>: Review and enhance the "wat-kunnen-feedback-smileys-betekenen-voor-jouw-sector" post to better target core keywords and improve its already strong performance.</li><li><strong>Enhance Employee Satisfaction Content</strong>: Optimize the "het belang van tevreden medewerkers" post to better target the keyword "tevreden medewerker" (position 24).</li><li><strong>Develop VR Experience Content</strong>: Create dedicated content around the "Virtuele Dromen" VR initiative for elderly care, as this unique offering isn't currently capturing any relevant search traffic.</li></ul><br><h3 id="backlink-strategy">Backlink Strategy</h3><ul><li><strong>Disavow Toxic Links</strong>: Submit a disavow file to Google for the identified high-spam-score backlinks (>65% spam score) to prevent potential penalties.</li><li><strong>Anchor Text Diversification</strong>: Work with existing link partners, especially virtueledromen.nl, to diversify anchor text with relevant keywords rather than just "Powered by FourSmileys."</li><li><strong>Content-Driven Link Building</strong>: Create shareable case studies and industry reports that naturally attract backlinks from authoritative Dutch websites.</li><li><strong>Local Partnerships</strong>: Expand relationships with Dutch business organizations and industry publications similar to ondernemen010.nl to build more relevant local backlinks.</li></ul><br><h3 id="new-content-development">New Content Development</h3><ul><li>Create landing pages targeting the top priority keywords:</li><li>"klanttevredenheid meten" (customer satisfaction measurement)</li><li>"meten klanttevredenheid" (measuring customer satisfaction)</li><li>"meten van klanttevredenheid" (measurement of customer satisfaction)</li><li>Develop industry-specific content showcasing how feedback solutions benefit different sectors (healthcare, retail, hospitality, etc.)</li><li>Create local SEO content targeting Rotterdam-specific keywords, given the strong performance of "ret servicepunt rotterdam"</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft a 12-month editorial calendar prioritizing pillar content and seasonal themes.</li><li>Assign content owners for each deliverable to ensure accountability and timely publication.</li></ul><br></div></section>
+                <section id="quick-wins-and-implementation-plan" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Quick Wins and Implementation Plan</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="immediate-actions-1-30-days-">Immediate Actions (1-30 Days)</h3><ol><li>Optimize the homepage title and meta description with relevant keywords and a clear call to action</li><li>Translate the existing blog post about feedback smileys into Dutch and optimize it for Dutch search terms</li><li>Fix critical technical SEO issues (H1 tags, image alt text)</li><li>Submit a disavow file for toxic backlinks with spam scores above 65%</li></ol><br><h3 id="short-term-actions-1-3-months-">Short-Term Actions (1-3 Months)</h3><ol><li>Create dedicated Dutch-language pages targeting core keywords</li><li>Develop detailed product pages for each feedback solution</li><li>Implement structured data markup across the site</li><li>Reach out to existing link partners to diversify anchor text</li></ol><br><h3 id="long-term-strategy-3-12-months-">Long-Term Strategy (3-12 Months)</h3><ol><li>Conduct thorough keyword research to identify additional long-tail keywords and content opportunities</li><li>Build backlinks from relevant Dutch websites to improve domain authority</li><li>Create case studies and customer testimonials to showcase the benefits of FourSmileys' solutions</li><li>Develop a comprehensive content calendar based on seasonal trends and industry events</li><li>Establish a regular backlink audit process to monitor link quality and identify new opportunities</li></ol><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Use Google Data Studio or another dashboard tool to track weekly changes in traffic, rankings, and backlink profile.</li><li>Assign owners and set quarterly OKRs to measure progress against these implementation milestones.</li></ul></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Foursmileys',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

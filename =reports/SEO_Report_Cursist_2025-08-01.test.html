@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Cursist</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Cursist • cursist-courses.com</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 1, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Current Value</th><th>12-Month Growth</th></tr></thead><tbody><tr><td class="">Total Ranking Keywords</td><td class="">576</td><td class="positive">+64.57% (from 350)</td></tr><tr><td class="">Position 1 Keywords</td><td class="">15</td><td class="positive">+114.29%</td></tr><tr><td class="">Position 2-3 Keywords</td><td class="">28</td><td class="positive">+12.00%</td></tr><tr><td class="">Position 4-10 Keywords</td><td class="">118</td><td class="positive">+71.01%</td></tr><tr><td class="">Estimated Monthly Traffic (ETV)</td><td class="">4,683.83</td><td class="positive">+7.30% (from 4,365.26)</td></tr><tr><td class="">Estimated Paid Traffic Cost</td><td class="">€1,873.91</td><td class="">N/A</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Keyword growth, especially in position 1 (+114%), indicates strong topical relevance; focus on sustaining these rankings with refreshed content and internal links.</li><li>Traffic value growth is modest; optimize URLs in positions 2-3 to push them to #1 and drive higher volume.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Strength Keywords (High Rank)</th><th>Cursist Ranking Status</th></tr></thead><tbody><tr><td class="">Keramikos.nl</td><td class="">keramiekovens, glazuren, draaischijf</td><td class="">Ranks poorly or not ranking</td></tr><tr><td class="">Keramiekenglazuur.nl</td><td class="">glazuren voor keramiek, keramiek glazuren</td><td class="">Lower rankings</td></tr><tr><td class="">Ve-ka.nl</td><td class="">klei idee, glazuren</td><td class="">Lower rankings</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit competitor content for top product keywords (ovens, glazuren, draaischijf) to identify gaps.</li><li>Map competitor strengths to your content roadmap to capture commercial intent queries.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keyword</th><th>Monthly Search Volume</th><th>Competition Level</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">keramiek schilderen amsterdam</td><td class="">1,900</td><td class="">Low</td><td class="">High volume, location-specific, untapped</td></tr><tr><td class="">keramiek schilderen workshop</td><td class="">1,300</td><td class="">Low</td><td class="">Strong commercial intent, low competition</td></tr><tr><td class="">keramiek schilderen utrecht</td><td class="">1,300</td><td class="">Low</td><td class="">Location-based, relevant to target audience</td></tr><tr><td class="">keramiek schilderen rotterdam</td><td class="">1,000</td><td class="">Low</td><td class="">Location-based, high intent</td></tr><tr><td class="">schilderen op keramiek</td><td class="">8,100</td><td class="">High</td><td class="">High volume, competitive but valuable</td></tr><tr><td class="">glazuur recepten</td><td class="">110</td><td class="">Low</td><td class="">Related to top-performing content</td></tr><tr><td class="">online cursus keramiek</td><td class="">10</td><td class="">Medium</td><td class="">Niche, targeted long-tail opportunity</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Location-based terms have low competition and strong intent; prioritize these in your content calendar.</li><li>For high-volume competitive keywords like "schilderen op keramiek", develop in-depth guides to stand out.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Cursist shows solid growth in organic visibility (+7.3% traffic, +64.57% keywords) with strong #1 rankings for "glazuren maken" (2,900 searches).</li><li>Top competitors (Keramikos.nl, Keramiekenglazuur.nl, Ve-ka.nl) outrank Cursist on product-focused and commercial keywords.</li><li>Significant opportunity in location-based keywords (Amsterdam, Utrecht, Rotterdam) with low competition and high search volume.</li><li>Technical SEO issues include mobile speed (68/100), duplicate meta descriptions, missing alt text, and incomplete sitemap.</li><li>Backlink profile is moderately strong but lacks authoritative Dutch arts and ceramics links; some toxic backlinks need disavowal.</li><li>Content gaps in advanced techniques, glaze recipes, equipment guides, troubleshooting, and video content.</li><li>Recommended actions: create location-specific landing pages, expand glazing content, implement video tutorials, optimize SERP snippets, fix technical SEO, and build local backlinks.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign ownership for each area: landing pages, technical fixes, backlink outreach, and content creation.</li><li>Set quarterly KPIs to measure improvements in visibility, traffic, and conversions.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-cursist-cursist-courses-com-" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Cursist (cursist-courses.com)</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for Cursist, an online ceramics education platform operating in the Netherlands. The analysis focuses on their current SEO performance, keyword opportunities, competitive landscape, and backlink profile in the Dutch market, with actionable recommendations to improve their search visibility and organic traffic.</p><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Cursist is a Dutch online platform specializing in ceramics, pottery, and clay education. They offer comprehensive online courses taught by experts in various ceramic techniques including wheel throwing, hand-building, and glazing. Their business model includes selling online courses, educational resources, tools, materials, and e-books related to ceramics. The website targets Dutch-speaking pottery enthusiasts of various skill levels. <a href="https://cursist-courses.com/pottenbakken-cursus/" class="link-reference" target="_blank" rel="noopener">Company Website</a></p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-organic-visibility">Current Organic Visibility</h3><p>Based on our analysis, Cursist currently has moderate visibility in Dutch search results for ceramics-related keywords. The website shows the following position distribution in the Netherlands:</p><ul><li>Position 1: 15 keywords</li><li>Positions 2-3: 28 keywords</li><li>Positions 4-10: 118 keywords</li><li>Positions 11-20: 100 keywords</li><li>Positions 21-30: 83 keywords</li><li>Positions 31-100: 232 keywords</li></ul><br><h3 id="organic-traffic-trends">Organic Traffic Trends</h3><p>Over the past 12 months, Cursist has experienced positive growth in organic traffic in the Netherlands:</p><ul><li>Current monthly estimated traffic value (ETV): 4,683.83</li><li>Year-over-year growth: +7.30% (from 4,365.26 in previous year)</li><li>Total ranking keywords: 576 (up from 350 a year ago)</li><li>Estimated paid traffic cost value: €1,873.91</li></ul><br><p>The data shows significant improvements across most ranking positions:</p><ul><li>Position 1 keywords: +114.29% increase</li><li>Positions 2-3 keywords: +12.00% increase</li><li>Positions 4-10 keywords: +71.01% increase</li></ul><br><h3 id="top-performing-pages">Top Performing Pages</h3><ol><li><code>/keramiek-glazuren/</code> - 1,417.06 ETV (ranks in position 1 for several keywords)</li><li><code>/in-5-stappen-van-klei-tot-keramiek/</code> - 575.88 ETV (strong position 1 rankings)</li><li><code>/thuis-pottenbakken-zo-pak-je-het-aan/</code> - 450.68 ETV (ranks in positions 1-3)</li><li><code>/pottenbakken-met-draaischijf/</code> - 445.85 ETV (ranks in positions 2-3)</li><li><code>/engobe-technieken/</code> - 93.70 ETV (ranks in positions 1-3)</li></ol><br><h3 id="underperforming-pages">Underperforming Pages</h3><ol><li><code>/de-tafellamp/</code> - Very low ETV (below 5)</li><li><code>/de-wastafel-met-klei/</code> - Poor rankings (positions 21-100)</li><li><code>/de-fermentatiepot/</code> - Limited visibility despite relevant content</li><li><code>/de-vaas/</code> - Underperforming despite search potential</li><li><code>/mocha-diffusion/</code> - Low traffic despite niche interest</li></ol><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><ul><li>Mobile page speed: 68/100 (Needs improvement)</li><li>Desktop page speed: 82/100</li><li>Render-blocking resources affecting page load times</li><li>14 pages with duplicate meta descriptions</li><li>8 pages with missing alt text</li><li>Image optimization issues (oversized images)</li><li>XML sitemap missing some newer course pages</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Begin with high-impact fixes: resolve duplicate meta descriptions and add missing alt text.</li><li>Schedule a mobile speed optimization sprint to target a score of 85+ within 2 months.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-ranking-keywords">Top Ranking Keywords</h3><p>Our analysis reveals that Cursist is performing exceptionally well for several high-value keywords:</p><br><p><strong>Position 1 Rankings:</strong></p><ul><li>"glazuren maken" - 2,900 monthly searches</li><li>"keramiek voor beginners" - 390 monthly searches</li><li>"pottenbakken thuis" - 110 monthly searches</li><li>"thuis pottenbakken" - 90 monthly searches</li><li>"sgraffito keramiek" - 90 monthly searches</li><li>"zelf tegels maken" - 140 monthly searches</li></ul><br><p><strong>Positions 2-3 Rankings:</strong></p><ul><li>"engobe maken" - 70 monthly searches</li><li>"engobe technieken" - 110 monthly searches</li><li>"engobes maken" - 90 monthly searches</li><li>"hoe lang moet klei drogen" - 90 monthly searches</li><li>"klei lijmen" - 70 monthly searches</li><li>"nerikomi techniek" - 50 monthly searches</li></ul><br><p><strong>Positions 4-10 Rankings:</strong></p><ul><li>"cursus klei" - 90 monthly searches</li><li>"kan keramiek in de vaatwasser" - 70 monthly searches</li><li>"chamotte" - 210 monthly searches</li></ul><br><h3 id="high-value-keyword-opportunities">High-Value Keyword Opportunities</h3><p>Based on our detailed analysis, we've identified several high-value keywords with strong search intent that Cursist should target:</p><br><ol><li>"keramiek schilderen amsterdam" - 1,900 monthly searches (LOW competition)</li><li>"keramiek schilderen workshop" - 1,300 monthly searches (LOW competition)</li><li>"keramiek schilderen utrecht" - 1,300 monthly searches (LOW competition)</li><li>"keramiek schilderen rotterdam" - 1,000 monthly searches (LOW competition)</li><li>"schilderen op keramiek" - 8,100 monthly searches (HIGH competition)</li><li>"glazuur recepten" - 110 monthly searches (LOW competition)</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft a content plan for these high-value targets, starting with location pages.</li><li>Allocate writers and designers for comprehensive guides to overcome competitive keywords.</li></ul><br><h3 id="long-tail-keyword-opportunities">Long-Tail Keyword Opportunities</h3><ol><li>"online cursus keramiek" - 10 monthly searches (MEDIUM competition)</li><li>"keramiek schilderen leeuwarden" - 880 monthly searches (LOW competition)</li><li>"glazuur keramiek recepten" - Low search volume but highly targeted</li><li>"glazuur recepten steengoed" - Low search volume but highly targeted</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Long-tail queries often convert better; integrate them into FAQ sections and blog posts.</li></ul><br><h3 id="content-performance-insights">Content Performance Insights</h3><p>Our analysis of Cursist's content performance reveals several key patterns:</p><br><ol><li>How-to Articles: Articles explaining techniques ("engobe technieken," "nerikomi techniek," "sgraffito keramiek") and processes ("hoe lang moet klei drogen," "klei lijmen") are performing exceptionally well.</li><li>Beginner-Focused Content: The site ranks well for "keramiek voor beginners," indicating a good understanding of beginner needs.</li><li>Glazing Content: The "keramiek glazuren" page is a strong performer, with the site ranking #1 for "glazuren maken" which has a very high search volume (2,900 searches).</li><li>Home Pottery/Ceramics: Content about doing pottery at home resonates strongly with users, as evidenced by #1 rankings for "pottenbakken thuis" and "thuis pottenbakken."</li><li>SERP Snippet Patterns: Successful snippets include:</li></ol><ul><li>Direct answers to user queries</li><li>Step-by-step guides</li><li>Technique definitions</li><li>Benefit-oriented descriptions</li></ul><br><h3 id="content-gaps">Content Gaps</h3><ol><li>Advanced Techniques: While beginner content is strong, there's limited content for intermediate and advanced ceramic artists.</li><li>Specific Glaze Recipes/Formulas: Given the popularity of "glazuren maken," there's an opportunity to create content with specific glaze recipes, troubleshooting tips, and explanations of glaze chemistry.</li><li>Equipment Guides: The site could expand on the "draaischijf" content with more detailed buying guides, reviews of different models, and comparisons.</li><li>Troubleshooting Guides: There's a need for content addressing common problems in ceramics (e.g., cracking, glaze defects, firing issues).</li><li>Video Content: The site lacks video tutorials demonstrating techniques, glaze application, and pottery processes.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize content creation by search volume and intent: start with specific glaze recipes and troubleshooting guides.</li><li>Incorporate video walkthroughs into at least 50% of new content pieces for higher engagement.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><br><h4 id="1-keramikos-nl">1. Keramikos.nl</h4><ul><li>Key Strengths: High keyword rankings (especially #1 for many terms), high estimated traffic volume, strong focus on product-related keywords (ovens, glazuren, etc.)</li><li>Type: Direct competitor selling ceramic supplies, materials, tools, and equipment</li><li>Top Keywords: "keramiekovens," "glazuren," "draaischijf"</li><li>Strategy: Creating comprehensive product category pages with detailed descriptions and specifications</li></ul><br><h4 id="2-keramiekenglazuur-nl">2. Keramiekenglazuur.nl</h4><ul><li>Key Strengths: Strong rankings for glaze-related keywords, emphasis on workshops and courses alongside product sales</li><li>Type: Hybrid competitor offering both supplies and educational workshops</li><li>Top Keywords: "glazuren voor keramiek," "keramiek glazuren"</li><li>Strategy: Combining product pages with educational content to capture both commercial and informational search intent</li></ul><br><h4 id="3-ve-ka-nl">3. Ve-ka.nl</h4><ul><li>Key Strengths: High average keyword position, strong rankings for "klei idee" and "glazuren," long history in the market (since 1958)</li><li>Type: Direct competitor focusing on selling materials and equipment</li><li>Top Keywords: "klei idee," "glazuren"</li><li>Strategy: Leveraging their established brand reputation and creating content around project ideas that lead to product purchases</li></ul><br><h3 id="serp-strategy-analysis">SERP Strategy Analysis</h3><p>Comparing Cursist's SERP elements with competitors reveals important differences:</p><br><ul><li>Title and Meta Description Comparison:</li><li>Cursist: Titles often focus on "how-to" or informational aspects. Meta descriptions provide brief summaries of articles.</li><li>Competitors: Titles include product categories or brand names. Meta descriptions highlight product ranges, special offers, or company expertise.</li></ul><br><ul><li>Effective Patterns in Competitor SERP Elements:</li><li>Clear product focus in titles (e.g., "Ovens - Keramikos.nl")</li><li>Consistent keyword usage in both title and meta description</li><li>Calls to action in meta descriptions (e.g., "Bekijk hier het uitgebreide assortiment")</li></ul><br><ul><li>Successful Content Types:</li><li>Product category pages rank highly for commercial keywords</li><li>Individual product pages perform well for long-tail keywords</li></ul><br><h3 id="content-gap-analysis-vs-competitors">Content Gap Analysis vs. Competitors</h3><ol><li>Competitors have more product-focused content with commercial intent</li><li>Competitors offer dedicated product category pages that Cursist lacks</li><li>Competitors provide more equipment comparison guides</li><li>Competitors have stronger internal linking between informational and commercial content</li><li>Competitors implement better schema markup for products and reviews</li></ol><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li>Total backlinks: 998 (precise count)</li><li>Referring domains: 99 (with 97 unique main domains)</li><li>Domain rank: 265</li><li>Backlink spam score: 12% (relatively clean profile)</li><li>Referring TLD distribution:</li><li>.com: 491 links</li><li>.be: 99 links</li><li>.nl: 77 links</li><li>.fr: 24 links</li><li>.org: 18 links</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Disavow identified toxic links immediately.</li><li>Monitor new backlinks monthly and maintain a spreadsheet of high-authority acquisitions.</li></ul><br><h3 id="backlink-quality-analysis">Backlink Quality Analysis</h3><p>The backlink profile shows a mix of quality levels:</p><ul><li>High-quality links (23%): From authoritative domains like teachable.com (8% spam score), cursussen-en-workshops.nl (0% spam score), and tradetracker.com (0% spam score)</li><li>Medium-quality links (52%): From domains like korail-bayonne.fr (35% spam score) and gerritsenmedia.nl (35% spam score)</li><li>Low-quality/toxic links (25%): Including suspicious domains like great-choice-for-pbn-domains.co.uk (65% spam score) and australianwebdirectory.shop (65% spam score)</li></ul><br><h3 id="geographic-distribution-of-backlinks">Geographic Distribution of Backlinks</h3><ul><li>Netherlands (.nl domains): 77 links</li><li>Belgium (.be domains): 99 links</li><li>International (.com domains): 491 links</li><li>France (.fr domains): 24 links</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><p>The anchor text distribution reveals opportunities for optimization:</p><ul><li>Course-specific anchors: "Throwing on the potter's wheel", "Production throwing", "Papierporselein: vloeibaar slib"</li><li>Generic anchors: "Website", "Learn", "Check all available courses"</li><li>Brand anchors: "cursist-courses.com"</li></ul><br><h3 id="backlink-opportunities">Backlink Opportunities</h3><ol><li>wattedoen.be - Links to 34 competitors but not fully leveraged by Cursist</li><li>startpagina.be - High authority with only 11 intersecting links</li><li>kunstacademie.nl - Links to 3 competitors but not to Cursist</li><li>creatiefplatform.nl - High DA Dutch creative arts platform</li><li>hobbymagazine.nl - Popular Dutch crafts publication</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop outreach campaigns to wattedoen.be and creative platforms; offer guest articles or resource link swaps.</li><li>Track earned links and disavow toxic ones monthly to maintain a healthy backlink profile.</li></ul><br><h3 id="toxic-backlinks-identified">Toxic Backlinks Identified</h3><ol><li>great-choice-for-pbn-domains.co.uk (65% spam score)</li><li>australianwebdirectory.shop (65% spam score)</li><li>belonnanotservice.ga (85% spam score)</li><li>thebestbacklinksavailable.click (65% spam score)</li><li>what-happens-next.xyz (85% spam score)</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Submit disavow file for toxic domains this week.</li><li>After disavow, re-audit backlink profile in 4–6 weeks to confirm improvement.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="content-strategy-analysis">Content Strategy Analysis</h3><p>Based on URL patterns and performance data, Cursist's current content strategy focuses on:</p><ol><li><strong>Course-focused content</strong> (/cursus/ URLs) - Teaching specific pottery techniques</li><li><strong>Technique & process guides</strong> - Explaining various pottery methods</li><li><strong>Materials & tools content</strong> - Information about equipment and supplies</li><li><strong>Specific ceramic object tutorials</strong> - How to create particular items</li><li><strong>Troubleshooting & FAQ content</strong> - Addressing common pottery problems</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Align content clusters around user intent journeys: informational → transactional → course enrollment.</li><li>Use internal links to guide readers from technique articles to paid course pages.</li></ul><br><h3 id="actionable-seo-improvements">Actionable SEO Improvements</h3><ol><li>Optimize for Location-Based Keywords:</li></ol><ul><li>Create dedicated landing pages for high-volume location keywords like "keramiek schilderen amsterdam" (1,900 searches), "keramiek schilderen utrecht" (1,300 searches), and "keramiek schilderen rotterdam" (1,000 searches)</li><li>Highlight how online courses can benefit people in these specific locations</li><li>Example structure: <code>/keramiek-schilderen/amsterdam/</code>, <code>/keramiek-schilderen/utrecht/</code></li></ul><ol><li>Expand Glazing Content:</li></ol><ul><li>Leverage the strong performance of "glazuren maken" (2,900 searches) by creating more in-depth content</li><li>Develop specific glaze recipe content targeting "glazuur recepten" (110 searches)</li><li>Create a comprehensive guide to glazing techniques with video demonstrations</li></ul><ol><li>Enhance Beginner-Friendly Content:</li></ol><ul><li>Build upon the success of "keramiek voor beginners" (390 searches) with more step-by-step guides</li><li>Create content clusters around beginner topics with internal linking</li><li>Develop a "Beginner's Guide to Home Pottery" series</li></ul><ol><li>Implement Video Content Strategy:</li></ol><ul><li>Create video tutorials for top-performing keywords like "glazuren maken" and "pottenbakken thuis"</li><li>Optimize video content for both YouTube and on-site engagement</li><li>Include video transcripts for SEO benefits</li></ul><ol><li>Optimize SERP Snippets:</li></ol><ul><li>Revise meta descriptions to directly answer user queries</li><li>Include step-by-step information in meta descriptions where appropriate</li><li>Add benefit statements to meta descriptions (e.g., "Learn to create professional glazes at home")</li></ul><ol><li>Improve Internal Linking:</li></ol><ul><li>Create a systematic internal linking structure between related technique articles</li><li>Implement breadcrumb navigation for better user experience and SEO</li><li>Link from informational content to relevant courses</li></ul><ol><li>Implement Schema Markup:</li></ol><ul><li>Add HowTo schema for technique articles</li><li>Use Course schema for online courses</li><li>Implement FAQ schema for question-based content</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Implementing schema and enhanced snippets can yield an immediate CTR uplift; schedule schema rollout in parallel with content updates.</li><li>Internal linking and video content work hand in hand: embed videos in high-priority pages to increase session duration and reduce bounce rate.</li></ul><br><h3 id="quick-wins">Quick Wins</h3><ol><li>Optimize Top-Performing Pages:</li></ol><ul><li>Further enhance the <code>/keramiek-glazuren/</code> page to maintain its #1 position for "glazuren maken"</li><li>Expand the <code>/thuis-pottenbakken-zo-pak-je-het-aan/</code> page with more detailed content</li><li>Add more visual elements to the <code>/in-5-stappen-van-klei-tot-keramiek/</code> page</li></ul><ol><li>Target Low-Competition Keywords:</li></ol><ul><li>Create content specifically targeting "glazuur recepten" (110 monthly searches, LOW competition)</li><li>Develop a comprehensive guide for "online cursus keramiek" (10 monthly searches, MEDIUM competition)</li></ul><ol><li>Fix Technical SEO Issues:</li></ol><ul><li>Address mobile page speed issues</li><li>Fix duplicate meta descriptions</li><li>Add missing alt text to images</li></ul><br><h3 id="longer-term-opportunities">Longer-Term Opportunities</h3><ol><li>Develop Advanced Content:</li></ol><ul><li>Create content targeting intermediate and advanced ceramic artists</li><li>Develop in-depth troubleshooting guides for common pottery problems</li><li>Create comprehensive equipment comparison guides</li></ul><ol><li>Build Backlinks:</li></ol><ul><li>Focus on acquiring high-quality backlinks from Dutch ceramics and arts websites</li><li>Develop shareable content assets like infographics or comprehensive guides</li></ul><ol><li>Local SEO:</li></ol><ul><li>Optimize for local search with location-specific landing pages</li><li>Target local keywords like "keramiek workshop [city name]"</li></ul><ol><li>Content Diversification:</li></ol><ul><li>Create more visual content (videos, infographics)</li><li>Develop interactive tools like glaze calculators or clay type selectors</li></ul><br></div></section>
+                <section id="conclusion-and-next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion and Next Steps</h2>
+                    </div>
+                    <div class="section-content"><p>Cursist has shown positive growth in the Dutch ceramics education market with a 7.30% increase in organic traffic over the past year. The site is performing exceptionally well for certain keywords, particularly "glazuren maken" (2,900 searches) where it ranks #1. However, the website is missing significant opportunities in location-based keywords and more advanced content.</p><br><p>By implementing the recommendations in this report—particularly creating location-specific landing pages, expanding glazing content, and improving SERP elements—Cursist can significantly improve its organic visibility and traffic in the Netherlands.</p><br><p>Recommended immediate actions:</p><ol><li>Create dedicated landing pages for high-volume location-based keywords</li><li>Expand content around "glazuren maken" to maintain and leverage the #1 position</li><li>Develop video tutorials for top-performing keywords</li><li>Optimize SERP snippets following successful patterns</li><li>Implement schema markup for better SERP visibility</li></ol><br><p>This data-driven approach will help Cursist systematically improve its search visibility, outrank competitors like Keramikos.nl and Ve-ka.nl, and capture untapped opportunities in the Dutch ceramics market.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Cursist',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

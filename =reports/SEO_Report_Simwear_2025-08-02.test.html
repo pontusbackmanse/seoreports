@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Simwear</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Simwear • www.simwear.eu</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Belgium Market</span>
+                        <span><i class="fas fa-calendar"></i> August 2, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change (Belgium)</th></tr></thead><tbody><tr><td class="">Total Ranking Keywords</td><td class="">22</td></tr><tr><td class="">Organic Traffic Estimate (ETV)</td><td class="">328.04 (July 2025)</td></tr><tr><td class="">12-Month Organic Traffic Growth</td><td class="positive">+7.51% (Aug 2024 - Jul 2025)</td></tr><tr><td class="">Keyword Position Changes</td><td class="">New: 12, Improved: 3, Declined: 5, Lost: 13</td></tr><tr><td class="">Top Ranking Positions</td><td class="">#1: 2 keywords, #2-3: 6 keywords, #4-10: 4 keywords</td></tr></tbody></table></div><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors (Belgium)</th><th>Keywords They Rank Well For (Simwear Ranks Poorly)</th></tr></thead><tbody><tr><td class="">Pimax.com</td><td class="">"Pimax Crystal Light" (390 SV), "Pimax Crystal" (210 SV), "Crystal Light" (110 SV)</td></tr><tr><td class="">Unboundxr.be</td><td class="">Dutch language keywords related to VR and sim racing</td></tr><tr><td class="">Fanatec.com</td><td class="">"Sim Rigs" (140 SV), "Sim Racing Shop" (70 SV), "Simracing Shop" (70 SV)</td></tr><tr><td class="">KGL Racing</td><td class="">(Further analysis needed)</td></tr><tr><td class="">Thesimgrid.com</td><td class="">Overlapping backlink domains, strong authority</td></tr></tbody></table></div><p>*SV = Monthly Search Volume</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The split between strong brand/product keyword rankings and weak local terms underscores the need for dedicated Dutch and French content.</li><li>Competitors leveraging localized language have a clear edge—Simwear should prioritize multilingual optimization for immediate gains.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords (Belgium)</th><th>Search Volume</th><th>Current Position</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">"VPG"</td><td class="">480</td><td class="">14</td><td class="">High volume, strong purchase intent</td></tr><tr><td class="">"Crystal Light"</td><td class="">110</td><td class="">17</td><td class="">Good volume, product-specific opportunity</td></tr><tr><td class="">"sim racing shop belgië"</td><td class="">40-50</td><td class="">Not ranking well</td><td class="">Highly relevant local transactional intent</td></tr><tr><td class="">"sim racing winkel" (Dutch)</td><td class="">10-50</td><td class="">Low/No ranking</td><td class="">Critical for Dutch-speaking Belgian market</td></tr><tr><td class="">"vr headset for sim racing"</td><td class="">10</td><td class="">Low/No ranking</td><td class="">Product-specific, purchase intent</td></tr><tr><td class="">Long-tail Dutch keywords (e.g., "Pimax Crystal Light kopen")</td><td class="">10-50</td><td class="">Low/No ranking</td><td class="">Localized, low competition, high intent</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop dedicated landing pages for “VPG” and “Crystal Light” with optimized titles, headings, and Dutch translations.</li><li>Build internal links from relevant category and blog pages to these opportunity pages to boost authority.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Simwear has steady organic growth (+7.51% traffic) but ranks for only 22 keywords in Belgium, with limited top positions.</li><li>Strong brand/product keyword rankings exist (e.g., "simwear eu," "simagic") but poor performance on broader, high-volume local terms like "sim racing shop België."</li><li>Dutch language content and keyword optimization is a critical gap limiting local market penetration.</li><li>Competitors like Pimax.com and Unboundxr.be outperform Simwear on key product and local language keywords.</li><li>Technical SEO issues (canonicalization, missing H1s, image alt tags) and toxic backlinks (7% spam score) hinder performance.</li><li>Backlink profile is weak in Belgian (.be) domains (only 1.1% backlinks), with opportunities to acquire authoritative local links.</li><li>Content strategy should focus on Dutch translations, localized landing pages, brand-specific guides, and long-tail keywords.</li><li>Backlink strategy must prioritize quality, local relevance, toxic link disavowal, and competitor link acquisition.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Immediate focus on Dutch translations for top pages will capture local traffic.</li><li>Resolving technical SEO issues quickly preserves existing rankings before scaling content efforts.</li></ul><br><hr><br></div></section>
+                <section id="seo-analysis-report-for-simwear" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-analytics"></i></div>
+                        <h1 class="section-title">SEO Analysis Report for Simwear</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for Simwear, a Belgian retailer specializing in sim racing equipment. The analysis focuses on their current SEO performance in the Belgian market, keyword opportunities, competitive landscape, and backlink profile, with actionable recommendations to improve their organic visibility and search rankings.</p><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Simwear is a specialized retailer of sim racing equipment based in Belgium. They offer a wide range of products including wheelbases, steering wheels, pedals, rigs, VR headsets, and accessories from various brands such as Asetek, Conspit, Simagic, Pimax VR, VPG Sim, and Cube Controls. A key differentiator is their physical experience center in Belgium where customers can test equipment before purchasing (<a href="https://www.simwear.eu" class="link-reference" target="_blank" rel="noopener">Company Website</a>).</p><br></div></section>
+                <section id="1-overall-seo-performance" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-organic-visibility">Current Organic Visibility</h3><ul><li>Organic traffic estimate (ETV): 328.04 (as of July 2025)</li><li>Estimated paid traffic cost: €252.54</li><li>Ranking distribution:</li><li>Position 1: 2 keywords</li><li>Positions 2-3: 6 keywords</li><li>Positions 4-10: 4 keywords</li><li>Positions 11-20: 2 keywords</li><li>Positions 21-30: 2 keywords</li><li>Positions 31-40: 3 keywords</li><li>Positions 41-50: 1 keyword</li><li>Positions 51-60: 1 keyword</li><li>Positions 61-70: 1 keyword</li><li>Total ranking keywords: 22</li></ul><br><h3 id="12-month-growth-trend">12-Month Growth Trend</h3><ul><li>Organic traffic growth: +7.51% increase from August 2024 to July 2025</li><li>Visibility trend: Fluctuating but generally positive, with peak ETV of 448.49 in November 2024</li><li>Keyword position changes:</li><li>New rankings: 12 keywords</li><li>Improved rankings: 3 keywords</li><li>Declined rankings: 5 keywords</li><li>Lost rankings: 13 keywords</li></ul><br><h3 id="top-performing-pages">Top Performing Pages</h3><ul><li>Homepage (https://simwear.eu/): Top performer with ETV of 104.24, ranking for 6 keywords with 2 in position 1</li><li>Product pages showing strong performance:</li><li>https://simwear.eu/Pimax-Crystal-light-headset: ETV of 25.70, ranking in positions 4-10</li><li>https://simwear.eu/Simagic: ETV of 85.66, ranking in positions 4-10</li></ul><br><h3 id="underperforming-pages">Underperforming Pages</h3><ul><li>https://simwear.eu/Shifters/handbrakes: Ranks in position 51-60 with very low ETV (0.14)</li><li>https://simwear.eu/Cooler-Master-rig: Ranks in position 61-70 with very low ETV (0.29)</li><li>Several product pages ranking beyond position 30 with minimal traffic contribution</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><ul><li>Overall on-page score: 91.59 (good)</li><li>Critical issues:</li><li>Domain variation: Both https://simwear.eu/ and http://www.simwear.eu/ versions exist, with the HTTP version not ranking for keywords (potential canonicalization issue)</li><li>Missing H1 tags across the site</li><li>Images missing "alt" and "title" attributes</li><li>Duplicate "viewport" meta tags</li><li>Title too short (7 characters)</li><li>Render-blocking resources affecting page load time</li><li>Low content rate</li><li>Irrelevant meta keywords</li><li>HTML errors</li><li>Large DOM size</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Consolidate HTTP/HTTPS and www versions via 301 redirects and canonical tags to prevent duplicate content.</li><li>Audit all pages missing H1 tags, assign optimized headers reflecting target keywords, and ensure alt text is applied to every image.</li></ul><br></div></section>
+                <section id="2-keyword-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><ul><li>Top keywords by position:</li><li>Position 1: "simwear eu" (170 monthly searches), "simwear.eu" (170 monthly searches)</li><li>Positions 2-3: "cube controls" (140), "simagic p2000" (70), "simxpro" (140), "simagic alpha" (90), "simagic gt neo" (170), "simagic p1000" (110)</li><li>Positions 4-10: "pimax crystal light" (390), "simagic" (1300), "pimax crystal" (210), "kgl racing" (170)</li></ul><br><h3 id="high-value-keyword-opportunities">High-Value Keyword Opportunities</h3><ul><li>"VPG" (480 monthly searches, position 14): High search volume with potential to break into top 10</li><li>"Crystal Light" (110 monthly searches, position 17): Good opportunity for ranking improvement</li><li>"sim racing shop belgië" (40-50 monthly searches): High competition but directly relevant to business and location</li><li>"sim racing winkel" (10-50 monthly searches): Dutch language equivalent, essential for local market</li><li>"sim racing belgië" (0-10 monthly searches): Broad term for brand awareness</li></ul><br><h3 id="long-tail-keyword-opportunities">Long-Tail Keyword Opportunities</h3><ul><li>"vr headset for sim racing" (10 monthly searches): Product-specific with purchase intent</li><li>"best vr headset for sim racing" (10-20 monthly searches): Higher purchase intent</li><li>"best vr headset for sim racing 2023/2024" (currently low volume but growing potential)</li><li>Dutch language long-tail keywords:</li><li>"Pimax Crystal Light kopen" (Buy Pimax Crystal Light)</li><li>"Pimax Crystal prijs" (Pimax Crystal price)</li><li>"Sim racing shop België" (Sim racing shop Belgium)</li><li>"Sim rig kopen België" (Buy Sim rig Belgium)</li><li>Recommendation to research additional long-tail keywords like "best sim racing pedals for beginners" and "how to set up simagic alpha wheelbase"</li></ul><br><h3 id="seasonal-trends">Seasonal Trends</h3><ul><li>Keyword data shows fluctuations in search volume trends that should be monitored to identify seasonal patterns</li><li>Recommendation to track "search<em>volume</em>trend" data to proactively create content for keywords with increasing search volume</li></ul><br><h3 id="content-gaps">Content Gaps</h3><ul><li>Dutch language content: Critical gap given the Belgian market</li><li>Broader terms like "sim racing belgium" and "sim racing shop" are underperforming</li><li>Specific product categories like VPG and Crystal Light need more targeted content</li><li>In-depth guides and comparison content for specific equipment types</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create a quarterly content calendar for Dutch-language articles on underperforming but high-potential keywords.</li><li>Engage native Dutch copywriters to produce culturally relevant content and embed local terminology.</li></ul><br></div></section>
+                <section id="3-competitive-landscape" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors-in-belgium">Key Competitors in Belgium</h3><ol><li><strong>Pimax.com</strong></li></ol><ul><li><strong>Type:</strong> Direct competitor (VR Headsets)</li><li><strong>Key Strengths:</strong> Strong brand authority for "Pimax" branded VR headsets, likely due to being the manufacturer</li><li><strong>Content Strategy:</strong> Highly optimized product pages for specific product names</li><li><strong>SERP Elements:</strong> Uses concise titles and meta descriptions that highlight key features and benefits (e.g., "Highest Clarity VR Headsets," "ultra-clear VR headset featuring cutting-edge glass aspheric lenses")</li></ul><br><ol><li><strong>Unboundxr.be</strong></li></ol><ul><li><strong>Type:</strong> Direct competitor (VR Headsets)</li><li><strong>Key Strengths:</strong> Local Belgian competitor with a focus on VR and AR</li><li><strong>Content Strategy:</strong> Optimizing for the Dutch language, which is a key advantage in the Belgian market</li><li><strong>SERP Elements:</strong> Uses Dutch language in titles and descriptions, and includes keywords relevant to the Belgian market</li></ul><br><ol><li><strong>Fanatec.com</strong></li></ol><ul><li><strong>Type:</strong> Indirect competitor (Sim Racing Hardware)</li><li><strong>Key Strengths:</strong> Strong brand authority in sim racing hardware (steering wheels, cockpits, etc.)</li><li><strong>Content Strategy:</strong> Broad product range and established brand recognition</li><li><strong>SERP Elements:</strong> Well-optimized category pages (e.g., "Sim Racing Cockpits") that rank well for broader keywords</li></ul><br><ol><li><strong>KGL Racing</strong></li></ol><ul><li>Appears in keyword data as a competitor (further analysis needed)</li></ul><br><ol><li><strong>Thesimgrid.com</strong></li></ol><ul><li><strong>Type:</strong> Competitor in sim racing space</li><li><strong>Key Strengths:</strong> Strong backlink profile with 50 intersecting domains with Simwear</li></ul><br><h3 id="competitor-keyword-analysis">Competitor Keyword Analysis</h3><ul><li><strong>Keywords where competitors outperform Simwear:</strong></li><li>"Pimax Crystal Light" (Volume: 390, Competition: High)</li><li>"Pimax Crystal" (Volume: 210, Competition: High)</li><li>"Crystal Light" (Volume: 110, Competition: High)</li><li>"Sim Rigs" (Volume: 140, Competition: High)</li><li>"Sim Racing Shop" (Volume: 70, Competition: High)</li><li>"Simracing Shop" (Volume: 70, Competition: High)</li></ul><br><ul><li><strong>Search Intent Analysis:</strong></li><li>"Pimax Crystal Light," "Pimax Crystal," "Crystal Light": Informational and transactional. Users are researching and potentially looking to buy these specific VR headsets.</li><li>"Sim Rigs," "Sim Racing Shop," "Simracing Shop": Transactional. Users are looking to purchase sim racing setups and equipment.</li></ul><br><h3 id="competitor-content-strategies">Competitor Content Strategies</h3><ul><li><strong>Pimax.com:</strong> Focuses on product-specific pages with concise, benefit-oriented descriptions</li><li><strong>Unboundxr.be:</strong> Leverages Dutch language optimization for the Belgian market</li><li><strong>Fanatec.com:</strong> Strong category pages that rank well for broader keywords</li></ul><br><h3 id="competitor-serp-strategy-analysis">Competitor SERP Strategy Analysis</h3><ul><li><strong>Effective Patterns in Competitor SERP Elements:</strong></li><li><strong>Conciseness:</strong> Competitors use shorter, more impactful titles and descriptions</li><li><strong>Benefit-Oriented Language:</strong> They focus on the benefits of the products (e.g., "highest clarity," "unparalleled level of immersion") rather than just technical specs</li><li><strong>Dutch Language (Unboundxr.be):</strong> Using Dutch is crucial for ranking in the Belgian market</li></ul><br><ul><li><strong>Content Types/Formats:</strong></li><li><strong>Product Pages:</strong> Pimax.com's product pages are highly optimized for specific product names</li><li><strong>Category Pages:</strong> Fanatec.com's category pages (e.g., "Sim Racing Cockpits") rank well for broader keywords</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>While competitors emphasize benefits, Simwear should balance feature details with localized terms to resonate with Belgian audiences in both Dutch and French.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li><strong>Overall metrics:</strong></li><li>Total backlinks: 8,996</li><li>Referring domains: 191</li><li>Referring main domains: 184</li><li>Backlink spam score: 7% (medium risk)</li><li>Domain rank: 298</li></ul><br><ul><li><strong>Geographic distribution of backlinks:</strong></li><li>.nl domains: 3,477 backlinks (59.9%)</li><li>.fr domains: 1,844 backlinks (31.8%)</li><li>.com domains: 305 backlinks (5.3%)</li><li>.be domains: 62 backlinks (1.1%)</li><li>Other TLDs: 106 backlinks (1.9%)</li></ul><br><ul><li><strong>Link quality assessment:</strong></li><li>Broken backlinks: 819 (9.1% of total backlinks)</li><li>Nofollow links: 2,021 (22.5% of total backlinks)</li><li>Referring domains with nofollow: 32 (16.8% of referring domains)</li></ul><br><h3 id="link-gap-analysis">Link Gap Analysis</h3><ul><li><strong>Authoritative sites linking to competitors but not to Simwear:</strong></li><li>thesimgrid.com (rank: 29)</li><li>fanatec.com (rank: 14)</li><li>interclassics.events (rank: 10)</li><li>venym.com (rank: 11)</li><li>trustedshops.nl (rank: 15)</li><li>warmuseums.net (rank: 8)</li><li>peachmountain.com (rank: 8)</li><li>ardennesmagazine.be (rank: 8)</li><li>trustedshops.com (rank: 6)</li><li>gofundme.com (rank: 7)</li></ul><br><ul><li><strong>Industry-specific linking opportunities:</strong></li><li>Sim racing blogs and forums</li><li>Racing event websites</li><li>Gaming and tech review sites</li><li>Belgian e-commerce directories</li><li>Local business directories in Belgium</li></ul><br><h3 id="toxic-backlink-assessment">Toxic Backlink Assessment</h3><ul><li><strong>Potentially harmful backlinks:</strong></li><li>High spam score domains (61-100%):</li><li>australianwebdirectory.shop (65% spam score)</li></ul><br><ul><li>Medium spam score domains (31-60%):</li><li>simrig.se (32% spam score)</li><li>conspit.com (32% spam score)</li><li>simracingbelgium.eu (31% spam score)</li><li>lv119.com (41% spam score)</li><li>richardphilipsartgallery.com (60% spam score)</li><li>Several others in the 40-55% spam score range</li></ul><br><ul><li><strong>Anchor text analysis:</strong></li><li>Brand anchors ("Simwear", "simwear.eu") are most common</li><li>Product-specific anchors (e.g., "Simagic Alpha Mini GT4 Bundle") are underutilized</li><li>Generic anchors ("Anglais", "https://simwear.eu") lack keyword optimization</li><li>Opportunity to diversify anchor text with more relevant keywords</li></ul><br><ul><li><strong>Disavow recommendations:</strong></li><li>Create a disavow file for all domains with spam scores above 60%</li><li>Monitor domains with spam scores between 40-60% for any negative SEO impact</li><li>Focus on acquiring high-quality backlinks to dilute the impact of medium-risk backlinks</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="content-topic-suggestions">Content Topic Suggestions</h3><p>Based on the keyword analysis, competitive landscape, and current performance data, we recommend:</p><br><ol><li><strong>Dutch Language Optimization</strong></li></ol><ul><li>Translate all key pages into Dutch, especially the homepage and top product pages</li><li>Use Dutch keywords in titles, descriptions, and headings (e.g., "Pimax Crystal Light kopen," "Sim racing shop België")</li><li>Build Dutch-language backlinks</li><li>Conduct keyword research specifically for Dutch-language sim racing terms</li></ul><br><ol><li><strong>Homepage and Landing Page Optimization</strong></li></ol><ul><li>Create dedicated landing pages for "sim racing belgium" and "sim racing shop"</li><li>Include localized content mentioning Belgian cities, regions, and specific benefits (e.g., "Fast shipping to Brussels," "Expert support in Dutch and French")</li><li>Focus the homepage on a core set of keywords rather than trying to rank for everything</li><li>Clearly communicate Simwear's unique selling proposition</li></ul><br><ol><li><strong>Brand-Specific Content Development</strong></li></ol><ul><li>VPG Products: Create a detailed brand page, comparison blog posts, customer testimonials, and setup guides</li><li>Crystal Light Products: Similar content strategy as VPG, focusing on detailed product information and comparisons</li><li>Simagic Products: Expand content for this already well-performing brand to strengthen position</li></ul><br><ol><li><strong>Long-Tail Keyword Content</strong></li></ol><ul><li>Create content answering specific questions sim racers have</li><li>Develop how-to guides and setup tutorials for popular products</li><li>Create comparison content for different product categories</li></ul><br><ol><li><strong>Competitor-Inspired Content Strategies</strong></li></ol><ul><li><strong>Improve Title and Meta Description Optimization:</strong></li><li>Rewrite titles and meta descriptions for key product and category pages, focusing on conciseness, benefits, and relevant keywords</li><li>Example: Instead of "Pimax Crystal light headset with controllers - Simwear," use "Pimax Crystal Light: Ultra-Clear VR for Sim Racing - Simwear.eu" (and translate to Dutch)</li></ul><br><ul><li><strong>Optimize Category Pages for "Sim Rigs" and Related Keywords:</strong></li><li>Create a dedicated "Sim Rigs" category page with high-quality content, images, and customer reviews</li><li>Optimize the page for relevant keywords in both English and Dutch</li><li>Include sections on different types of sim rigs, buying guides, and customer testimonials</li></ul><br><ul><li><strong>Create Targeted Content for "Pimax Crystal" and "Crystal Light":</strong></li><li>Develop in-depth content (blog posts, comparison guides, videos) that target users searching for information about these specific VR headsets</li><li>Example: Create a blog post comparing the Pimax Crystal and Pimax Crystal Light, highlighting their key features and benefits</li></ul><br><h3 id="content-optimization-opportunities">Content Optimization Opportunities</h3><ul><li>Homepage: Despite being the top performer, optimize for more specific keywords</li><li>Product pages: Add more detailed specifications, comparisons, and user guides</li><li>Experience center: Leverage this unique selling point more effectively in content</li></ul><br><h3 id="content-cluster-strategy">Content Cluster Strategy</h3><ul><li>Develop topic clusters around:</li><li>Sim racing hardware (wheelbases, steering wheels, pedals)</li><li>VR and display solutions for sim racing</li><li>Complete sim racing setups for different budgets and space requirements</li><li>Brand-specific content clusters (Simagic, Pimax, VPG, etc.)</li></ul><br></div></section>
+                <section id="6-technical-seo-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-cogs"></i></div>
+                        <h2 class="section-title">6. Technical SEO Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="priority-fixes">Priority Fixes</h3><ol><li>Implement proper canonicalization to resolve the HTTP vs. HTTPS issue</li><li>Add appropriate H1 tags to all pages</li><li>Optimize images with proper alt text and compression</li><li>Fix duplicate meta tags</li><li>Expand title tags to appropriate length (50-60 characters)</li><li>Address render-blocking resources to improve page speed</li></ol><br><h3 id="secondary-improvements">Secondary Improvements</h3><ol><li>Implement schema markup for products and reviews</li><li>Optimize internal linking structure</li><li>Create an XML sitemap if not already present</li><li>Implement breadcrumb navigation</li><li>Address HTML errors</li></ol><br></div></section>
+                <section id="7-backlink-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">7. Backlink Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="link-building-priorities">Link Building Priorities</h3><ol><li><strong>Quality over Quantity:</strong></li></ol><ul><li>Focus on acquiring backlinks from authoritative domains in the sim racing and gaming industry</li><li>Target sites with domain ranks above 30 for maximum impact</li></ul><br><ol><li><strong>Geographic Targeting:</strong></li></ol><ul><li>Increase backlinks from .be domains (currently only 62 backlinks or 1.1%)</li><li>Maintain strong presence in .nl domains while expanding to other European markets</li></ul><br><ol><li><strong>Competitor Link Acquisition:</strong></li></ol><ul><li>Develop outreach campaigns targeting sites linking to thesimgrid.com, fanatec.com, and other competitors</li><li>Prioritize high-authority sites like trustedshops.com (rank 6) and gofundme.com (rank 7)</li></ul><br><ol><li><strong>Anchor Text Optimization:</strong></li></ol><ul><li>Diversify anchor text beyond brand mentions to include relevant keywords</li><li>Target product-specific anchor text for high-value products (e.g., "Pimax Crystal Light VR headset")</li><li>Include Dutch language anchor text for local market relevance</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Launch an outreach program targeting Belgium-based sim racing communities to secure .be backlinks.</li><li>Leverage local events and partnerships to create link opportunities from Belgian business directories and tech publications.</li></ul><br><h3 id="toxic-link-mitigation">Toxic Link Mitigation</h3><ol><li><strong>Create a Disavow File:</strong></li></ol><ul><li>Immediately disavow australianwebdirectory.shop (65% spam score)</li><li>Consider disavowing domains with spam scores above 50%</li></ul><br><ol><li><strong>Monitor Backlink Health:</strong></li></ol><ul><li>Implement regular backlink audits (quarterly)</li><li>Track changes in spam scores and domain authority</li></ul><br><ol><li><strong>Broken Link Recovery:</strong></li></ol><ul><li>Fix or redirect the 819 broken backlinks identified</li><li>Prioritize recovery of links from high-authority domains</li></ul><br><h3 id="link-building-tactics">Link Building Tactics</h3><ol><li><strong>Content-Driven Link Building:</strong></li></ol><ul><li>Create shareable, high-value content like industry guides, product comparisons, and technical tutorials</li><li>Develop a "State of Sim Racing" annual report to attract industry links</li></ul><br><ol><li><strong>Local Business Partnerships:</strong></li></ol><ul><li>Leverage the physical experience center to build relationships with local businesses</li><li>Seek coverage in Belgian business directories and local news outlets</li></ul><br><ol><li><strong>Influencer Collaborations:</strong></li></ol><ul><li>Partner with sim racing influencers and bloggers for authentic backlinks</li><li>Sponsor sim racing events and competitions for brand mentions and links</li></ul><br><ol><li><strong>Digital PR Campaigns:</strong></li></ol><ul><li>Create newsworthy content about the sim racing industry</li><li>Highlight the unique experience center in press releases</li></ul><br><ol><li><strong>Resource Link Building:</strong></li></ol><ul><li>Create comprehensive guides on sim racing setup and equipment</li><li>Develop tools like "Sim Rig Configurator" that others would link to as a resource</li></ul><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><p>Simwear shows promising organic growth in the Belgian market with a 7.51% increase in estimated traffic over the past year. However, several technical issues, content gaps, and backlink challenges are limiting their full SEO potential. The homepage performs well but has experienced recent ranking drops, while specific product pages for brands like Simagic and Pimax show strong performance.</p><br><p>The keyword analysis reveals that Simwear has a solid foundation for brand and product-specific keywords but underperforms on broader terms like "sim racing belgium" and "sim racing shop." A critical gap is the need for Dutch language optimization, given the Belgian market context.</p><br><p>The competitive analysis shows that local competitors like Unboundxr.be are gaining an advantage through Dutch language optimization, while Pimax.com and Fanatec.com leverage concise, benefit-oriented product descriptions and well-structured category pages. Simwear is currently being outperformed for several high-value keywords including "Pimax Crystal Light" (390 monthly searches) and "Sim Rigs" (140 monthly searches).</p><br><p>The backlink analysis reveals a medium-risk profile with a 7% spam score and a concerning number of potentially toxic backlinks. While Simwear has a decent number of referring domains (191), there's a significant opportunity to improve the quality and relevance of these backlinks, particularly by increasing links from Belgian (.be) domains and reducing reliance on potentially harmful backlinks.</p><br><p>By addressing the technical SEO issues, implementing a Dutch language strategy, optimizing the homepage for more specific keywords, creating dedicated landing pages for high-value search terms, developing more in-depth content around key brands, and implementing a strategic backlink acquisition plan, Simwear can significantly improve their organic visibility and traffic.</p><br><p>Our recommended approach focuses on six key areas:</p><ol><li>Technical SEO cleanup to establish a solid foundation</li><li>Dutch language optimization across the site</li><li>Content optimization for underperforming high-potential pages</li><li>Strategic content development around key product categories and brands</li><li>SERP element optimization following competitor best practices</li><li>Backlink profile cleanup and strategic link building</li></ol><br><p>With these improvements, Simwear can expect to see substantial growth in organic traffic and improved rankings for competitive keywords in the Belgian sim racing equipment market. The physical experience center represents a unique selling point that should be leveraged more effectively in their content strategy to differentiate from competitors.</p><br><h3 id="quick-wins">Quick Wins</h3><ul><li>Translate existing product titles and meta descriptions into Dutch for products where competitors are outranking Simwear</li><li>Optimize the "Simwear" homepage meta description to include keywords like "sim racing shop Belgium" and "sim racing hardware"</li><li>Fix critical technical SEO issues like canonicalization and missing H1 tags</li><li>Create a disavow file for toxic backlinks with spam scores above 60%</li><li>Implement proper anchor text optimization for existing and new backlinks</li></ul><br><h3 id="long-term-strategy">Long-Term Strategy</h3><ul><li>Build brand authority through content marketing (blog posts, videos, social media) focused on sim racing and VR</li><li>Develop relationships with sim racing influencers and communities</li><li>Consider running targeted advertising campaigns on Google Ads and social media to complement organic efforts</li><li>Implement a comprehensive backlink acquisition strategy targeting high-authority domains in the sim racing industry</li><li>Regularly audit and refine the backlink profile to maintain a healthy link ecosystem</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Align internal stakeholders on the prioritized roadmap, assigning clear owners and timelines for each initiative.</li><li>Schedule monthly progress reviews to measure impact on rankings, traffic, and backlink profile.</li></ul><br></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Simwear',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

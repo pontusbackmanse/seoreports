@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Nesto</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Nesto • Www.Nestos.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 2, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="seo-research-report-nestos-nl" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Nestos.nl</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Current Value (July 2025)</th><th>12-Month Change</th></tr></thead><tbody><tr><td class="">Keywords in Position 1</td><td class="">0</td><td class="">No growth</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">1 ("nestos")</td><td class="">Stable (fluctuations)</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">0</td><td class="">No growth</td></tr><tr><td class="">Keywords in Positions 61-80</td><td class="">Lost 100%</td><td class="">Significant drop</td></tr><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">51.84</td><td class="negative">Slight decrease (-1.24%)</td></tr><tr><td class="">Estimated Paid Traffic Cost</td><td class="">$17.63</td><td class="">N/A</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>• With zero keywords in the top spots (1 and 4–10), there’s an urgent need to target low-hanging, high-intent keywords to jump into page one.</p><p>• Prioritize fixing technical issues that block crawlability and user experience before scaling content production.</p><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Competitor Strengths & Keywords They Rank Well For (Nestos.nl Ranks Poorly)</th></tr></thead><tbody><tr><td class="">griekenlandvakantieland.nl</td><td class="">High avg. keyword position (1), strong traffic (51.68), ranks well for Greek travel and property-related terms</td></tr><tr><td class="">grieksegids.nl</td><td class="">Moderate traffic (5,935), ranks for Greek travel info, but poor meta optimization</td></tr><tr><td class="">belastingadviesbuitenland.nl</td><td class="">High traffic (11,203), ranks well for emigration/tax keywords, strong calls to action</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><p>• Conduct a detailed meta tag audit of each competitor page to identify keyword usage patterns.</p><p>• Compile a quick-reference doc of competitor CTAs and page structures to inform Nestos.nl’s new templates.</p><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords (NL Market)</th><th>Monthly Search Volume (Peak)</th><th>Competition Level</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">huis kopen in griekenland</td><td class="">2,900 - 3,600</td><td class="">Medium</td><td class="">High search volume, strong commercial intent</td></tr><tr><td class="">huis kopen griekenland aan zee</td><td class="">390 - 590</td><td class="">Medium</td><td class="">Niche, location-specific, good volume</td></tr><tr><td class="">huis kopen griekenland 1 euro</td><td class="">320 - 390</td><td class="">Low</td><td class="">Low competition, attractive price point</td></tr><tr><td class="">goedkoop huis kopen griekenland</td><td class="">110 - 210</td><td class="">Low</td><td class="">Low competition, budget-conscious buyers</td></tr><tr><td class="">kosten van leven in griekenland</td><td class="">170</td><td class="">Low</td><td class="">Informational, supports buyer decision process</td></tr><tr><td class="">griekse dorpen om te wonen</td><td class="">90</td><td class="">Low</td><td class="">Builds topical authority on Greek living</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>• Map these keywords to content hubs and silo structures.</p><p>• Create an editorial calendar aligned with seasonal peaks (July–October) for maximum impact.</p><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Nestos.nl has very limited Dutch market visibility: only 1 keyword ranking in positions 2-3, no keywords in top 10.</li><li>Organic traffic slightly declined (-1.24%) over the past year; significant keyword losses in lower positions.</li><li>Technical SEO issues (missing H1, meta description, short title, missing alt text) hinder ranking potential.</li><li>Strong seasonal trends for property keywords: peak July-October, suggesting optimal content timing.</li><li>High-value Dutch keywords related to buying property in Greece (2,900-3,600 monthly searches) are untapped.</li><li>Competitors have well-optimized meta tags, clear value propositions, and better backlink profiles.</li><li>Backlink profile has medium spam risk and low diversity; opportunities exist to gain links from authoritative Dutch travel and expat sites.</li><li>Content gaps include lack of Dutch-language property guides, local Makrychori content, and practical buying advice.</li><li>Quick wins: fix technical SEO, optimize meta tags, create 2-3 articles targeting high-value keywords.</li><li>Long-term: build comprehensive content strategy, improve backlink quality, develop local and seasonal content clusters.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><p>• Assign owners to each quick win and track completion in a shared dashboard.</p><p>• Kick off a content sprint for the top 3 article ideas within two weeks.</p><br><hr><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p><strong>Current Organic Visibility (Netherlands):</strong></p><ul><li>Position 1: 0 keywords (as of July 2025)</li><li>Positions 2-3: 1 keyword ("nestos" with 320 monthly searches) (as of July 2025)</li><li>Positions 4-10: 0 keywords (as of July 2025)</li><li>Estimated Traffic Volume (ETV): 51.84 (as of July 2025)</li><li>Estimated Paid Traffic Cost: $17.63 (value of organic traffic if paid for via PPC)</li></ul><br><p><strong>12-Month Visibility Trend:</strong></p><ul><li>Overall slight decrease in ETV (-1.24%) over the past year</li><li>Fluctuations between position 1 and positions 2-3 for key terms</li><li>Loss of rankings for keywords in positions 61-80 (-100%)</li></ul><br><p><strong>Top Performing Pages:</strong></p><ul><li>https://www.nestos.nl/nestos.php (only page currently ranking in Google's search results for the Netherlands)</li><li>Currently ranks in position 2 for "nestos" (320 monthly searches)</li><li>Page title: "De rivier Nestos" (The Nestos River)</li><li>Description: "De rivier Nestos, die in de oudheid als een god werd vereerd, ontspringt in het Rila-gebergte in Bulgarije en is een van de grootste rivieren van Griekenland."</li></ul><br><p><strong>Technical SEO Assessment:</strong></p><ul><li>Good overall on-page score: 91.59</li><li>Positive factors: HTTPS implementation, SEO-friendly URL, no broken links, no duplicate content</li><li>Critical issues:</li><li>Missing H1 tag</li><li>Missing meta description</li><li>Short title (only 9 characters)</li><li>Missing image alt text</li><li>Missing favicon</li><li>Render-blocking stylesheets</li><li>Resource errors in HTML</li><li>Non-cacheable content (TTL of 0)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Fixing these top-priority technical elements will unblock search engines and enhance user engagement, creating a stronger foundation for content rollout.</p><br><hr><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p><strong>Current Ranking Keywords:</strong></p><ul><li>"nestos" - Position 2 - 320 monthly searches</li></ul><br><p><strong>High-Value Keyword Opportunities (with search volumes):</strong></p><ul><li><strong>Top Priority Keywords:</strong></li><li>"huis kopen in griekenland" - 2900 (Oct/Sept), 3600 (Jul/Aug), 1600-1900 (other months) - MEDIUM competition</li><li>"huis kopen griekenland" - 2900 (Oct/Sept), 3600 (Jul/Aug), 1600-1900 (other months) - MEDIUM competition</li><li>"huis griekenland kopen" - 2900 (Oct/Sept), 3600 (Jul/Aug), 1600-1900 (other months) - MEDIUM competition</li></ul><br><ul><li><strong>Secondary Keywords:</strong></li><li>"huis kopen griekenland aan zee" - 390-590 (Jul-Oct), 170-260 (other months) - MEDIUM competition</li><li>"huis kopen in griekenland aan zee" - 390-590 (Jul-Oct), 170-260 (other months) - MEDIUM competition</li><li>"huis kopen griekenland 1 euro" - 320-390 (Jul-Oct), 170-210 (other months) - LOW competition</li><li>"goedkoop huis kopen griekenland" - 110-210 (Jul-Oct), 40-90 (other months) - LOW competition</li></ul><br><p><strong>Long-tail Keyword Opportunities:</strong></p><ul><li>"huis kopen griekenland kos" - 110-140 (Jul-Oct), 50-110 (other months) - LOW competition</li><li>"huis kopen in griekenland kos" - 110-140 (Jul-Oct), 50-110 (other months) - LOW competition</li><li>"wandelvakantie Griekenland" (hiking holiday Greece) - Medium search volume, specific intent</li><li>"eilandhoppen Griekenland" (island hopping Greece) - Medium search volume, specific intent</li><li>"kosten van leven in griekenland" (cost of living in Greece) - 170 monthly searches, low competition</li><li>"griekse dorpen om te wonen" (Greek villages to live in) - 90 monthly searches, low competition</li></ul><br><p><strong>Seasonal Trends:</strong></p><ul><li>Clear seasonal pattern for property-related keywords:</li><li>Peak search volume: July-October (summer months)</li><li>Highest volume: July-August (peak summer)</li><li>Secondary peak: September-October (late summer/early fall)</li><li>Lower volume: November-June</li></ul><br><p><strong>Content Gaps:</strong></p><ul><li>Limited Dutch-language content about Greek property ownership</li><li>Only one page currently ranking, indicating significant opportunity for content expansion</li><li>No content targeting high-value "huis kopen in griekenland" keywords (2900-3600 monthly searches)</li><li>No content about Makrychori specifically, despite being the site's focus</li><li>Competitors are outranking Nestos.nl for key terms related to Greek property and travel</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Align content creation with both high-volume primary keywords and niche long-tail queries. Combine transactional and informational formats to capture users at different stages of the funnel.</p><br><hr><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p><strong>Key Competitors:</strong></p><br><ol><li><strong>griekenlandvakantieland.nl</strong></li></ol><ul><li><strong>Strengths:</strong> High average keyword position (1) and decent estimated traffic volume (51.68)</li><li><strong>Content Focus:</strong> General Greek vacation information and emigration</li><li><strong>SERP Strategy:</strong> Well-optimized meta titles and descriptions with relevant keywords</li><li><strong>Type:</strong> Direct competitor (focuses on Greek vacations)</li></ul><br><ol><li><strong>grieksegids.nl</strong></li></ol><ul><li><strong>Strengths:</strong> Moderate estimated traffic volume (5.935)</li><li><strong>Weaknesses:</strong> High average keyword position (35), missing meta title and description</li><li><strong>Type:</strong> Direct competitor (focuses on Greek vacations)</li><li><strong>Opportunity:</strong> Their lack of meta optimization presents a clear advantage opportunity</li></ul><br><ol><li><strong>belastingadviesbuitenland.nl</strong></li></ol><ul><li><strong>Strengths:</strong> High estimated traffic volume (11.203) and good average keyword position (4)</li><li><strong>Content Focus:</strong> Niche related to emigration and taxes for Dutch citizens abroad</li><li><strong>SERP Strategy:</strong> Well-optimized meta titles and descriptions with relevant keywords and call to action</li><li><strong>Type:</strong> Indirect competitor (focuses on a specific aspect of living abroad)</li></ul><br><p><strong>Competitive Content Strategies:</strong></p><ul><li><strong>griekenlandvakantieland.nl</strong> succeeds with comprehensive travel guides and tips</li><li><strong>belastingadviesbuitenland.nl</strong> effectively uses free consultations or resources as lead generation</li><li>Competitors effectively include target keywords in their meta titles and descriptions</li><li>Competitors clearly communicate value propositions (e.g., "uitgebreide tips," "gratis offerte")</li><li><strong>belastingadviesbuitenland.nl</strong> includes effective calls to action ("Gratis offerte")</li></ul><br><p><strong>Competitive Content Gaps:</strong></p><ul><li>Most competitors focus either on commercial property listings or general travel information</li><li>Few competitors combine personal narrative with practical property ownership advice</li><li>Limited Dutch-language content about specific Greek villages like Makrychori</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>By integrating personal Makrychori stories into practical guides, Nestos.nl can differentiate from purely transactional or generic travel sites.</p><br><hr><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p><strong>Current Backlink Profile:</strong></p><ul><li>Total backlinks: 199</li><li>Referring domains: 14</li><li>Domain rank: 134</li><li>Backlink spam score: 26% (medium risk)</li><li>Broken backlinks: 2</li><li>Broken pages: 5</li></ul><br><p><strong>Referring Domain Quality:</strong></p><ul><li>Low spam score domains (6): wageral.nl (13%), elxis.com (0%), royalseohub.com (30%), afcquick1890.nl (15%), webby.pages.dev (25%), griekipedia.nl (0%)</li><li>Medium spam score domains (8): onderde.nl (32%), roda46.nl (46%), seobacklinks.agency (45%), rankgrow.agency (45%), prolinkbox.com (50%), itxoft.com (40%), global-rank.pages.dev (35%), global-website.pages.dev (35%)</li><li>High spam score domains: None</li></ul><br><p><strong>Geographic Distribution:</strong></p><ul><li>Strong presence of Dutch domains (184 backlinks from .nl domains)</li><li>Limited international presence (6 backlinks from .com domains)</li><li>Other TLDs: pages.dev (3), agency (2)</li></ul><br><p><strong>Anchor Text Analysis:</strong></p><ul><li>Limited anchor text diversity</li><li>Most backlinks use generic anchor text like "Website"</li><li>Some backlinks include full URLs as anchor text</li><li>Opportunity to improve anchor text relevance and diversity</li></ul><br><p><strong>Link Building Opportunities:</strong></p><ul><li>Dutch travel blogs and forums about Greece</li><li>Expatriate communities and websites</li><li>Dutch property and lifestyle publications covering international living</li><li>Local Greek tourism websites that may accept guest content</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><p>• Prioritize outreach to top three authority sites (Wegwijs.nl, NLTimes.nl, Reisgraag.nl) with a value-added guest post proposal.</p><p>• Develop a templated outreach sequence that highlights Nestos.nl’s unique Makrychori insights.</p><br><hr><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p><strong>Technical SEO Priorities:</strong></p><ol><li>Add an H1 tag to the ranking page (nestos.php)</li><li>Create a compelling meta description</li><li>Expand the page title to optimal length (50-60 characters)</li></ol><ul><li>Example: "De Rivier Nestos in Griekenland | Ontdek Makrychori"</li></ul><ol><li>Add alt text to all images</li><li>Implement a favicon</li><li>Optimize render-blocking stylesheets</li><li>Fix resource errors in HTML</li><li>Implement proper cache control</li><li>Fix the 5 broken pages identified in the backlink analysis</li></ol><br><p><strong>Keyword Optimization Strategy:</strong></p><ol><li>Target the high-value "huis kopen in griekenland" keyword variations (2900-3600 monthly searches)</li><li>Create content for secondary keywords like "huis kopen griekenland aan zee" (390-590 monthly searches)</li><li>Develop content for low-competition keywords like "goedkoop huis kopen griekenland" (110-210 monthly searches)</li><li>Optimize existing content on Nestos.nl to target these keywords</li><li>Focus on improving keyword density, relevance, and user experience</li><li>Align content creation with seasonal trends (July-October peak for property keywords)</li></ol><br><p><strong>SERP Optimization Strategy:</strong></p><ol><li>Rewrite meta titles and descriptions for all pages on Nestos.nl</li><li>Include target keywords, a clear value proposition, and a call to action</li><li>Follow the pattern of successful competitors by clearly communicating value</li><li>Ensure meta titles are optimal length (50-60 characters) and descriptions are compelling</li><li>Example optimized title: "Huis Kopen in Griekenland | Ervaringen uit Makrychori"</li></ol><br><p><strong>Content Topic Recommendations:</strong></p><ol><li>"Huis Kopen in Griekenland: Complete Gids 2025" (targeting primary keywords)</li><li>"Huis Kopen in Griekenland aan Zee: Kosten en Tips" (targeting secondary keywords)</li><li>"Goedkoop Huis Kopen in Griekenland: Is het Mogelijk?" (targeting low-competition keywords)</li><li>"Het leven in Makrychori: Een jaar in een Grieks dorp" (building topical authority)</li><li>"De kosten van wonen in Griekenland vs. Nederland" (targeting "kosten van leven in griekenland")</li><li>"De Mooiste Griekse Dorpen om te Wonen" (targeting "griekse dorpen om te wonen")</li><li>"Makrychori Gids: Alles over dit Griekse Dorp" (building local authority)</li></ol><br><p><strong>Content Calendar Strategy:</strong></p><ol><li>Focus on property-related content during April-June to capture the July-October search peak</li><li>Create travel-related content during winter months for the summer travel planning season</li><li>Develop evergreen content about Greek lifestyle and culture throughout the year</li><li>Update seasonal content annually to maintain freshness and relevance</li></ol><br><p><strong>Lead Generation Recommendations:</strong></p><ol><li>Offer a free guide: "10 Stappen voor het Kopen van een Huis in Griekenland" as a downloadable resource</li><li>Create a downloadable checklist for planning a Greek property viewing trip</li><li>Develop a newsletter with exclusive Greek property insights and market trends</li><li>Implement a contact form specifically for property inquiries or travel advice</li></ol><br><p><strong>Quick Wins vs. Long-Term Strategy:</strong></p><ul><li><strong>Quick Wins:</strong></li><li>Optimize meta titles and descriptions for the most important pages</li><li>Create 2-3 articles targeting the highest-value keywords</li><li>Fix technical SEO issues identified in the audit</li></ul><br><ul><li><strong>Long-Term Strategy:</strong></li><li>Develop a comprehensive content strategy focused on Greek property and lifestyle</li><li>Build backlinks from relevant Dutch websites in the travel and property industries</li><li>Create location-specific content about Makrychori and surrounding areas</li><li>Develop seasonal content aligned with search volume patterns</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>By tackling the technical SEO and meta optimizations first, Nestos.nl can ensure new content gains traction faster. Simultaneously, align content production with backlink outreach to amplify reach.</p><br><hr><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><br><p>Nestos.nl has significant potential to improve its organic visibility in the Netherlands. With only one page currently ranking (in position 2 for "nestos") and an ETV of 51.84, there is substantial room for growth through technical optimization, content expansion targeting high-value keywords, and backlink profile enhancement.</p><br><p>The keyword analysis reveals clear opportunities to target high-value terms related to buying property in Greece, with search volumes ranging from 1600-3600 monthly searches depending on the season. The seasonal pattern shows a clear peak during July-October, suggesting optimal timing for content publication and promotion.</p><br><p>The competitive analysis reveals that Nestos.nl is competing in a market with both direct competitors (focused on Greek travel) and indirect competitors (focused on related services like tax advice for expats). By learning from competitor strategies while developing a unique value proposition based on personal experience in Makrychori, Nestos.nl can carve out a stronger position in the Dutch market.</p><br><p>The technical audit reveals several quick wins that could immediately improve performance, while the content strategy provides a roadmap for sustainable long-term growth. The backlink analysis shows a medium-risk profile with opportunities to improve both the quality and diversity of referring domains.</p><br><p>By addressing the specific technical issues identified, implementing the recommended content strategy targeting the identified high-value keywords, and enhancing the backlink profile, Nestos.nl could significantly increase its organic visibility and establish itself as an authoritative resource for Dutch readers interested in Greek property and lifestyle.</p><br><p>Given the nature of the site, focusing on authentic content while strategically incorporating SEO best practices will provide the best path forward for growth in the Dutch market. By combining personal narrative with practical advice about Greek property and travel, Nestos.nl can differentiate itself from competitors and capture untapped opportunities in the Netherlands.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><p>• Develop a 90-day roadmap that sequences technical fixes, content sprints, and link-building outreach.</p><p>• Review progress bi-weekly and adjust priorities based on early wins and learnings.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Nesto',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

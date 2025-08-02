@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Coen Koppen Fotografie</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Coen Koppen Fotografie • coenkoppen.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 2, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Trend</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">167.62 monthly visits (July 2025)</td></tr><tr><td class="">12-Month Organic Traffic Trend</td><td class="negative">-4.10% decrease (Aug 2024 - Jul 2025)</td></tr><tr><td class="">Keyword Rankings Distribution</td><td class="">Position 1: 0<br>Positions 2-3: 0<br>Positions 4-10: 8<br>Positions 11-20: 21<br>Positions 21-30: 26</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>With no keywords in positions 1–3, focus on quick wins in the 4–10 bracket to boost visibility and drive immediate traffic improvements.</li><li>Identify pages ranking 4–10 and optimize title tags, meta descriptions, and internal links to push them into the top 3.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Strong Ranking Keywords (High Volume)</th><th>Coen Koppen Ranking Status</th></tr></thead><tbody><tr><td class="">indebuurt.nl</td><td class="">"haarlem bioscopen" (5,400)<br>"park oog in al utrecht" (3,600)<br>"parade utrecht 2024" (1,600)<br>"koningsnacht utrecht 2025" (1,300)<br>"sint maarten utrecht" (1,000)</td><td class="">Coen Koppen ranks poorly or not in top 10 for these keywords</td></tr><tr><td class="">natuurfotografie.nl</td><td class="">Niche photography keywords (varied)</td><td class="">Lower rankings, limited overlap</td></tr><tr><td class="">alexwelch.nl</td><td class="">Niche photography keywords</td><td class="">Lower rankings, limited overlap</td></tr></tbody></table></div><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume (NL)</th><th>Competition</th><th>Priority / Reason</th></tr></thead><tbody><tr><td class="">"bedrijfsfotografie utrecht"</td><td class="">10-20</td><td class="">Medium</td><td class="">Core service + location; currently outside top 10</td></tr><tr><td class="">"fotograaf utrecht"</td><td class="">High (exact not specified)</td><td class="">Medium-High</td><td class="">High commercial intent; core service keyword</td></tr><tr><td class="">"evenement fotograaf utrecht"</td><td class="">0-10</td><td class="">High</td><td class="">Core service + location; medium priority</td></tr><tr><td class="">"erfgoed fotografie utrecht"</td><td class="">Low</td><td class="">Low</td><td class="">Long-tail, niche heritage photography</td></tr><tr><td class="">"culturele evenementen fotograaf"</td><td class="">Low</td><td class="">Low</td><td class="">Long-tail, cultural events focus</td></tr><tr><td class="">"bedrijfsevenement fotografie utrecht"</td><td class="">Low</td><td class="">Low</td><td class="">Long-tail, corporate event photography</td></tr><tr><td class="">Event-related: "koningsnacht utrecht 2025"</td><td class="">1,300</td><td class="">Medium</td><td class="">High volume seasonal event keyword</td></tr><tr><td class="">Event-related: "parade utrecht 2024"</td><td class="">1,600</td><td class="">Medium</td><td class="">High volume seasonal event keyword</td></tr><tr><td class="">Event-related: "sint maarten utrecht"</td><td class="">1,000</td><td class="">Medium</td><td class="">High volume seasonal event keyword</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize creation of landing pages for “fotograaf utrecht” and “bedrijfsfotografie utrecht.”</li><li>Incorporate these keywords into H1, H2s, and URL slugs.</li><li>Use internal linking from related portfolio pages to strengthen relevance.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Coen Koppen Fotografie has no keywords ranking in top 10 positions in the Netherlands, indicating significant room for SEO improvement.</li><li>Organic traffic has slightly declined (-4.10%) over the past 12 months.</li><li>Top-performing pages are event-focused and location-specific, but many portfolio and older event pages underperform.</li><li>Competitors like indebuurt.nl dominate high-volume local event and location keywords with strong content and optimized SERP elements.</li><li>Backlink profile shows medium spam risk with 19% toxic links; opportunities exist to build authoritative local backlinks.</li><li>Keyword gaps exist in core service areas (business photography, event photography) and location-specific pages beyond Utrecht.</li><li>Content strategy should focus on service and location landing pages, local event guides, and improved on-page SEO (titles, meta descriptions, schema).</li><li>Technical SEO improvements needed in image optimization and site speed.</li><li>Immediate priority: optimize existing content, create location-specific pages, disavow toxic backlinks, and implement schema markup.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Align the immediate priorities into a 30–60–90 day roadmap, assigning tasks to content, technical, and outreach teams for clear accountability.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-coen-koppen-fotografie" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Coen Koppen Fotografie</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for Coen Koppen Fotografie, a photography service based in Utrecht, Netherlands. The analysis focuses on their current SEO performance in the Dutch market and identifies opportunities for improvement to increase their online visibility and organic traffic.</p><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Coen Koppen Fotografie is a specialized photography service based in Utrecht, focusing on event, culture, heritage, and corporate photography. Their unique selling proposition lies in capturing the atmosphere, content, and emotion of events, which distinguishes them in the photography market. (<a href="https://coenkoppen.nl" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-traffic-trends">Organic Visibility & Traffic Trends</h3><ul><li><strong>Current Estimated Traffic Volume (ETV)</strong>: 167.62 monthly visits</li><li><strong>12-Month Trend</strong>: -4.10% decrease in organic traffic from August 2024 to July 2025</li><li><strong>Position Distribution</strong> (as of July 2025):</li><li>Position 1: 0 keywords</li><li>Positions 2-3: 0 keywords</li><li>Positions 4-10: 8 keywords</li><li>Positions 11-20: 21 keywords</li><li>Positions 21-30: 26 keywords</li><li>Positions 31-40: 25 keywords</li><li>Positions 41-50: 21 keywords</li><li>Positions 51-100: 25 keywords</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct an on-page audit for the 8 keywords in positions 4–10, focusing on improving title tags, meta descriptions, and internal link equity to push them into top 3.</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ol><li><strong>Homepage</strong> (https://www.coenkoppen.nl/): ETV = 28.14</li><li><strong>Heritage BBQ Event</strong> (https://www.coenkoppen.nl/de-erfgoedbarbecue-van-nederland-monumentenland/): ETV = 15.12</li><li><strong>ALS Sunrise Walk Utrecht</strong> (https://www.coenkoppen.nl/als-sunrise-walk-utrecht-2025/): ETV = 12.50</li><li><strong>Pluk de Nacht 2024</strong> (https://www.coenkoppen.nl/pluk-de-nacht-2024-basecamp-utrecht/): ETV = 12.71</li><li><strong>Cinema Palace Portfolio</strong> (https://www.coenkoppen.nl/portfolio/cinema-palace-grote-bavokerk-haarlem/): ETV = 11.34</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Leverage top-performing event pages by adding CTAs to service landing pages or contact forms, driving qualified leads.</li></ul><br><h3 id="underperforming-pages">Underperforming Pages</h3><ul><li>Many "Dagelijks Utrecht" (Daily Utrecht) pages have low ETV and rank in positions 31-100</li><li>Older event pages (2022-2023) show declining relevance and traffic</li><li>Portfolio pages outside of specific events tend to perform below average</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Identify 3–5 underperforming pages with strategic value, refresh content with updated images and event details, and optimize on-page elements.</li></ul><br><h3 id="content-strategy-observations">Content Strategy Observations</h3><ul><li><strong>Event Photography</strong>: Strong performance for pages covering events in Utrecht, Amersfoort, Nijmegen, Breda, Haarlem, Leusden, and Ede</li><li><strong>Location Series</strong>: "Dagelijks Utrecht" series documents daily life in Utrecht but shows mixed performance</li><li><strong>Portfolio Organization</strong>: Content is well-categorized by type (architecture, portraits) and client</li><li><strong>Annual Content Strategy</strong>: URLs containing years suggest regular content updates for recurring events</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Consistency in URL structure (year-based) helps with recurring event content but may require redirects or canonical tags when repurposing older event pages to avoid duplicate issues.</li></ul><br><h3 id="technical-seo-factors">Technical SEO Factors</h3><ul><li>No paid search campaigns are currently active</li><li>The website runs on WordPress (identified in server information)</li><li>Technical issues include potential image optimization needs and render-blocking scripts</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Implement lazy loading and compression for images, and defer non-critical JS/CSS to improve First Contentful Paint (FCP) and overall page speed.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-keyword-performance">Current Keyword Performance</h3><ul><li><strong>Top 10 Rankings</strong>: Currently, Coen Koppen Fotografie has no keywords ranking in positions 1-10, indicating significant room for improvement in organic visibility.</li></ul><br><h3 id="high-value-keyword-opportunities">High-Value Keyword Opportunities</h3><ol><li><strong>"bedrijfsfotografie utrecht"</strong> (business photography Utrecht)</li></ol><ul><li>Search Volume: 10-20 monthly searches</li><li>Competition: Medium</li><li>Current Position: Outside top 10</li><li>Priority: High (core service + location)</li></ul><br><ol><li><strong>"evenement fotograaf utrecht"</strong> (event photographer Utrecht)</li></ol><ul><li>Search Volume: 0-10 monthly searches</li><li>Competition: High</li><li>Current Position: Outside top 10</li><li>Priority: Medium (core service + location, but higher competition)</li></ul><br><ol><li><strong>"fotograaf utrecht"</strong> (photographer Utrecht)</li></ol><ul><li>High commercial intent</li><li>Directly related to core services</li><li>Priority: High</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>“fotograaf utrecht” should anchor a new cornerstone page. Include service descriptions, pricing tiers, FAQ, and a gallery to capture high-intent traffic.</li></ul><br><h3 id="long-tail-keyword-opportunities">Long-Tail Keyword Opportunities</h3><p>Based on the company's specialization, these long-tail keywords present opportunities:</p><ul><li>"erfgoed fotografie utrecht" (heritage photography Utrecht)</li><li>"culturele evenementen fotograaf" (cultural events photographer)</li><li>"bedrijfsevenement fotografie utrecht" (corporate event photography Utrecht)</li><li>"architectuur fotografie utrecht" (architecture photography Utrecht)</li></ul><br><h3 id="event-related-keyword-opportunities">Event-Related Keyword Opportunities</h3><ul><li><strong>"koningsnacht utrecht 2025"</strong> - 1,300 monthly searches</li><li><strong>"park oog in al utrecht"</strong> - 3,600 monthly searches</li><li><strong>"haarlem bioscopen"</strong> - 5,400 monthly searches</li><li><strong>"parade utrecht 2024"</strong> - 1,600 monthly searches</li><li><strong>"sint maarten utrecht"</strong> - 1,000 monthly searches</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Event-related keywords fluctuate seasonally; plan content publication 6–8 weeks before each event peak.</li></ul><br><h3 id="content-gap-analysis">Content Gap Analysis</h3><ul><li>Limited visibility for service-specific keywords (corporate photography, event photography)</li><li>Opportunity to create location-specific landing pages for areas beyond Utrecht</li><li>Need for more educational content around photography services to capture informational search intent</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-competitors-overview">Top Competitors Overview</h3><br><h4 id="strongest-competitor-indebuurt-nl">Strongest Competitor: indebuurt.nl</h4><ul><li><strong>Type</strong>: Indirect competitor</li><li><strong>Focus</strong>: Hyperlocal news and information platform covering various Dutch cities</li><li><strong>Key Strengths</strong>:</li><li>Comprehensive coverage of local events, restaurants, shops, and businesses</li><li>Strong SERP elements with optimized titles and meta descriptions</li><li>Effective use of listicles and guides to target keywords</li><li>City-specific content strategy (Utrecht, Amersfoort, Breda, Dordrecht, Arnhem, Nieuwegein, Haarlem)</li></ul><br><h4 id="direct-photography-competitors">Direct Photography Competitors</h4><ul><li>natuurfotografie.nl</li><li>alexwelch.nl</li></ul><br><h3 id="competitor-serp-strategy-analysis">Competitor SERP Strategy Analysis</h3><br><h4 id="title-and-meta-description-comparison">Title and Meta Description Comparison</h4><ul><li><strong>Coen Koppen</strong>: Titles often include the event name and "Coen Koppen Fotografie." Meta descriptions are frequently truncated or auto-generated, lacking clear calls to action.</li><li><strong>indebuurt.nl</strong>: Titles are concise and keyword-rich, often including the city name. Meta descriptions provide clear content summaries and calls to action.</li></ul><br><h4 id="effective-patterns-in-competitor-serp-elements">Effective Patterns in Competitor SERP Elements</h4><ul><li><strong>Location Focus</strong>: Emphasizing the city or region in both title and meta description</li><li><strong>Clear Value Proposition</strong>: Communicating what users will find on the page</li><li><strong>Action-Oriented Language</strong>: Using verbs like "find," "discover," or "explore" to encourage clicks</li></ul><br><h4 id="successful-content-types-formats">Successful Content Types/Formats</h4><ul><li><strong>Listicles</strong>: "8 x de leukste zaken aan de Utrechtse Lijnmarkt"</li><li><strong>Event Guides</strong>: "Alles wat je moet weten over de vrijmarkt in Utrecht tijdens Koningsdag 2025"</li><li><strong>Local Business Directories</strong>: "Alles over Bioscopen - indebuurt Haarlem"</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Adopt a templated title/meta approach: “[Keyword]: Foto’s & Tips van Coen Koppen Fotografie” for event and service pages.</li></ul><br><h3 id="keyword-performance-analysis">Keyword Performance Analysis</h3><p>Competitors are outranking Coen Koppen for numerous high-value keywords, including:</p><ul><li>"haarlem bioscopen" (5,400 monthly searches)</li><li>"park oog in al utrecht" (3,600 monthly searches)</li><li>"koningsnacht utrecht 2025" (1,300 monthly searches)</li><li>"parade utrecht 2024" (1,600 monthly searches)</li><li>"sint maarten utrecht" (1,000 monthly searches)</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li><strong>Total Backlinks</strong>: 251</li><li><strong>Referring Domains</strong>: 108</li><li><strong>Referring Main Domains</strong>: 105</li><li><strong>Domain Rank</strong>: 122</li><li><strong>Backlink Spam Score</strong>: 34% (Medium)</li><li><strong>First Seen</strong>: April 19, 2021</li></ul><br><h3 id="backlink-quality-distribution">Backlink Quality Distribution</h3><ul><li><strong>Low Spam Score Links (0-30%)</strong>: Approximately 25% of backlinks</li><li>Quality sources include: tuinwijkutrecht.nl, oud-utrecht.nl, domkerk.nl, plukdenacht.nl</li><li><strong>Medium Spam Score Links (31-60%)</strong>: Approximately 25% of backlinks</li><li>Sources include: theolympicamsterdam.nl, weebly.com, backlinktime.com</li><li><strong>High Spam Score Links (61-100%)</strong>: Approximately 19% of backlinks</li><li>Problematic sources include: linksonline.nl (90% spam score), 99ranks.com (85% spam score)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>High-spam links (61–100%) should be prioritized for review and disavow to reduce negative ranking impact.</li></ul><br><h3 id="geographic-distribution-of-backlinks">Geographic Distribution of Backlinks</h3><ul><li><strong>Netherlands (.nl domains)</strong>: 109 links (45.0%)</li><li><strong>Commercial (.com domains)</strong>: 96 links (39.7%)</li><li><strong>Other TLDs</strong>: 37 links (15.3%)</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><ul><li><strong>Brand-Focused Anchors</strong>: Most backlinks use "Coen Koppen" or "coenkoppen.nl" as anchor text</li><li><strong>Limited Keyword-Rich Anchors</strong>: Very few backlinks contain service or location keywords</li><li><strong>Notable Anchor Examples</strong>:</li><li>"Coen Koppen Fotografie" (utrecht4globalgoals.nl)</li><li>"Evenementen fotograaf (Coen Koppen)" (hfwitte.nl)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>In future outreach, request anchor texts like “evenement fotograaf utrecht” or “bedrijfsfotografie utrecht” to diversify and strengthen keyword relevance.</li></ul><br><h3 id="backlink-competitors">Backlink Competitors</h3><ul><li><strong>indebuurt.nl</strong>: 11 intersecting backlinks, rank 15</li><li><strong>klepierre.fr</strong>: 10 intersecting backlinks, rank 10</li><li><strong>roobolkapel.nl</strong>: 6 intersecting backlinks, rank 51</li><li><strong>natuurfotografie.nl</strong>: 6 intersecting backlinks, rank 51</li><li><strong>alexwelch.nl</strong>: 6 intersecting backlinks, rank 51</li></ul><br><h3 id="backlink-opportunities">Backlink Opportunities</h3><ul><li><strong>Local Organizations</strong>: Several Utrecht-based organizations already link to the site (tuinwijkutrecht.nl, oud-utrecht.nl)</li><li><strong>Event Venues</strong>: Potential for more links from event venues where photography services were provided</li><li><strong>Cultural Institutions</strong>: Museums, theaters, and cultural centers represent untapped link opportunities</li></ul><br><h3 id="toxic-backlink-concerns">Toxic Backlink Concerns</h3><ul><li>Several high-spam-score directories and link farms are present in the backlink profile</li><li>Approximately 19% of backlinks come from domains with spam scores above 60%</li><li>These toxic links may be negatively impacting search rankings</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="keyword-driven-content-recommendations">Keyword-Driven Content Recommendations</h3><ol><li><strong>Create Service-Specific Landing Pages</strong>:</li></ol><ul><li>Develop comprehensive content around "bedrijfsfotografie utrecht" and "evenement fotograaf utrecht"</li><li>Include portfolio examples, testimonials, and service details</li><li>Optimize meta tags, headings, and image alt text for these high-value keywords</li></ul><br><ol><li><strong>Develop Location-Specific Landing Pages</strong>:</li></ol><ul><li>Create dedicated pages for key cities (Utrecht, Amersfoort, Breda, etc.)</li><li>Showcase relevant portfolio items for each location</li><li>Target location-specific keywords like "fotograaf utrecht" and "evenementfotografie amersfoort"</li></ul><br><ol><li><strong>Create Local Event Guides</strong>:</li></ol><ul><li>Develop comprehensive guides to popular local events (e.g., "Koningsnacht Utrecht 2025")</li><li>Include photos from previous years and offer photography services for upcoming events</li><li>Target high-volume keywords like "parade utrecht 2024" (1,600 searches) and "sint maarten utrecht" (1,000 searches)</li></ul><br><h3 id="serp-optimization-strategy">SERP Optimization Strategy</h3><ol><li><strong>Improve Title and Meta Description Optimization</strong>:</li></ol><ul><li>Rewrite titles and meta descriptions for existing content, prioritizing location-based keywords</li><li>Example: Instead of "Sint Maarten Parade Utrecht 2024," use "Sint Maarten Parade Utrecht 2024: Foto's van Coen Koppen Fotografie"</li><li>Implement a consistent title and meta description strategy for all new content</li></ul><br><ol><li><strong>Leverage Schema Markup</strong>:</li></ol><ul><li>Implement schema markup (Event, LocalBusiness, Organization) to provide search engines with more context</li><li>Add structured data for events, photography services, and portfolio items</li></ul><br><h3 id="technical-on-page-optimization">Technical & On-Page Optimization</h3><ol><li><strong>Improve Image SEO</strong>:</li></ol><ul><li>Add descriptive alt text to all portfolio images</li><li>Implement lazy loading for better page speed</li><li>Consider image compression to improve site performance</li></ul><br><ol><li><strong>Local SEO Enhancement</strong>:</li></ol><ul><li>Optimize Google My Business listing for Utrecht</li><li>Pursue listings in local business directories</li><li>Create location-specific schema markup</li></ul><br><ol><li><strong>Content Structure Improvements</strong>:</li></ol><ul><li>Implement clear service categories with optimized URLs</li><li>Create internal linking structure between related services and portfolio examples</li><li>Develop a blog strategy focused on photography tips and insights to capture informational queries</li></ul><br><h3 id="backlink-strategy">Backlink Strategy</h3><ol><li><strong>Toxic Link Cleanup</strong>:</li></ol><ul><li>Conduct a thorough audit of high-spam-score backlinks</li><li>Create a disavow file for the most harmful links (especially those with spam scores above 70%)</li><li>Monitor backlink profile regularly for new toxic links</li></ul><br><ol><li><strong>Local Relationship Building</strong>:</li></ol><ul><li>Leverage existing relationships with Utrecht organizations (tuinwijkutrecht.nl, oud-utrecht.nl)</li><li>Reach out to event venues and cultural institutions featured in the portfolio</li><li>Create shareable content about local events to naturally attract backlinks</li></ul><br><ol><li><strong>Anchor Text Diversification</strong>:</li></ol><ul><li>When pursuing new backlinks, request more diverse anchor text including service keywords</li><li>Aim for a natural mix of brand, URL, and keyword-rich anchors</li><li>Focus on relevant, authoritative Dutch websites for new link building</li></ul><br><h3 id="quick-wins">Quick Wins</h3><ol><li>Optimize titles and meta descriptions for the highest-traffic pages, focusing on location-based keywords</li><li>Create a dedicated "fotograaf utrecht" landing page with portfolio examples and clear service offerings</li><li>Implement schema markup for events and photography services</li><li>Disavow the most toxic backlinks (those with spam scores above 80%)</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Quick wins should be executed within the first 30 days to set the foundation for longer-term growth and demonstrate early ROI.</li></ul><br><h3 id="longer-term-opportunities">Longer-Term Opportunities</h3><ol><li>Develop a content calendar focused on creating local event guides and photography-related content</li><li>Build relationships with local businesses and organizations to secure photography gigs and generate backlinks</li><li>Actively promote content on local social media groups and forums</li><li>Gradually replace low-quality backlinks with high-authority links from relevant Dutch websites</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign owners and timelines for each longer-term opportunity in a collaborative project management tool to ensure consistent progress.</li></ul><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><p>Coen Koppen Fotografie has significant opportunities to improve their SEO performance in the Netherlands. By implementing the recommendations in this report, they can enhance their organic visibility, outrank competitors, and capture untapped opportunities in the Dutch photography market.</p><br><p>The most immediate priorities should be:</p><ol><li>Optimizing existing content with improved titles, meta descriptions, and keyword targeting</li><li>Creating location-specific landing pages for key service areas</li><li>Developing content around high-volume local event keywords</li><li>Implementing technical SEO improvements, particularly for images and schema markup</li><li>Addressing toxic backlinks through a strategic disavow campaign</li></ol><br><p>With a strategic approach to content development, on-page optimization, and backlink management, Coen Koppen Fotografie can significantly improve their search visibility and attract more potential clients in their target market.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Coen Koppen Fotografie',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

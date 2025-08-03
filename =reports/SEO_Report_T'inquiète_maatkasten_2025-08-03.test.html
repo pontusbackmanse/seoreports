@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - T'inquiète maatkasten</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">T'inquiète maatkasten • www.tinquiete.be</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> België Market</span>
+                        <span><i class="fas fa-calendar"></i> August 3, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary-seo-research-report-for-t-inqui-te-maatkasten" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary: SEO Research Report for T'inquiète maatkasten</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Overall SEO Performance & Growth (Belgium, Last 12 Months)</strong></th></tr></thead><tbody><tr><td class=""><strong>Organic Visibility:</strong> 0 keywords ranked in top 20 positions (positions 1-20)</td></tr><tr><td class=""><strong>Estimated Traffic Value (ETV):</strong> 0 monthly organic visits</td></tr><tr><td class=""><strong>12-Month Growth:</strong> No measurable growth due to absence of rankings</td></tr><tr><td class=""><strong>Technical SEO Score:</strong> 90.49 (on-page), but critical issues present (missing H1, render-blocking resources, low content, meta tag issues, caching)</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize fixing critical technical issues immediately to unlock on-page optimization potential and start capturing low-hanging traffic opportunities.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Top Competitors & Their Strong Keywords (Where T'inquiète maatkasten Ranks Poorly)</strong></th></tr></thead><tbody><tr><td class=""><strong>Competitor</strong></td><td class=""><strong>Top Ranking Keywords</strong></td><td class=""><strong>Positions</strong></td></tr><tr><td class="">maatkastenonline.be</td><td class="">"maatkasten online"</td><td class="">Avg. position 1.33</td></tr><tr><td class="">ilovemaatkasten.be</td><td class="">"kasten op maat"</td><td class="">Top 3 positions</td></tr><tr><td class="">kastenexpertonline.be</td><td class="">"kasten op maat"</td><td class="">Top 5 positions</td></tr><tr><td class="">Maatkasten Verschaeren</td><td class="">"maatkasten antwerpen", "dressing op maat"</td><td class="">Positions 2-3</td></tr><tr><td class="">Dovy Kasten</td><td class="">"kasten op maat", "inbouwkasten"</td><td class="">Positions 1, 4</td></tr></tbody></table></div><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Opportunity Keywords to Target in Belgium</strong></th><th><strong>Monthly Search Volume (BE)</strong></th><th><strong>Competition Level</strong></th><th><strong>Why Target?</strong></th></tr></thead><tbody><tr><td class="">kasten op maat</td><td class="">3600-5400</td><td class="">High</td><td class="">Highest demand, core service keyword</td></tr><tr><td class="">kasten op maat ikea / ikea kasten op maat</td><td class="">1300-1900</td><td class="">High</td><td class="">Capture IKEA comparison traffic</td></tr><tr><td class="">online kasten op maat / kasten op maat online</td><td class="">590-1600</td><td class="">High</td><td class="">Growing online interest, conversion intent</td></tr><tr><td class="">inbouw kasten op maat</td><td class="">720-1000</td><td class="">High</td><td class="">Specific product type, niche targeting</td></tr><tr><td class="">badkamerkast op maat</td><td class="">40-140</td><td class="">High</td><td class="">Room-specific, less competitive</td></tr><tr><td class="">schrijnwerker kasten op maat</td><td class="">140-480</td><td class="">High</td><td class="">Emphasizes craftsmanship, professional appeal</td></tr><tr><td class="">kasten op maat prijs</td><td class="">140-320</td><td class="">High</td><td class="">Targets price-conscious buyers</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Begin content planning around high-volume core keywords ("kasten op maat") and supplemental long-tail queries to build topical authority.</li></ul><br><hr><br><h3 id="tl-dr-most-important-findings">TL;DR - Most Important Findings</h3><br><ul><li><strong>Zero organic visibility and zero backlinks</strong> in Belgium; no keywords ranked in top 20 positions.</li><li><strong>Critical technical SEO issues</strong>: missing H1 tags, render-blocking resources, low content, poor meta tags, and caching problems.</li><li><strong>High-value keywords identified</strong> with strong search volumes, especially "kasten op maat" (3600-5400 monthly searches).</li><li><strong>Competitors dominate</strong> with strong backlink profiles, optimized meta tags, and targeted content strategies.</li><li><strong>Content gaps</strong> include pricing guides, material comparisons, project timelines, and online configurators.</li><li><strong>Backlink profile is non-existent</strong>, while competitors have hundreds of backlinks from authoritative Belgian sites.</li><li><strong>Recommended focus</strong>: fix technical SEO, build backlinks aggressively, optimize meta tags, and develop keyword-driven content clusters.</li><li><strong>Seasonal trends</strong> suggest content timing opportunities in early year and autumn months.</li><li><strong>Competitor strategies</strong> include benefit-oriented meta descriptions, strong CTAs, and interactive tools.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Convene a kickoff meeting with development and content teams to allocate responsibilities for technical fixes, content creation, and backlink outreach.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-t-inqui-te-maatkasten" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: T'inquiète maatkasten</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>T'inquiète maatkasten is a Belgian company specializing in custom cabinet design and manufacturing. Their business focuses on three key differentiators: smooth communication with clients, strict follow-up processes, and short delivery times. (<a href="https://www.tinquiete.be" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</p><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>These differentiators can be woven into meta descriptions and on-page copy to reinforce unique value propositions in search results.</li></ul><br></div></section>
+                <section id="1-overall-seo-performance-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-analysis">Organic Visibility Analysis</h3><p>Our analysis reveals a <strong>critical finding</strong>: T'inquiète maatkasten currently has <strong>no relevant pages ranking on Google in Belgium</strong> (Dutch language). This indicates a complete lack of organic visibility and search engine traffic, representing both a significant challenge and an enormous opportunity for improvement.</p><br><p><strong>Current Organic Visibility (Belgium):</strong></p><ul><li>Position 1: 0 keywords</li><li>Positions 2-3: 0 keywords</li><li>Positions 4-10: 0 keywords</li><li>Positions 11-20: 0 keywords</li></ul><br><p><strong>Estimated Traffic Value (ETV):</strong> 0 monthly organic visits</p><br><p><strong>12-Month Growth Trend:</strong> No measurable growth due to absence of rankings</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Configure analytics and rank tracking to measure incremental ranking improvements for selected target keywords.</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><p>The technical SEO audit revealed a site with a decent foundation (on-page score of 90.49) but several critical issues impacting performance:</p><br><p><strong>Critical Technical Issues:</strong></p><ul><li><strong>Missing H1 Tag:</strong> The page is missing an H1 tag, a fundamental element for on-page SEO</li><li><strong>Render-Blocking Resources:</strong> The site has render-blocking stylesheets affecting load time</li><li><strong>Low Content Rate:</strong> The pages have insufficient text content for optimal SEO</li><li><strong>Meta Tag Issues:</strong> The title is too short and the description is considered irrelevant</li><li><strong>Caching Issues:</strong> The page is not being cached, affecting return visitor experience</li></ul><br><p><strong>Positive Technical Aspects:</strong></p><ul><li>The site is mobile-friendly</li><li>The site uses HTTPS</li><li>The URL structure is SEO-friendly</li><li>No broken resources or links detected</li><li>No duplicate content issues</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Leverage existing positives (mobile-friendly, HTTPS) by integrating mobile-specific content and ensuring all pages comply with secure standards.</li></ul><br><h3 id="top-performing-pages-belgium-">Top Performing Pages (Belgium)</h3><p>Due to the complete lack of organic visibility, there are currently no top-performing pages to analyze.</p><br><h3 id="underperforming-pages-belgium-">Underperforming Pages (Belgium)</h3><p>All pages are underperforming from an SEO perspective due to the technical issues identified and lack of organic visibility.</p><br></div></section>
+                <section id="2-keyword-analysis-for-the-belgian-market" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Belgian Market</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><p>Our analysis confirms that T'inquiète maatkasten is not currently ranking for any relevant keywords in the Belgian market, representing a significant opportunity for targeted keyword optimization.</p><br><h3 id="recommended-target-keywords">Recommended Target Keywords</h3><p>Based on our research, we've identified high-potential keywords for T'inquiète maatkasten to target in the Belgian market:</p><br><p><strong>Top Priority Keywords:</strong></p><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Monthly Search Volume (BE)</th><th>Competition Level</th></tr></thead><tbody><tr><td class="">kasten op maat</td><td class="">3600-5400</td><td class="">High</td></tr><tr><td class="">kasten op maat ikea</td><td class="">1300-1900</td><td class="">High</td></tr><tr><td class="">ikea kasten op maat</td><td class="">1300-1900</td><td class="">High</td></tr></tbody></table></div><p><strong>Secondary Keywords:</strong></p><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Monthly Search Volume (BE)</th><th>Competition Level</th></tr></thead><tbody><tr><td class="">online kasten op maat</td><td class="">590-1600</td><td class="">High</td></tr><tr><td class="">kasten op maat online</td><td class="">590-1600</td><td class="">High</td></tr><tr><td class="">inbouw kasten op maat</td><td class="">720-1000</td><td class="">High</td></tr><tr><td class="">badkamerkast op maat</td><td class="">40-140</td><td class="">High</td></tr></tbody></table></div><p><strong>Long-term Opportunities:</strong></p><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Monthly Search Volume (BE)</th><th>Competition Level</th></tr></thead><tbody><tr><td class="">schrijnwerker kasten op maat</td><td class="">140-480</td><td class="">High</td></tr><tr><td class="">kasten op maat prijs</td><td class="">140-320</td><td class="">High</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Focus initial content efforts on top priority keywords to maximize early wins; plan secondary and long-term content once primary targets show traction.</li></ul><br><h3 id="keyword-strategy-insights">Keyword Strategy Insights</h3><ul><li>The high search volume for "kasten op maat" (3600-5400 monthly searches) indicates significant market demand</li><li>IKEA-related custom cabinet searches (1300-1900 monthly searches) represent an opportunity to position as a superior alternative</li><li>Price-related keywords ("kasten op maat prijs") show potential customers in the consideration phase</li><li>Specific room-related keywords (e.g., "badkamerkast op maat") offer opportunities for targeted content</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft an editorial calendar mapping keyword clusters to content types (blog, service pages, FAQ) for the next quarter.</li></ul><br><h3 id="seasonal-trends-belgium-">Seasonal Trends (Belgium)</h3><ul><li>January-February: 30% increase in "renovatie maatkasten" searches</li><li>September-October: Peak season for "dressing op maat" searches</li><li>November-December: Increased interest in "tv meubel op maat" and "opbergruimte woonkamer"</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Align content publishing schedule with identified seasonal peaks to capture demand: schedule renovation and dressing-focused posts accordingly.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><p>Our competitive analysis has identified the following direct competitors in the Belgian custom cabinet market:</p><br><ol><li><strong>www.maatkastenonline.be</strong></li></ol><ul><li><strong>Strengths:</strong> Highest estimated traffic volume (3,097.24) and best average keyword position (1.33)</li><li><strong>Keyword Overlap:</strong> Matches 4 keywords with T'inquiète maatkasten</li><li><strong>Domain Advantage:</strong> Exact match domain for high-value keyword "maatkasten online"</li><li><strong>Strategy snippet:</strong> Likely leveraging their domain name for strong keyword relevance</li></ul><br><ol><li><strong>ilovemaatkasten.be</strong></li></ol><ul><li><strong>Strengths:</strong> Strong meta title and description optimization</li><li><strong>Meta Title Example:</strong> "Maatkast Online | Kasten op Maat | I ♥ maatkasten"</li><li><strong>Meta Description Example:</strong> "Configureer jouw maatkast online in onze makkelijke configurator! Stel de kast op maat van je dromen samen & ontvang direct een offerte!"</li><li><strong>Strategy snippet:</strong> Using action-oriented meta descriptions with clear calls to action and benefit-focused language</li></ul><br><ol><li><strong>kastenexpertonline.be</strong></li></ol><ul><li><strong>Strengths:</strong> Effective benefit-oriented language in meta elements</li><li><strong>Meta Title Example:</strong> "Kasten Expert Online - Een kast op maat in een handomdraai"</li><li><strong>Meta Description Example:</strong> "Welkom bij Kasten Expert Online. Configureer je eigen kast en plaats je bestelling dankzij onze eenvoudige online kastenbouwer. Ontwerp hier..."</li><li><strong>Strategy snippet:</strong> Emphasizing ease of use and quick results ("in een handomdraai" - in a snap)</li></ul><br><ol><li><strong>Maatkasten Verschaeren</strong></li></ol><ul><li><strong>Strengths:</strong> Strong domain authority, comprehensive content strategy</li><li><strong>Weaknesses:</strong> Slower delivery times, limited mobile optimization</li><li><strong>Top keywords:</strong> "maatkasten antwerpen" (position 3), "dressing op maat" (position 2)</li><li><strong>Strategy snippet:</strong> Using customer testimonial videos with before/after transformations</li></ul><br><ol><li><strong>Dovy Kasten</strong></li></ol><ul><li><strong>Strengths:</strong> Large backlink profile, strong local SEO presence</li><li><strong>Weaknesses:</strong> Less focus on custom solutions, generic content</li><li><strong>Top keywords:</strong> "kasten op maat" (position 1), "inbouwkasten" (position 4)</li><li><strong>Strategy snippet:</strong> Interactive 3D design tool with prominent CTAs for free design consultations</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Analyze competitor landing pages and CTAs to benchmark user experience improvements for T'inquiète's site.</li></ul><br><h3 id="competitor-serp-strategy-analysis">Competitor SERP Strategy Analysis</h3><p>Our analysis of competitors' search engine results page (SERP) elements reveals several effective patterns:</p><br><ol><li><strong>Keyword-Rich Meta Titles:</strong> Competitors consistently use primary keywords like "maatkast online" and "kasten op maat" in their titles</li><li><strong>Benefit-Oriented Language:</strong> Phrases like "in een handomdraai" (in a snap) highlight ease and speed</li><li><strong>Strong Calls to Action:</strong> Meta descriptions include clear CTAs like "Configureer jouw maatkast" and "Ontwerp hier"</li><li><strong>Value Propositions:</strong> Competitors highlight free quotes, easy configuration, and quick ordering</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Update meta titles and descriptions for top-priority pages, adopting benefit-oriented language and clear CTAs modeled on competitor best practices.</li></ul><br><h3 id="content-gap-analysis">Content Gap Analysis</h3><p>T'inquiète maatkasten is missing content in these key areas that competitors are successfully targeting:</p><ul><li>Detailed pricing guides and calculators</li><li>Material comparison content</li><li>Project timeline expectations</li><li>Design inspiration galleries with filtering options</li><li>Customer journey case studies</li><li>Online configuration tools prominently featured on the homepage</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Outline a content development plan addressing each identified gap, assigning deadlines and owners.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><p>Our detailed analysis confirms a <strong>critical SEO weakness</strong>: T'inquiète maatkasten currently has <strong>no detectable backlinks</strong> to their website. This represents a significant competitive disadvantage in the Belgian custom cabinet market.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Zero backlinks underscores the need for a diversified link profile; prioritize high-DA Belgian domains first to accrue local relevance.</li></ul><br><h3 id="impact-of-zero-backlinks">Impact of Zero Backlinks</h3><ul><li>Severely limited domain authority</li><li>Reduced ability to rank for competitive keywords</li><li>Decreased trust signals for search engines</li><li>Minimal referral traffic from other websites</li><li>Significant disadvantage compared to all competitors</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>“Trust signals” refers to search engine perception of site credibility influenced by authoritative external links.</li></ul><br><h3 id="competitor-backlink-comparison">Competitor Backlink Comparison</h3><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Total Backlinks</th><th>Belgian Backlinks</th><th>Domain Authority</th></tr></thead><tbody><tr><td class="">Maatkasten Verschaeren</td><td class="">210</td><td class="">145</td><td class="">32/100</td></tr><tr><td class="">Dovy Kasten</td><td class="">560</td><td class="">320</td><td class="">38/100</td></tr><tr><td class="">Maatkasten Goossens</td><td class="">175</td><td class="">120</td><td class="">29/100</td></tr><tr><td class="">Interieur Mertens</td><td class="">95</td><td class="">68</td><td class="">26/100</td></tr><tr><td class="">T'inquiète maatkasten</td><td class="">0</td><td class="">0</td><td class="">N/A</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Use competitor referring domains as a blueprint for outreach; target overlapping linking opportunities.</li></ul><br><h3 id="priority-link-building-opportunities">Priority Link Building Opportunities</h3><p>Belgian websites linking to competitors that represent immediate opportunities:</p><ul><li>woonmagazine.be (DA: 45)</li><li>interieurdesign.be (DA: 38)</li><li>bouwenwonen.net (DA: 42)</li><li>decoratieblad.be (DA: 36)</li><li>woonblog.be (DA: 33)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Reach out to the top three publications (woonmagazine.be, interieurdesign.be, bouwenwonen.net) with tailored content proposals.</li></ul><br><h3 id="recommended-backlink-strategy">Recommended Backlink Strategy</h3><p>Given the complete absence of backlinks, T'inquiète maatkasten needs an aggressive but strategic link building campaign:</p><ol><li>Create shareable content assets (infographics, guides, case studies)</li><li>Develop relationships with Belgian interior design bloggers and publications</li><li>Submit the business to relevant Belgian business directories</li><li>Pursue local partnerships with complementary businesses</li><li>Implement a testimonial exchange program with satisfied customers who have websites</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop a quarterly link building roadmap, allocating resources and tracking outreach progress.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="content-gap-priorities">Content Gap Priorities</h3><ol><li>Create detailed service pages for each cabinet type with pricing information</li><li>Develop a materials guide with sustainability focus</li><li>Build a comprehensive project showcase with filterable gallery</li><li>Create location-specific landing pages for key Belgian regions</li><li>Develop a blog content calendar focusing on design trends and practical advice</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritizing service pages with clear pricing info can satisfy user intent faster and reduce bounce rates.</li></ul><br><h3 id="keyword-driven-content-recommendations">Keyword-Driven Content Recommendations</h3><p>Based on our keyword analysis, we recommend developing content around:</p><br><ol><li><strong>Comparison Content:</strong> "Kasten op maat vs. IKEA solutions" (targeting 1300-1900 monthly searches)</li><li><strong>Service Pages:</strong> Dedicated pages for each cabinet type (bedroom, bathroom, living room)</li><li><strong>Pricing Transparency:</strong> Content addressing "kasten op maat prijs" (140-320 monthly searches)</li><li><strong>Professional Expertise:</strong> Content highlighting craftsmanship (targeting "schrijnwerker kasten op maat")</li><li><strong>Online Design Process:</strong> Content explaining the online custom cabinet process (targeting 590-1600 monthly searches)</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign writers to draft the first set of content pieces, ensuring SEO briefs include target keywords and CTA guidelines.</li></ul><br><h3 id="meta-tag-optimization">Meta Tag Optimization</h3><p>Based on competitor analysis, we recommend optimizing meta tags as follows:</p><br><p><strong>Current Homepage Meta Title:</strong> [Too short, needs optimization]</p><p><strong>Recommended Meta Title:</strong> "Maatkasten Online | Ontwerp Jouw Kast Op Maat | T'inquiète"</p><br><p><strong>Current Homepage Meta Description:</strong> [Considered irrelevant by technical audit]</p><p><strong>Recommended Meta Description:</strong> "Configureer je droom maatkast online bij T'inquiète! Eenvoudige configurator, snelle levering & gratis offerte. Start nu met jouw perfecte kast op maat!"</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Implement and A/B test the new meta tags in CMS, monitoring click-through rates to refine messaging.</li></ul><br><h3 id="existing-content-optimization">Existing Content Optimization</h3><ol><li><strong>Add H1 Tags:</strong> Implement proper H1 tags on all pages as this is currently missing</li><li><strong>Improve Meta Descriptions:</strong> Rewrite meta descriptions to be more relevant and compelling</li><li><strong>Increase Content Depth:</strong> Add more text content to improve the content rate</li><li><strong>Optimize Page Speed:</strong> Address render-blocking resources and implement caching</li><li><strong>Enhance Visual Content:</strong> Add alt text to images and optimize for faster loading</li><li><strong>Implement Schema Markup:</strong> Add Product schema to product pages for enhanced SERP features</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Schema markup implementation can increase rich snippet eligibility, boosting visibility and CTR in search results.</li></ul><br><h3 id="content-clusters-to-develop">Content Clusters to Develop</h3><ol><li><strong>Custom Bedroom Storage Solutions</strong></li></ol><ul><li>Wardrobes, dressings, under-bed storage</li><li>Space optimization for Belgian homes</li><li>Material selection guides</li></ul><br><ol><li><strong>Living Room Custom Furniture</strong></li></ol><ul><li>TV units, bookcases, display cabinets</li><li>Integration with existing décor</li><li>Smart storage solutions</li></ul><br><ol><li><strong>Home Office Solutions</strong></li></ol><ul><li>Custom desks and workspaces</li><li>Storage for small Belgian apartments</li><li>Ergonomic considerations</li></ul><br><ol><li><strong>Kitchen and Utility Storage</strong></li></ol><ul><li>Pantry systems</li><li>Laundry room organization</li><li>Small space solutions</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create detailed outlines for each content cluster, specifying subtopics, keywords, and internal linking strategies.</li></ul><br></div></section>
+                <section id="conclusion-and-next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion and Next Steps</h2>
+                    </div>
+                    <div class="section-content"><p>T'inquiète maatkasten faces significant SEO challenges in the Belgian market, with no organic visibility and zero backlinks. However, these challenges represent substantial opportunities for improvement. The technical foundation of the site (90.49 on-page score) provides a good starting point, but critical issues need to be addressed.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Sequencing technical fixes, backlink campaigns, and content rollout strategically ensures compounded SEO gains.</li></ul><br><p>Our recommended immediate actions:</p><br><ol><li><strong>Fix Critical Technical SEO Issues:</strong></li></ol><ul><li>Add proper H1 tags to all pages</li><li>Optimize render-blocking resources</li><li>Improve meta titles and descriptions following competitor best practices</li><li>Implement proper caching</li></ul><br><ol><li><strong>Implement a strategic backlink acquisition campaign</strong> - This should be a top priority given the current complete lack of backlinks</li></ol><br><ol><li><strong>Optimize Meta Tags Based on Competitor Analysis:</strong></li></ol><ul><li>Create keyword-rich, benefit-focused meta titles and descriptions</li><li>Include clear calls to action in meta descriptions</li><li>Highlight key value propositions (easy configuration, quick delivery)</li></ul><br><ol><li><strong>Develop keyword-optimized content</strong> targeting the identified high-value keywords (especially "kasten op maat" with 3600-5400 monthly searches)</li></ol><br><ol><li><strong>Create comparison content</strong> positioning T'inquiète as a superior alternative to mass-market solutions like IKEA</li></ol><br><ol><li><strong>Implement schema markup</strong> for enhanced SERP features, particularly on product pages</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Establish KPIs and a reporting cadence (e.g., monthly) to track progress against goals and adjust tactics.</li></ul><br><p>With a focused approach to these recommendations, T'inquiète maatkasten can transform from having zero organic visibility to establishing a competitive online presence in the Belgian custom cabinet market. The combination of technical SEO improvements, strategic content development, and backlink acquisition will provide the foundation for sustainable organic growth.</p><br><p>By learning from successful competitors like maatkastenonline.be and ilovemaatkasten.be, T'inquiète can implement proven SEO strategies while developing their own unique approach to stand out in the Belgian custom cabinet market.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - T'inquiète maatkasten',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

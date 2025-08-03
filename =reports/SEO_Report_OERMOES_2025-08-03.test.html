@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - OERMOES</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">OERMOES • OERMOES.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 3, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="seo-research-report-oermoes-nl" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: OERMOES.nl</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="1-overall-seo-performance-growth-last-12-months-">1. Overall SEO Performance & Growth (Last 12 Months)</h3><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Latest Value</th><th>12-Month Change</th><th>Notes</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">790.73</td><td class="negative">-47.60%</td><td class="">Significant decline in organic traffic</td></tr><tr><td class="">Total Ranking Keywords</td><td class="">486</td><td class="">N/A</td><td class="">Majority rank outside top 30 positions</td></tr><tr><td class="">Keywords in Position 1</td><td class="">1</td><td class="">Declined</td><td class="">Only 1 keyword at #1</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">6</td><td class="">Declined</td><td class="">Moderate presence in top 3</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">16</td><td class="">Declined</td><td class="">Limited top 10 visibility</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="">48</td><td class="">N/A</td><td class="">Potential for improvement</td></tr><tr><td class="">Keywords in Positions 21-30</td><td class="">48</td><td class="">N/A</td><td class="">Potential for improvement</td></tr><tr><td class="">Keywords in Positions 31-100</td><td class="">367</td><td class="">N/A</td><td class="">Large number of low-ranking keywords</td></tr><tr><td class="">Keyword Movement</td><td class=""></td><td class=""></td><td class="">97 new, 139 improved, 220 declined, 66 lost</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize on-page optimizations and internal linking for keywords in positions 11–30 to push them into the top 10.</li><li>Focus resources on the 48 keywords in positions 11–20, which often yield quick ranking improvements.</li></ul><br><hr><br><h3 id="2-top-competitors-keywords-where-they-outrank-oermoes-nl">2. Top Competitors & Keywords Where They Outrank OERMOES.nl</h3><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>High-Value Keywords They Rank Well For (OERMOES Position)</th><th>Competitor Avg. Position</th><th>Notes</th></tr></thead><tbody><tr><td class="">makkelijkemoestuin.nl</td><td class="">palmkool (2 vs 40+), radijsjes (3 vs 30+), knoflook planten (1 vs 12), wanneer knoflook planten (1 vs 11), courgette plant (2 vs 25+), bewaren courgettes (2 vs NR), knoflook oogsten (1 vs 14), beginnen moestuin (1 vs 25+), komkommer zaaien (1 vs 18)</td><td class="">1.5</td><td class="">Strong beginner-friendly content and community focus</td></tr><tr><td class="">groei.nl</td><td class="">afrikaantjes (4 vs 15), courgette planten (3 vs 20+), spinazie nieuw zeelandse (2 vs NR)</td><td class="">N/A</td><td class="">Broad gardening resources and seasonal content</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a content gap analysis for each high-value keyword where competitors outrank OERMOES.nl and create or expand pages to address those topics.</li></ul><br><hr><br><h3 id="3-keywords-to-target-opportunity-keywords">3. Keywords to Target / Opportunity Keywords</h3><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume (Monthly)</th><th>Competition Level</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">spinazie oogsten</td><td class="">590-1000</td><td class="">Low</td><td class="">High volume, low competition, relevant topic</td></tr><tr><td class="">oogsten spinazie</td><td class="">590-1000</td><td class="">Low</td><td class="">Similar to above, good for content clusters</td></tr><tr><td class="">wanneer spinazie oogsten</td><td class="">30-480</td><td class="">Low</td><td class="">Long-tail, question-based, seasonal</td></tr><tr><td class="">andijvie kweken</td><td class="">50-110</td><td class="">Low</td><td class="">Niche vegetable growing, low competition</td></tr><tr><td class="">dure groenten zelf kweken</td><td class="">30-110</td><td class="">Low</td><td class="">Unique angle, low competition</td></tr><tr><td class="">snijbiet zaaien volle grond</td><td class="">10-140</td><td class="">Low</td><td class="">Long-tail, low competition</td></tr><tr><td class="">zelf groenten kweken</td><td class="">50-210</td><td class="">High</td><td class="">High volume, competitive, long-term target</td></tr><tr><td class="">recepten moestuin</td><td class="">10-40</td><td class="">Low</td><td class="">Content gap, recipe-focused</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Bundle “spinazie oogsten” and similar keywords into a dedicated pillar page with FAQ schema to capture multiple related queries and improve topical authority.</li></ul><br><hr><br><h3 id="4-tl-dr-most-important-findings">4. TL;DR - Most Important Findings</h3><br><ul><li><strong>Organic visibility dropped 47.6% in 12 months</strong>, with more keywords declining than improving.</li><li>Only <strong>23 keywords rank in the top 10</strong>, majority rank poorly (positions 31-100).</li><li><strong>Top-performing pages</strong> include “Afrikaantjes Zaaien” and “Zelf Pickles Maken,” but many pages underperform.</li><li><strong>Technical SEO issues</strong>: missing analytics, duplicate meta tags, missing alt text, render-blocking scripts, unknown sitemap/robots.txt status.</li><li><strong>Competitors makkelijkemoestuin.nl and groei.nl dominate</strong> high-volume keywords with strong beginner-friendly and seasonal content strategies.</li><li><strong>Backlink profile moderate but contains toxic links</strong>; needs cleanup and expansion focusing on authoritative Dutch gardening and cooking sites.</li><li><strong>Keyword opportunities</strong> exist in vegetable harvesting, growing guides, and seasonal content with low competition.</li><li><strong>Content strategy should focus on beginner-friendly guides, seasonal calendars, and how-to content</strong> with improved internal linking and schema markup.</li><li><strong>Immediate technical fixes and analytics implementation are critical</strong> to track and improve SEO performance.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Schedule a comprehensive technical SEO audit within the next 2 weeks and map out a 4-week sprint to address high-impact issues first.</li></ul><br><hr><br></div></section>
+                <section id="full-research-report" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Full Research Report</h2>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="seo-research-report-oermoes-nl" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: OERMOES.nl</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for OERMOES.nl, a Dutch website focused on vegetable gardening and cooking with home-grown produce. The analysis reveals a concerning 47.60% decrease in organic visibility over the past year, with significant drops in top-ranking positions. Despite this decline, several high-performing pages related to specific plant guides and recipes show strong potential. Our keyword analysis identifies valuable opportunities in vegetable harvesting and growing content, particularly for terms like "spinazie oogsten" and "andijvie kweken" which have favorable search volumes and low competition. Competitive analysis reveals that makkelijkemoestuin.nl and groei.nl are outperforming OERMOES.nl on high-value keywords, with effective content strategies focused on simplifying gardening concepts and providing seasonal guidance. The backlink analysis shows a moderate profile with 121 backlinks from 59 referring domains, but reveals concerning toxic links that need addressing. Technical analysis indicates hosting with MyFastHosting and several critical technical SEO gaps including missing analytics tools and potential performance issues. This report outlines actionable recommendations to reverse the negative trend and capitalize on untapped opportunities in the Dutch gardening and cooking content market.</p><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>OERMOES.nl is a content-focused website that provides resources on vegetable gardening and cooking with home-grown produce. The site offers guidance on starting and maintaining vegetable gardens, growing various plants, managing pests, and features an extensive collection of recipes utilizing garden-fresh ingredients. The website also maintains a blog with articles on gardening and cooking topics.</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-organic-visibility">Current Organic Visibility</h3><p>The SEO performance of OERMOES.nl shows a concerning downward trend in the Dutch market:</p><br><ul><li><strong>Estimated Traffic Volume (ETV)</strong>: 790.73 (latest month), representing a significant 47.60% decrease over the past 12 months</li><li><strong>Position Distribution</strong> (latest month):</li><li>Position 1: 1 keyword</li><li>Positions 2-3: 6 keywords</li><li>Positions 4-10: 16 keywords</li><li>Positions 11-20: 48 keywords</li><li>Positions 21-30: 48 keywords</li><li>Positions 31-100: 367 keywords</li><li><strong>Total Ranking Keywords</strong>: 486 keywords</li><li><strong>Estimated Paid Traffic Cost</strong>: €245.38</li><li><strong>Keyword Movement</strong>:</li><li>New rankings: 97 keywords</li><li>Improved rankings: 139 keywords</li><li>Declined rankings: 220 keywords</li><li>Lost rankings: 66 keywords</li></ul><br><p>This data indicates a substantial loss of organic visibility, with more keywords declining (220) than improving (139) in rankings.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Reallocate content team efforts to refresh pages with declining rankings, especially those in positions 11–20, for faster ROI.</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><p>Analysis of the website's content reveals several high-performing pages:</p><br><ol><li><strong>Afrikaantjes Zaaien</strong> (https://www.oermoes.nl/afrikaantjes-zaaien/):</li></ol><ul><li>ETV: 123.15</li><li>Ranking keywords: 32</li><li>Estimated paid traffic cost: €40.97</li><li>Strong performance for "marigold sowing" related keywords</li></ul><br><ol><li><strong>Zelf Pickles Maken</strong> (https://www.oermoes.nl/recipes/zelf-pickles-maken/):</li></ol><ul><li>ETV: 126.84</li><li>High estimated paid traffic cost: €67.74</li><li>Ranks in position 1 for "pickle maken" (140 monthly searches)</li><li>Ranks in position 2 for "pickles maken" (140 monthly searches)</li></ul><br><ol><li><strong>Supermarkt Basilicum Tot Leven Brengen</strong> (https://www.oermoes.nl/breng-je-supermarkt-basilicum-tot-leven/):</li></ol><ul><li>ETV: 122.72</li><li>Ranks in position 6 for "basilicum stekken" and "stekken basilicum" (590 monthly searches each)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Use the structural and on-page elements (length, headings, visuals) from these pages as templates when updating underperformers.</li></ul><br><h3 id="underperforming-pages">Underperforming Pages</h3><p>Several pages show potential but are currently underperforming:</p><br><ol><li><strong>Groente Kweken</strong> (https://www.oermoes.nl/moestuin/groente-kweken/):</li></ol><ul><li>Very low ETV: 0.441</li><li>Low keyword count: 1</li><li>Ranks in positions 41-50</li></ul><br><ol><li><strong>Bijgerechten Recepten</strong> (https://www.oermoes.nl/recepten/bijgerechten/):</li></ol><ul><li>Very low ETV: 0.357</li><li>Low keyword count: 1</li><li>Ranks in positions 31-40</li></ul><br><ol><li><strong>Goedkope Moestuin Trucs</strong> (https://www.oermoes.nl/5-goedkope-moestuin-trucs/):</li></ol><ul><li>Very low ETV: 0.231</li><li>Low keyword count: 1</li><li>Ranks in positions 51-60</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create a prioritized content improvement plan with deadlines for these three pages, focusing on expanded outlines, keyword integration, and internal linking.</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><p>The website received a high on-page score of 95.24, indicating good overall optimization. However, our technical analysis revealed several critical issues:</p><br><h4 id="hosting-and-infrastructure">Hosting and Infrastructure</h4><ul><li><strong>Hosting Provider</strong>: MyFastHosting (identified through SPF records)</li><li><strong>Server Performance</strong>: Unknown, but hosting quality directly impacts site speed and SEO performance</li><li><strong>CMS</strong>: Unable to identify the content management system, which limits our ability to assess SEO capabilities and recommend specific plugins</li></ul><br><h4 id="technical-issues">Technical Issues</h4><ul><li><strong>Missing Analytics Tools</strong>: No evidence of Google Analytics or Google Search Console implementation, severely limiting ability to track performance and identify issues</li><li><strong>Duplicate Meta Tags</strong>: The site has duplicate "description" and "generator" meta tags</li><li><strong>Missing Favicon</strong>: The website lacks a favicon, affecting branding and user experience</li><li><strong>Missing Image Alt Text</strong>: Many images lack alt text, impacting accessibility and SEO</li><li><strong>Render-Blocking Resources</strong>: The site has render-blocking scripts affecting page load speed</li><li><strong>Low Content Rate</strong>: The website has a low ratio of actual content to code</li></ul><br><h4 id="additional-technical-concerns">Additional Technical Concerns</h4><ul><li><strong>Sitemap</strong>: Unknown if an XML sitemap exists or is submitted to search engines</li><li><strong>Robots.txt</strong>: Configuration status unknown</li><li><strong>Mobile-Friendliness</strong>: Responsiveness assessment needed</li><li><strong>HTTPS Implementation</strong>: Security status needs verification</li><li><strong>Schema Markup</strong>: No evidence of structured data implementation for recipes or how-to content</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Implement analytics immediately to establish a performance baseline before addressing other technical fixes.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><p>Based on the performance data, OERMOES.nl currently ranks for approximately 486 keywords in the Netherlands. The keyword distribution shows:</p><br><ul><li>Only 23 keywords (4.7%) ranking in the top 10 positions</li><li>96 keywords (19.8%) ranking in positions 11-30</li><li>367 keywords (75.5%) ranking in positions 31-100</li></ul><br><p>This distribution indicates significant opportunity to improve rankings for the majority of keywords.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize the 96 keywords in positions 11-30 for on-page improvements and targeted internal linking to accelerate movement into top 10.</li></ul><br><h3 id="top-performing-keywords-positions-1-10-">Top Performing Keywords (Positions 1-10)</h3><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th><th>URL</th></tr></thead><tbody><tr><td class="">pickle maken</td><td class="">140</td><td class="">1</td><td class="">https://www.oermoes.nl/recipes/zelf-pickles-maken/</td></tr><tr><td class="">pickles maken</td><td class="">140</td><td class="">2</td><td class="">https://www.oermoes.nl/recipes/zelf-pickles-maken/</td></tr><tr><td class="">afrikaantjes zaaien in volle grond</td><td class="">90</td><td class="">5</td><td class="">https://www.oermoes.nl/afrikaantjes-zaaien/</td></tr><tr><td class="">basilicum stekken</td><td class="">590</td><td class="">6</td><td class="">https://www.oermoes.nl/breng-je-supermarkt-basilicum-tot-leven/</td></tr><tr><td class="">citroen komkommer</td><td class="">320</td><td class="">5</td><td class="">https://www.oermoes.nl/citroenkomkommer-kweken/</td></tr><tr><td class="">knoflook planten oktober</td><td class="">260</td><td class="">5</td><td class="">https://www.oermoes.nl/knoflook-planten-moestuinklusje-oktober/</td></tr><tr><td class="">stekken basilicum</td><td class="">590</td><td class="">6</td><td class="">https://www.oermoes.nl/breng-je-supermarkt-basilicum-tot-leven/</td></tr><tr><td class="">afrikaantjes zaaien hoe diep</td><td class="">110</td><td class="">7</td><td class="">https://www.oermoes.nl/afrikaantjes-zaaien/</td></tr><tr><td class="">zaaien afrikaantjes zichzelf uit</td><td class="">260</td><td class="">7</td><td class="">https://www.oermoes.nl/afrikaantjes-zaaien/</td></tr><tr><td class="">wanneer afrikaantjes zaaien</td><td class="">260</td><td class="">7</td><td class="">https://www.oermoes.nl/afrikaantjes-zaaien/</td></tr><tr><td class="">borlotti bonen</td><td class="">390</td><td class="">9</td><td class="">https://www.oermoes.nl/borlotti-bonen/</td></tr><tr><td class="">citroenkomkommer</td><td class="">320</td><td class="">8</td><td class="">https://www.oermoes.nl/citroenkomkommer-kweken/</td></tr><tr><td class="">hartige pompoentaart met geitenkaas</td><td class="">110</td><td class="">7</td><td class="">https://www.oermoes.nl/recipes/hartige-pompoentaart-rode-ui-geitenkaas/</td></tr><tr><td class="">zaaien afrikaantjes</td><td class="">1000</td><td class="">10</td><td class="">https://www.oermoes.nl/afrikaantjes-zaaien/</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Optimize title tags and meta descriptions for these high-intent keywords to improve click-through rates, using competitor best practices.</li></ul><br><h3 id="high-value-keyword-opportunities">High-Value Keyword Opportunities</h3><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th><th>URL</th></tr></thead><tbody><tr><td class="">afrikaantjes zaaien</td><td class="">1000</td><td class="">11</td><td class="">https://www.oermoes.nl/afrikaantjes-zaaien/</td></tr><tr><td class="">borlottibonen</td><td class="">1600</td><td class="">16</td><td class="">https://www.oermoes.nl/borlotti-bonen/</td></tr><tr><td class="">pickles</td><td class="">6600</td><td class="">13</td><td class="">https://www.oermoes.nl/recipes/zelf-pickles-maken/</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Target these keywords with updated content and targeted link building to push from positions 11–16 into the top 5 for maximum traffic gain.</li></ul><br><h3 id="recommended-keywords-to-target">Recommended Keywords to Target</h3><br><p><strong>Top Priority Keywords:</strong></p><ul><li><strong>spinazie oogsten:</strong> 590-1000 monthly searches | LOW competition</li><li><strong>oogsten spinazie:</strong> 590-1000 monthly searches | LOW competition</li><li><strong>wanneer spinazie oogsten:</strong> 30-480 monthly searches | LOW competition</li><li><strong>andijvie kweken:</strong> 50-110 monthly searches | LOW competition</li><li><strong>wanneer snijbiet zaaien:</strong> 10-260 monthly searches | LOW competition</li></ul><br><p><strong>Secondary Keywords:</strong></p><ul><li><strong>dure groenten zelf kweken:</strong> 30-110 monthly searches | LOW competition</li><li><strong>snijbiet zaaien volle grond:</strong> 10-140 monthly searches | LOW competition</li><li><strong>snijbiet zaaien in de kas:</strong> 10-70 monthly searches | LOW competition</li><li><strong>hoe spinazie oogsten:</strong> 10-170 monthly searches | LOW competition</li><li><strong>nieuw-zeelandse spinazie oogsten:</strong> 10-140 monthly searches | LOW competition</li></ul><br><p><strong>Long-term Opportunities:</strong></p><ul><li><strong>zelf groenten kweken:</strong> 50-210 monthly searches | HIGH competition</li><li><strong>groenten zelf kweken:</strong> 50-210 monthly searches | HIGH competition</li><li><strong>recepten moestuin:</strong> 10-40 monthly searches | LOW competition</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign content briefs for top-priority keywords in the next editorial sprint, with clear deadlines and target word counts.</li></ul><br><h3 id="seasonal-keyword-trends">Seasonal Keyword Trends</h3><p>Our analysis reveals clear seasonal patterns in keyword search volumes:</p><br><ul><li><strong>Afrikaantjes zaaien:</strong> Search volume peaks in March-May</li><li><strong>Knoflook planten oktober:</strong> Peak search volume in October</li><li><strong>Hartige pompoentaart met geitenkaas:</strong> Search volume peaks in October-December</li><li><strong>Bieslook bloem eetbaar:</strong> Search volume peaks in May-June</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Plan and publish seasonal guides at least one month before peak search periods to capture rising interest.</li></ul><br><h3 id="content-gaps">Content Gaps</h3><p>Based on keyword analysis, we've identified several content gaps:</p><br><ol><li><strong>Specific Vegetable Varieties:</strong> Limited content targeting specific varieties of popular vegetables</li><li><strong>Pest and Disease Control:</strong> Insufficient in-depth guides on garden pest management</li><li><strong>Companion Planting:</strong> Limited content on companion planting techniques</li><li><strong>Advanced Gardening Techniques:</strong> Few resources on vertical gardening, hydroponics, or permaculture</li><li><strong>Vegan/Vegetarian Recipes:</strong> Potential to expand plant-based recipes using home-grown produce</li><li><strong>Beginner's Guides:</strong> Need for comprehensive guides for novice gardeners</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Develop an editorial calendar to address one content gap per month, ensuring consistent site updates and improved topical coverage.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><p>Our analysis has identified two primary competitors in the Dutch vegetable gardening content space:</p><br><ol><li><strong>makkelijkemoestuin.nl</strong></li></ol><ul><li><strong>Strengths</strong>: High average keyword position (1.5), significant estimated traffic volume (355.84)</li><li><strong>Content Focus</strong>: Making gardening easy and accessible ("Makkelijke Moestuin" approach)</li><li><strong>Unique Features</strong>: Community forum for user engagement</li><li><strong>Brand Positioning</strong>: "De moestuin die bij iedereen lukt" (The vegetable garden that works for everyone)</li></ul><br><ol><li><strong>groei.nl</strong></li></ol><ul><li><strong>Strengths</strong>: Good estimated traffic volume (99.38), broad range of gardening information</li><li><strong>Content Focus</strong>: Comprehensive gardening resources including a "moestuinkalender" (vegetable garden calendar)</li><li><strong>Brand Positioning</strong>: "Tuininspiratie, tijdschrift en vereniging" (Garden inspiration, magazine, and association)</li></ul><br><p>Both competitors focus on providing accessible gardening information but with different approaches – makkelijkemoestuin.nl emphasizes simplicity while groei.nl offers broader gardening resources.</p><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Competitor domain authority is estimated at 60+ compared to OERMOES’s estimated 20, suggesting a backlink and brand-strength gap.</li></ul><br><h3 id="competitor-seo-strengths-and-weaknesses">Competitor SEO Strengths and Weaknesses</h3><br><h4 id="makkelijkemoestuin-nl">makkelijkemoestuin.nl</h4><p><strong>Strengths:</strong></p><ul><li>Exceptional keyword positioning (average position 1.5)</li><li>Strong domain authority in the gardening niche</li><li>Effective use of "Makkelijke Moestuin" branding in titles and descriptions</li><li>Community-building approach that generates engagement and return visits</li></ul><br><p><strong>Weaknesses:</strong></p><ul><li>Potentially narrower focus than groei.nl</li><li>Limited recipe content compared to OERMOES.nl</li></ul><br><h4 id="groei-nl">groei.nl</h4><p><strong>Strengths:</strong></p><ul><li>Broad coverage of gardening topics</li><li>Effective use of seasonal content (moestuinkalender)</li><li>Strong brand recognition as an established gardening resource</li></ul><br><p><strong>Weaknesses:</strong></p><ul><li>Less focused positioning than makkelijkemoestuin.nl</li><li>Lower average keyword position than makkelijkemoestuin.nl</li></ul><br><h3 id="competitor-content-strategies">Competitor Content Strategies</h3><br><h4 id="makkelijkemoestuin-nl-content-strategy">makkelijkemoestuin.nl Content Strategy</h4><ul><li><strong>"How-to" Focus</strong>: Creates detailed, step-by-step guides for growing specific vegetables</li><li><strong>Simplification Approach</strong>: Consistently positions gardening as easy and accessible</li><li><strong>Keyword Integration</strong>: Effectively incorporates target keywords in titles and descriptions</li><li><strong>Value Proposition</strong>: Emphasizes success for beginners with phrases like "De moestuin die bij iedereen lukt"</li><li><strong>Community Building</strong>: Uses forum to create engagement and user-generated content</li></ul><br><h4 id="groei-nl-content-strategy">groei.nl Content Strategy</h4><ul><li><strong>Comprehensive Coverage</strong>: Provides broad information on various gardening topics</li><li><strong>Seasonal Planning</strong>: Uses "moestuinkalender" as a cornerstone content piece</li><li><strong>Brand Authority</strong>: Leverages their position as a gardening magazine and association</li><li><strong>Educational Approach</strong>: Content focuses on providing thorough gardening knowledge</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Adapt the “Makkelijke Moestuin” friendly tone and step-by-step simplicity for OERMOES’s beginner guides to improve engagement.</li></ul><br><h3 id="keywords-where-competitors-outrank-oermoes-nl">Keywords Where Competitors Outrank OERMOES.nl</h3><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competitor</th><th>Competitor Position</th><th>OERMOES Position</th></tr></thead><tbody><tr><td class="">palmkool</td><td class="">6600</td><td class="">makkelijkemoestuin.nl</td><td class="">2</td><td class="">40+</td></tr><tr><td class="">radijsjes</td><td class="">6600</td><td class="">makkelijkemoestuin.nl</td><td class="">3</td><td class="">30+</td></tr><tr><td class="">afrikaantjes</td><td class="">6600</td><td class="">groei.nl</td><td class="">4</td><td class="">15</td></tr><tr><td class="">knoflook planten</td><td class="">2400</td><td class="">makkelijkemoestuin.nl</td><td class="">1</td><td class="">12</td></tr><tr><td class="">courgette plant</td><td class="">1600</td><td class="">makkelijkemoestuin.nl</td><td class="">2</td><td class="">25+</td></tr><tr><td class="">wanneer knoflook planten</td><td class="">1300</td><td class="">makkelijkemoestuin.nl</td><td class="">1</td><td class="">11</td></tr><tr><td class="">courgette planten</td><td class="">1300</td><td class="">groei.nl</td><td class="">3</td><td class="">20+</td></tr><tr><td class="">bewaren courgettes</td><td class="">1000</td><td class="">makkelijkemoestuin.nl</td><td class="">2</td><td class="">Not ranking</td></tr><tr><td class="">wanneer knoflook oogsten</td><td class="">1000</td><td class="">makkelijkemoestuin.nl</td><td class="">1</td><td class="">15</td></tr><tr><td class="">afrikaantjes zaaien</td><td class="">1000</td><td class="">makkelijkemoestuin.nl</td><td class="">2</td><td class="">11</td></tr><tr><td class="">zaaien afrikaantjes</td><td class="">1000</td><td class="">makkelijkemoestuin.nl</td><td class="">3</td><td class="">10</td></tr><tr><td class="">bewaren van courgettes</td><td class="">1000</td><td class="">makkelijkemoestuin.nl</td><td class="">2</td><td class="">Not ranking</td></tr><tr><td class="">knoflook oogsten</td><td class="">880</td><td class="">makkelijkemoestuin.nl</td><td class="">1</td><td class="">14</td></tr><tr><td class="">beginnen moestuin</td><td class="">880</td><td class="">makkelijkemoestuin.nl</td><td class="">1</td><td class="">25+</td></tr><tr><td class="">spinazie nieuw zeelandse</td><td class="">880</td><td class="">groei.nl</td><td class="">2</td><td class="">Not ranking</td></tr><tr><td class="">komkommer zaaien</td><td class="">880</td><td class="">makkelijkemoestuin.nl</td><td class="">1</td><td class="">18</td></tr><tr><td class="">moestuin beginnen</td><td class="">880</td><td class="">makkelijkemoestuin.nl</td><td class="">1</td><td class="">25+</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>For the top 5 competitor outranking keywords, develop targeted content or update existing pages to bridge the gap within the next quarter.</li></ul><br><h3 id="competitor-serp-elements-analysis">Competitor SERP Elements Analysis</h3><p>Analysis of competitor SERP elements reveals effective patterns:</p><br><ol><li><strong>Title Optimization:</strong></li></ol><ul><li>makkelijkemoestuin.nl: concise, action-oriented titles including brand (e.g., "Knoflook kweken in de Makkelijke Moestuin")</li><li>groei.nl: direct, informative titles clearly addressing user intent (e.g., "Komkommer kweken doe je zo")</li></ul><br><ol><li><strong>Meta Description Strategies:</strong></li></ol><ul><li>makkelijkemoestuin.nl: emphasizes ease with phrases like "De moestuin die bij iedereen lukt"</li><li>groei.nl: highlights authority with "tuininspiratie, tijdschrift en vereniging"</li></ul><br><ol><li><strong>Successful Content Types:</strong></li></ol><ul><li>Step-by-step guides</li><li>Seasonal planting calendars</li><li>Problem-solving articles (pest management)</li><li>Beginner-friendly advice</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Implement FAQ and HowTo schema markup to increase chances of rich snippets, following competitor examples.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><p>Our analysis reveals that OERMOES.nl has a moderate backlink profile with room for improvement:</p><br><ul><li><strong>Total Backlinks</strong>: 121 backlinks</li><li><strong>Referring Domains</strong>: 59 unique domains</li><li><strong>Domain Rank</strong>: 102</li><li><strong>Backlink Spam Score</strong>: 31 (medium risk)</li><li><strong>Referring TLDs Distribution</strong>:</li><li>.com: 66 backlinks (54.5%)</li><li>.nl: 38 backlinks (31.4%)</li><li>Other TLDs: 17 backlinks (14.1%)</li><li><strong>Link Types</strong>: 111 text anchors (91.7%), 10 image links (8.3%)</li><li><strong>Link Attributes</strong>: 11 nofollow links (9.1%)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Aim to increase the number of referring .nl domains by 30% over the next 6 months to strengthen Dutch relevance and authority.</li></ul><br><h3 id="backlink-quality-assessment">Backlink Quality Assessment</h3><p>The backlink profile shows a concerning mix of quality and potentially harmful links:</p><br><h4 id="high-quality-backlinks">High-Quality Backlinks</h4><ul><li><strong>aptus-holland.com</strong>: Multiple high-quality backlinks across different language versions</li><li><strong>microfluo.net</strong>: Quality backlinks with relevant anchor text</li><li><strong>companyinfo.nl</strong>: Authoritative Dutch business directory (15% spam score)</li></ul><br><h4 id="potentially-harmful-backlinks">Potentially Harmful Backlinks</h4><p>Several backlinks with high spam scores were identified:</p><ul><li><strong>backlinktime.com</strong>: 70% spam score</li><li><strong>kingranks.com</strong>: 80% spam score</li><li><strong>99ranks.com</strong>: 75% spam score</li><li><strong>wayranks.com</strong>: 65% spam score</li><li><strong>pirdu.com</strong>: 65% spam score</li><li><strong>articlement.com</strong>: 65% spam score</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><p>The anchor text distribution reveals several patterns:</p><br><ol><li><strong>Brand Anchors</strong>: "Oermoes", "www.oermoes.nl"</li><li><strong>URL Anchors</strong>: "https://oermoes.nl/over-mij/"</li><li><strong>Generic Anchors</strong>: "here", "website"</li></ol><br><p>This distribution suggests a natural backlink profile but with opportunities for more keyword-rich anchors from quality sources.</p><br><h3 id="link-building-opportunities">Link Building Opportunities</h3><p>Based on our analysis, we've identified several link building opportunities:</p><br><ol><li><strong>Leverage Existing Partnerships</strong>: Expand collaborations with aptus-holland.com for guest posts and resource link placements.</li><li><strong>Dutch Gardening Communities</strong>: Engage in high-authority forums and Q&A sites where competitors participate.</li><li><strong>Cooking and Recipe Websites</strong>: Pitch recipe round-ups using OERMOES’s unique home-grown produce angle.</li><li><strong>Sustainable Living Blogs</strong>: Offer expert content on self-sufficiency and organic growing.</li><li><strong>Local Garden Centers</strong>: Develop co-branded content or sponsorship with Dutch garden centers.</li><li><strong>Educational Institutions</strong>: Partner with agricultural schools for expert quotes and backlinks.</li><li><strong>Quality Directory Listings</strong>: Target reputable directories like companyinfo.nl, avoid low-quality lists.</li></ol><br><h3 id="toxic-backlink-removal">Toxic Backlink Removal</h3><p>We recommend a backlink cleanup campaign targeting the following domains with high spam scores:</p><ul><li>backlinktime.com (70% spam score)</li><li>kingranks.com (80% spam score)</li><li>99ranks.com (75% spam score)</li><li>wayranks.com (65% spam score)</li><li>pirdu.com (65% spam score)</li><li>articlement.com (65% spam score)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prepare a disavow file and initiate outreach to webmasters within the next 2 weeks, then submit to Google Search Console.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="content-optimization-opportunities">Content Optimization Opportunities</h3><p>Based on the performance data, keyword analysis, and competitive insights, we recommend:</p><br><ol><li><strong>Optimize Underperforming Pages</strong>:</li></ol><ul><li>Enhanced keyword targeting</li><li>Expanded content depth</li><li>Improved internal linking</li><li>Better on-page SEO elements</li></ul><br><ol><li><strong>Refresh Declining Content</strong>: Implement a rolling content refresh for articles with 220 declining keywords.</li><li><strong>Address Keyword Cannibalization</strong>: Split or consolidate “Afrikaantjes zaaien” variations into focused subpages.</li><li><strong>Optimize for Featured Snippets</strong>: Use concise, question-and-answer formats for how-to queries.</li><li><strong>Improve Title and Meta Description Optimization</strong>:</li></ol><ul><li>Actionable titles (e.g., “Stap-voor-stap Radijsjes Kweken voor Beginners”)</li><li>Compelling meta descriptions highlighting benefits</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Build topic clusters around core themes (e.g., Spinazie) with pillar pages and interlinked subtopics to demonstrate authority.</li></ul><br><h3 id="new-content-recommendations">New Content Recommendations</h3><p>Based on keyword analysis, content gaps, and competitor insights, we recommend:</p><br><ol><li><strong>“Makkelijke Moestuin” Approach</strong>:</li></ol><ul><li>“Eenvoudig Beginnen met je Moestuin: Stap-voor-stap Gids”</li><li>“Moestuin voor Beginners: Zo Lukt het Bij Iedereen”</li></ul><br><ol><li><strong>High-Value Keyword Content</strong>:</li></ol><ul><li>“Palmkool Kweken: Complete Gids” (6600 monthly searches)</li><li>“Radijsjes Zaaien en Oogsten” (6600 monthly searches)</li><li>“Alles over Afrikaantjes in je Moestuin” (6600 monthly searches)</li></ul><br><ol><li><strong>Seasonal Content Calendar</strong>: Create a “Moestuinkalender” with monthly planting and harvesting guides.</li><li><strong>How-To Content Series</strong>:</li></ol><ul><li>“Knoflook Planten: Wanneer en Hoe doe je dat?” (2400 monthly searches)</li><li>“Courgette Plant Verzorgen: Van Zaai tot Oogst” (1600 monthly searches)</li><li>“Courgettes Bewaren: 5 Effectieve Methoden” (1000 monthly searches)</li></ul><br><ol><li><strong>Community Building</strong>: Evaluate adding a forum or Q&A to increase engagement and user-generated content.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign owners and publishing dates for each new content piece in the next editorial planning meeting.</li></ul><br><h3 id="content-structure-improvements">Content Structure Improvements</h3><ol><li><strong>Create Topic Clusters</strong>: Develop pillar pages (e.g., “Spinazie Kweken”) with supporting articles (e.g., “Spinazie Oogsten,” “Spinazie Recepten”).</li><li><strong>Improve Internal Linking</strong>: Use contextual links and breadcrumbs to boost page authority distribution.</li><li><strong>Implement Schema Markup</strong>: Add RecipeSchema and HowToSchema for relevant pages.</li><li><strong>Optimize Meta Descriptions</strong>: Use action-driven language highlighting key benefits.</li><li><strong>Simplify Content Format</strong>:</li></ol><ul><li>Clear step-by-step instructions</li><li>Visual aids (diagrams, photos)</li><li>Beginner-friendly tone</li></ul><br><h3 id="technical-seo-improvements">Technical SEO Improvements</h3><p>Based on our technical analysis, we recommend:</p><br><ol><li><strong>Analytics Implementation</strong>: Set up Google Analytics and Google Search Console immediately.</li><li><strong>CMS Assessment</strong>: Identify current CMS, evaluate SEO capabilities, and plan migration if needed.</li><li><strong>Hosting Evaluation</strong>: Benchmark MyFastHosting performance; upgrade or migrate if speed lags.</li><li><strong>Technical Fixes</strong>:</li></ol><ul><li>Create and submit an XML sitemap</li><li>Configure robots.txt properly</li><li>Fix duplicate meta tags</li><li>Add a favicon</li><li>Add alt text to all images</li><li>Eliminate render-blocking scripts</li><li>Implement schema markup</li></ul><br><ol><li><strong>Mobile Optimization</strong>: Ensure full responsiveness and pass Google’s mobile-friendly test.</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Use the Google Search Console enhancements report to verify schema implementation and mobile usability fixes.</li></ul><br></div></section>
+                <section id="conclusion-and-next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion and Next Steps</h2>
+                    </div>
+                    <div class="section-content"><p>OERMOES.nl is experiencing a significant decline in organic visibility in the Dutch market, with a 47.60% decrease in estimated traffic volume over the past year. However, the success of specific content pieces related to plant guides and recipes indicates potential for recovery and growth.</p><br><p>Our analysis reveals that competitors makkelijkemoestuin.nl and groei.nl are outperforming OERMOES.nl through effective content strategies focused on simplifying gardening concepts and providing seasonal guidance. They consistently outrank OERMOES.nl for high-value keywords like "palmkool" (6600 searches), "radijsjes" (6600 searches), and "knoflook planten" (2400 searches).</p><br><p>The backlink analysis shows a moderate profile with 121 backlinks from 59 referring domains, but reveals concerning toxic links with high spam scores that need addressing. The strong relationship with aptus-holland.com presents a valuable opportunity for further collaboration and link building.</p><br><p>Technical analysis reveals critical gaps including missing analytics tools, unknown CMS capabilities, and several on-page issues that need immediate attention. The hosting with MyFastHosting should be evaluated for performance impact.</p><br><p>To reverse the negative trend and compete effectively, we recommend:</p><br><ol><li><strong>Immediate Actions (1-3 months):</strong></li></ol><ul><li>Implement Google Analytics and Google Search Console</li><li>Address identified technical SEO issues</li><li>Optimize underperforming pages with high potential</li><li>Improve title and meta description formats following competitor patterns</li><li>Begin developing content targeting top priority keywords</li><li>Initiate toxic backlink removal campaign for high spam score domains</li></ul><br><ol><li><strong>Medium-Term Strategy (3-6 months):</strong></li></ol><ul><li>Implement a "Makkelijke Moestuin"-inspired approach to content</li><li>Develop a Dutch "Moestuinkalender" as cornerstone content</li><li>Create comprehensive guides for high-volume keywords where competitors currently dominate</li><li>Begin building relationships for backlink acquisition</li><li>Leverage existing partnership with aptus-holland.com for additional content collaborations</li><li>Implement schema markup for recipes and how-to content</li></ul><br><ol><li><strong>Long-Term Initiatives (6-12 months):</strong></li></ol><ul><li>Consider implementing a community forum to increase engagement</li><li>Develop a complete content ecosystem with topic clusters</li><li>Establish a consistent publishing calendar aligned with seasonal trends</li><li>Build authority through partnerships with Dutch gardening experts</li><li>Create a diverse and natural backlink profile from relevant Dutch gardening and cooking websites</li><li>Evaluate CMS and hosting needs for potential upgrades</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Establish a monthly KPI dashboard (tracking organic traffic, rankings by key segments, backlink growth, technical health) to monitor progress and adjust tactics in real time.</li></ul><br><p>By implementing these recommendations, OERMOES.nl can leverage its existing strengths in specific plant guides and recipes while addressing the gaps that have led to declining visibility, ultimately reclaiming and expanding its position in the Dutch gardening content market.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - OERMOES',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

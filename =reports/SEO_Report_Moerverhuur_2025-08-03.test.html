@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Moerverhuur</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Moerverhuur • Www.moerverhuur.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Nederland Market</span>
+                        <span><i class="fas fa-calendar"></i> August 3, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th></tr></thead><tbody><tr><td class="">Total Ranking Keywords</td><td class="">1,074</td></tr><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">6,084</td></tr><tr><td class="">12-Month ETV Growth</td><td class="positive">+18.44%</td></tr><tr><td class="">Keywords in Position 1</td><td class="">10</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">50</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">129</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="">125</td></tr><tr><td class="">Keywords in Positions 21-30</td><td class="">149</td></tr><tr><td class="">Keywords in Positions 31-100</td><td class="">611</td></tr><tr><td class="">Estimated Paid Traffic Cost</td><td class="">€6,737</td></tr></tbody></table></div><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Keywords They Rank Well For (Moerverhuur Ranks Poorly)</th></tr></thead><tbody><tr><td class=""><strong>Boels.com</strong></td><td class="">"tapijtreiniger" (22,200 SV), "hoogwerker huur" (12,100 SV), "steiger huren" (5,400 SV), "graafmachine huren" (3,600 SV)</td></tr><tr><td class=""><strong>Gereedschapverhuur.nl</strong></td><td class="">"aanhanger huren" (18,100 SV), "verhuislift huren" (4,400 SV), "bouwdroger" (3,600 SV)</td></tr><tr><td class=""><strong>Borent.nl</strong></td><td class="">"trilplaat huren" (4,400 SV), "stoomreiniger huren" (2,900 SV), "kunststof rijplaten" (2,900 SV)</td></tr></tbody></table></div><p>*SV = Monthly Search Volume</p><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">tapijtreiniger huren</td><td class="">4,400</td><td class="">High</td><td class="">High volume, commercial intent, content gap</td></tr><tr><td class="">hoogwerker aanhanger huren</td><td class="">390</td><td class="">Medium</td><td class="">Medium competition, strong commercial intent</td></tr><tr><td class="">aanhanger huren</td><td class="">18,100</td><td class="">Medium</td><td class="">Very high volume, currently underutilized</td></tr><tr><td class="">graafmachine huren</td><td class="">3,600</td><td class="">High</td><td class="">High volume, relevant to core offerings</td></tr><tr><td class="">steiger huren</td><td class="">5,400</td><td class="">High</td><td class="">High volume, competitor strength, content gap</td></tr><tr><td class="">bouwdroger huren</td><td class="">2,400</td><td class="">Medium</td><td class="">Medium volume, opportunity to expand category</td></tr><tr><td class="">trilplaat huren</td><td class="">4,400</td><td class="">High</td><td class="">High volume, competitor ranks well</td></tr><tr><td class="">tapijtreiniger huren voor autobekleding</td><td class="">Low</td><td class="">Low</td><td class="">Long-tail, low competition, niche targeting</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The long-tail term “tapijtreiniger huren voor autobekleding” offers a low-competition entry point to test targeted landing pages and capture niche traffic.</li><li>High-volume terms like “aanhanger huren” should be supported by dedicated category pages optimized for mid-funnel intent.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Build a dedicated landing page for the long-tail keyword to validate conversion potential.</li><li>Draft content outlines and internal linking plans for the top three high-volume opportunity keywords.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Moerverhuur shows solid organic growth (+18.44% ETV) but ranks for only 10 keywords in position 1.</li><li>Strong brand presence for "moerverhuur" and product-specific keywords like "minigraver."</li><li>Significant keyword gaps exist in high-volume rental equipment terms such as "tapijtreiniger," "aanhanger huren," and "hoogwerker huur."</li><li>Competitors like Boels and Gereedschapverhuur.nl leverage pricing and location in meta descriptions, which Moerverhuur currently underutilizes.</li><li>Technical SEO is generally strong but needs fixes for HTML errors, missing alt tags, and page speed improvements.</li><li>Backlink profile is moderate with some medium-risk spammy links; opportunities exist to gain authoritative links from industry leaders like hilti.nl and marktplaats.com.</li><li>Content strategy should focus on optimizing category and location pages, expanding how-to guides, and targeting long-tail keywords.</li><li>Quick wins include updating title tags/meta descriptions, implementing schema markup, and cleaning up backlinks.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize the top five quick wins within the next two weeks: title/meta updates, schema implementation, and critical backlink cleanup.</li><li>Assign responsibilities for HTML fixes and image alt text additions to the development team.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-moerverhuur" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Moerverhuur</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Moerverhuur is a rental company based in Kapelle, Zeeland, specializing in providing professional tools and equipment for both private individuals and businesses. Their rental offerings include a diverse range of equipment such as trailers, scaffolding, construction tools, garden equipment, waste containers, aerial work platforms, and mini-excavators. The company emphasizes competitive pricing, a modern fleet, and convenient services including their own transport options. (<a href="https://www.moerverhuur.nl" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</p><br></div></section>
+                <section id="target-market" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Target Market</h2>
+                    </div>
+                    <div class="section-content"><p>The company operates in the Netherlands, specifically in Zeeland, targeting both individual consumers and businesses needing equipment rental services.</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-traffic-growth">Organic Visibility and Traffic Growth</h3><p>Moerverhuur has demonstrated positive growth in their organic search presence over the past 12 months, with an impressive <strong>18.44% increase in Estimated Traffic Volume (ETV)</strong>. This growth indicates their SEO efforts are yielding results, though there's still significant room for improvement.</p><br><h3 id="current-ranking-positions-latest-data-">Current Ranking Positions (Latest Data)</h3><ul><li>Position 1: 10 keywords</li><li>Positions 2-3: 50 keywords</li><li>Positions 4-10: 129 keywords</li><li>Positions 11-20: 125 keywords</li><li>Positions 21-30: 149 keywords</li><li>Positions 31-100: 611 keywords</li></ul><br><h3 id="traffic-metrics">Traffic Metrics</h3><ul><li>Current Estimated Traffic Volume (ETV): 6,084</li><li>Estimated Paid Traffic Cost: €6,737 (if these rankings were achieved through paid advertising)</li><li>Total Ranking Keywords: 1,074</li></ul><br><h3 id="content-performance-analysis">Content Performance Analysis</h3><br><p><strong>Top-Performing Pages:</strong></p><ul><li><code>/producten/minigraver-08-ton/</code>: Highest traffic volume (ETV: 785.54) with position 1 ranking</li><li><code>/producten/ladderlift-11-meter/</code>: Strong performer (ETV: 392.63) with position 1 ranking</li><li><code>/producten/behangafstomer-2-200-w/</code>: High traffic volume (ETV: 593.32)</li><li><code>/producten/stut-alone-gevelstempel/</code>: Position 1 ranking with high commercial value (ETV: 295.60)</li></ul><br><p><strong>Underperforming Pages:</strong></p><ul><li>Several product pages ranking in positions 21-100, including:</li><li><code>/producten/combi-boorhamer-8-j-7-kg-sds-max/</code> (ETV: 5.83)</li><li><code>/producten/rubberen-mat-t-b-v-trilplaat/</code> (ETV: 0.55)</li><li>Category pages like <code>/huren/tuin-en-parkmachines/</code> (ETV: 2.08) ranking low</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Underperforming product and category pages represent quick-win optimization candidates: update on-page copy, add user intent sections (e.g., specs, FAQs) and internal links.</li></ul><br><h3 id="content-strategy-patterns">Content Strategy Patterns</h3><ul><li><strong>Product Pages</strong>: Most successful content follows the URL structure: <code>https://www.moerverhuur.nl/producten/[product-name]/</code></li><li><strong>Category Pages</strong>: Using the <code>/huren/</code> path structure</li><li><strong>Location-Based Pages</strong>: Targeting specific geographic areas in Zeeland and West Brabant</li><li><strong>Limited Informational Content</strong>: Only one advice/blog page (<code>/advies/bestrating-aanleggen/</code>) was found ranking</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><ul><li><strong>On-Page SEO Score</strong>: 97.07 (relatively high)</li><li><strong>Key Technical Issues</strong>:</li><li>HTML errors (unexpected closing tags and mismatched end tags)</li><li>Missing image alt attributes</li><li>Render-blocking resources affecting page load speed</li><li><strong>Positive Technical Aspects</strong>:</li><li>HTTPS implementation</li><li>Proper canonical URL definition</li><li>SEO-friendly URL structure</li><li>Presence of title, description, and favicon</li><li>Social media tags implementation</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Schedule a technical audit sprint to resolve HTML errors and performance bottlenecks within the next 14 days.</li></ul><br><h3 id="search-features-opportunities">Search Features Opportunities</h3><ul><li>No featured snippets or local pack results currently triggered</li><li>Opportunity to optimize for these enhanced SERP features</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Develop concise, structured content (lists, tables) on service pages to improve chances of featured snippet inclusion.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-performing-keywords-positions-1-10-">Top Performing Keywords (Positions 1-10)</h3><p>Moerverhuur has achieved strong rankings for several high-value keywords:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th><th>URL</th></tr></thead><tbody><tr><td class="">minigraver</td><td class="">1900</td><td class="">1</td><td class="">https://www.moerverhuur.nl/producten/minigraver-08-ton/</td></tr><tr><td class="">moerverhuur</td><td class="">880</td><td class="">1</td><td class="">https://www.moerverhuur.nl/</td></tr><tr><td class="">sleuvenzaag</td><td class="">260</td><td class="">1</td><td class="">https://www.moerverhuur.nl/producten/sleuvenzaag/</td></tr><tr><td class="">hoogwerker huren zeeland</td><td class="">170</td><td class="">4</td><td class="">https://www.moerverhuur.nl/hoogwerker-huren-zeeland/</td></tr><tr><td class="">gevelstempel</td><td class="">110</td><td class="">2</td><td class="">https://www.moerverhuur.nl/producten/stut-alone-gevelstempel/</td></tr><tr><td class="">aanhanger hoogwerker 12 meter</td><td class="">90</td><td class="">1</td><td class="">https://www.moerverhuur.nl/producten/kniktelescoop-aanhangerhoogwerker-12-meter/</td></tr><tr><td class="">vacuum hijsunit</td><td class="">90</td><td class="">2</td><td class="">https://www.moerverhuur.nl/producten/vacuumhefunit-230v-handb/</td></tr><tr><td class="">vacuüm hijsunit</td><td class="">90</td><td class="">3</td><td class="">https://www.moerverhuur.nl/producten/vacuumhefunit-230v-handb/</td></tr><tr><td class="">minigraver huren zeeland</td><td class="">70</td><td class="">1</td><td class="">https://www.moerverhuur.nl/minigraver-huren-zeeland/heinkenszand/</td></tr><tr><td class="">10 kva aggregaat huren</td><td class="">70</td><td class="">2</td><td class="">https://www.moerverhuur.nl/producten/stroomaggregaat-10-kva/</td></tr><tr><td class="">aggregaat 10 kva huren</td><td class="">70</td><td class="">2</td><td class="">https://www.moerverhuur.nl/producten/stroomaggregaat-10-kva/</td></tr><tr><td class="">aggregaat huren 10 kva</td><td class="">70</td><td class="">2</td><td class="">https://www.moerverhuur.nl/producten/stroomaggregaat-10-kva/</td></tr><tr><td class="">lift ladder</td><td class="">20</td><td class="">3</td><td class="">https://www.moerverhuur.nl/producten/ladderlift-11-meter/</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The cluster of “aggregaat” variations suggests potential cannibalization; consolidate into one optimized page with canonical tags and targeted internal links.</li></ul><br><h3 id="keyword-performance-insights">Keyword Performance Insights</h3><br><p><strong>Brand Recognition</strong></p><ul><li>The #1 ranking for "moerverhuur" (880 monthly searches) indicates strong brand awareness in the target market.</li></ul><br><p><strong>Product-Specific Keywords</strong></p><ul><li>"minigraver" is the highest-volume keyword (1,900 searches) with a #1 ranking, representing a significant traffic driver.</li><li>"sleuvenzaag" (260 searches) also ranks #1, showing strength in specific equipment categories.</li></ul><br><p><strong>Location-Based Keywords</strong></p><ul><li>Success with location-specific terms like "hoogwerker huren zeeland" (170 searches, position 4) and "minigraver huren zeeland" (70 searches, position 1) demonstrates the importance of local SEO.</li></ul><br><p><strong>Keyword Patterns</strong></p><ul><li>The "huren" (rent) modifier consistently appears in well-performing keywords, indicating strong commercial intent.</li><li>Technical specifications in keywords (e.g., "aanhanger hoogwerker 12 meter") show that users search with specific requirements in mind.</li></ul><br><p><strong>Potential Keyword Cannibalization</strong></p><ul><li>Multiple variations of the same keyword (e.g., "10 kva aggregaat huren," "aggregaat 10 kva huren," and "aggregaat huren 10 kva") all rank for the same page.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Implement canonical tags for aggregated keyword groups and update on-page H1/H2 tags to target primary variations.</li></ul><br><h3 id="high-value-keyword-opportunities">High-Value Keyword Opportunities</h3><br><p>Based on search volume, competition level, and commercial intent, these keywords represent significant opportunities:</p><br><p><strong>Top Priority Keywords:</strong></p><ul><li><strong>hoogwerker aanhanger huren:</strong> 390 monthly searches (peak) | MEDIUM competition</li><li><strong>aanhanger hoogwerker huren boels:</strong> 210 monthly searches (peak) | LOW competition</li><li><strong>stroomaggregaat huren:</strong> 170 monthly searches (peak) | HIGH competition</li></ul><br><p><strong>Secondary Keywords:</strong></p><ul><li><strong>aanhanger hoogwerker huren particulier:</strong> 110 monthly searches (peak) | LOW competition</li><li><strong>hoogwerker huren aanhanger:</strong> 20 monthly searches (peak) | HIGH competition</li><li><strong>hoogwerker op aanhanger huren:</strong> 30 monthly searches (peak) | HIGH competition</li></ul><br><p><strong>Long-term Opportunities:</strong></p><ul><li><strong>aanhanger hoogwerker 17 meter huren:</strong> 40 monthly searches (peak) | HIGH competition</li><li><strong>ladderlift verhuur met bediener:</strong> 10 monthly searches (peak) | Competition data unavailable</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Focus initial content and linking efforts on “hoogwerker aanhanger huren” to secure momentum in a medium-competition environment.</li></ul><br><h3 id="keyword-gaps-and-opportunities">Keyword Gaps and Opportunities</h3><br><p>Our analysis identified numerous high-value keywords where competitors are outranking Moerverhuur:</p><br><p><strong>High-Volume Keywords (>5,000 monthly searches):</strong></p><ul><li>"tapijtreiniger" (22,200, HIGH)</li><li>"aanhanger huren" (18,100, MEDIUM)</li><li>"hoogwerker huur" (12,100, HIGH)</li><li>"aanhangwagen" (9,900, HIGH)</li><li>"laminaat snijder" (6,600, HIGH)</li><li>"grondboor" (6,600, HIGH)</li><li>"steiger huren" (5,400, HIGH)</li><li>"trilplaat" (5,400, HIGH)</li></ul><br><p><strong>Medium-Volume Keywords (2,000-5,000 monthly searches):</strong></p><ul><li>"tapijtreiniger huren" (4,400, HIGH)</li><li>"aanhangwagen huren" (4,400, MEDIUM)</li><li>"verhuislift huren" (4,400, HIGH)</li><li>"trilplaat huren" (4,400, HIGH)</li><li>"graafmachine huren" (3,600, HIGH)</li><li>"bouwdroger" (3,600, HIGH)</li><li>"stoomreiniger huren" (2,900, HIGH)</li><li>"kunststof rijplaten" (2,900, HIGH)</li></ul><br><p><strong>Long-Tail Keyword Opportunities:</strong></p><ul><li>"tapijtreiniger huren voor autobekleding"</li><li>"rolsteiger huren voor gevel schilderen"</li><li>"hoogwerker huren voor dakgoot reparatie"</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Align blog and advice content around these keyword gaps, starting with “rolsteiger huren voor gevel schilderen” as a featured snippet candidate.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-competitors-overview">Top Competitors Overview</h3><br><p><strong>1. Boels.com</strong></p><ul><li><strong>Key Strengths:</strong> Dominant player with high estimated traffic volume and consistently high rankings for a broad range of keywords</li><li><strong>Competitive Advantage:</strong> Optimized title tags and meta descriptions that include keywords and compelling offers (e.g., pricing)</li><li><strong>Type:</strong> Direct competitor with national coverage</li></ul><br><p><strong>2. Gereedschapverhuur.nl</strong></p><ul><li><strong>Key Strengths:</strong> Strong local focus (Utrecht), optimized meta descriptions including location and pricing</li><li><strong>Competitive Advantage:</strong> Focus on specific brands (e.g., Hilti, Festool) in their content strategy</li><li><strong>Type:</strong> Direct competitor with regional focus</li></ul><br><p><strong>3. Borent.nl</strong></p><ul><li><strong>Key Strengths:</strong> Good rankings for core keywords, clear categorization of equipment</li><li><strong>Competitive Advantage:</strong> Prominent display of pricing information in meta descriptions</li><li><strong>Type:</strong> Direct competitor</li></ul><br><h3 id="serp-strategy-analysis">SERP Strategy Analysis</h3><br><p><strong>Title and Meta Description Comparison:</strong></p><ul><li><strong>Moerverhuur.nl</strong> typically uses a formulaic title: "[Product Name] - Huur voordelig en snel bij Moerverhuur.nl!" This is repetitive and doesn't always maximize keyword usage.</li><li><strong>Competitors' Approach:</strong></li><li><strong>Gereedschapverhuur.nl</strong> includes location, pricing, and key features in their meta descriptions</li><li><strong>Boels</strong> often includes a call to action in their meta descriptions, such as "Huur online!"</li></ul><br><p><strong>Effective Patterns in Competitor SERP Elements:</strong></p><ol><li><strong>Pricing:</strong> Including starting prices in meta descriptions (Boels, Gereedschapverhuur.nl) attracts clicks</li><li><strong>Location Specificity:</strong> Highlighting local availability (Gereedschapverhuur.nl) is effective for regional searches</li><li><strong>Features/Benefits:</strong> Emphasizing key features (e.g., "stofvrij," "geschikt voor alle soorten behang") in meta descriptions</li></ol><br><p><strong>Successful Content Types/Formats:</strong></p><ol><li><strong>Category Pages:</strong> Boels effectively uses category pages to rank for broad keywords like "hoogwerker huren" and "graafmachine huren"</li><li><strong>Product Pages:</strong> Competitors optimize individual product pages with detailed specifications and pricing</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Revamp Moerverhuur’s meta descriptions to include dynamic pricing snippets and local callouts, mirroring competitor success.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><br><p><strong>Overall Metrics:</strong></p><ul><li><strong>Total Backlinks:</strong> 423</li><li><strong>Referring Domains:</strong> 227 (200 main domains)</li><li><strong>Domain Rank:</strong> 138</li><li><strong>Backlink Spam Score:</strong> 31% (Medium risk)</li><li><strong>First Seen in Index:</strong> January 16, 2019</li></ul><br><p><strong>Geographic Distribution:</strong></p><ul><li>Netherlands (NL): 182 referring links</li><li>Germany (DE): 100 referring links</li><li>Generic TLDs (.com, .org, etc.): 97 referring links</li><li>Belgium (BE): 9 referring links</li><li>France (FR): 8 referring links</li></ul><br><p><strong>Link Attributes:</strong></p><ul><li>Nofollow Links: 149 (36.3% of total backlinks)</li><li>Image Links: 25 (6% of total backlinks)</li><li>Text/Anchor Links: 385 (94% of total backlinks)</li></ul><br><h3 id="backlink-quality-assessment">Backlink Quality Assessment</h3><br><p><strong>Spam Score Distribution:</strong></p><ul><li>Low Spam Score (0-30%): Majority of referring domains</li><li>Medium Spam Score (31-60%): 25 identified domains including bckloetinge.nl (50%), dotiqo.com (60%), and linkdirectory.be (60%)</li><li>High Spam Score (61-100%): None identified</li></ul><br><p><strong>Quality Backlinks Examples:</strong></p><ul><li>contactklantenservice.nl (0% spam score)</li><li>crunchbase.com (0% spam score)</li><li>demargaretha.nl (0% spam score)</li><li>hrieps.nl (0% spam score)</li></ul><br><p><strong>Potentially Problematic Backlinks:</strong></p><ul><li>Several directory sites with medium spam scores (40-60%)</li><li>Multiple links from the same IP address (212.98.91.92, 32% spam score)</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><br><p><strong>Most Common Anchor Texts:</strong></p><ul><li>"Website" (generic anchor)</li><li>"www.moerverhuur.nl" (URL anchor)</li><li>"Hoogwerker huren Zeeland" (keyword-rich anchor)</li><li>"Steiger huren Zeeland" (keyword-rich anchor)</li></ul><br><p><strong>Anchor Text Distribution:</strong></p><ul><li>Brand/URL anchors: Approximately 60%</li><li>Generic anchors: Approximately 25%</li><li>Keyword-rich anchors: Approximately 15%</li></ul><br><h3 id="competitor-backlink-comparison">Competitor Backlink Comparison</h3><br><p><strong>Top Backlink Competitors with Shared Links:</strong></p><ol><li>crunchbase.com (106 shared backlinks)</li><li>uwpagina.nl (90 shared backlinks)</li><li>huren.nl (81 shared backlinks)</li><li>b9.nl (42 shared backlinks)</li><li>beginspot.nl (34 shared backlinks)</li></ol><br><p><strong>High-Value Competitors Without Shared Links:</strong></p><ol><li>hilti.nl (rank: 7, 9 intersections)</li><li>s-bol.com (rank: 5, 8 intersections)</li><li>marktplaats.com (rank: 7, 8 intersections)</li><li>twa.nl (rank: 1, 7 intersections)</li></ol><br><h3 id="backlink-strategy-recommendations">Backlink Strategy Recommendations</h3><br><ol><li><strong>Address Medium-Risk Backlinks:</strong></li></ol><ul><li>Review and potentially disavow backlinks from domains with spam scores above 50%</li><li>Focus on quality over quantity in future link building efforts</li></ul><br><ol><li><strong>Target Authoritative Industry Websites:</strong></li></ol><ul><li>Pursue backlinks from high-authority sites like hilti.nl, marktplaats.com, and other equipment manufacturers/retailers</li><li>Focus on building relationships with construction industry publications, local business directories, and equipment review sites</li></ul><br><ol><li><strong>Diversify Anchor Text Profile:</strong></li></ol><ul><li>Increase the proportion of keyword-rich anchors while maintaining a natural distribution</li><li>Target anchors related to high-value keywords identified in the keyword analysis</li></ul><br><ol><li><strong>Local Citations:</strong></li></ol><ul><li>Build additional local citations to improve local SEO performance</li><li>Ensure consistent NAP (Name, Address, Phone) information across all directories</li></ul><br><ol><li><strong>Content-Driven Link Building:</strong></li></ol><ul><li>Create linkable assets such as equipment guides, safety resources, and project tutorials</li><li>Develop relationships with local contractors and construction companies for potential backlinks</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop a quarterly backlink acquisition plan with specific targets for authoritative domains and disavowal milestones.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our comprehensive analysis, we recommend the following content strategy initiatives:</p><br><h3 id="immediate-optimization-opportunities">Immediate Optimization Opportunities</h3><br><ol><li><strong>Improve Title Tag Optimization:</strong></li></ol><ul><li>Instead of the standard "[Product Name] - Huur voordelig en snel bij Moerverhuur.nl!", use: "[Product Name] Huren - [Key Benefit/Feature] | Moerverhuur.nl"</li><li>Example: "Tapijtreiniger Huren - Diepe Reiniging voor Tapijt & Bekleding | Moerverhuur.nl"</li></ul><br><ol><li><strong>Enhance Meta Descriptions:</strong></li></ol><ul><li>Include pricing, location (if applicable), and a strong call to action</li><li>Example: "Tapijtreiniger huren in Zeeland vanaf €20/dag. Verwijdert hardnekkige vlekken. Reserveer direct online bij Moerverhuur.nl!"</li></ul><br><ol><li><strong>Implement Schema Markup:</strong></li></ol><ul><li>Use schema markup (e.g., Product schema) to provide search engines with more information about products and services</li><li>Include pricing, availability, and ratings information where applicable</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create a template for title/meta updates and schema implementation to deploy across the top 30 product and category pages.</li></ul><br><h3 id="content-development-strategy">Content Development Strategy</h3><br><ol><li><strong>Optimize Category Pages:</strong></li></ol><ul><li>Create dedicated category pages for key equipment types (e.g., "Hoogwerkers," "Graafmachines," "Steigers")</li><li>Optimize these pages with relevant keywords, internal links, and compelling content</li></ul><br><ol><li><strong>Expand Location-Based Pages:</strong></li></ol><ul><li>Create pages targeting specific cities or regions where Moerverhuur operates</li><li>Example: "Bouwdroger huren in [City Name]"</li><li>Focus on cities where competitors are strong but Moerverhuur lacks presence</li></ul><br><ol><li><strong>Develop New Content Types:</strong></li></ol><ul><li><strong>How-To Guides:</strong> Create practical guides like "Hoe een minigraver veilig te gebruiken" (How to safely use a mini excavator)</li><li><strong>Equipment Comparison Guides:</strong> Develop content that helps customers choose the right equipment for their needs</li><li><strong>FAQ Pages:</strong> Address common questions about renting equipment, pricing, delivery, and usage</li><li><strong>Project-Specific Content:</strong> Create content targeting specific projects that require equipment rental (e.g., "Minigraver huren voor tuinaanleg")</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Investing in guides and comparison content will not only capture long-tail traffic but also support link-building through shareable assets.</li></ul><br><h3 id="keyword-prioritization-strategy">Keyword Prioritization Strategy</h3><br><p>Based on search volume, competition, and current rankings, prioritize these keywords:</p><br><ol><li><strong>High-Priority Keywords (Immediate Focus):</strong></li></ol><ul><li>"tapijtreiniger huren" (4,400 searches, HIGH competition)</li><li>"hoogwerker huren" (related to current strength)</li><li>"graafmachine huren" (3,600 searches, HIGH competition)</li><li>"steiger huren" (5,400 searches, HIGH competition)</li><li>"bouwdroger huren" (2,400 searches, MEDIUM competition)</li><li>"trilplaat huren" (4,400 searches, HIGH competition)</li></ul><br><ol><li><strong>Medium-Priority Keywords (3-6 Month Focus):</strong></li></ol><ul><li>"aanhanger huren" (18,100 searches, MEDIUM competition)</li><li>"aanhangwagen huren" (4,400 searches, MEDIUM competition)</li><li>"stoomreiniger huren" (2,900 searches, HIGH competition)</li></ul><br><ol><li><strong>Long-Tail Opportunities (Ongoing Development):</strong></li></ol><ul><li>Focus on more specific needs (e.g., "tapijtreiniger huren voor autobekleding")</li><li>Location-based keywords (e.g., "trilplaat huren in [specific cities]")</li><li>Keywords related to specific brands if Moerverhuur carries them (e.g., "Hilti breekhamer huren")</li></ul><br><h3 id="technical-improvements">Technical Improvements</h3><br><ol><li><strong>Fix HTML Errors:</strong> Address the identified HTML issues to improve site performance</li><li><strong>Add Missing Alt Attributes:</strong> Ensure all images have descriptive alt text</li><li><strong>Optimize Page Speed:</strong> Address render-blocking resources to improve loading times</li><li><strong>Mobile Optimization:</strong> Ensure the site provides an excellent experience on mobile devices</li></ol><br></div></section>
+                <section id="quick-wins-and-implementation-timeline" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Quick Wins and Implementation Timeline</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="quick-wins-1-30-days-">Quick Wins (1-30 Days):</h3><ul><li>Update title tags and meta descriptions for the top 10-20 products based on search volume</li><li>Implement basic schema markup on product pages</li><li>Fix critical HTML errors affecting performance</li><li>Review and address medium-risk backlinks with spam scores above 50%</li></ul><br><h3 id="short-term-projects-1-3-months-">Short-Term Projects (1-3 Months):</h3><ul><li>Create location-based pages for the most important service areas</li><li>Develop comprehensive category pages for key equipment types</li><li>Begin building local citations to improve local SEO</li><li>Create a backlink outreach strategy targeting high-authority sites like hilti.nl and marktplaats.com</li></ul><br><h3 id="longer-term-opportunities-3-6-months-">Longer-Term Opportunities (3-6 Months):</h3><ul><li>Create in-depth content (blog posts, guides) addressing common customer questions and use cases</li><li>Develop a systematic link-building strategy targeting industry-relevant websites</li><li>Implement advanced schema markup across the entire site</li><li>Diversify anchor text profile through strategic content partnerships</li></ul><br><p>By implementing these recommendations, Moerverhuur can significantly improve their organic visibility in the Netherlands, capture more targeted traffic, and ultimately increase their equipment rental business.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Moerverhuur',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

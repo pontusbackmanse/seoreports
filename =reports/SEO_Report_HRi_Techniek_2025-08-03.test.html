@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - HRi Techniek</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">HRi Techniek • Hritechniek.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 3, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary-hri-techniek-seo-analysis-netherlands-market" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary: HRi Techniek SEO Analysis – Netherlands Market</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Metric</strong></th><th><strong>Value / Change</strong></th></tr></thead><tbody><tr><td class="">Total Ranking Keywords</td><td class="">746 keywords</td></tr><tr><td class="">Keywords in Position 1</td><td class="">7</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">10</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">68</td></tr><tr><td class="">Keywords in Positions 11-30</td><td class="">327</td></tr><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">1388.63 (July 2025)</td></tr><tr><td class="">Organic Traffic Growth (12 months)</td><td class="positive">+238.26% (from 410.52 in Aug 2024)</td></tr><tr><td class="">Estimated Paid Traffic Cost Equivalent</td><td class="">$8,915.71</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>The steep increase in ETV (+238%) highlights strong content relevance, but with only 17 keywords in positions 1–3, there’s a clear opportunity to push more mid-rank keywords (positions 4–30) into the top 3 for maximum traffic gains.</p><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Top Competitors</strong></th><th><strong>Keywords They Rank Well For (HRi Techniek Ranks Poorly)</strong></th></tr></thead><tbody><tr><td class="">Feenstra.com</td><td class="">"cv ketel onderhoud" (9,900 MS, HIGH), "hoe lang gaat een cv ketel mee" (1,900 MS, LOW), "cv installatie" (1,900 MS, MED), "geen warm water" (1,600 MS, LOW), "cv-ketel vervangen kosten" (1,300 MS, HIGH)</td></tr><tr><td class="">Boumacv.nl</td><td class="">"cv ketel onderhoud amsterdam" (720 MS, MED), "amsterdam cv ketel onderhoud" (720 MS, MED), "cv monteur amsterdam" (260 MS, MED), "cv onderhoud amsterdam" (260 MS, MED)</td></tr><tr><td class="">Verwarmingserviceutrecht.nl</td><td class="">"onderhoud cv ketel utrecht" (260 MS, MED), "cv ketel onderhoud utrecht" (260 MS, MED), "cv onderhoud utrecht" (170 MS, MED), "cv monteur utrecht" (90 MS, MED)</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop targeted city-specific landing pages for Amsterdam and Utrecht, mirroring competitor keyword coverage with unique content and local testimonials.</li><li>Implement action-oriented titles/meta descriptions (e.g., “CV Ketel Onderhoud Amsterdam – Snel & Betaalbaar | HRi Techniek”).</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Opportunity Keywords to Target</strong></th><th><strong>Monthly Search Volume (MS)</strong></th><th><strong>Competition</strong></th><th><strong>Why Target?</strong></th></tr></thead><tbody><tr><td class="">"geen warm water"</td><td class="">1,600</td><td class="">LOW</td><td class="">High volume, low competition, transactional intent, quick win opportunity</td></tr><tr><td class="">"levensduur cv ketel"</td><td class="">880</td><td class="">LOW</td><td class="">Informational intent, low competition, builds topical authority</td></tr><tr><td class="">"hoe lang gaat een cv ketel mee"</td><td class="">1,900</td><td class="">LOW</td><td class="">Informational, high search volume, content gap vs competitors</td></tr><tr><td class="">"cv ketel huren vs kopen"</td><td class="">(N/A exact volume)</td><td class="">(Low-Med)</td><td class="">Content gap, comparison content attracts decision-stage users</td></tr><tr><td class="">"hybride warmtepomp met CV ketel"</td><td class="">(N/A exact volume)</td><td class="">(Low-Med)</td><td class="">Emerging sustainable heating topic, competitor gap</td></tr><tr><td class="">"afvoerslang cv ketel"</td><td class="">480</td><td class="">HIGH</td><td class="">High competition but relevant product-related keyword, potential for product page optimization</td></tr><tr><td class="">"cv ketel onderhoud amsterdam"</td><td class="">720</td><td class="">MEDIUM</td><td class="">Location-specific keyword to improve local SEO</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Focusing on low-competition, high-volume keywords such as “geen warm water” and “levensduur cv ketel” can deliver quick traffic boosts. For comparison topics (huren vs kopen), draft detailed buy-vs-rent guides to capture decision-stage users.</p><br><hr><br><h3 id="tl-dr-key-findings">TL;DR – Key Findings</h3><br><ul><li>HRi Techniek has strong organic growth (+238% ETV in 12 months) but only 7 keywords rank #1; many keywords rank 11-30, indicating room to push into top 10.</li><li>Top-performing pages focus on brand-specific boiler problems; location and product pages underperform and need optimization.</li><li>Competitors Feenstra.com, Boumacv.nl, and Verwarmingserviceutrecht.nl outrank HRi Techniek on high-value and location-specific keywords.</li><li>Feenstra.com’s success is driven by action-oriented titles/meta, troubleshooting guides, and comprehensive service pages.</li><li>Technical SEO is generally good (94.15 on-page score) but needs fixes for deprecated tags, duplicate meta tags, image optimization, indexing, and mobile speed.</li><li>Backlink profile is locally relevant but has 107 broken links and some medium-spam directories; link building opportunities exist with home/interior blogs and local businesses.</li><li>Content gaps include hybrid heating systems, energy efficiency comparisons, and comparison content (e.g., renting vs buying boilers).</li><li>Quick wins: optimize titles/meta for low-competition, high-volume keywords; fix broken backlinks; create unique location pages.</li><li>Medium/long-term: develop troubleshooting guides, FAQ pages, content clusters, and strengthen local SEO with unique, location-specific content.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><p>Prioritize a roadmap with immediate tasks (title/meta updates, broken link fixes) and schedule deeper content development for Q3–Q4, assigning owners and deadlines for each item.</p><br><hr><br></div></section>
+                <section id="seo-research-report-hri-techniek" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: HRi Techniek</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>HRi Techniek is a specialized heating and plumbing service provider operating in the Randstad region of the Netherlands. Their core services include central heating (CV) boiler maintenance, repair, and installation, as well as plumbing services such as fixing clogged drains and sewers. They offer 24/7 emergency services for issues like boiler malfunctions and leaks, serving major cities including Den Haag, Rotterdam, Amsterdam, and Utrecht. <a href="https://hritechniek.nl" class="link-reference" target="_blank" rel="noopener">Company Website</a></p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-organic-visibility">Current Organic Visibility</h3><p>HRi Techniek has shown impressive growth in organic visibility over the past year. The site currently has 746 ranking keywords in the Netherlands, with positions across the entire SERP spectrum. The site has 7 keywords ranking in position 1, 10 keywords in positions 2-3, and 68 keywords in positions 4-10.</p><br><h3 id="search-engine-rankings">Search Engine Rankings</h3><p>The website has a strong presence in Google Netherlands, with a total of 85 keywords ranking in the top 10 positions. The majority of rankings fall in positions 11-30 (327 keywords), indicating good visibility but room for improvement to reach top positions.</p><br><h3 id="organic-traffic-growth-last-12-months-">Organic Traffic Growth (Last 12 Months)</h3><p>HRi Techniek has experienced substantial growth in organic traffic over the past 12 months, with a remarkable 238.26% increase in Estimated Traffic Volume (ETV). The ETV has grown from 410.52 in August 2024 to 1388.63 in July 2025.</p><br><h3 id="latest-organic-visibility-metrics">Latest Organic Visibility Metrics</h3><p>As of July 2025, HRi Techniek's organic visibility metrics are:</p><ul><li>Position 1: 7 keywords</li><li>Positions 2-3: 10 keywords</li><li>Positions 4-10: 68 keywords</li><li>Positions 11-20: 177 keywords</li><li>Positions 21-30: 150 keywords</li><li>Positions 31-40: 116 keywords</li><li>Positions 41-50: 77 keywords</li><li>Positions 51-100: 141 keywords</li><li>Total ETV (Estimated Traffic Volume): 1388.63</li><li>Estimated paid traffic cost equivalent: $8,915.71</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ol><li><strong>Homepage</strong> (https://hritechniek.nl/): The best-performing page with 7 #1 rankings, high ETV (405.50), and estimated paid traffic cost equivalent of $4,705.12</li><li><strong>Intergas Ketel Storingen</strong> (https://hritechniek.nl/intergas-ketel-storingen/): Ranks for 104 keywords with an ETV of 170.17</li><li><strong>Nefit Ketel Storingen</strong> (https://hritechniek.nl/nefit-ketel-storingen/): Ranks for 66 keywords with an ETV of 139.99</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><p>Leverage internal linking from top-performing pages to underperforming location and product pages, transferring authority and improving their visibility.</p><br><h3 id="underperforming-pages">Underperforming Pages</h3><ol><li><strong>Location-based pages</strong>: Pages targeting specific cities (e.g., Leiden, Dordrecht, Spijkenisse) have very low ETV and generally rank in positions 31-100</li><li><strong>Product pages</strong>: Pages for specific boiler models (e.g., Intergas Kombi Kompakt, Remeha Tzerra) have low ETV and poor rankings</li><li><strong>HRi Techniek CO Vrij</strong> (https://hritechniek.nl/hri-techniek-co-vrij/): This page has experienced ranking drops and has low ETV</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Prioritize optimization for location pages by adding unique local content (e.g., case studies, customer reviews) and schema markup. Consolidate or prune thin product pages to focus on the most profitable models.</p><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><p>The site has an overall on-page score of 94.15, which is good, but several technical issues were identified:</p><ul><li>Deprecated HTML tags</li><li>Duplicate meta tags</li><li>Image optimization issues (missing alt attributes, oversized images)</li><li>Some pages have indexing issues</li><li>Site speed could be improved, particularly on mobile devices</li></ul><br><p>From a technical infrastructure perspective, HRi Techniek uses standard email authentication protocols (DMARC and SPF) and Google Site Verification to verify website ownership with Google services. <a href="https://builtwith.com" class="link-reference" target="_blank" rel="noopener">BuiltWith</a> While these security measures are positive, there are opportunities to enhance their technical SEO implementation.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><p>Conduct a technical SEO audit focusing first on mobile speed and image optimization. Allocate tickets to the development team to resolve indexing errors and remove deprecated tags within 4 weeks.</p><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><p>HRi Techniek's content strategy focuses on several key keyword categories:</p><ol><li><strong>Brand + Problem keywords</strong>: "Intergas ketel storingen," "Nefit ketel storingen," "Remeha ketel storingen"</li><li><strong>Problem/Question + CV Ketel</strong>: "CV ketel maakt geluid bij warm water," "geen warm water cv ketel," "lekkende cv ketel"</li><li><strong>Service keywords</strong>: "CV ketel onderhoud," "CV ketel installatie," "CV ketel repareren"</li><li><strong>Location-based keywords</strong>: "CV ketel monteur Amsterdam," "CV ketel monteur Utrecht"</li></ol><br><h3 id="high-value-target-keywords">High-Value Target Keywords</h3><p>Based on the analysis, these high-value keywords show strong commercial intent with specific search volumes and competition levels:</p><br><ol><li>"CV ketel onderhoud" (9,900 monthly searches, HIGH competition)</li><li>"CV installatie" (1,900 monthly searches, MEDIUM competition)</li><li>"CV-ketel met installatie" (1,300 monthly searches, HIGH competition)</li><li>"CV ketel vervangen kosten" (1,300 monthly searches, HIGH competition)</li><li>"CV ketel kopen en installeren" (1,300 monthly searches, HIGH competition)</li><li>"CV monteur" (1,300 monthly searches, MEDIUM competition)</li><li>"Geen warm water" (1,600 monthly searches, LOW competition)</li><li>"CV ketel storing" (880 monthly searches, HIGH competition)</li><li>"CV ketel onderhoud kosten" (880 monthly searches, MEDIUM competition)</li><li>"Levensduur cv ketel" (880 monthly searches, LOW competition)</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Develop long-form service pages for high-competition keywords, integrating FAQs and local signals to improve relevance. Use “Geen warm water” as a quick-win landing page with clear CTAs.</p><br><h3 id="long-tail-keyword-opportunities">Long-Tail Keyword Opportunities</h3><p>Several long-tail keywords present opportunities for targeted content:</p><br><ol><li>"Hoe vaak cv ketel onderhouden" (390 monthly searches, LOW competition)</li><li>"Wat kost cv ketel onderhoud" (390 monthly searches, HIGH competition)</li><li>"Wanneer cv ketel vervangen" (390 monthly searches, MEDIUM competition)</li><li>"Geen verwarming wel warm water" (390 monthly searches, LOW competition)</li><li>"CV ketel onderhoud verplicht" (320 monthly searches, MEDIUM competition)</li><li>"CV-ketel lekt water" (320 monthly searches, MEDIUM competition)</li><li>"Intergas resetten" (320 monthly searches, LOW competition)</li></ol><br><h3 id="seasonal-keyword-trends">Seasonal Keyword Trends</h3><p>Keyword analysis reveals clear seasonal patterns in the Netherlands:</p><ul><li>Fall/Winter (September-February): Higher search volume for "CV ketel storing," "geen warm water," "CV ketel kapot"</li><li>Spring/Summer: Increased searches for "CV ketel vervangen," "nieuwe CV ketel," "CV ketel installatie"</li></ul><br><h3 id="search-intent-analysis">Search Intent Analysis</h3><p>Keywords can be categorized by user intent:</p><br><ol><li><strong>Informational Intent</strong>: Keywords like "hoe lang gaat een cv ketel mee" (1,900 searches, LOW competition), "cv-ketel resetten" (590 searches, LOW competition), and "welke cv ketel heb ik nodig" (480 searches, HIGH competition) indicate users seeking information.</li><li><strong>Transactional Intent</strong>: Keywords like "cv ketel kopen en installeren" (1,300 searches, HIGH competition), "cv-ketel vervangen kosten" (1,300 searches, HIGH competition), and "cv ketel onderhoud amsterdam" (720 searches, MEDIUM competition) indicate users ready to take action.</li><li><strong>Navigational Intent</strong>: Keywords like "verwarming service utrecht" (110 searches, LOW competition) indicate users looking for a specific brand or service provider.</li></ol><br><h3 id="content-gap-analysis">Content Gap Analysis</h3><p>Several keywords competitors rank for that HRi Techniek doesn't:</p><br><ol><li>"CV ketel huren vs kopen" (comparison content)</li><li>"Hybride warmtepomp met CV ketel" (hybrid heat pump systems)</li><li>"CV ketel energielabel vergelijken" (energy efficiency comparisons)</li><li>"Slimme thermostaat installation" (smart thermostat installation)</li><li>"Afvoerslang cv ketel" (480 searches, HIGH competition)</li><li>"Rookgasafvoer vervangen kosten" (480 searches, HIGH competition)</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><p>Assign content briefs for each gap topic, scheduling two comparison articles and one hybrid systems guide within the next quarter to capture emerging interests.</p><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><p>The analysis identified three major competitors in the Dutch market:</p><br><ol><li><strong>Feenstra.com</strong>: The strongest competitor with national coverage. They consistently outrank HRi Techniek for a wide range of high-volume, high-competition keywords related to CV ketel maintenance, installation, replacement, and repair. Their strength lies in a comprehensive content strategy that addresses various user intents, from informational to transactional.</li><li><strong>Boumacv.nl</strong>: A strong competitor, particularly in the Amsterdam area. They outrank HRi Techniek for keywords related to CV ketel maintenance, installation, and repair, especially those targeting Amsterdam. Their strength seems to be in local SEO and potentially a stronger brand presence in Amsterdam.</li><li><strong>Verwarmingserviceutrecht.nl</strong>: A local competitor focused on Utrecht. They outrank HRi Techniek for keywords related to CV ketel maintenance and service in Utrecht. Their strength is likely due to a strong local SEO strategy and a focus on the Utrecht region.</li></ol><br><h3 id="competitor-seo-strategies">Competitor SEO Strategies</h3><br><h4 id="title-and-meta-description-strategies">Title and Meta Description Strategies</h4><ul><li><strong>Feenstra.com</strong>: Uses concise, action-oriented titles and meta descriptions that often include a call to action (e.g., "Bel 088-8455000," "Advies op maat"). They also highlight key benefits (e.g., "24/7 bereikbaar," "inclusief installatie").</li><li><strong>Boumacv.nl</strong>: Meta descriptions are often cut off, and the titles are not optimized for specific keywords, showing a potential weakness in their SEO approach.</li><li><strong>Verwarmingserviceutrecht.nl</strong>: Uses the same title and meta description across the entire site: "Verwarming Service Utrecht. Voor de beste service". This is not a good SEO practice but shows their strong local focus.</li></ul><br><h4 id="content-strategies">Content Strategies</h4><ul><li><strong>Feenstra.com</strong>: Employs three successful content types:</li></ul><ol><li>Troubleshooting Guides: "CV-ketel storing? Bel..." pages, which offer troubleshooting steps and a phone number</li><li>Informational Articles: Articles addressing questions like "Waarom een cv-ketel die nog goed werkt vervangen?"</li><li>Service Pages: Comprehensive service pages (e.g., "Cv-ketel onderhoud en reparatie")</li></ol><ul><li><strong>Boumacv.nl</strong>: Focuses heavily on location-specific content for Amsterdam, with dedicated pages for each service in the city.</li><li><strong>Verwarmingserviceutrecht.nl</strong>: Employs a hyper-local strategy focused exclusively on Utrecht, with limited but targeted content.</li></ul><br><h3 id="keyword-performance-comparison">Keyword Performance Comparison</h3><p>Feenstra.com outranks HRi Techniek for 85+ high-value keywords, including:</p><ul><li>"cv ketel onderhoud" (9,900 searches, HIGH competition)</li><li>"hoe lang gaat een cv ketel mee" (1,900 searches, LOW competition)</li><li>"cv installatie" (1,900 searches, MEDIUM competition)</li><li>"geen warm water" (1,600 searches, LOW competition)</li><li>"cv-ketel vervangen kosten" (1,300 searches, HIGH competition)</li></ul><br><p>Boumacv.nl outranks HRi Techniek for Amsterdam-specific keywords:</p><ul><li>"cv ketel onderhoud amsterdam" (720 searches, MEDIUM competition)</li><li>"amsterdam cv ketel onderhoud" (720 searches, MEDIUM competition)</li><li>"cv monteur amsterdam" (260 searches, MEDIUM competition)</li><li>"cv onderhoud amsterdam" (260 searches, MEDIUM competition)</li></ul><br><p>Verwarmingserviceutrecht.nl outranks HRi Techniek for Utrecht-specific keywords:</p><ul><li>"onderhoud cv ketel utrecht" (260 searches, MEDIUM competition)</li><li>"cv ketel onderhoud utrecht" (260 searches, MEDIUM competition)</li><li>"cv onderhoud utrecht" (170 searches, MEDIUM competition)</li><li>"cv monteur utrecht" (90 searches, MEDIUM competition)</li></ul><br><h3 id="competitive-advantage-opportunities">Competitive Advantage Opportunities</h3><p>Areas where HRi Techniek can gain an edge:</p><br><ol><li><strong>Improve Title and Meta Description Optimization</strong>: Implement action-oriented language, benefit-driven messaging, and proper keyword integration in titles and meta descriptions, following Feenstra.com's successful approach.</li><li><strong>Develop Better Location-Specific Content</strong>: Create more comprehensive and unique content for each city served, particularly Amsterdam and Utrecht where competitors have strong local presence.</li><li><strong>Create Content Addressing Various User Intents</strong>: Develop troubleshooting guides, informational articles, and service pages that address the full spectrum of user intents, from information-seeking to transaction-ready.</li><li><strong>Target Low-Competition, High-Volume Keywords</strong>: Focus on keywords like "geen warm water" (1,600 searches, LOW competition) and "levensduur cv ketel" (880 searches, LOW competition) for quick wins.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><p>Roll out a pilot overhaul for Amsterdam and Utrecht pages, benchmarking traffic and rankings over the next 6 weeks. Use A/B testing on titles and CTAs to measure impact.</p><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><p>HRi Techniek has a developing backlink profile with 200 total backlinks from 130 referring domains (76 unique main domains). The site has a domain rank of 152 and a medium backlink spam score of 40%. Key metrics include:</p><br><ul><li>184 backlinks from .nl domains, showing strong local relevance</li><li>6 backlinks from .com domains</li><li>107 broken backlinks that need attention</li><li>6 nofollow backlinks</li><li>Most backlinks are anchor text links (191) with a few image links (4)</li></ul><br><p>The backlink profile shows a strong focus on the Dutch market, with most referring domains being from the Netherlands.</p><br><h3 id="link-gap-analysis">Link Gap Analysis</h3><p>Several authoritative websites in the home improvement and technical services niche link to competitors but not to HRi Techniek:</p><br><ol><li>Home improvement and interior design blogs with low spam scores:</li></ol><ul><li>wonen-interieur-tips.nl (10% spam score)</li><li>blog-woonidee.nl (0% spam score)</li><li>interieur-stylingblog.nl (5% spam score)</li><li>hendrick-woonblog.nl (5% spam score)</li></ul><br><ol><li>Technical and service-related websites:</li></ol><ul><li>isolatiehelden.com (0% spam score)</li><li>bouwbedrijfvangorkum.nl (27% spam score)</li></ul><br><ol><li>Competitor site-nl.nl shares 66 backlinks with HRi Techniek, indicating a significant competitor in the same niche.</li></ol><br><h3 id="toxic-backlink-assessment">Toxic Backlink Assessment</h3><p>The backlink analysis shows no high spam score referring domains, which is positive. However, there are 25 medium spam score domains (mostly directory sites with 60% spam scores) that could potentially impact the site's authority:</p><br><ul><li>startmee.nl (60% spam score)</li><li>linkjespagina.nl (60% spam score)</li><li>webesto.nl (60% spam score)</li><li>linkexplorer.nl (60% spam score)</li><li>startkabel.nl (42% spam score)</li></ul><br><p>These directory-style backlinks should be monitored, though they currently don't appear to be causing penalties.</p><br><h3 id="link-building-opportunities">Link Building Opportunities</h3><p>Based on the backlink analysis, several opportunities exist:</p><br><ol><li><strong>Home and Interior Blogs</strong>: Many backlinks come from Dutch home/interior blogs discussing CV-ketel maintenance. Expanding relationships with similar blogs would be valuable.</li><li><strong>Local Business Partnerships</strong>: Develop relationships with local construction companies and home service providers like bouwbedrijfvangorkum.nl.</li><li><strong>Fix Broken Backlinks</strong>: Address the 107 broken backlinks to recapture lost link equity.</li><li><strong>Anchor Text Optimization</strong>: Current backlinks use service-focused anchor texts like "CV-ketel storing," "CV ketel onderhoud," and location-specific terms. This strategy should be continued with more diverse but relevant anchor texts.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><p>Initiate outreach to top 3 home/interior blogs this month, offering expert guest posts on boiler maintenance. Simultaneously, compile a broken links report and submit URL correction requests to referring sites.</p><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="recommended-content-topics">Recommended Content Topics</h3><p>Based on keyword gaps, search trends, and competitor analysis, we recommend developing content on:</p><br><ol><li><strong>Troubleshooting Guides</strong>: Create detailed troubleshooting guides for common CV ketel problems (e.g., "Geen warm water," "Lekkende ketel," "Foutcodes"), following Feenstra.com's successful model.</li><li><strong>FAQ Pages</strong>: Develop comprehensive FAQ pages answering common questions about CV ketel maintenance, installation, and replacement, targeting informational keywords like "hoe lang gaat een cv ketel mee" (1,900 searches, LOW competition).</li><li><strong>Comparison Pages</strong>: Create comparison pages comparing different CV ketel brands, models, and maintenance plans to address decision-making queries.</li><li><strong>Hybrid Heating Systems</strong>: Develop content about combining traditional boilers with sustainable options, targeting keywords like "Hybride warmtepomp met CV ketel."</li><li><strong>Energy Efficiency Comparisons</strong>: Create content comparing energy efficiency between different boiler brands, targeting "CV ketel energielabel vergelijken."</li><li><strong>Seasonal Maintenance Tips</strong>: Develop guides for preparing heating systems for winter and summer.</li></ol><br><h3 id="content-optimization-opportunities">Content Optimization Opportunities</h3><p>Existing content that can be optimized:</p><br><ol><li><strong>Title and Meta Description Optimization</strong>: Implement action-oriented language and benefit-driven messaging in titles and meta descriptions. For example, change "CV ketel onderhoud nodig? Maak een afspraak" to "CV Ketel Onderhoud Den Haag | 24/7 Service | HRI Techniek" with a meta description like "Professioneel CV ketel onderhoud in Den Haag. Bel nu voor een afspraak en profiteer van onze snelle service en transparante tarieven. 24/7 beschikbaar."</li><li><strong>Location Pages</strong>: Enhance location pages with unique, location-specific information, testimonials from local customers, and maps of service areas.</li><li><strong>Product Pages</strong>: Improve product pages with detailed specifications, benefits, and comparison tables.</li><li><strong>Brand Problem Pages</strong>: Expand existing brand problem pages (e.g., Intergas Ketel Storingen) with more specific troubleshooting guides.</li><li><strong>"Kopen" Pages</strong>: Optimize pages targeting "kopen" keywords, such as "CV ketel kopen en installeren" (1,300 searches, HIGH competition).</li></ol><br><h3 id="content-cluster-strategy">Content Cluster Strategy</h3><p>To build topical authority, develop content clusters around:</p><br><ol><li><strong>Boiler Maintenance Hub</strong>: Central pillar page linking to specific maintenance guides for each brand</li><li><strong>Heating System Installation</strong>: Comprehensive guide with supporting content on different systems, costs, and considerations</li><li><strong>Emergency Repairs</strong>: Main page about emergency services with supporting content on common urgent issues</li><li><strong>Location-Based Services</strong>: Improved structure linking location pages to relevant service offerings</li><li><strong>Sustainable Heating Solutions</strong>: New cluster focusing on eco-friendly options and hybrid systems</li></ol><br><h3 id="local-seo-recommendations">Local SEO Recommendations</h3><p>To improve visibility in specific Randstad cities:</p><br><ol><li>Create unique content for each location page (not just template variations)</li><li>Include local landmarks and service areas within each city</li><li>Develop location-specific case studies and testimonials</li><li>Implement proper schema markup for local business and service areas</li><li>Build relationships with local businesses for location-specific backlinks</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><p>Draft a content calendar assigning cluster pillars and supporting articles over the next 6 months. Ensure each location page is audited and enhanced with local reviews and schema by the end of Q3.</p><br></div></section>
+                <section id="conclusion-and-next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion and Next Steps</h2>
+                    </div>
+                    <div class="section-content"><br><p>HRi Techniek has shown impressive organic growth (238.26% increase in ETV) over the past year, but significant opportunities remain to improve rankings and traffic. The site's strongest content revolves around brand-specific boiler problems, while location and product pages underperform.</p><br><p>The competitive analysis reveals that Feenstra.com, Boumacv.nl, and Verwarmingserviceutrecht.nl are outranking HRi Techniek for valuable keywords, particularly in location-specific searches. However, by implementing the strategies used by these competitors—especially Feenstra.com's comprehensive content approach and strong call-to-action elements—HRi Techniek can significantly improve their market position.</p><br><p>The backlink profile shows a strong local focus but needs attention to fix broken links and diversify quality referring domains. The current anchor text strategy effectively targets service and location keywords, which should be maintained while expanding to new topic areas.</p><br><p>Priority action items:</p><br><ol><li><strong>Quick Wins</strong>:</li></ol><ul><li>Optimize titles and meta descriptions for high-volume, low-competition keywords like "geen warm water" (1,600 searches, LOW competition) and "cv ketel levensduur" (880 searches, LOW competition)</li><li>Create basic location-specific landing pages for Amsterdam, Utrecht, Rotterdam, and Den Haag</li><li>Fix the 107 broken backlinks to recapture lost link equity</li></ul><br><ol><li><strong>Medium-Term Actions</strong>:</li></ol><ul><li>Develop comprehensive troubleshooting guides following Feenstra.com's model</li><li>Create FAQ pages addressing common questions about CV ketel maintenance and installation</li><li>Enhance product pages with detailed specifications and comparison capabilities</li></ul><br><ol><li><strong>Long-Term Strategy</strong>:</li></ol><ul><li>Build content clusters to establish topical authority in key service areas</li><li>Develop relationships with quality home improvement and technical blogs for backlink opportunities</li><li>Create comprehensive location-specific content strategies for all service areas</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><p>Finalize the project timeline, assign task owners, and set bi-weekly check-ins to ensure steady progress on quick wins, medium-term deliverables, and long-term initiatives.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - HRi Techniek',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

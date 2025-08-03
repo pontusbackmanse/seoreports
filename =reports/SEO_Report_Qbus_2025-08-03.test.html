@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Qbus</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Qbus • www.Qbus.be</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> België Market</span>
+                        <span><i class="fas fa-calendar"></i> August 3, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary-qbus-seo-analysis-belgium-" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary: Qbus SEO Analysis (Belgium)</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Metric</strong></th><th><strong>Value</strong></th><th><strong>Growth (Last 12 Months)</strong></th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">~1,664 monthly visits</td><td class="positive">+50.92%</td></tr><tr><td class="">Keywords in Position 1</td><td class="">10</td><td class="positive">+25.00%</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">5</td><td class="positive">+66.67%</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">27</td><td class="positive">+107.69%</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="">41</td><td class="positive">+20.59%</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>While overall growth is strong, the bulk of keywords are in positions 11-20. Prioritize moving keywords in positions 4-10 into the top 3 through on-page optimizations and targeted internal linking.</li><li>Focus on boosting pages currently in positions 2-3 to position 1 for maximum traffic gains.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Top Competitors</strong></th><th><strong>Keywords They Rank Well For (Qbus Ranks Poorly)</strong></th></tr></thead><tbody><tr><td class="">Loxone</td><td class="">domotica (1600 SV), domotica systeem (590 SV), domotica installateur (170 SV), domotica schakelaars (90 SV)</td></tr><tr><td class="">Somfy</td><td class="">elektrische rolluik (880 SV), rolluiken automatiseren (480 SV), automate home (480 SV), zonwering automatisch (90 SV)</td></tr><tr><td class="">Teletask</td><td class="">sensoren (320 SV), PWM dimmen (90 SV)</td></tr><tr><td class="">Niko Home Control</td><td class="">domotica gerelateerde termen (various)</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a quick audit of Loxone and Somfy title tags and meta descriptions to identify benefit-driven language you can adapt.</li><li>Map competitor “choice help” pages into your content calendar to launch a Qbus “Keuzehulp” section within 4 weeks.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Opportunity Keywords</strong></th><th><strong>Search Volume (Belgium)</strong></th><th><strong>Competition</strong></th><th><strong>Why Target?</strong></th></tr></thead><tbody><tr><td class="">domotica</td><td class="">1,600</td><td class="">Medium</td><td class="">High search volume, broad category, currently underutilized by Qbus</td></tr><tr><td class="">elektrische rolluik</td><td class="">880</td><td class="">High</td><td class="">Strong commercial intent, competitor Somfy leads, good for product-focused content</td></tr><tr><td class="">domotica systeem</td><td class="">590</td><td class="">High</td><td class="">Important comparison keyword, opportunity to create detailed guides</td></tr><tr><td class="">rolluiken automatiseren</td><td class="">480</td><td class="">High</td><td class="">Niche automation keyword with buying intent</td></tr><tr><td class="">domotica installateur</td><td class="">170</td><td class="">Low-Medium</td><td class="">Local service intent, aligns with installer directory optimization</td></tr><tr><td class="">domotica in huis</td><td class="">140</td><td class="">High</td><td class="">Informational keyword, good for educational content and case studies</td></tr><tr><td class="">slimme woning</td><td class="">10-40</td><td class="">Medium</td><td class="">Emerging term, low competition, good for long-tail content</td></tr><tr><td class="">domotica vs gewone installatie</td><td class="">10-20</td><td class="">Low</td><td class="">Comparison content opportunity, low competition</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Build cornerstone guides for “domotica” and “domotica systeem” to capture high-volume, high-intent traffic.</li><li>Schedule product pages updates for “elektrische rolluik” with detailed specs and comparisons.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Qbus shows strong organic growth in Belgium with a 50.92% increase in estimated traffic and improved keyword rankings, especially for branded terms.</li><li>The company dominates branded keywords (e.g., "qbus", "qbus controller") but underperforms on high-volume generic and commercial keywords like "domotica" and "elektrische rolluik".</li><li>Competitors Loxone and Somfy outperform Qbus on key generic and product-related keywords, leveraging benefit-driven titles, educational content, and "keuzehulp" (choice help) pages.</li><li>Technical SEO issues (resource errors, render-blocking JS/CSS, mobile usability, page speed) are limiting full potential.</li><li>Backlink profile is solid with 43.1% Belgian backlinks, but toxic links should be disavowed and new authoritative Belgian backlinks pursued.</li><li>Content gaps include lack of case studies, educational content, integration guides, and visual showcases.</li><li>Recommended focus: optimize underperforming pages, create targeted content for high-value keywords, improve technical SEO, and execute a focused Belgian backlink acquisition strategy.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Convene a cross-functional meeting (SEO, content, dev) to align on the top three priority initiatives for the next quarter.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-qbus-belgium-" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Qbus (Belgium)</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Qbus is a Belgian company specializing in smart building solutions (<a href="https://www.qbus.be" class="link-reference" target="_blank" rel="noopener">Company Website</a>). They provide comprehensive smart technology systems for both residential and commercial buildings, focusing on:</p><ul><li>Energy management</li><li>Heating and cooling control</li><li>Security systems</li><li>Lighting automation</li><li>Access control</li><li>Multimedia integration</li></ul><br><p>Their product range includes smart switches, controllers, sensors, and software designed to make buildings more energy-efficient, comfortable, and intuitive for occupants.</p><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Ensure all product benefit statements are paired with actual performance metrics (e.g., “save X% energy”) to strengthen content credibility.</li></ul><br></div></section>
+                <section id="1-overall-seo-performance-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-status">Current Status</h3><p>Qbus.be has demonstrated strong organic growth in the Belgian market over the past 12 months, with a <strong>50.92% increase in Estimated Traffic Volume (ETV)</strong>. Current organic traffic estimation stands at approximately <strong>1,664 monthly visits</strong> (as of the latest data point).</p><br><h4 id="position-distribution">Position Distribution</h4><p>The website's keyword distribution across SERP positions shows:</p><ul><li>Position 1: 10 keywords (+25.00% year-over-year)</li><li>Positions 2-3: 5 keywords (+66.67% year-over-year)</li><li>Positions 4-10: 27 keywords (+107.69% year-over-year)</li><li>Positions 11-20: 41 keywords (+20.59% year-over-year)</li></ul><br><p>This distribution indicates improving visibility for high-value keywords, with significant growth in the crucial positions 1-10.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize on-page optimization for keywords in positions 4-10 to push them into the top 3, focusing on title tags, meta descriptions, and targeted H2s.</li></ul><br><h4 id="top-performing-pages">Top-Performing Pages</h4><ul><li><strong>Homepage</strong> (<code>https://www.qbus.be/nl-be</code>): Strong brand visibility with high ETV</li><li><strong>Controllers page</strong> (<code>https://www.qbus.be/nl-be/producten/qbus-full/controllers</code>): Ranks in position 1 with high ETV</li><li><strong>Switches page</strong> (<code>https://www.qbus.be/nl-be/producten/qbus-full/schakelaars</code>): Ranks well with decent ETV</li><li><strong>Luqas product page</strong> (<code>https://www.qbus.be/nl-be/nieuws/luqas-de-slimme-elektriciteitsmanager-van-qbus</code>): Ranks in positions 1-2 with high ETV</li><li><strong>Cloud configuration documentation</strong> (<code>https://files.qbus.be/assets/documentatie/Handleidingen/Qbus%20Cloud%20Configuratie%20NL.pdf</code>): Ranks in positions 2-3 with high ETV</li></ul><br><h4 id="underperforming-pages">Underperforming Pages</h4><ul><li><strong>"Meer Info" (More Info) pages</strong>: Many rank in positions 31-100 with low ETV</li><li><strong>Stand-alone product pages</strong> (<code>/producten/qbus-stand-alone/</code>): Lower positions, suggesting optimization needs</li><li><strong>Technical documentation pages</strong>: The <code>/support/documentatie/technische-fiches</code> section ranks low despite being valuable</li><li><strong>Installer directory pages</strong>: Individual installer pages have poor visibility</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Set up an “Underperforming Content Sprint” to update meta tags, add internal links, and enrich “Meer Info” pages with user FAQs.</li></ul><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><p>Several technical issues were identified that may be impacting performance:</p><ul><li>Resource errors affecting page loading</li><li>Render-blocking JavaScript and CSS</li><li>Mobile usability issues on some pages</li><li>Suboptimal page speed metrics</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign priority fixes to development: eliminate resource errors, defer non-critical JS/CSS, and optimize images for faster load times.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-belgian-market" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Belgian Market</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><p>Qbus.be ranks for approximately <strong>195 keywords</strong> in Belgium (Dutch language), with the following distribution by search intent:</p><br><h4 id="top-performing-keywords-positions-1-10-">Top-Performing Keywords (Positions 1-10)</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">luqas qbus</td><td class="">110</td><td class="">1</td></tr><tr><td class="">q bus</td><td class="">170</td><td class="">1</td></tr><tr><td class="">q-bus</td><td class="">170</td><td class="">1</td></tr><tr><td class="">qbus</td><td class="">2400</td><td class="">1</td></tr><tr><td class="">qbus controller</td><td class="">320</td><td class="">1</td></tr><tr><td class="">qbus domotica</td><td class="">170</td><td class="">1</td></tr><tr><td class="">qbus luqas</td><td class="">140</td><td class="">1</td></tr><tr><td class="">qbus schakelaar</td><td class="">70</td><td class="">1</td></tr><tr><td class="">qbus schakelaars</td><td class="">70</td><td class="">1</td></tr><tr><td class="">qbus system manager</td><td class="">70</td><td class="">1</td></tr><tr><td class="">qbus cloud</td><td class="">590</td><td class="">2</td></tr><tr><td class="">qbus control</td><td class="">320</td><td class="">2</td></tr><tr><td class="">domotica opleiding</td><td class="">140</td><td class="">3</td></tr><tr><td class="">qbus home assistant</td><td class="">70</td><td class="">3</td></tr><tr><td class="">sumum</td><td class="">390</td><td class="">4</td></tr><tr><td class="">domotica betekenis</td><td class="">90</td><td class="">6</td></tr><tr><td class="">domotica installeren</td><td class="">170</td><td class="">6</td></tr><tr><td class="">roommate</td><td class="">590</td><td class="">6</td></tr><tr><td class="">automate home</td><td class="">480</td><td class="">6</td></tr><tr><td class="">domotica systemen</td><td class="">590</td><td class="">7</td></tr><tr><td class="">lichtschakelaar met afstandsbediening</td><td class="">90</td><td class="">7</td></tr><tr><td class="">installateur domotica</td><td class="">170</td><td class="">9</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Leverage strong branded keyword performance by cross-linking these pages to related high-priority content (e.g., link “qbus controller” page to “domotica systeem” guide).</li></ul><br><h4 id="underperforming-keywords">Underperforming Keywords</h4><ul><li><strong>Informational terms</strong>: "slimme thermostaat", "ventilatiesysteem", "energiebeheer woning" (positions 31-100)</li><li><strong>Commercial intent</strong>: "domotica installateur", "smart home systeem prijs", "gebouwautomatisering" (positions 21-50)</li><li><strong>Long-tail terms</strong>: "hoe werkt domotica verwarming", "slimme verlichting voor thuis" (positions 41-100)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create a content calendar for at least two blog posts per month targeting these informational and long-tail queries.</li></ul><br><h3 id="keyword-opportunities">Keyword Opportunities</h3><p>Analysis reveals several untapped keyword opportunities with strong search intent in Belgium:</p><br><h4 id="high-priority-keywords">High-Priority Keywords</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th></tr></thead><tbody><tr><td class="">domotica</td><td class="">1600</td><td class="">MEDIUM</td></tr><tr><td class="">elektrische rolluik/elektrisch rolluik</td><td class="">880</td><td class="">HIGH</td></tr><tr><td class="">domotica systeem</td><td class="">590</td><td class="">HIGH</td></tr><tr><td class="">rolluiken automatiseren/automatisering rolluiken</td><td class="">480</td><td class="">HIGH</td></tr><tr><td class="">smart home systemen</td><td class="">110-260</td><td class="">HIGH</td></tr><tr><td class="">slimme woning</td><td class="">10-40</td><td class="">MEDIUM</td></tr><tr><td class="">domotica vs gewone installatie</td><td class="">10-20</td><td class="">LOW</td></tr></tbody></table></div><h4 id="secondary-keywords">Secondary Keywords</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th></tr></thead><tbody><tr><td class="">domotica in huis</td><td class="">140</td><td class="">HIGH</td></tr><tr><td class="">domotica installateur/installatie</td><td class="">170</td><td class="">LOW-MEDIUM</td></tr><tr><td class="">smart home systemen vergelijken</td><td class="">10-20</td><td class="">HIGH</td></tr><tr><td class="">domotica op bestaande installatie</td><td class="">10</td><td class="">HIGH</td></tr><tr><td class="">welke smart home systemen zijn er</td><td class="">10</td><td class="">HIGH</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Kick off an “Opportunity Content Week” to outline briefs for the high-priority keywords and assign writers for secondary topics.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><p>The Belgian smart building market shows several direct competitors:</p><br><ol><li><strong>Loxone.com</strong>: Strongest competitor based on keyword performance, particularly for "domotica" related terms. They focus on complete smart home systems with user-friendly explanations.</li></ol><br><ol><li><strong>Somfy.be</strong>: Dominant in the "rolluiken" (roller shutters) and "zonwering" (sun protection) space. Their strength lies in providing solutions for automating existing roller shutters and offering remote control options.</li></ol><br><ol><li><strong>Teletask.be</strong>: Focuses on technical products, specifically "sensoren" and "PWM dimmen" keywords.</li></ol><br><ol><li><strong>Niko Home Control</strong>: Strong organic visibility for home automation terms.</li></ol><br><ol><li><strong>Domintell</strong>: Focused on residential smart home solutions.</li></ol><br><ol><li><strong>KNX Belgium</strong>: Strong for technical and standard-related keywords.</li></ol><br><h3 id="keyword-performance-comparison">Keyword Performance Comparison</h3><p>Analysis reveals several areas where competitors outperform Qbus:</p><br><h4 id="keywords-where-competitors-outrank-qbus">Keywords Where Competitors Outrank Qbus</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th><th>Leading Competitor</th></tr></thead><tbody><tr><td class="">Domotica</td><td class="">1600</td><td class="">MEDIUM</td><td class="">Loxone, Somfy</td></tr><tr><td class="">Elektrische Rolluik/Elektrisch Rolluik</td><td class="">880</td><td class="">HIGH</td><td class="">Somfy</td></tr><tr><td class="">Domotica Systeem</td><td class="">590</td><td class="">HIGH</td><td class="">Loxone, Somfy</td></tr><tr><td class="">Rolluiken Automatiseren/Automatisering Rolluiken</td><td class="">480</td><td class="">HIGH</td><td class="">Somfy</td></tr><tr><td class="">Automate Home</td><td class="">480</td><td class="">MEDIUM</td><td class="">Somfy</td></tr><tr><td class="">Sensoren</td><td class="">320</td><td class="">HIGH</td><td class="">Somfy, Teletask</td></tr><tr><td class="">Domotica In Huis</td><td class="">140</td><td class="">HIGH</td><td class="">Loxone, Somfy</td></tr><tr><td class="">Zonwering Automatisch</td><td class="">90</td><td class="">HIGH</td><td class="">Loxone, Somfy</td></tr><tr><td class="">PWM Dimmen</td><td class="">90</td><td class="">HIGH</td><td class="">Teletask</td></tr><tr><td class="">Domotica Schakelaars/Schakelaar</td><td class="">90</td><td class="">HIGH</td><td class="">Loxone</td></tr><tr><td class="">Domotica Installateur/Installatie</td><td class="">170</td><td class="">LOW-MEDIUM</td><td class="">Loxone</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Reverse-engineer competitor pages that rank for “domotica systeem” and “rolluiken automatiseren” to identify content length, heading structure, and multimedia usage.</li></ul><br><h3 id="competitive-content-strategies">Competitive Content Strategies</h3><p>Analysis of competitor content reveals distinct approaches:</p><br><h4 id="serp-strategy-analysis">SERP Strategy Analysis</h4><ul><li><strong>Loxone</strong>: Uses benefit-driven titles (e.g., "Loxone Domotica Systeem: Verkozen tot #1 van 2025") and clear, concise meta descriptions with power words like "Ontdek" (Discover).</li><li><strong>Somfy</strong>: Uses titles that directly address user queries (e.g., "Elektrische Rolluiken kopen? Kies voor fluisterstil") and meta descriptions highlighting key benefits and features.</li><li><strong>Qbus</strong>: Often uses generic titles (e.g., "Domoticasystemen," "Elektrische rolluiken") and meta descriptions that are sometimes cut off or don't accurately reflect page content.</li></ul><br><h4 id="successful-content-types">Successful Content Types</h4><ol><li><strong>"Keuzehulp" (Choice Help) pages</strong> (Somfy): Guidance and recommendation pages effective for users in the research phase.</li><li><strong>Detailed product pages with rich visuals</strong> (Loxone): Comprehensive pages with specifications, images, and clear calls to action.</li><li><strong>Educational blog posts</strong> (Loxone, Somfy): Content explaining concepts and benefits for users in early buying stages.</li><li><strong>Project showcases</strong> (Niko): Extensive use of visual galleries showing real installations.</li><li><strong>Technical documentation</strong> (Teletask): In-depth guides and integration information.</li></ol><br><h3 id="content-gap-analysis">Content Gap Analysis</h3><p>Compared to competitors, Qbus shows content gaps in:</p><ul><li>Detailed case studies of residential and commercial installations</li><li>Educational content explaining smart building concepts</li><li>Integration guides for popular third-party systems</li><li>Visual content showcasing real-world applications</li><li>"Keuzehulp" (Choice Help) sections to guide purchase decisions</li><li>Benefit-driven page titles and meta descriptions</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft outlines for two case studies and one “Keuzehulp” page by end of month.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><p>Qbus.be has a substantial backlink profile with <strong>2,506 backlinks</strong> from <strong>334 referring domains</strong>, indicating a relatively strong online presence in the Belgian market. Key metrics include:</p><ul><li><strong>Domain rank</strong>: 321</li><li><strong>Backlink spam score</strong>: 15% (relatively low, suggesting a healthy profile)</li><li><strong>Referring domains</strong>: 334 total (271 main domains)</li><li><strong>Geographic distribution</strong>: 1,080 backlinks from Belgium (43.1% of total)</li><li><strong>First indexed</strong>: January 16, 2019</li></ul><br><h4 id="backlink-quality-analysis">Backlink Quality Analysis</h4><p>The backlink profile shows a healthy mix of link types:</p><ul><li><strong>Anchor text links</strong>: 1,980 (79.0%)</li><li><strong>Image links</strong>: 232 (9.3%)</li><li><strong>Redirect links</strong>: 1 (0.04%)</li></ul><br><p>The majority of referring domains have low spam scores, with notable high-quality backlinks from:</p><ul><li>pinterest.com (0% spam score)</li><li>orel.com (3% spam score)</li><li>cebeo.be (18% spam score)</li><li>rexel.be (0% spam score)</li><li>qbuswonen.nl (0% spam score)</li></ul><br><h4 id="tld-distribution">TLD Distribution</h4><p>The TLD distribution of referring domains shows strong regional relevance:</p><ul><li><strong>.be domains</strong>: 1,078 links (48.7%)</li><li><strong>.com domains</strong>: 428 links (19.3%)</li><li><strong>.net domains</strong>: 340 links (15.4%)</li><li><strong>.nl domains</strong>: 31 links (1.4%)</li></ul><br><h4 id="potentially-harmful-backlinks">Potentially Harmful Backlinks</h4><p>A small number of potentially harmful backlinks were identified:</p><ul><li>thearticletime.com (65% spam score)</li><li>c2m2.be (100% spam score)</li><li>Several directory sites with 50-60% spam scores</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Immediately prepare a disavow file for spam scores above 60% and submit to Google Search Console.</li></ul><br><h3 id="competitor-backlink-analysis">Competitor Backlink Analysis</h3><p>Analysis of backlink competitors reveals several sites with overlapping backlink profiles:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Rank</th><th>Shared Backlinks</th></tr></thead><tbody><tr><td class="">2link.be</td><td class="">44</td><td class="">265</td></tr><tr><td class="">nbs-partner.ru</td><td class="">22</td><td class="">245</td></tr><tr><td class="">home-assistant.io</td><td class="">104</td><td class="">211</td></tr><tr><td class="">start.be</td><td class="">13</td><td class="">109</td></tr><tr><td class="">informer.com</td><td class="">80</td><td class="">103</td></tr><tr><td class="">niko.eu</td><td class="">111</td><td class="">53</td></tr><tr><td class="">fluvius.be</td><td class="">78</td><td class="">16</td></tr></tbody></table></div><p>This analysis reveals that Qbus shares backlinks with both direct competitors (niko.eu) and industry-adjacent websites (home-assistant.io, fluvius.be).</p><br><h3 id="backlink-opportunities">Backlink Opportunities</h3><p>Several authoritative Belgian websites link to competitors but not to Qbus:</p><ol><li><strong>Industry associations and organizations</strong>:</li></ol><ul><li>Belgian Construction Federation</li><li>Energy efficiency organizations</li><li>Smart home and IoT associations</li></ul><ol><li><strong>Belgian technology publications</strong>:</li></ol><ul><li>DataNews.be</li><li>ZDNet.be</li><li>ITdaily.be</li></ul><ol><li><strong>Home improvement and architecture sites</strong>:</li></ol><ul><li>Livios.be</li><li>Bouwinfo.be</li><li>Architectura.be</li></ul><ol><li><strong>Educational institutions</strong>:</li></ol><ul><li>Belgian technical universities</li><li>Vocational training centers</li></ul><ol><li><strong>Partner websites</strong>:</li></ol><ul><li>Electrical wholesalers</li><li>Construction companies</li><li>Architecture firms</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize outreach to publications with high domain authority (>40) and relevant audience segments.</li></ul><br><h3 id="backlink-strategy-recommendations">Backlink Strategy Recommendations</h3><p>Based on the analysis, we recommend:</p><ol><li><strong>Disavow toxic backlinks</strong> from sites with spam scores above 60%</li><li><strong>Pursue high-quality backlinks</strong> from industry-specific Belgian websites</li><li><strong>Leverage existing partnerships</strong> with installers and distributors for backlinks</li><li><strong>Create linkable assets</strong> such as industry reports, case studies, and technical guides</li><li><strong>Monitor competitor backlinks</strong> to identify new opportunities, particularly from sites like home-assistant.io and fluvius.be</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop a quarterly backlink outreach calendar, assigning specific sites and responsible team members.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our comprehensive analysis, we recommend the following content strategy:</p><br><h3 id="priority-content-initiatives">Priority Content Initiatives</h3><ol><li><strong>Optimize "Meer Info" pages</strong> to target informational keywords related to domotica, HVAC, and energy saving</li><li><strong>Develop case studies</strong> showcasing successful installations in Belgian homes and businesses</li><li><strong>Create educational content</strong> explaining smart building concepts and benefits</li><li><strong>Enhance technical documentation</strong> with better SEO optimization for specific search queries</li><li><strong>Improve "Vind Installateur" section</strong> to drive more leads to installation partners</li><li><strong>Develop a "Keuzehulp" section</strong> similar to Somfy's to help users choose the right domotica system for their needs</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Assign clear owners and deadlines for each initiative to ensure accountability and timely execution.</li></ul><br><h3 id="title-and-meta-description-optimization">Title and Meta Description Optimization</h3><p>Rewrite titles and meta descriptions for key pages, focusing on benefits and addressing user queries:</p><br><p><strong>Current</strong>: "Elektrische rolluiken"</p><p><strong>Recommended</strong>: "Elektrische Rolluiken Kopen? Automatisering & Installatie | Qbus"</p><br><p><strong>Current</strong>: "Domotica doe het zelf"</p><p><strong>Recommended</strong>: "Domotica Zelf Installeren? Stap-voor-Stap Gids | Qbus"</p><br><h3 id="keyword-focused-content-plan">Keyword-Focused Content Plan</h3><p>Based on the keyword analysis, we recommend creating content targeting:</p><br><h4 id="high-priority-keywords">High-Priority Keywords</h4><ul><li><strong>"Domotica" (1600 searches/month)</strong>: Create comprehensive guides explaining domotica concepts and benefits</li><li><strong>"Elektrische Rolluik/Elektrisch Rolluik" (880 searches/month)</strong>: Develop detailed product pages highlighting features and benefits</li><li><strong>"Domotica Systeem" (590 searches/month)</strong>: Create comparison content positioning Qbus favorably against competitors</li><li><strong>"Rolluiken Automatiseren" (480 searches/month)</strong>: Develop how-to guides and solution pages</li></ul><br><h4 id="secondary-keywords">Secondary Keywords</h4><ul><li><strong>"Domotica In Huis" (140 searches/month)</strong>: Create visual content showcasing real-world applications</li><li><strong>"Domotica Installateur" (170 searches/month)</strong>: Optimize the installer directory with better search functionality and calls to action</li></ul><br><h3 id="technical-seo-improvements">Technical SEO Improvements</h3><ul><li>Address resource errors affecting page loading</li><li>Optimize render-blocking JavaScript and CSS</li><li>Improve mobile usability</li><li>Enhance page speed metrics</li></ul><br><h3 id="backlink-acquisition-strategy">Backlink Acquisition Strategy</h3><p>Based on our backlink analysis, we recommend:</p><ol><li><strong>Create linkable assets</strong> targeting the Belgian market:</li></ol><ul><li>Industry reports on smart building adoption in Belgium</li><li>Case studies of successful Belgian installations</li><li>Technical guides and resources for installers</li></ul><ol><li><strong>Outreach to Belgian industry websites</strong> that link to competitors:</li></ol><ul><li>Home-assistant.io community (211 shared competitor backlinks)</li><li>Belgian electrical and construction directories</li><li>Industry publications and blogs</li></ul><ol><li><strong>Partner with Belgian installers</strong> for mutual backlink opportunities</li><li><strong>Disavow toxic backlinks</strong> from sites with high spam scores</li></ol><br><h3 id="quick-wins">Quick Wins</h3><ol><li><strong>Optimize titles and meta descriptions</strong> for the "Domotica doe het zelf" and "Elektrische rolluiken" pages</li><li><strong>Create a blog post</strong> explaining "Wat is Domotica?" targeting the high-volume keyword</li><li><strong>Add clear calls to action</strong> to the "Qbus installateurs" page</li><li><strong>Optimize existing product pages</strong> with more detailed specifications and benefits</li><li><strong>Disavow the two identified toxic backlinks</strong> with spam scores above 60%</li></ol><br><h3 id="longer-term-opportunities">Longer-Term Opportunities</h3><ol><li><strong>Develop a comprehensive content strategy</strong> targeting all relevant keywords</li><li><strong>Build relationships with domotica installers</strong> in Belgium to promote Qbus products</li><li><strong>Invest in high-quality product photography and videography</strong></li><li><strong>Monitor competitor activity</strong> and adapt the SEO strategy accordingly</li><li><strong>Pursue high-quality backlinks</strong> from authoritative Belgian websites</li></ol><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><br><p>Qbus has shown strong organic growth in the Belgian market over the past year, with a 50.92% increase in estimated traffic volume. The company dominates branded keywords with multiple terms ranking in position 1, including "qbus" (2,400 searches/month) and "qbus controller" (320 searches/month).</p><br><p>The backlink analysis reveals a solid foundation with 2,506 backlinks from 334 referring domains, with strong regional relevance (43.1% of backlinks coming from Belgian domains). However, there are opportunities to improve the backlink profile by disavowing toxic links and pursuing high-quality backlinks from industry-specific Belgian websites.</p><br><p>Significant opportunities exist to improve search visibility for non-branded terms and outperform competitors like Loxone and Somfy. The keyword analysis reveals untapped potential in terms like "domotica" (1,600 searches/month) and "elektrische rolluik" (880 searches/month) where targeted content could drive substantial new traffic.</p><br><p>The competitive analysis shows that Qbus can learn from competitors' successful strategies, particularly Loxone's benefit-driven titles and Somfy's "Keuzehulp" approach. By implementing these tactics alongside the recommended content strategy, addressing technical SEO issues, and pursuing targeted backlink opportunities, Qbus can strengthen its digital presence in Belgium and capture additional market share in the competitive smart building technology sector.</p><br><p>The data-driven approach outlined in this report provides a clear roadmap for SEO success, with specific focus areas that will yield the greatest impact on organic visibility and lead generation in the Belgian market.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Qbus',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

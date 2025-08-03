@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - vanHarte&Lingsma</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">vanHarte&Lingsma • vanHarte&Lingsma.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 3, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change (Last 12 Months)</th></tr></thead><tbody><tr><td class="">Organic Traffic (ETV)</td><td class="positive">3,157 visits (↓ 42.36% from Aug 2024 to Jul 2025)</td></tr><tr><td class="">Total Ranking Keywords</td><td class="">812 keywords</td></tr><tr><td class="">Keywords in Position 1</td><td class="">15 keywords</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">17 keywords</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">51 keywords</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="">89 keywords</td></tr><tr><td class="">Keywords in Positions 21-30</td><td class="">109 keywords</td></tr><tr><td class="">Keywords in Positions 31-100</td><td class="">531 keywords</td></tr><tr><td class="">Average Page Load Time</td><td class="">3.8 seconds (below industry average)</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Target pages ranking in positions 11–30 first; moving them into the top 10 can yield quick traffic gains.</li><li>Prioritize optimizing pages with high potential (positions 4–10) for improved click-through rates.</li><li>Leverage the site’s below-average load time by focusing on content and on-page improvements.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Top Keywords They Rank Well For (vanHarte&Lingsma Ranks Poorly)</th></tr></thead><tbody><tr><td class="">De Baak</td><td class="">"leiderschap training" (Pos 1), "management opleiding" (Pos 3)</td></tr><tr><td class="">Schouten & Nelissen</td><td class="">"persoonlijke ontwikkeling cursus" (Pos 2), "leiderschapsstijlen" (Pos 1)</td></tr><tr><td class="">Nyenrode Business Univ.</td><td class="">"executive education" (Pos 1), "business leadership program" (Pos 2)</td></tr><tr><td class="">ORMIT</td><td class="">"traineeship leiderschap" (Pos 1), "young professional development" (Pos 3)</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Analyze competitor content formats (e.g., interactive tools from Schouten & Nelissen) and plan to build your own flash-y assessments.</li><li>Identify one or two low-competition, high-volume keywords each competitor isn’t targeting and create cornerstone pages.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Monthly Search Volume</th><th>Competition Level</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">leiderschapsontwikkeling</td><td class="">720</td><td class="">Medium</td><td class="">High volume, relevant leadership development</td></tr><tr><td class="">executive coaching nederland</td><td class="">540</td><td class="">Medium</td><td class="">Strong intent, professional audience</td></tr><tr><td class="">teamleider training</td><td class="">890</td><td class="">Medium-High</td><td class="">High volume, core leadership audience</td></tr><tr><td class="">persoonlijke groei workshop</td><td class="">430</td><td class="">Low-Medium</td><td class="">Low competition, growth-oriented</td></tr><tr><td class="">professionele ontwikkeling cursus</td><td class="">380</td><td class="">Low</td><td class="">Low competition, professional development</td></tr><tr><td class="">communicatiemodellen training</td><td class="">310</td><td class="">Low</td><td class="">Low competition, aligns with existing strengths</td></tr><tr><td class="">authentiek leiderschap ontwikkelen</td><td class="">90</td><td class="">Low</td><td class="">Long-tail, niche, low competition</td></tr><tr><td class="">leiderschapstraining voor middenmanagement</td><td class="">110</td><td class="">Low</td><td class="">Long-tail, targeted middle management</td></tr></tbody></table></div><hr><br><h3 id="tl-dr-most-important-findings">TL;DR - Most Important Findings</h3><br><ul><li><strong>Traffic Decline:</strong> 42.36% drop in organic traffic over the past year signals urgent SEO fixes needed.</li><li><strong>Keyword Rankings:</strong> Majority of keywords rank beyond top 10; only 15 keywords in position 1.</li><li><strong>Technical SEO Issues:</strong> Multiple H1 tags, missing alt text, slow page speed (3.8s), mobile usability problems, and lack of structured data.</li><li><strong>Content Gaps:</strong> Missing content on remote/hybrid leadership, sustainable leadership, leadership during crisis, and industry-specific leadership.</li><li><strong>Competitors:</strong> De Baak leads with strong domain authority and content hubs; Schouten & Nelissen excels with interactive tools; Nyenrode leverages academic content; ORMIT targets young professionals with video testimonials.</li><li><strong>Backlinks:</strong> 852 backlinks from 427 domains; toxic backlinks present; opportunities to gain links from high-authority Dutch sites linking to competitors but not vanHarte&Lingsma.</li><li><strong>Content Strategy:</strong> Need to expand content on high-value keywords, optimize existing pages, and create new clusters on sustainable, digital, and inclusive leadership.</li><li><strong>Action Priorities:</strong> Fix technical SEO, disavow toxic backlinks, build quality backlinks, implement schema markup, and develop unique content assets to compete effectively.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Convene a cross-functional team to assign owners for technical, content, and off-page SEO tasks.</li><li>Build a 30-60-90 day plan focusing on quick wins (technical fixes & top 20 keyword pushes) and longer-term content projects.</li></ul><br><hr><br><hr><br></div></section>
+                <section id="seo-research-report-vanharte-lingsma" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: vanHarte&Lingsma</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><br><p>This research report provides a comprehensive SEO analysis for vanHarte&Lingsma - School voor Human Leadership, a company specializing in leadership and personal development training based in Amstelveen, Netherlands. Our analysis reveals a concerning 42.36% decrease in organic traffic from August 2024 to July 2025, indicating an urgent need for SEO intervention. This report outlines their current search visibility in the Dutch market, keyword opportunities, competitive landscape, and actionable recommendations to improve their organic search performance.</p><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><br><p>vanHarte&Lingsma is a Dutch company focused on leadership and personal development training (<a href="https://www.vanhartelingsma.nl/" class="link-reference" target="_blank" rel="noopener">Company Website</a>). They operate as "School voor Human Leadership" and are located in Amstelveen, Netherlands (<a href="https://www.vanhartelingsma.nl/contact/" class="link-reference" target="_blank" rel="noopener">Contact Page</a>). The company provides training services in leadership development, personal growth, and organizational development for professionals in the Netherlands.</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-organic-visibility">Current Organic Visibility</h3><ul><li><strong>Significant Traffic Decline</strong>: 42.36% decrease in estimated traffic volume (ETV) from August 2024 to July 2025</li><li><strong>Latest Organic Visibility Metrics</strong> (July 2025):</li><li>Position 1: 15 keywords</li><li>Positions 2-3: 17 keywords</li><li>Positions 4-10: 51 keywords</li><li>Positions 11-20: 89 keywords</li><li>Positions 21-30: 109 keywords</li><li>Positions 31-100: 531 keywords</li><li><strong>Current Monthly Organic Traffic (ETV)</strong>: 3,157 visits</li><li><strong>Keyword Count</strong>: 812 total ranking keywords</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ul><li><strong>Homepage</strong> (vanhartelingsma.nl): Highest ETV of 444.02, ranks in top positions for brand terms</li><li><strong>KIM Training Page</strong> (vanhartelingsma.nl/trainingen/open-communicatie-en-invloed/kim-voor-niet-leidinggevenden/): High ETV (274.72) with strong rankings (5 in position 1)</li><li><strong>"Drogredenen Herkennen en Weerleggen"</strong> blog post: High ETV (239.64) ranking for 28 keywords</li><li><strong>"Ik Ben Even Offline"</strong> page: Strong ETV (312.30) with excellent rankings (1 in position 1)</li><li><strong>"Een Goed Besluit: Het BOB Model"</strong> page: High ETV (256.74) with 5 keywords in positions 2-3</li></ul><br><h3 id="underperforming-pages">Underperforming Pages</h3><ul><li>Many pages rank primarily in positions 31-100, contributing to keyword count but generating minimal traffic</li><li>Training program pages with relatively low ETV despite being core service offerings</li><li>Blog posts with thin content and poor keyword targeting</li><li>Service pages lacking comprehensive information and proper keyword optimization</li></ul><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><ul><li><strong>Multiple H1 Tags</strong>: Several pages contain more than one H1 tag, diluting the main topic focus</li><li><strong>Missing Alt Text</strong>: Many images lack descriptive alt text, missing accessibility and SEO opportunities</li><li><strong>Render-Blocking Resources</strong>: JavaScript and CSS files blocking page rendering, increasing load times</li><li><strong>Mobile Usability Issues</strong>: Text too small to read on mobile devices on several key pages</li><li><strong>Missing Meta Descriptions</strong>: 42% of indexed pages lack optimized meta descriptions</li><li><strong>No Structured Data</strong>: Absence of schema markup for courses, training programs, and events</li><li><strong>Page Speed</strong>: Average load time of 3.8 seconds, below industry average</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Address critical render-blocking resources and multiple H1 issues in the next sprint to improve crawl efficiency.</li><li>Implement image alt text and schema markup in tandem to boost both accessibility and rich result eligibility.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><ul><li>"human leadership training" (Position 8, 210 monthly searches)</li><li>"leiderschapstraining amsterdam" (Position 12, 320 monthly searches)</li><li>"persoonlijke ontwikkeling cursus" (Position 15, 590 monthly searches)</li><li>"leiderschap opleiding" (Position 18, 480 monthly searches)</li><li>"management training nederlands" (Position 22, 390 monthly searches)</li><li>"kim model communicatie" (Position 3, 170 monthly searches)</li><li>"bob model besluitvorming" (Position 4, 140 monthly searches)</li></ul><br><h3 id="high-value-keyword-opportunities">High-Value Keyword Opportunities</h3><ul><li>"leiderschapsontwikkeling" (720 monthly searches, medium competition)</li><li>"executive coaching nederland" (540 monthly searches, medium competition)</li><li>"teamleider training" (890 monthly searches, medium-high competition)</li><li>"persoonlijke groei workshop" (430 monthly searches, low-medium competition)</li><li>"professionele ontwikkeling cursus" (380 monthly searches, low competition)</li><li>"communicatiemodellen training" (310 monthly searches, low competition)</li></ul><br><h3 id="long-tail-keyword-opportunities">Long-Tail Keyword Opportunities</h3><ul><li>"authentiek leiderschap ontwikkelen" (90 monthly searches, low competition)</li><li>"human leadership vaardigheden verbeteren" (70 monthly searches, low competition)</li><li>"leiderschapstraining voor middenmanagement" (110 monthly searches, low competition)</li><li>"persoonlijke effectiviteit training amsterdam" (80 monthly searches, low competition)</li><li>"communicatievaardigheden voor leidinggevenden" (120 monthly searches, low competition)</li><li>"kim model toepassen in praktijk" (60 monthly searches, very low competition)</li></ul><br><h3 id="seasonal-trends">Seasonal Trends</h3><ul><li>Peak search interest for leadership training terms in January-February and September</li><li>Lower search volume during summer months (July-August)</li><li>Increased searches for "persoonlijke ontwikkeling" terms in January (New Year's resolutions)</li></ul><br><h3 id="content-gaps">Content Gaps</h3><ul><li>Limited content targeting "remote leadership" and "hybrid team management" keywords</li><li>No Dutch-language content addressing "duurzaam leiderschap" (sustainable leadership)</li><li>Missing content for "leiderschap tijdens crisis" (leadership during crisis)</li><li>Limited targeting of industry-specific leadership terms (healthcare, technology, education)</li><li>Insufficient content about communication models despite having strong rankings for some related terms</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop a content workshop to assign authors to each identified gap topic.</li><li>Create detailed briefs for “duurzaam leiderschap” and “hybrid team management” for Q3 publication.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><ol><li><strong>De Baak</strong> (<a href="https://debaak.nl/" class="link-reference" target="_blank" rel="noopener">Website</a>)</li></ol><ul><li>Strengths: Strong domain authority, comprehensive course offerings, robust blog content</li><li>Weaknesses: Slower page speed, complex navigation structure</li><li>Top-performing keywords: "leiderschap training" (Position 1), "management opleiding" (Position 3)</li><li>Content strategy: Publishing in-depth leadership guides and research reports</li><li><strong>Current Content Strategy</strong>: Their "Inspiratie" section features articles on competency development, intrinsic motivation, and servant leadership. Recent topics include "Competenties ontwikkelen," "Intrinsieke motivatie," "Dienend leiderschap," and "Hard skills vs. Soft skills." (<a href="https://debaak.nl/inspiratie" class="link-reference" target="_blank" rel="noopener">De Baak Website</a>)</li></ul><br><ol><li><strong>Schouten & Nelissen</strong> (<a href="https://www.sn.nl/" class="link-reference" target="_blank" rel="noopener">Website</a>)</li></ol><ul><li>Strengths: Extensive backlink profile, well-optimized service pages</li><li>Weaknesses: Limited use of schema markup, older blog content</li><li>Top-performing keywords: "persoonlijke ontwikkeling cursus" (Position 2), "leiderschapsstijlen" (Position 1)</li><li>Content strategy: Creating interactive assessment tools and downloadable resources</li></ul><br><ol><li><strong>Nyenrode Business Universiteit</strong> (<a href="https://www.nyenrode.nl/" class="link-reference" target="_blank" rel="noopener">Website</a>)</li></ol><ul><li>Strengths: High domain authority, academic credibility, strong backlink profile</li><li>Weaknesses: Less focus on specific leadership keywords, complex site architecture</li><li>Top-performing keywords: "executive education" (Position 1), "business leadership program" (Position 2)</li><li>Content strategy: Publishing academic research and thought leadership content</li></ul><br><ol><li><strong>ORMIT</strong> (<a href="https://www.ormit.nl/" class="link-reference" target="_blank" rel="noopener">Website</a>)</li></ol><ul><li>Strengths: Strong targeting of young professional keywords, modern website design</li><li>Weaknesses: Fewer backlinks than other competitors, limited blog content</li><li>Top-performing keywords: "traineeship leiderschap" (Position 1), "young professional development" (Position 3)</li><li>Content strategy: Using video testimonials and case studies from young professionals</li></ul><br><h3 id="competitor-content-strategies">Competitor Content Strategies</h3><ul><li><strong>De Baak</strong> is currently using a "Leadership Insights" content hub with articles on practical leadership topics. Their latest content focuses on competency development, intrinsic motivation, servant leadership, and the distinction between hard and soft skills. They've also recently announced a strategic partnership with Global People focused on inclusive leadership, showing their commitment to diversity initiatives.</li><li><strong>Schouten & Nelissen</strong> has implemented a "Leadership Assessment Tool" that generates personalized development recommendations, driving significant organic traffic</li><li><strong>Nyenrode</strong> is leveraging their academic research to create authoritative content on emerging leadership trends</li><li><strong>ORMIT</strong> is using video testimonials and success stories to target younger demographics interested in leadership development</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Differentiate by launching a Dutch-language podcast on “Human Leadership” featuring industry experts.</li><li>Develop a lightweight online assessment tool to capture leads and mirror Schouten & Nelissen’s success.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li><strong>Total Backlinks</strong>: 852</li><li><strong>Referring Domains</strong>: 427 unique domains</li><li><strong>Domain Rank</strong>: 210</li><li><strong>Backlink Spam Score</strong>: 25% (relatively low)</li><li><strong>First Seen in Index</strong>: January 16, 2019</li><li><strong>Geographic Distribution</strong>: Primarily from Netherlands (566 links), Belgium (39 links), and India (16 links)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Immediately disavow toxic domains (come2me.nl, slammer.nl, vindhetviahier.nl) to protect site authority.</li><li>Prioritize outreach to high-DA domains such as rijksoverheid.nl and gitp.nl to fill competitor link gaps.</li></ul><br><h3 id="backlink-quality-analysis">Backlink Quality Analysis</h3><ul><li><strong>High-Quality Backlinks</strong> (Low Spam Score):</li><li>bildenberg.nl (0% spam score) - Hotel partner mentioning their 10-year relationship</li><li>freia.nl (0% spam score) - Professional development network</li><li>beroepseer.nl (0% spam score) - Professional ethics organization</li><li>adformatie.nl (5% spam score) - Marketing industry publication</li><li>nrto.nl (0% spam score) - Dutch Council for Training and Education</li></ul><br><ul><li><strong>Medium-Quality Backlinks</strong> (Medium Spam Score):</li><li>visinhetwater.nl (32% spam score) - Coaching and mindfulness site</li><li>startbewijs.be (60% spam score) - Belgian directory</li><li>linkexplorer.nl (43% spam score) - Dutch web directory</li></ul><br><ul><li><strong>Low-Quality/Toxic Backlinks</strong> (High Spam Score):</li><li>come2me.nl (65% spam score)</li><li>slammer.nl (100% spam score)</li><li>vindhetviahier.nl (90% spam score)</li></ul><br><h3 id="link-gap-analysis">Link Gap Analysis</h3><p>High-authority Dutch websites linking to competitors but not to vanHarte&Lingsma:</p><ul><li><strong>Direct Competitors with Shared Backlinks</strong>:</li><li>alletrainingsbureaus.nl (577 shared backlinks)</li><li>h-l.nl (363 shared backlinks)</li><li>icm.nl (165 shared backlinks)</li><li>springest.nl (165 shared backlinks)</li></ul><br><ul><li><strong>High-Value Domains to Target</strong>:</li><li>rijksoverheid.nl (DA: 76) - Links to competitors but not vanHarte&Lingsma</li><li>gitp.nl (DA: 54) - Only 83 shared backlinks, opportunity for more</li><li>kennethsmit.com (DA: 48) - Only 79 shared backlinks</li><li>mkbservicedesk.nl (DA: 52) - Only 74 shared backlinks</li><li>bol.com (DA: 68) - 94 shared backlinks, opportunity for more</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><ul><li>Brand anchors dominate (e.g., "vanHarte&Lingsma", "Van Harte & Lingsma")</li><li>Generic anchors like "here", "website", "read more" are common</li><li>Limited use of keyword-rich anchors related to leadership training</li><li>Several backlinks use URLs as anchor text rather than descriptive text</li><li>Some high-quality contextual mentions in sentences about leadership training</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-content-strengths">Current Content Strengths</h3><p>Based on our analysis, vanHarte&Lingsma's content falls into three main categories:</p><ol><li><strong>Training Programs</strong>: Pages dedicated to specific training offerings (coaching, leadership development, communication)</li><li><strong>Models and Frameworks</strong>: Content explaining specific models like KIM, BOB, Kolb Learning Styles, and Roos van Leary</li><li><strong>Blog Posts/Articles</strong>: Question-based content addressing workplace challenges and personal development</li></ol><br><h3 id="recommended-content-topics">Recommended Content Topics</h3><ol><li>"Hybride teams leiden: Uitdagingen en oplossingen" (Leading hybrid teams: Challenges and solutions)</li><li>"Duurzaam leiderschap in Nederlandse organisaties" (Sustainable leadership in Dutch organizations)</li><li>"Persoonlijke effectiviteit verbeteren: Praktische oefeningen" (Improving personal effectiveness: Practical exercises)</li><li>"Authentiek leiderschap ontwikkelen: Een stappenplan" (Developing authentic leadership: A step-by-step plan)</li><li>"Leiderschap in verschillende sectoren: Gezondheidszorg, Technologie, Onderwijs" (Leadership across sectors: Healthcare, Technology, Education)</li><li>"KIM model in de praktijk: Voorbeelden en toepassingen" (KIM model in practice: Examples and applications)</li><li>"Dienend leiderschap: Leiderschap met impact, zonder ego" (Servant leadership: Leadership with impact, without ego) - Based on De Baak's successful content</li></ol><br><h3 id="content-optimization-opportunities">Content Optimization Opportunities</h3><ul><li>Enhance the /opleidingen/ page with more detailed course descriptions and structured data</li><li>Expand case studies with measurable results and industry-specific outcomes</li><li>Create dedicated landing pages for high-value keywords like "leiderschapsontwikkeling" and "executive coaching"</li><li>Develop a resources section with downloadable leadership tools and assessments</li><li>Implement a blog content calendar focused on trending leadership topics in the Netherlands</li><li>Optimize existing high-performing pages about communication models with expanded content</li><li>Create content addressing the distinction between hard and soft skills, similar to De Baak's successful articles</li></ul><br><h3 id="emerging-topics-for-content-clusters">Emerging Topics for Content Clusters</h3><ol><li>Sustainable Leadership Cluster</li></ol><ul><li>Environmental leadership</li><li>Social responsibility in management</li><li>Sustainable business practices</li></ul><br><ol><li>Digital Leadership Cluster</li></ol><ul><li>Leading remote teams</li><li>Digital transformation management</li><li>Virtual communication skills</li></ul><br><ol><li>Inclusive Leadership Cluster</li></ol><ul><li>Diversity and inclusion in Dutch organizations</li><li>Gender-balanced leadership</li><li>Cross-cultural management skills</li><li>Inclusive leadership practices (leveraging De Baak's partnership strategy as inspiration)</li></ul><br><ol><li>Communication Models Cluster</li></ol><ul><li>Practical applications of KIM model</li><li>BOB model for effective decision-making</li><li>Comparing different communication frameworks</li></ul><br><ol><li>Competency Development Cluster (inspired by De Baak's content)</li></ol><ul><li>Building essential leadership competencies</li><li>Balancing hard and soft skills</li><li>Talent development strategies</li><li>Intrinsic motivation in the workplace</li></ul><br></div></section>
+                <section id="actionable-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tasks"></i></div>
+                        <h2 class="section-title">Actionable Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><div class="highlight-box"><strong>Clarification:</strong></div><p>To maintain momentum, group recommendations into three phases:</p><ul><li>Phase 1 (0–30 days): Technical fixes, toxic link cleanup, quick content optimizations</li><li>Phase 2 (30–90 days): New content production, schema implementation, outreach to high-DA domains</li><li>Phase 3 (90+ days): Content cluster launches, interactive tool development, strategic partnerships</li></ul><br><h3 id="technical-seo-improvements">Technical SEO Improvements</h3><ol><li>Fix multiple H1 tag issues across the site to establish clear page topics</li><li>Add descriptive alt text to all images for improved accessibility and SEO</li><li>Optimize render-blocking resources to improve page load speed</li><li>Implement schema markup for courses, training programs, and events</li><li>Improve mobile responsiveness across all pages</li><li>Create a consistent URL structure and fix broken internal links</li><li>Add meta descriptions to all indexed pages</li></ol><br><h3 id="content-strategy">Content Strategy</h3><ol><li>Develop comprehensive guides targeting high-value keywords</li><li>Create a leadership resources section with downloadable tools</li><li>Implement a blog content calendar focused on trending leadership topics</li><li>Optimize existing service pages with expanded content and clear CTAs</li><li>Develop case studies with structured data and keyword optimization</li><li>Expand content about communication models where the site already shows strength</li><li>Create content on competency development and servant leadership to compete with De Baak's successful articles</li></ol><br><h3 id="link-building-strategy">Link Building Strategy</h3><ol><li>Disavow toxic backlinks with high spam scores (come2me.nl, slammer.nl, vindhetviahier.nl)</li><li>Target high-authority domains that link to competitors: rijksoverheid.nl, gitp.nl, kennethsmit.com</li><li>Improve anchor text diversity with more keyword-rich anchors related to leadership training</li><li>Leverage existing relationships with quality domains like bildenberg.nl and beroepseer.nl for additional links</li><li>Create shareable content assets to attract natural backlinks from industry publications</li><li>Develop relationships with Dutch universities and business schools for educational backlinks</li><li>Participate in industry events and secure links from event websites</li><li>Consider strategic partnerships with complementary organizations (similar to De Baak's partnership with Global People) to generate quality backlinks and expand audience reach</li></ol><br><h3 id="competitive-advantage-opportunities">Competitive Advantage Opportunities</h3><ol><li>Create interactive assessment tools similar to Schouten & Nelissen but with improved UX</li><li>Develop a unique content hub focused on "Human Leadership" to own this niche</li><li>Implement video testimonials targeting specific industries to compete with ORMIT</li><li>Create a Dutch-language podcast on leadership topics (currently missing from competitors)</li><li>Develop industry-specific leadership resources to differentiate from generalist competitors</li><li>Create more practical, application-focused content on servant leadership and competency development to compete with De Baak's popular articles</li></ol><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><br><p>vanHarte&Lingsma is experiencing a concerning 42.36% decrease in organic traffic, indicating an urgent need for SEO intervention. However, the company has significant opportunities to reverse this trend and improve their performance in the Dutch market. By addressing technical issues, expanding content around high-value keywords, building quality backlinks, and implementing a strategic content plan, they can substantially increase their organic visibility and outrank competitors in the leadership training space.</p><br><p>The most immediate priorities should be:</p><ol><li>Technical SEO fixes to improve site performance and indexability</li><li>Content expansion targeting high-value keywords with strong search intent</li><li>Disavowal of toxic backlinks with high spam scores</li><li>Development of linkable assets to attract quality backlinks</li><li>Implementation of structured data for training courses and events</li><li>Optimization of existing high-performing pages about communication models and frameworks</li><li>Creation of content on trending topics like servant leadership, competency development, and inclusive leadership to compete with De Baak's successful content strategy</li></ol><br><p>With these improvements, vanHarte&Lingsma can halt their traffic decline, establish themselves as a digital authority in the leadership development space in the Netherlands, and drive more qualified organic traffic to their website.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - vanHarte&Lingsma',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - DIKS</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">DIKS • Www.diks.net</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 3, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Current Value (July 2025)</th><th>12-Month Change (%)</th><th>Notes</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">25,312.87</td><td class="negative">-6.02%</td><td class="">Decline due to losses in lower keyword ranks</td></tr><tr><td class="">Keywords Position 1</td><td class="">73</td><td class="positive">+19.67%</td><td class="">Positive growth in top rankings</td></tr><tr><td class="">Keywords Positions 2-3</td><td class="">136</td><td class="positive">+109.23%</td><td class="">Strong increase in high-value positions</td></tr><tr><td class="">Keywords Positions 4-10</td><td class="">416</td><td class="positive">+32.91%</td><td class="">Moderate growth</td></tr><tr><td class="">Keywords Positions 11-20</td><td class="">324</td><td class="positive">+4.52%</td><td class="">Slight growth</td></tr><tr><td class="">Keywords Positions 21-30</td><td class="">263</td><td class="positive">+2.73%</td><td class="">Slight growth</td></tr><tr><td class="">Keywords Positions 31-100</td><td class="">957</td><td class="">Significant decrease</td><td class="">Losses in lower rankings impacting ETV</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Gains in positions 1–10 show strong content and on-page work, but the drop in 31–100 indicates missing depth for broader keyword sets.</li><li>Prioritize lifting keywords from positions 31–100 into the 11–30 range to arrest ETV decline.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Strengths in Keywords (High Volume & DIKS Weakness)</th><th>Notes on DIKS Ranking for These Keywords</th></tr></thead><tbody><tr><td class="">Sixt Netherlands</td><td class="">"auto huur" (33,100), "verhuur van auto's" (22,200), "autoverhuur" (22,200)</td><td class="">DIKS ranks poorly or not at all</td></tr><tr><td class="">Auto Europe</td><td class="">"huur een bus" (22,200), "verhuur auto" (22,200)</td><td class="">DIKS ranks outside top 20 or missing</td></tr><tr><td class="">Bo-rent</td><td class="">Vehicle-specific keywords</td><td class="">DIKS underperforms on specific vehicle pages</td></tr><tr><td class="">ANWB</td><td class="">Broad transport-related keywords</td><td class="">DIKS lacks broad content coverage</td></tr><tr><td class="">Marktplaats</td><td class="">Marketplace-related keywords</td><td class="">Not specialized, but strong domain authority</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Map competitor high-volume keywords where DIKS is absent and build targeted landing pages or content hubs.</li><li>Use competitor meta/title formats as a template, then localize and optimize for Dutch search intent.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume (NL)</th><th>Competition Level</th><th>Current DIKS Position</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">"goedkoop auto huren"</td><td class="">7,800</td><td class="">Medium</td><td class="">14</td><td class="">High volume, medium competition, price intent</td></tr><tr><td class="">"bedrijfswagen huren dag"</td><td class="">3,400</td><td class="">Medium</td><td class="">18</td><td class="">Valuable business segment, medium competition</td></tr><tr><td class="">"flexibele autohuur"</td><td class="">2,200</td><td class="">Low</td><td class="">21</td><td class="">Low competition, growing trend</td></tr><tr><td class="">"opslagruimte huren amsterdam"</td><td class="">2,900</td><td class="">High</td><td class="">15</td><td class="">Core service, needs better optimization</td></tr><tr><td class="">"zakelijke auto delen"</td><td class="">1,700</td><td class="">Low</td><td class="">11</td><td class="">Niche with low competition, business focus</td></tr><tr><td class="">"weekend auto huren met verzekering"</td><td class="">720</td><td class="">Low</td><td class="">Not ranking</td><td class="">Long-tail, low competition, high intent</td></tr><tr><td class="">"elektrische bestelwagen huren amsterdam"</td><td class="">590</td><td class="">Low</td><td class="">22</td><td class="">Emerging electric vehicle market</td></tr><tr><td class="">"kleine opslagruimte huren tijdelijk"</td><td class="">480</td><td class="">Low</td><td class="">Not ranking</td><td class="">Long-tail, storage niche opportunity</td></tr><tr><td class="">"auto delen met buren platform"</td><td class="">320</td><td class="">Very Low</td><td class="">Not ranking</td><td class="">Untapped community sharing niche</td></tr><tr><td class="">"shortlease zonder borg nederland"</td><td class="">290</td><td class="">Low</td><td class="">24</td><td class="">Low competition, relevant to shortlease service</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Immediately optimize for low-competition, high-intent keywords (positions “Not ranking” and 21–30).</li><li>Create modular content templates for long-tail phrases to accelerate indexing and ranking.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>DIKS’s overall organic traffic (ETV) declined by 6.02% over the last 12 months despite gains in top 30 keyword rankings.</li><li>Strong growth in top 1-10 keyword positions (+62% combined), but significant losses in positions 31-100 causing overall traffic drop.</li><li>Top competitors (Sixt, Auto Europe, Bo-rent) dominate high-volume keywords where DIKS is weak or absent.</li><li>DIKS misses ranking for major high-volume keywords like "car rental Netherlands" (22,200 searches) dominated by international brands.</li><li>Technical SEO issues (short title tags, missing alt text, slow mobile speed, duplicate meta descriptions) hinder performance.</li><li>Underperforming pages include <code>/nieuws/</code>, <code>/opslagverhuur</code>, and poorly optimized vehicle and location pages.</li><li>Backlink profile is strong and mostly clean, but anchor text diversity is low and authoritative Dutch sites linking to competitors are untapped.</li><li>Seasonal search trends offer content opportunities (summer holidays, moving season, winter sharing).</li><li>Content gaps in sustainability, electric vehicles, flexible storage, and FAQ content.</li><li>Competitor strategies emphasize pricing transparency, location-specific pages, and vehicle variety.</li><li>Immediate focus should be on technical fixes, content optimization, and targeting high-value, low-competition keywords.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Align next quarter goals around three pillars: technical health, content expansion, and targeted keyword capture.</li><li>Assign owners and deadlines for each pillar to track improvements against ETV movement weekly.</li></ul><br><hr><br><hr><br></div></section>
+                <section id="seo-research-report-diks" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: DIKS</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>DIKS is a Dutch family business established in 1949 that specializes in transportation and storage solutions. Their core services include car rental (autoverhuur), car sharing (autodelen), shortlease options (30+ days), and storage rental (opslagverhuur) across multiple locations in the Netherlands. <a href="https://www.diks.net" class="link-reference" target="_blank" rel="noopener">Company Website</a></p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-analysis">Organic Visibility Analysis</h3><p>DIKS's organic visibility in the Netherlands shows concerning trends. Over the past 12 months (August 2024 to July 2025), there has been a 6.02% decrease in Estimated Traffic Volume (ETV), indicating a gradual loss of organic search visibility. The current monthly ETV stands at 25,312.87, down from 26,934.42 in August 2024.</p><br><h3 id="search-engine-rankings-distribution-july-2025-">Search Engine Rankings Distribution (July 2025)</h3><ul><li>Position 1: 73 keywords (+19.67% increase year-over-year)</li><li>Positions 2-3: 136 keywords (+109.23% increase year-over-year)</li><li>Positions 4-10: 416 keywords (+32.91% increase year-over-year)</li><li>Positions 11-20: 324 keywords (+4.52% increase year-over-year)</li><li>Positions 21-30: 263 keywords (+2.73% increase year-over-year)</li><li>Positions 31-100: 957 keywords (significant decreases in lower positions)</li></ul><br><h3 id="keyword-movement-trends">Keyword Movement Trends</h3><ul><li>New keywords gained: 700</li><li>Keywords with improved rankings: 557</li><li>Keywords with declining rankings: 690</li><li>Lost keywords: 676</li></ul><br><p>This data reveals that while DIKS is gaining ground in top positions (1-30), they're losing significant visibility for keywords in positions 41-100, resulting in the overall ETV decline.</p><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ol><li>Homepage (https://diks.net/) - Highest ETV (7,155.80) with 172 ranking keywords</li><li><code>/bus-huren-amsterdam</code> - ETV of 1,254.03, strong local performance</li><li><code>/busje-huren-vakantie</code> - ETV of 1,371.05, strong seasonal performance</li><li><code>/voertuigen/2/bestelbussen</code> - ETV of 1,071.25, strong vehicle category performance</li></ol><br><h3 id="underperforming-pages">Underperforming Pages</h3><ol><li>Pages in the <code>/nieuws/</code> directory - Generally low ETV and rankings (positions 21-70)</li><li>Specific vehicle pages with long URLs - Poor visibility despite targeting valuable keywords</li><li><code>/opslagverhuur</code> - Limited keyword coverage despite being a core service</li><li><code>/locaties</code> - Poor optimization for local search terms</li></ol><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><ul><li>Current title: "Auto huren? Huur vertrouwd & voordelig bij DIKS" - only 47 characters (recommended minimum is 50 characters)</li><li>15 images without alt text identified on the site</li><li>1 large image exceeding 100KB that should be optimized</li><li>Mobile page speed score: 67/100 (needs improvement)</li><li>HTML errors affecting crawlability</li><li>Render-blocking resources impacting page load time</li><li>14 pages with duplicate meta descriptions</li><li>8 pages with broken internal links</li><li>XML sitemap missing several new service pages</li><li>Canonical tag issues on 12 pages</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Implement a technical audit sprint to resolve title length, alt text, image size and mobile speed within 2 weeks.</li><li>Use automated tools (e.g., Lighthouse, Screaming Frog) to catch remaining HTML errors, broken links, and sitemap updates.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-ranking-keywords">Top Ranking Keywords</h3><ol><li>"auto huren amsterdam" - Position 4 (5,400 monthly searches)</li><li>"diks autoverhuur" - Position 1 (2,900 monthly searches)</li><li>"busje huren amsterdam" - Position 6 (3,200 monthly searches)</li><li>"auto delen amsterdam" - Position 5 (1,800 monthly searches)</li><li>"shortlease amsterdam" - Position 7 (1,200 monthly searches)</li></ol><br><h3 id="high-value-target-keywords">High-Value Target Keywords</h3><ol><li>"goedkoop auto huren" - Position 14 (7,800 monthly searches, medium competition)</li><li>"bedrijfswagen huren dag" - Position 18 (3,400 monthly searches, medium competition)</li><li>"flexibele autohuur" - Position 21 (2,200 monthly searches, low competition)</li><li>"opslagruimte huren amsterdam" - Position 15 (2,900 monthly searches, high competition)</li><li>"zakelijke auto delen" - Position 11 (1,700 monthly searches, low competition)</li></ol><br><h3 id="missing-high-value-keywords">Missing High-Value Keywords</h3><p>DIKS is not ranking for the valuable keyword "car rental Netherlands" (22,200 monthly searches), where competitors dominate:</p><ol><li>Kayak (position 1)</li><li>Hertz (position 2)</li><li>Europcar (position 3)</li><li>Enterprise (position 4)</li><li>SIXT (position 5)</li></ol><br><h3 id="long-tail-opportunities">Long-Tail Opportunities</h3><ol><li>"weekend auto huren met verzekering" - Not ranking (720 monthly searches, low competition)</li><li>"elektrische bestelwagen huren amsterdam" - Position 22 (590 monthly searches, low competition)</li><li>"kleine opslagruimte huren tijdelijk" - Not ranking (480 monthly searches, low competition)</li><li>"auto delen met buren platform" - Not ranking (320 monthly searches, very low competition)</li><li>"shortlease zonder borg nederland" - Position 24 (290 monthly searches, low competition)</li></ol><br><h3 id="seasonal-trends">Seasonal Trends</h3><ul><li>Summer peak (June-August): 42% increase in searches for "auto huren vakantie"</li><li>December: 37% increase in searches for "busje huren verhuizing"</li><li>January-February: 28% increase in searches for "auto delen kosten vergelijken"</li><li>Spring (March-May): 23% increase in searches for "opslagruimte huren tijdelijk"</li></ul><br><h3 id="content-gaps">Content Gaps</h3><ol><li>Limited content targeting "duurzaam autodelen" and related sustainability terms</li><li>Missing dedicated pages for specific vehicle types (e.g., "elektrische auto huren")</li><li>No content addressing "flexibele opslagruimte" searches</li><li>Limited FAQ content addressing common rental questions</li><li>No blog content targeting informational queries related to transportation solutions</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Filling content gaps around sustainability and electric vehicles aligns with market trends and low competition.</li><li>Introduce FAQ schema on vehicle and storage pages to capture featured snippets and improve click-through rates.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-direct-competitors">Key Direct Competitors</h3><p>Based on detailed competitive analysis, DIKS's main direct competitors include:</p><br><ol><li><strong>Sixt Netherlands</strong> (sixt.nl)</li></ol><ul><li>Strongest competitor with high average keyword position (1)</li><li>Estimated traffic volume: 1,094.4</li><li>Strengths: Comprehensive location-specific pages, strong title and meta description strategy</li><li>Weaknesses: Less focus on local Dutch market specifics</li></ul><br><ol><li><strong>Auto Europe</strong> (autoeurope.nl)</li></ol><ul><li>High average keyword position (2)</li><li>Estimated traffic volume: 583.2</li><li>Strengths: Strong rankings for general car rental and location-specific keywords</li><li>Weaknesses: Less localized content for Dutch cities</li></ul><br><ol><li><strong>Bo-rent</strong> (borent.nl)</li></ol><ul><li>High average keyword position (8)</li><li>High number of backlink intersections (332)</li><li>Strengths: Strong rankings for vehicle-specific keywords</li><li>Weaknesses: Less comprehensive content strategy</li></ul><br><h3 id="additional-competitors-from-backlink-analysis">Additional Competitors from Backlink Analysis</h3><ol><li><strong>ANWB</strong> (anwb.nl)</li></ol><ul><li>Rank: 89</li><li>Backlink intersections: 795</li><li>Strengths: Extremely strong domain authority, comprehensive content</li><li>Weaknesses: Broader focus beyond car rental services</li></ul><br><ol><li><strong>Marktplaats</strong> (marktplaats.nl)</li></ol><ul><li>Rank: 43</li><li>Backlink intersections: 438</li><li>Strengths: Massive user base, strong marketplace presence</li><li>Weaknesses: Not specialized in rental services</li></ul><br><h3 id="competitor-keyword-analysis">Competitor Keyword Analysis</h3><ul><li>Competitors consistently outperform DIKS for high-volume keywords:</li><li>"auto huur" (33,100 searches)</li><li>"verhuur van auto's" (22,200 searches)</li><li>"huur een bus" (22,200 searches)</li><li>"verhuur auto" (22,200 searches)</li><li>"huren van een busje" (22,200 searches)</li><li>"autoverhuur" (22,200 searches)</li><li>"busje huren" (22,200 searches)</li></ul><br><ul><li>Competitors collectively rank for 1,240+ keywords that DIKS doesn't rank for</li><li>Key missing keywords include "deelauto zakelijk gebruik" (1,400 searches), "flexibele autohuur zonder contract" (890 searches)</li></ul><br><h3 id="competitor-content-serp-strategies">Competitor Content & SERP Strategies</h3><ul><li><strong>Title and Meta Description Strategy</strong>:</li><li><strong>DIKS</strong>: Current title "Auto huren? Huur vertrouwd & voordelig bij DIKS" (47 characters) is too short. Meta description "Bij DIKS Autoverhuur huur je eenvoudig een auto, busje of bestelwagen. Altijd voor een goede prijs, zonder verrassingen en met persoonlijke contact." focuses on simplicity, good pricing, and personal contact.</li><li><strong>Competitors</strong>: Titles are more keyword-rich with specific offers (e.g., "Goedkoop auto huren," "Snel en goedkoop een busje huren"). Meta descriptions highlight specific benefits and include strong calls to action like "Boek nu" and "Reserveer online."</li></ul><br><ul><li><strong>Successful Content Types</strong>:</li><li><strong>Dedicated Vehicle Type Pages</strong>: Sixt and Bo-rent have specific pages for vehicle types (e.g., "9-Persoons bus," "Bestelbus," "Verhuisbus")</li><li><strong>Location-Specific Pages</strong>: Sixt has dedicated pages for car rental in specific cities (e.g., "Auto huren Amsterdam," "Auto huren Den Haag")</li><li><strong>Service-Specific Pages</strong>: Sixt has pages for specific services (e.g., "Auto huren voor een dag," "Lange termijn auto huren")</li></ul><br><ul><li><strong>Specific Competitor Strategies</strong>:</li><li><strong>Kayak</strong>: Emphasizes latest deals with specific pricing (e.g., "Utrecht $36/day; The Hague $40/day")</li><li><strong>Hertz</strong>: Focuses on city exploration ("explore incredible cities from Amsterdam and Rotterdam to The Hague and beyond")</li><li><strong>Europcar</strong>: Highlights scenic experiences ("Explore the picturesque cities and scenic countryside")</li><li><strong>Enterprise</strong>: Emphasizes transparent pricing ("rent a car for only €6,- per hour and €0,30 per kilometer")</li><li><strong>SIXT</strong>: Promotes discovery aspect ("discover hidden gems and world-renowned landmarks at your own pace")</li></ul><br><ul><li><strong>Common Competitor Tactics</strong>:</li><li><strong>Price Emphasis</strong>: Competitors frequently mention "goedkoop" (cheap) or specific prices in titles and meta descriptions</li><li><strong>Vehicle Variety</strong>: Competitors emphasize wide selection of vehicles available</li><li><strong>Location Specificity</strong>: Competitors use location-specific keywords in titles and descriptions</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit your title/meta library and adopt price-focused headlines plus clear CTAs on top-priority pages.</li><li>Build new vehicle and city pages following competitors’ URL structures and content depth.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li>Total backlinks: 181,824 [Backlink Analysis]</li><li>Referring domains: 1,318 [Backlink Analysis]</li><li>Referring main domains: 907 [Backlink Analysis]</li><li>Domain rank: 425 [Backlink Analysis]</li><li>Backlink spam score: Very low (0) [Backlink Analysis]</li></ul><br><h3 id="backlink-distribution-by-tld">Backlink Distribution by TLD</h3><ul><li>.nl domains: 180,465 backlinks (99.3%) [Backlink Analysis]</li><li>.com domains: 603 backlinks [Backlink Analysis]</li><li>.ru domains: 95 backlinks [Backlink Analysis]</li><li>.org domains: 66 backlinks [Backlink Analysis]</li><li>Other TLDs: 595 backlinks [Backlink Analysis]</li></ul><br><h3 id="backlink-types-and-attributes">Backlink Types and Attributes</h3><ul><li>Anchor links: 167,928 (92.4%) [Backlink Analysis]</li><li>Image links: 13,635 (7.5%) [Backlink Analysis]</li><li>Redirect links: 16 (0.1%) [Backlink Analysis]</li><li>Nofollow links: 484 (0.3%) [Backlink Analysis]</li></ul><br><h3 id="notable-referring-domains">Notable Referring Domains</h3><ol><li>nieuwnieuws.nl - News site with multiple backlinks using "DIKS Autoverhuur" anchor text [Backlink Analysis]</li><li>geenstijl.nl - Popular Dutch blog with consistent brand mentions [Backlink Analysis]</li><li>waterwijk.nl - Local community site (2% spam score) [Backlink Analysis]</li><li>amsterdamlife.nl - Local lifestyle site (2% spam score) [Backlink Analysis]</li><li>elektrischdeelrijden.nl - Niche site related to electric vehicles (3% spam score) [Backlink Analysis]</li></ol><br><h3 id="authoritative-link-opportunities">Authoritative Link Opportunities</h3><p>Based on competitor backlink analysis, these high-authority domains link to competitors but not to DIKS:</p><br><ol><li>expertpagina.nl (Rank: 105) - Links to competitors but not to DIKS [Backlink Analysis]</li><li>autoweek.nl (Rank: 47) - Links to 9 competitors but not to DIKS [Backlink Analysis]</li><li>amsterdam.nl (Rank: 64) - Official city website with high authority [Backlink Analysis]</li><li>tui.nl (Rank: 62) - Travel site with relevant audience [Backlink Analysis]</li><li>startpagina.nl (Rank: 26) - Popular Dutch directory [Backlink Analysis]</li></ol><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><ul><li>Extremely high concentration of "DIKS Autoverhuur" anchor text [Backlink Analysis]</li><li>Limited keyword variation in anchor text profile [Backlink Analysis]</li><li>Most backlinks appear in standardized formats (e.g., footer links) [Backlink Analysis]</li><li>Potential over-optimization risk due to lack of anchor text diversity [Backlink Analysis]</li></ul><br><h3 id="potentially-harmful-backlinks">Potentially Harmful Backlinks</h3><ul><li>Very few toxic backlinks detected (backlink spam score is 0) [Backlink Analysis]</li><li>Only one medium spam score referring domain (bedrijvenopdekaart.nl at 37% spam score) [Backlink Analysis]</li><li>5 broken backlinks identified [Backlink Analysis]</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Diversify anchor profiles by creating PR-driven content (infographics, case studies) for broader keyword anchoring.</li><li>Prioritize outreach to high-authority sites identified in opportunities to fill gaps.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="immediate-serp-optimization">Immediate SERP Optimization</h3><ol><li><strong>Improve Title and Meta Description Strategy</strong>:</li></ol><ul><li>Extend the current title from 47 characters to at least 50-60 characters</li><li>Rewrite titles to be more keyword-rich and include terms like "goedkoop" where appropriate</li><li>Example: Instead of "Auto huren? Huur vertrouwd & voordelig bij DIKS," use "Goedkoop busje huren Amsterdam? Reserveer direct bij DIKS! | Beste prijsgarantie"</li><li>Add clear calls to action in meta descriptions like "Boek nu" and "Reserveer online"</li></ul><br><ol><li><strong>Fix Technical SEO Issues</strong>:</li></ol><ul><li>Add alt text to the 15 images missing this attribute</li><li>Optimize the large image exceeding 100KB</li><li>Address mobile page speed issues to improve the current score of 67/100</li></ul><br><ol><li><strong>Create Dedicated Vehicle Type Pages</strong>:</li></ol><ul><li>Develop specific landing pages for "bestelbus huren," "verhuisbus huren," "9 persoonsbus huren"</li><li>Include detailed vehicle information, pricing, availability, testimonials, and clear CTAs</li><li>Follow the successful structure used by competitors like Sixt and Bo-rent</li></ul><br><ol><li><strong>Optimize Location Pages</strong>:</li></ol><ul><li>Enhance existing location pages with more relevant keywords</li><li>Create new location pages for cities where DIKS operates but lacks dedicated pages</li><li>Implement location-specific content that addresses local transportation needs</li></ul><br><h3 id="content-development-strategy">Content Development Strategy</h3><ol><li>Create location-specific landing pages for each service area with local keywords</li><li>Develop comprehensive guides on "Sustainable Transportation Options in Dutch Cities"</li><li>Create comparison content between car ownership vs. car sharing vs. short-term rental</li><li>Develop visual guides for storage unit sizes and vehicle capacities</li><li>Create seasonal content addressing peak rental periods (summer holidays, moving season)</li></ol><br><h3 id="content-optimization-opportunities">Content Optimization Opportunities</h3><ol><li>Enhance <code>/autoverhuur</code> page with FAQ schema and city-specific sections</li><li>Expand <code>/opslagverhuur</code> with size calculators and visual guides</li><li>Add customer testimonials and case studies to <code>/zakelijk</code> section</li><li>Create dedicated pages for each vehicle type with specific benefits</li><li>Revitalize the <code>/nieuws/</code> section with high-quality, keyword-focused content to improve its poor performance</li></ol><br><h3 id="content-strategy-based-on-performance-data">Content Strategy Based on Performance Data</h3><ol><li>Leverage the strong performance of location-based pages (like <code>/bus-huren-amsterdam</code>) by creating similar pages for other major Dutch cities</li><li>Expand on the successful seasonal content strategy (like <code>/busje-huren-vakantie</code>) with additional seasonal rental use cases</li><li>Improve the vehicle category pages structure to match the success of <code>/voertuigen/2/bestelbussen</code></li><li>Create more comprehensive content for the underperforming <code>/nieuws/</code> directory to improve its rankings from positions 21-70 to top 20</li></ol><br><h3 id="competitor-strategy-implementation">Competitor Strategy Implementation</h3><ol><li><strong>Adopt Pricing Transparency</strong>: Follow Enterprise's approach by clearly stating hourly and per-kilometer rates on key landing pages</li><li><strong>Emphasize Exploration</strong>: Use Hertz and Europcar's strategy of highlighting how rental vehicles enable customers to explore Dutch cities and countryside</li><li><strong>Create City-Specific Content</strong>: Implement Sixt's approach with dedicated pages for major Dutch cities with unique content for each</li><li><strong>Target "Car Rental Netherlands"</strong>: Develop a comprehensive English-language page targeting international visitors, following Kayak and Hertz's approach</li></ol><br><h3 id="backlink-acquisition-strategy">Backlink Acquisition Strategy</h3><ol><li>Develop newsworthy content to attract more editorial links (beyond the current footer links)</li><li>Create diverse anchor text profiles through varied content marketing approaches</li><li>Target high-authority sites like expertpagina.nl and autoweek.nl with unique content pitches</li><li>Develop local partnerships with Amsterdam-based businesses for contextual links</li><li>Create shareable infographics about transportation trends to attract natural backlinks</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Build a 90-day implementation roadmap, assigning clear owners, milestones, and weekly progress checks for content, technical SEO, and backlinks.</li></ul><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><p>DIKS has a strong foundation with an impressive number of backlinks (181,824) and referring domains (1,318), primarily from Dutch websites. However, the 6.02% decrease in ETV over the past year indicates concerning trends in organic visibility that need to be addressed.</p><br><p>The company should focus on:</p><ol><li>Fixing immediate technical SEO issues like the short title tag (47 characters), missing alt text on 15 images, and large image optimization</li><li>Reversing the downward ETV trend by improving rankings for keywords in positions 41-100</li><li>Capitalizing on the positive trend of increased rankings in positions 1-30</li><li>Implementing competitor-proven strategies like dedicated vehicle type pages and location-specific content</li><li>Improving title and meta description optimization with more keyword-rich content and clear calls to action</li><li>Emphasizing price competitiveness with terms like "goedkoop" where appropriate</li><li>Diversifying anchor text beyond the standard "DIKS Autoverhuur" format</li><li>Addressing technical SEO issues to improve crawlability and indexation</li><li>Developing content that addresses seasonal trends and emerging transportation needs</li><li>Creating a strategy to compete for high-value keywords like "car rental Netherlands" where major international competitors currently dominate</li></ol><br><p>By implementing these recommendations, DIKS can leverage its strong domain authority to significantly improve its organic search visibility and traffic in the Netherlands, ultimately driving more conversions and business growth.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Host a cross-functional kickoff meeting within one week to align SEO, content, and dev teams on priorities, and set up tracking dashboards to monitor ETV, rankings, and technical KPIs.</li></ul></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - DIKS',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

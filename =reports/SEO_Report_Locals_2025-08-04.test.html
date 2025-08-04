@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Locals</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Locals • www.localscoffee.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 4, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="seo-research-report-locals-coffee-netherlands-" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Locals Coffee (Netherlands)</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="overall-seo-performance-growth-last-12-months-">Overall SEO Performance & Growth (Last 12 Months)</h3><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value</th><th>Growth (%)</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">14,953.82</td><td class="positive">+98.57%</td></tr><tr><td class="">Keywords in Position 1</td><td class="">19</td><td class="positive">+171.43%</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">6</td><td class="">0%</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">24</td><td class="positive">+60%</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="">46</td><td class="positive">+70.37%</td></tr><tr><td class="">Keywords in Positions 21-30</td><td class="">40</td><td class="positive">+66.67%</td></tr><tr><td class="">New Ranking Keywords</td><td class="">68</td><td class="">—</td></tr><tr><td class="">Improved Ranking Keywords</td><td class="">31</td><td class="">—</td></tr><tr><td class="">Declining Ranking Keywords</td><td class="">59</td><td class="">—</td></tr><tr><td class="">Lost Ranking Keywords</td><td class="">32</td><td class="">—</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>With nearly 100% traffic growth, prioritizing optimization of mid-funnel pages (positions 4–10) could amplify conversions by capturing additional low-hanging opportunities.</li></ul><br><hr><br><h3 id="key-competitors-keywords-they-outrank-locals-coffee-on">Key Competitors & Keywords They Outrank Locals Coffee On</h3><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Website</th><th>Keywords They Rank Higher For (Search Volume)</th></tr></thead><tbody><tr><td class="">Little Collins</td><td class="">www.littlecollins.nl</td><td class="">"brunch de pijp" (480), "lunch de pijp" (1600), neighborhood-specific keywords</td></tr><tr><td class="">Bakers & Roasters</td><td class="">bakersandroasters.com</td><td class="">"breakfast amsterdam" (6600), "best breakfast amsterdam" (3600), "best brunch amsterdam" (2400), "brunch spots amsterdam" (1000)</td></tr><tr><td class="">Eatwelldogood (Dignita)</td><td class="">eatwelldogood.nl</td><td class="">"brunch amsterdam" (9900), "best brunch amsterdam" (2400), "brunch places amsterdam" (1000), "lunch de pijp" (1600)</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Target competitor gaps by creating hyperlocal content (e.g., a detailed “De Pijp brunch guide”) to dethrone Little Collins in neighborhood-specific searches.</li></ul><br><hr><br><h3 id="opportunity-keywords-to-target-why">Opportunity Keywords to Target & Why</h3><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th><th>Reason to Target</th></tr></thead><tbody><tr><td class="">brunch amsterdam</td><td class="">9,900</td><td class="">HIGH</td><td class="">High volume, currently outranked by competitors</td></tr><tr><td class="">amsterdam brunch</td><td class="">9,900-12,100</td><td class="">LOW</td><td class="">High volume, low competition</td></tr><tr><td class="">koffie amsterdam</td><td class="">880-1,900</td><td class="">LOW</td><td class="">Dutch language, local intent</td></tr><tr><td class="">koffie tentje amsterdam</td><td class="">720-1,600</td><td class="">LOW</td><td class="">Dutch language, niche local search</td></tr><tr><td class="">zuivere koffie amsterdam</td><td class="">590-2,400</td><td class="">LOW</td><td class="">Long-tail, low competition</td></tr><tr><td class="">brunch places amsterdam</td><td class="">1,000</td><td class="">LOW</td><td class="">Location-specific, low competition</td></tr><tr><td class="">best breakfast amsterdam</td><td class="">3,600</td><td class="">HIGH</td><td class="">High volume, competitor gap</td></tr><tr><td class="">brunch in de pijp</td><td class="">90</td><td class="">LOW</td><td class="">Hyperlocal opportunity</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Begin content planning for “amsterdam brunch” and “koffie amsterdam” with dedicated landing pages that address local intent and incorporate user reviews.</li></ul><br><hr><br><h3 id="tl-dr-most-important-findings">TL;DR - Most Important Findings</h3><br><ul><li>Locals Coffee has nearly doubled its organic traffic in 12 months with strong growth in top 10 keyword rankings.</li><li>Homepage dominates with 170 keywords; however, location and product pages underperform and need optimization.</li><li>Technical SEO issues include duplicate homepage URLs and URL structure errors; site speed and mobile optimization pending analysis.</li><li>Strong keyword presence for branded terms but missing out on high-volume Dutch and hyperlocal keywords.</li><li>Competitors outrank Locals on key high-volume keywords related to brunch and breakfast, especially in “De Pijp” neighborhood.</li><li>Backlink profile is healthy but can be improved by acquiring links from authoritative domains linking to competitors.</li><li>Toxic backlinks identified and should be disavowed to protect rankings.</li><li>Content strategy should focus on Dutch language content, hyperlocal pages, menu-specific keywords, and seasonal topics like the Amsterdam coffee festival.</li><li>Local SEO and schema markup implementation are critical next steps.</li><li>Backlink acquisition should target local directories, review sites, and competitor backlink intersections.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Addressing technical SEO and local schema could unlock further gains, complementing content and backlink initiatives.</li></ul><br><hr><br></div></section>
+                <section id="full-research-report" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Full Research Report</h2>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Locals Coffee is a specialty coffee business with three distinct locations in Amsterdam:</p><ul><li>Locals 1.0: Focuses on all-day brunch and specialty coffee</li><li>Locals 2.0: Primarily offers coffee to go</li><li>Locals 3.0: Provides all-day brunch and specialty coffee</li></ul><br><p>They also sell their own branded coffee beans, including "Locals No. 27 Premium Beans," and have received positive customer reviews highlighting the quality of their food, coffee, and service. (Company Website: https://www.localscoffee.nl)</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-organic-visibility-traffic">Current Organic Visibility & Traffic</h3><ul><li><strong>Impressive Growth</strong>: 98.57% increase in Estimated Traffic Volume (ETV) over the past 12 months</li><li><strong>Latest ETV</strong>: 14,953.82 (as of July 2025)</li><li><strong>Estimated Paid Traffic Cost</strong>: €8,325.12 (value of organic traffic if paid for through advertising)</li></ul><br><h3 id="position-distribution-latest-data-">Position Distribution (Latest Data)</h3><ul><li><strong>Position 1</strong>: 19 keywords (171.43% increase year-over-year)</li><li><strong>Positions 2-3</strong>: 6 keywords (no change)</li><li><strong>Positions 4-10</strong>: 24 keywords (60% increase)</li><li><strong>Positions 11-20</strong>: 46 keywords (70.37% increase)</li><li><strong>Positions 21-30</strong>: 40 keywords (66.67% increase)</li></ul><br><h3 id="keyword-movement-trends">Keyword Movement Trends</h3><ul><li><strong>New Keywords</strong>: 68 newly ranking keywords</li><li><strong>Improved Rankings</strong>: 31 keywords moved up in rankings</li><li><strong>Declining Rankings</strong>: 59 keywords dropped in position</li><li><strong>Lost Keywords</strong>: 32 keywords no longer ranking</li></ul><br><h3 id="top-performing-pages">Top Performing Pages</h3><ul><li><strong>Homepage</strong> (https://www.localscoffee.nl/): Best performer with ETV of 14,728.6, ranking for 170 keywords</li><li><strong>Menu Page</strong> (https://www.localscoffee.nl/menu): Moderate performance with ETV of 116.14, ranking for 10 keywords</li><li><strong>Shop Page</strong> (https://www.localscoffee.nl/shop): Ranks in position 1 for one keyword, ETV of 51.68</li></ul><br><h3 id="underperforming-pages">Underperforming Pages</h3><ul><li><strong>Contact Page</strong> (https://www.localscoffee.nl/contact): Very low ETV (1.09), poor rankings (positions 21-70)</li><li><strong>Product Pages</strong> (e.g., https://www.localscoffee.nl/products/product-mug): Low ETV (0.36), poor rankings (positions 51-60)</li><li><strong>Location Pages</strong>:</li><li>https://www.localscoffee.nl/locals-eerste-jacob-van-campenstraat: Low ETV (15.04), rankings mostly in positions 11-20</li><li>https://www.localscoffee.nl/locals-daniel-stalpertstraat: Low ETV (40.91), rankings mostly in positions 4-30</li></ul><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><ul><li><strong>Duplicate Homepage URLs</strong>: http://www.localscoffee.nl/ and https://localscoffee.nl/ show no ranking keywords, indicating potential duplicate content issues</li><li><strong>URL Structure Issues</strong>: Technical audit encountered errors due to invalid URL formatting</li><li><strong>Site Speed Assessment</strong>: [Pending detailed speed analysis]</li><li><strong>Mobile Optimization</strong>: [Pending mobile optimization assessment]</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a crawl audit with tools like Screaming Frog to identify and fix duplicate and misformatted URLs within two weeks.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><br><h4 id="top-performing-keywords-positions-1-10-">Top Performing Keywords (Positions 1-10)</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">local amsterdam</td><td class="">1900</td><td class="">1</td></tr><tr><td class="">locals all day brunch</td><td class="">14800</td><td class="">4</td></tr><tr><td class="">locals all day brunch amsterdam</td><td class="">110</td><td class="">1</td></tr><tr><td class="">locals all day brunch ds</td><td class="">12100</td><td class="">1</td></tr><tr><td class="">locals all day brunch menu</td><td class="">70</td><td class="">1</td></tr><tr><td class="">locals amsterdam</td><td class="">1900</td><td class="">1</td></tr><tr><td class="">locals amsterdam menu</td><td class="">70</td><td class="">1</td></tr><tr><td class="">locals brunch</td><td class="">110</td><td class="">1</td></tr><tr><td class="">locals coffee</td><td class="">390</td><td class="">1</td></tr><tr><td class="">locals coffee amsterdam</td><td class="">170</td><td class="">1</td></tr><tr><td class="">locals de pijp</td><td class="">260</td><td class="">1</td></tr><tr><td class="">locals restaurant amsterdam</td><td class="">90</td><td class="">1</td></tr><tr><td class="">locals specialty coffee</td><td class="">5400</td><td class="">1</td></tr><tr><td class="">all day brunch amsterdam</td><td class="">170</td><td class="">5</td></tr><tr><td class="">locals brunch amsterdam</td><td class="">140</td><td class="">5</td></tr><tr><td class="">locals food</td><td class="">320</td><td class="">5</td></tr><tr><td class="">locals</td><td class="">8100</td><td class="">6</td></tr><tr><td class="">restaurant locals</td><td class="">3600</td><td class="">7</td></tr><tr><td class="">daniel stalpertstraat</td><td class="">3600</td><td class="">10</td></tr><tr><td class="">all day brunch</td><td class="">320</td><td class="">10</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Leverage high-volume, high-ranking branded keywords by integrating them into H1 tags and landing page copy to reinforce authority.</li></ul><br><h4 id="keyword-opportunities-positions-11-30-">Keyword Opportunities (Positions 11-30)</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">brunch all day</td><td class="">320</td><td class="">11</td></tr><tr><td class="">local café</td><td class="">170</td><td class="">13</td></tr><tr><td class="">local cafe</td><td class="">170</td><td class="">14</td></tr><tr><td class="">all day breakfast amsterdam</td><td class="">140</td><td class="">14</td></tr><tr><td class="">best brunch near me</td><td class="">590</td><td class="">14</td></tr><tr><td class="">brunch amsterdam zuid</td><td class="">140</td><td class="">14</td></tr><tr><td class="">best amsterdam brunch</td><td class="">2400</td><td class="">14</td></tr><tr><td class="">speciality coffee near me</td><td class="">8100</td><td class="">15</td></tr><tr><td class="">brunch in de pijp</td><td class="">90</td><td class="">16</td></tr><tr><td class="">good brunch places near me</td><td class="">90</td><td class="">16</td></tr><tr><td class="">de pijp brunch</td><td class="">170</td><td class="">17</td></tr><tr><td class="">coffee speciality near me</td><td class="">90</td><td class="">18</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Optimize key opportunity pages (positions 11–30) with improved internal linking and meta tags to push them into the top 10.</li></ul><br><h3 id="high-value-keyword-opportunities">High-Value Keyword Opportunities</h3><br><h4 id="top-priority-keywords">Top Priority Keywords</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th></tr></thead><tbody><tr><td class="">brunch amsterdam</td><td class="">9900</td><td class="">HIGH</td></tr><tr><td class="">breakfast amsterdam</td><td class="">6600</td><td class="">HIGH</td></tr><tr><td class="">amsterdam brunch</td><td class="">9900-12100</td><td class="">LOW</td></tr><tr><td class="">koffie amsterdam</td><td class="">880-1900</td><td class="">LOW</td></tr><tr><td class="">koffie tentje amsterdam</td><td class="">720-1600</td><td class="">LOW</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Focus on low-competition, high-volume terms (e.g., “amsterdam brunch”) first to secure quick wins before tackling highly competitive keywords.</li></ul><br><h4 id="secondary-keywords">Secondary Keywords</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th></tr></thead><tbody><tr><td class="">best breakfast amsterdam</td><td class="">3600</td><td class="">HIGH</td></tr><tr><td class="">best brunch amsterdam</td><td class="">2400</td><td class="">HIGH</td></tr><tr><td class="">brunch amsterdam best</td><td class="">1600-3600</td><td class="">LOW</td></tr><tr><td class="">top brunch amsterdam</td><td class="">1600-3600</td><td class="">LOW</td></tr><tr><td class="">good brunch amsterdam</td><td class="">1600-3600</td><td class="">LOW</td></tr><tr><td class="">koffie in amsterdam</td><td class="">880-1900</td><td class="">LOW</td></tr></tbody></table></div><h3 id="long-tail-keywords-low-competition-opportunities">Long-tail Keywords & Low Competition Opportunities</h3><ul><li><strong>zuivere koffie amsterdam</strong>: 590-2400 monthly searches, LOW competition</li><li><strong>koffie festival amsterdam</strong>: 20-880 monthly searches, LOW competition (seasonal spike in April)</li><li><strong>brunch in de pijp</strong>: 90 monthly searches, opportunity for location-specific content</li><li><strong>oatmeal near me</strong>: 70 monthly searches, opportunity for menu-specific content</li><li><strong>lunch de pijp</strong>: 1600 monthly searches, opportunity for location-specific content</li><li><strong>brunch places amsterdam</strong>: 1000 monthly searches, LOW competition</li><li><strong>brunch spots amsterdam</strong>: 1000 monthly searches, LOW competition</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Seasonal terms like “koffie festival amsterdam” require timely content publishing in late Q1 (Feb–March) to align with search spikes in April.</li></ul><br><h3 id="dutch-language-keywords">Dutch Language Keywords</h3><ul><li><strong>beste ontbijt amsterdam</strong>: 260 monthly searches</li><li><strong>ontbijt de pijp</strong>: 170 monthly searches</li><li><strong>ontbijt in de pijp</strong>: 170 monthly searches</li><li><strong>ontbijten de pijp</strong>: 170 monthly searches</li><li><strong>ontbijten in de pijp</strong>: 170 monthly searches</li><li><strong>lunchen amsterdam de pijp</strong>: 210 monthly searches</li><li><strong>lunch pijp</strong>: 210 monthly searches</li><li><strong>de pijp lunchen</strong>: 210 monthly searches</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Translate and localize existing English content into Dutch for at least five high-priority pages within the next sprint.</li></ul><br><h3 id="seasonal-trends">Seasonal Trends</h3><ul><li><strong>koffie festival amsterdam</strong>: Shows significant search volume increase in April, indicating a seasonal opportunity to create content around coffee festivals</li><li><strong>brunch amsterdam</strong>: Consistent search volume throughout the year with slight increases during summer months</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Capitalize on summer spikes for brunch-related terms by publishing event tie-in content (e.g., “Summer brunch specials in De Pijp”).</li></ul><br><h3 id="content-gaps">Content Gaps</h3><ol><li><strong>Blog Content</strong>: The blog is linked in SERP snippets but isn't ranking for specific keywords, indicating poor optimization</li><li><strong>Dutch Language Content</strong>: Most ranking keywords are in English despite targeting a Dutch audience</li><li><strong>"Near Me" Searches</strong>: Underperforming for high-volume "near me" searches (e.g., "speciality coffee near me" with 8100 monthly searches)</li><li><strong>Location-Specific Content</strong>: Weak performance for neighborhood-specific searches like "brunch in de pijp" and "de pijp brunch"</li><li><strong>Menu-Specific Keywords</strong>: Missing opportunities for specific menu items (e.g., "pancakes amsterdam," "eggs benedict de pijp")</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit the blog section for on-page SEO issues (missing H2s, meta descriptions) and optimize 3–5 cornerstone articles within one month.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><br><h4 id="little-collins">Little Collins</h4><ul><li><strong>Website</strong>: www.littlecollins.nl</li><li><strong>Type</strong>: Direct competitor (coffee and brunch)</li><li><strong>Key Strengths</strong>: Strong focus on the "De Pijp" neighborhood with location-specific keywords</li><li><strong>SEO Strategy</strong>: Uses a simple but effective title tag ("LITTLE COLLINS - DE PIJP - brunch") that clearly targets the neighborhood</li><li><strong>Top Performing Keywords</strong>: Outranks Locals for almost all keywords related to "De Pijp"</li></ul><br><h4 id="bakers-roasters">Bakers & Roasters</h4><ul><li><strong>Website</strong>: bakersandroasters.com</li><li><strong>Type</strong>: Direct competitor (coffee and brunch)</li><li><strong>Key Strengths</strong>: Broad focus on "breakfast" and "brunch" across Amsterdam with emphasis on their unique Kiwi/Brazilian identity</li><li><strong>SEO Strategy</strong>: Uses social proof in meta descriptions ("If you've been to Amsterdam but skipped @bakersandroasters, did you 'really' go to Amsterdam?")</li><li><strong>Top Performing Keywords</strong>: Outranks Locals for almost all keywords related to "breakfast" and "brunch" in Amsterdam</li></ul><br><h4 id="eatwelldogood-dignita-">Eatwelldogood (Dignita)</h4><ul><li><strong>Website</strong>: eatwelldogood.nl</li><li><strong>Type</strong>: Direct competitor (coffee and brunch)</li><li><strong>Key Strengths</strong>: Strong focus on "all-day brunch" and multiple locations</li><li><strong>SEO Strategy</strong>: Highlights multiple locations in meta descriptions ("Twee locaties waar je de hele dag ontbijt, brunch of lunch kan eten in hartje Amsterdam Zuid en in het centrum van Amsterdam")</li><li><strong>Top Performing Keywords</strong>: Outranks Locals for almost all keywords related to "brunch" in Amsterdam</li></ul><br><h3 id="keyword-performance-comparison">Keyword Performance Comparison</h3><br><h4 id="high-value-keywords-where-competitors-outrank-locals">High-Value Keywords Where Competitors Outrank Locals</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competitors Ranking Higher</th></tr></thead><tbody><tr><td class="">brunch amsterdam</td><td class="">9900</td><td class="">All three competitors</td></tr><tr><td class="">breakfast amsterdam</td><td class="">6600</td><td class="">Bakers & Roasters, Eatwelldogood</td></tr><tr><td class="">best breakfast amsterdam</td><td class="">3600</td><td class="">Bakers & Roasters, Eatwelldogood</td></tr><tr><td class="">best brunch amsterdam</td><td class="">2400</td><td class="">Bakers & Roasters, Eatwelldogood</td></tr><tr><td class="">lunch de pijp</td><td class="">1600</td><td class="">Little Collins, Eatwelldogood</td></tr><tr><td class="">brunch places amsterdam</td><td class="">1000</td><td class="">Eatwelldogood</td></tr><tr><td class="">brunch spots amsterdam</td><td class="">1000</td><td class="">Bakers & Roasters, Eatwelldogood</td></tr><tr><td class="">brunch de pijp</td><td class="">480</td><td class="">Little Collins, Bakers & Roasters</td></tr></tbody></table></div><h3 id="competitor-content-strategies">Competitor Content Strategies</h3><br><ol><li><strong>Location Specificity</strong>: Little Collins effectively uses neighborhood names in title tags to dominate local searches</li><li><strong>Social Proof</strong>: Bakers & Roasters leverages social proof in meta descriptions to increase click-through rates</li><li><strong>Multiple Locations</strong>: Eatwelldogood clearly states they have multiple locations in their meta descriptions</li><li><strong>Dedicated Location Pages</strong>: Competitors have well-optimized pages for each location with neighborhood-specific content</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Emulate competitors’ use of social proof and multiple locations by incorporating customer testimonials in meta descriptions and on-page snippets.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li><strong>Total Backlinks</strong>: 398 backlinks</li><li><strong>Referring Domains</strong>: 123 unique domains</li><li><strong>Domain Rank</strong>: 166</li><li><strong>Backlink Spam Score</strong>: 18% (Low risk)</li><li><strong>First Backlink Detected</strong>: January 22, 2019</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>With a healthy domain rank and low spam score, prioritize outreach to intersection domains (e.g., foursquare.com) to replicate competitor backlinks.</li></ul><br><h3 id="backlink-quality-assessment">Backlink Quality Assessment</h3><ul><li><strong>Low Spam Score Backlinks</strong>: 25 sample domains with spam scores below 30%, including:</li><li>amsterdamsights.com (10% spam score)</li><li>tastyrank.com (0% spam score)</li><li>wanderlog.com (0% spam score)</li><li>websiteplanet.com (20% spam score)</li><li>happycow.net (0% spam score)</li><li><strong>Medium Spam Score Backlinks</strong>: 13 sample domains with spam scores between 31–60%, including:</li><li>foodhub.nu (45% spam score)</li><li>seobacklinks.agency (45% spam score)</li><li>visitnapac.com (40% spam score)</li><li><strong>High Spam Score Backlinks</strong>: 2 domains with spam scores above 60%:</li><li>gaysonoma.com (62% spam score)</li><li>mastermindexhibition.blogspot.com (85% spam score)</li></ul><br><h3 id="backlink-source-distribution">Backlink Source Distribution</h3><ul><li><strong>Geographic Distribution</strong>: Primarily from Netherlands (95 links), followed by US (42 links) and worldwide sources (39 links)</li><li><strong>TLD Distribution</strong>: Majority from .com (169 links) and .nl (93 links) domains</li><li><strong>Platform Types</strong>: Unknown (210), CMS (88), Blogs (77), Organization (75)</li><li><strong>Link Types</strong>: Primarily anchor text links (330) with few image links (4)</li><li><strong>Link Attributes</strong>: Many links have noopener (119), noreferrer (54), and nofollow (53) attributes</li></ul><br><h3 id="link-building-opportunities">Link Building Opportunities</h3><ul><li><strong>Competitor Backlink Intersections</strong>: Several high-authority domains link to competitors but not to Locals:</li><li>foursquare.com (rank: 123, 114 intersections)</li><li>business.site (rank: 56, 66 intersections)</li><li>etsy.com (rank: 39, 43 intersections)</li><li>booking.com (rank: 30, 27 intersections)</li><li><strong>Local Directory Opportunities</strong>: Strong presence on local directories but opportunities for expansion</li><li><strong>Review Site Opportunities</strong>: Currently has links from restaurantreviews.nl and tastyrank.com, but could expand to more review platforms</li></ul><br><h3 id="toxic-backlink-assessment">Toxic Backlink Assessment</h3><ul><li><strong>High-Risk Links</strong>: Two high-spam backlinks identified that should be disavowed:</li><li>gaysonoma.com (62% spam score)</li><li>mastermindexhibition.blogspot.com (85% spam score)</li><li><strong>Medium-Risk Links</strong>: 13 domains with medium spam scores should be monitored but don't require immediate action</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prepare disavow file for high-risk domains by end of week and submit via Google Search Console.</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><ul><li><strong>Brand Mentions</strong>: Strong presence of brand-related anchor text ("Locals Coffee", "Locals")</li><li><strong>URL Variations</strong>: Multiple instances of raw URL anchor text (https://www.localscoffee.nl/)</li><li><strong>Generic Anchors</strong>: Some generic anchors like "Website" and "Go to website"</li><li><strong>Location Anchors</strong>: Some location-specific anchors like "Locals Cafe, De Pijp"</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="technical-optimization-priorities">Technical Optimization Priorities</h3><ol><li><strong>Resolve Duplicate Content Issues</strong>: Implement proper 301 redirects from <code>http://www.localscoffee.nl/</code> and <code>https://localscoffee.nl/</code> to the primary domain <code>https://www.localscoffee.nl/</code> to consolidate SEO value</li><li><strong>Fix URL Structure Issues</strong>: Ensure all URLs are properly formatted for accurate tracking and analysis</li><li><strong>Implement Schema Markup</strong>: Add LocalBusiness and Restaurant schema markup to provide search engines with more context about the business</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign 301 redirect tasks to dev team and verify redirect mapping within the current sprint.</li></ul><br><h3 id="local-seo-optimization">Local SEO Optimization</h3><ol><li><strong>Hyperlocal SEO Strategy</strong>: Implement a hyperlocal approach based on competitor success:</li></ol><ul><li>Create dedicated landing pages for each neighborhood (De Pijp, Centrum, West, Noord, Oost, Zuid)</li><li>Optimize title tags and meta descriptions with location-specific keywords</li><li>Create content about nearby landmarks, businesses, or events</li></ul><ol><li><strong>Google Business Profile</strong>: Ensure complete optimization with accurate information, high-quality photos, and customer reviews for all three locations</li><li><strong>Location Pages Enhancement</strong>: Create dedicated pages for each Amsterdam location with:</li></ol><ul><li>Unique neighborhood information</li><li>Location-specific menu highlights</li><li>Address, phone number, and opening hours</li><li>Customer testimonials specific to each location</li><li>Embedded Google Maps</li><li>Neighborhood-specific keywords (e.g., "de pijp brunch")</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Creating neighborhood landing pages not only supports local SEO but also improves user experience by addressing specific audience needs.</li></ul><br><h3 id="content-enhancement-opportunities">Content Enhancement Opportunities</h3><ol><li><strong>Dutch Language Content</strong>: Create Dutch versions of key pages to target Dutch keywords like:</li></ol><ul><li>"koffie amsterdam" (880-1900 searches)</li><li>"koffie tentje amsterdam" (720-1600 searches)</li><li>"beste ontbijt amsterdam" (260 searches)</li><li>"ontbijt de pijp" (170 searches)</li></ul><ol><li><strong>Meta Description Optimization</strong>: Rewrite meta descriptions to be more compelling:</li></ol><ul><li>Highlight unique selling points (specialty coffee, specific menu items, ambiance)</li><li>Include clear calls to action</li><li>Consider A/B testing different versions</li></ul><ol><li><strong>Blog Strategy</strong>: Develop a content calendar focusing on:</li></ol><ul><li>Seasonal topics (e.g., "koffie festival amsterdam" for April)</li><li>Local Amsterdam coffee culture</li><li>Brunch recipes and coffee brewing guides</li><li>Neighborhood guides featuring each Locals location</li></ul><ol><li><strong>Menu Page Optimization</strong>: Enhance the menu page with:</li></ol><ul><li>Structured content for each menu category</li><li>Individual item descriptions with relevant keywords</li><li>High-quality food photography</li><li>Nutritional information and allergen details</li></ul><ol><li><strong>"Best of" Content</strong>: Create a blog post or dedicated page titled "The Best Brunch in Amsterdam" to compete for "best brunch" keywords</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop a 3-month editorial calendar with theme clusters, assigning a content owner for each cluster.</li></ul><br><h3 id="keyword-targeting-strategy">Keyword Targeting Strategy</h3><ol><li><strong>Homepage Optimization</strong>: Revise meta description to be more specific and include high-value keywords like "amsterdam brunch" and "specialty coffee amsterdam"</li><li><strong>"Near Me" Optimization</strong>: Create dedicated pages optimized for "near me" searches with:</li></ol><ul><li>Location-specific content</li><li>Clear directions from popular landmarks</li><li>Transportation options</li><li>Embedded maps</li></ul><ol><li><strong>Long-tail Keyword Content</strong>: Create specific content targeting long-tail opportunities like "zuivere koffie amsterdam" and "brunch amsterdam zuid"</li><li><strong>Menu-Specific Keywords</strong>: Create individual pages for popular menu items and optimize them for searches like "pancakes amsterdam" or "eggs benedict de pijp"</li><li><strong>All-Day Brunch Focus</strong>: Ensure that "all-day brunch" is prominently featured in title tags, meta descriptions, and on-page content to compete with Eatwelldogood</li></ol><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>"Near me" optimization should include both on-page signals and Google Business Profile enhancements to maximize visibility.</li></ul><br><h3 id="backlink-strategy-recommendations">Backlink Strategy Recommendations</h3><ol><li><strong>Disavow Toxic Links</strong>: Submit a disavow file to Google for the two high-spam backlinks identified</li><li><strong>Competitor Link Acquisition</strong>: Target high-authority websites that link to competitors but not to Locals:</li></ol><ul><li>Reach out to foursquare.com to update or create a business listing</li><li>Create a business profile on business.site and company.site</li><li>Consider creating an Etsy shop for merchandise to gain a backlink from etsy.com</li><li>Ensure presence on booking.com if they offer table reservations</li></ul><ol><li><strong>Local Directory Expansion</strong>: Increase presence on local Dutch directories:</li></ol><ul><li>Target remaining .nl domains in the competitor backlink analysis</li><li>Focus on food and coffee-specific directories in the Netherlands</li></ul><ol><li><strong>Content-Based Link Building</strong>: Create linkable assets such as:</li></ol><ul><li>"Ultimate Guide to Amsterdam Coffee Culture"</li><li>"Amsterdam Brunch Guide by Neighborhood"</li><li>"History of Specialty Coffee in Amsterdam"</li></ul><ol><li><strong>Review Site Outreach</strong>: Encourage customers to leave reviews on platforms that provide backlinks:</li></ol><ul><li>TripAdvisor</li><li>Yelp</li><li>Local Dutch review sites</li></ul><ol><li><strong>Local Business Partnerships</strong>: Develop relationships with complementary local businesses for mutual linking opportunities:</li></ol><ul><li>Local food bloggers</li><li>Tourism websites</li><li>Neighborhood business associations</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Outreach team to build a prioritized list of 25 target sites (including Etsy, Booking.com, TripAdvisor) and initiate contact within two weeks.</li></ul><br></div></section>
+                <section id="next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-arrow-right"></i></div>
+                        <h2 class="section-title">Next Steps</h2>
+                    </div>
+                    <div class="section-content"><p>To complete this analysis, we need to gather specific data on:</p><ol><li>Site speed and mobile optimization analysis</li><li>Comprehensive technical SEO audit results</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Combining technical fixes with targeted content and link building in parallel will accelerate ROI within the next quarter.</li></ul><br><p>Our analysis shows that while Locals Coffee has achieved impressive organic growth, there are significant opportunities to further enhance their SEO performance through Dutch-language content, hyperlocal SEO optimization, targeting high-value keywords where competitors currently outrank them, and implementing a strategic backlink acquisition plan. By implementing our recommendations, Locals Coffee can strengthen their position in the competitive Amsterdam coffee and brunch market.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Locals',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

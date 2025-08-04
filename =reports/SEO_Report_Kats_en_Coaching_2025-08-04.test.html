@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Kats en Coaching</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Kats en Coaching • www.katsencoaching.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 4, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">30.27 (July 2025)</td></tr><tr><td class="">ETV Growth (Last 12 months)</td><td class="negative">-71.52% decline</td></tr><tr><td class="">Keywords in Top 10 Positions</td><td class="">0</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">3</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="">4</td></tr><tr><td class="">Keywords in Positions 21-30</td><td class="">2</td></tr><tr><td class="">Keywords in Positions 31-100</td><td class="">33</td></tr><tr><td class="">Total Backlinks</td><td class="">18</td></tr><tr><td class="">Referring Domains</td><td class="">16</td></tr><tr><td class="">Domain Rank</td><td class="">55</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>The severe 71.52% drop in ETV signals urgent need to stabilize core pages and reclaim lost visibility. Prioritize a content and technical triage on your top three traffic-driving URLs before expanding broader efforts.</p><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Strengths / Top Ranking Keywords</th><th>Kats en Coaching Ranking Status</th></tr></thead><tbody><tr><td class="">actinactie.nl</td><td class="">"ACT cursus", "ACT opleiding", ACT-related terms</td><td class="">Outranks Kats en Coaching on these terms</td></tr><tr><td class="">company.info</td><td class="">Directory listings, general coaching keywords</td><td class="">Limited overlap, lower rankings</td></tr><tr><td class="">office.com</td><td class="">High domain authority, general business keywords</td><td class="">Limited direct competition</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><p>Conduct a mini content audit of actinactie.nl’s top pages—map their meta elements and social proof approach to inform immediate on-page optimizations for Kats en Coaching.</p><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Monthly Search Volume</th><th>Competition Level</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">persoonlijke ontwikkeling coaching</td><td class="">445</td><td class="">Medium</td><td class="">High volume, relevant core service keyword</td></tr><tr><td class="">coaching persoonlijke ontwikkeling</td><td class="">445</td><td class="">Medium</td><td class="">High volume, closely related to main service</td></tr><tr><td class="">zakelijke coaching</td><td class="">240</td><td class="">Medium</td><td class="">Business coaching focus, good volume</td></tr><tr><td class="">training assertiviteit</td><td class="">212</td><td class="">High</td><td class="">Popular training keyword, opportunity to rank</td></tr><tr><td class="">opbouwen zelfvertrouwen</td><td class="">140</td><td class="">Medium</td><td class="">Long-tail, relevant to self-confidence niche</td></tr><tr><td class="">zelfvertrouwen opbouwen</td><td class="">140</td><td class="">Medium</td><td class="">Long-tail, supports main coaching theme</td></tr><tr><td class="">training in assertiviteit</td><td class="">32</td><td class="">Low</td><td class="">Low competition, niche long-tail keyword</td></tr><tr><td class="">personal coaching persoonlijke ontwikkeling</td><td class="">20</td><td class="">Low</td><td class="">Low competition, specific long-tail keyword</td></tr></tbody></table></div><hr><br><h3 id="tl-dr-most-important-findings">TL;DR - Most Important Findings</h3><br><ul><li>Kats en Coaching has experienced a severe 71.52% decline in organic traffic over the past year, with only 3 keywords ranking in positions 4-10 and none in the top 3.</li><li>The company’s strongest page is the self-confidence coaching page, but many pages rank poorly and have low traffic value.</li><li>Technical SEO issues such as large DOM size and render-blocking resources are negatively impacting site speed and user experience.</li><li>Key competitors like actinactie.nl dominate relevant keywords, especially around ACT therapy, with strong meta descriptions and social proof.</li><li>Kats en Coaching’s backlink profile is modest with 18 backlinks from 16 domains, lacking high-authority Dutch coaching or business sites.</li><li>High-value keyword opportunities exist around "persoonlijke ontwikkeling coaching," "zakelijke coaching," and "training assertiviteit," which currently are underutilized.</li><li>Content gaps include lack of targeted ACT coaching pages and insufficient local content.</li><li>Recommendations include technical SEO fixes, targeted content creation for high-value keywords, improved meta descriptions, and a focused backlink acquisition strategy.</li><li>Implementing a structured review/testimonial system will enhance social proof and keyword relevance.</li><li>Overall, there is a clear roadmap to reverse traffic decline and improve rankings by addressing technical, content, and backlink weaknesses.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>The TL;DR underscores three pillars—technical fixes, content expansion, and link building. Organize project sprints around these pillars with clear KPIs for each.</p><br><hr><br></div></section>
+                <section id="seo-research-report-kats-en-coaching" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Kats en Coaching</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This comprehensive SEO analysis for Kats en Coaching reveals significant challenges in their search visibility, with a 71.52% decrease in estimated traffic volume (ETV) from August 2024 to July 2025. The company, which specializes in workplace confidence development and business coaching services in the Netherlands, has several technical SEO issues and content optimization opportunities that, when addressed, could substantially improve their organic performance in the Dutch market. Our keyword analysis confirms they have no keywords ranking in the top 10 positions, representing a critical area for improvement. Their primary competitor, actinactie.nl, is outperforming them with stronger keyword targeting and more effective meta descriptions. Additionally, their backlink profile shows moderate quality with 18 backlinks from 16 referring domains, presenting opportunities for strategic link building to improve domain authority.</p><br><div class="highlight-box"><strong>Clarification:</strong></div><p>The 71.52% ETV decline partially correlates with a Google core update in Q1 2025. Technical and content gaps need rapid remediation to recover lost rankings.</p><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Kats en Coaching (www.katsencoaching.nl) is a coaching service provider based in the Netherlands. They offer various coaching services including:</p><ul><li>Individual coaching programs to increase self-confidence and reduce uncertainty</li><li>Group training sessions</li><li>Business coaching (re-integration coaching and team coaching)</li><li>Support for specific challenges like overcoming people-pleasing tendencies</li><li>Support for introverts in the workplace</li><li>Conflict resolution coaching</li><li>Career path coaching (loopbaancoaching)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Highlight any niche specializations (e.g., introvert workplace coaching) more prominently on key pages to differentiate from broad-market competitors.</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p><strong>Current Status:</strong></p><ul><li><strong>Significant Traffic Decline</strong>: 71.52% decrease in ETV from August 2024 to July 2025</li><li><strong>Current ETV</strong>: 30.27 (as of July 2025)</li><li><strong>Keyword Rankings Distribution</strong>:</li><li>Position 1: 0 keywords</li><li>Positions 2-3: 0 keywords</li><li>Positions 4-10: 3 keywords</li><li>Positions 11-20: 4 keywords</li><li>Positions 21-30: 2 keywords</li><li>Positions 31-100: 33 keywords</li></ul><br><p><strong>Top-Performing Pages:</strong></p><ul><li><code>https://katsencoaching.nl/coach-zelfvertrouwen/</code> (ETV: 14.00) - This self-confidence coaching page is the strongest performer with the highest estimated paid traffic cost and positive ranking movement.</li></ul><br><p><strong>Underperforming Pages:</strong></p><ul><li>Pages ranking in positions 71-100 have minimal traffic value, including:</li><li><code>https://katsencoaching.nl/2025/zelfvertrouwen-vergroten-werk/</code></li><li>Several pages in positions 51-80 show declining rankings and low ETV.</li></ul><br><p><strong>Technical SEO Issues:</strong></p><ul><li>Large DOM size (102,493) potentially impacting page speed</li><li>Render-blocking resources slowing initial page load</li><li>Missing image title attributes affecting accessibility and SEO</li><li>Node with more than 60 child elements impacting performance</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><p>Run a page-by-page Lighthouse audit to quantify load bottlenecks and prioritize fixes for the most-visited URLs first.</p><br><p><strong>Positive Technical Aspects:</strong></p><ul><li>HTTPS implementation</li><li>SEO-friendly URL structure</li><li>Proper implementation of title, description, and H1 tags</li><li>Canonical URL implementation</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>With secure hosting and clean URLs already in place, focus on improving Core Web Vitals to align with Google’s page experience signals.</p><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p><strong>Current Ranking Keywords:</strong></p><ul><li><strong>Critical Finding</strong>: Kats en Coaching has <strong>no keywords ranking in the top 10 positions</strong>, representing a significant opportunity for improvement</li><li>Only 3 keywords in positions 4-10, indicating limited high-visibility presence</li><li>The majority of keywords (33 out of 42) rank in positions 31-100, showing potential for optimization</li></ul><br><p><strong>High-Priority Keyword Opportunities (with search volumes):</strong></p><ol><li><strong>"persoonlijke ontwikkeling coaching"</strong> - 445 monthly searches (MEDIUM competition)</li><li><strong>"coaching persoonlijke ontwikkeling"</strong> - 445 monthly searches (MEDIUM competition)</li><li><strong>"zakelijke coaching"</strong> - 240 monthly searches (MEDIUM competition)</li></ol><br><p><strong>Secondary Keyword Opportunities:</strong></p><ol><li><strong>"opbouwen zelfvertrouwen"</strong> - 140 monthly searches (MEDIUM competition)</li><li><strong>"opbouwen van zelfvertrouwen"</strong> - 140 monthly searches (MEDIUM competition)</li><li><strong>"zelfvertrouwen opbouwen"</strong> - 140 monthly searches (MEDIUM competition)</li><li><strong>"training assertiviteit"</strong> - 212 monthly searches (HIGH competition)</li></ol><br><p><strong>Long-Tail Opportunities (Low Competition):</strong></p><ol><li><strong>"training in assertiviteit"</strong> - 32 monthly searches</li><li><strong>"personal coaching persoonlijke ontwikkeling"</strong> - 20 monthly searches</li></ol><br><p><strong>Keywords to Avoid:</strong></p><ul><li>Keywords with zero search volume (e.g., "zakelijke coaching opleiding")</li><li>Keywords with very low search volume and high competition</li><li>Keywords not directly related to services (e.g., "zelfvertrouwen hond opbouwen")</li></ul><br><p><strong>Seasonal Trends:</strong></p><ul><li>The data shows fluctuations in ETV throughout the year, suggesting potential seasonal patterns in coaching-related searches that should be further analyzed</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Build a 12-month content calendar aligning blog posts and promotions with peak search periods to capitalize on seasonal interest spikes.</p><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p><strong>Key Competitors:</strong></p><ul><li><strong>actinactie.nl</strong> - Primary direct competitor specializing in ACT (Acceptance and Commitment Therapy) courses and training</li><li><strong>Key Strengths:</strong> Positions itself as the largest ACT provider in the Netherlands, highlighting that they've trained over 7,000 professionals since 2012</li><li><strong>SERP Strategy:</strong> Uses keyword-rich meta titles ("ACT in Actie - ACT cursus & ACT opleiding") and descriptions that emphasize expertise and social proof</li><li><strong>Content Focus:</strong> Heavily targets ACT-related keywords and training programs</li></ul><br><ul><li><strong>company.info & office.com</strong> - Indirect competitors or potentially directories/resource sites where coaching businesses are listed</li></ul><br><p><strong>Competitive Analysis Findings:</strong></p><ul><li>actinactie.nl is outranking katsencoaching.nl for relevant keywords in the coaching space</li><li>Their meta descriptions effectively highlight unique selling propositions and include social proof (7,000+ professionals trained)</li><li>They focus heavily on specific, high-converting keywords like "ACT cursus" and "ACT opleiding"</li></ul><br><p><strong>Content Gap Analysis:</strong></p><ul><li>Kats en Coaching appears to lack targeted content around ACT (Acceptance and Commitment Therapy) if this is a service they offer</li><li>Competitor's meta descriptions are more effective at communicating value proposition and expertise</li><li>Competitor likely has more comprehensive landing pages for specific services</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><p>Draft a pilot landing page targeting "ACT cursus" with a strong headline, client testimonial, and clear CTA to test SERP performance against actinactie.nl.</p><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p><strong>Current Backlink Profile:</strong></p><ul><li><strong>Total Backlinks:</strong> 18</li><li><strong>Referring Domains:</strong> 16</li><li><strong>Overall Spam Score:</strong> 24% (Medium-Low)</li><li><strong>Domain Rank:</strong> 55</li></ul><br><p><strong>Referring Domain Quality:</strong></p><ul><li><strong>Low Spam Score Domains (9):</strong> heuvelruggezond.nl (0%), royalseohub.com (30%), gyms1.com (0%), companyinfo.nl (15%), indekerngezond.nl (0%), coachcircle.nl (5%), distrobird.com (0%), ondernemerscollectief.nl (25%), webby.pages.dev (25%)</li><li><strong>Medium Spam Score Domains (7):</strong> drjack.world (50%), seobacklinks.agency (45%), rankgrow.agency (45%), itxoft.com (40%), quero.party (50%), bye.fyi (50%), global-website.pages.dev (35%)</li><li><strong>High Spam Score Domains:</strong> None identified</li></ul><br><p><strong>Backlink Competitors:</strong></p><ul><li>company.info (rank: 51, 1 intersection)</li><li>office.com (rank: 9, 1 intersection)</li><li>actinactie.nl (rank: 9, 1 intersection)</li></ul><br><p><strong>Anchor Text Analysis:</strong></p><ul><li>Most backlinks use branded anchor text ("katsencoaching.nl" or "Kats en coaching")</li><li>Some backlinks include specific page references (e.g., "https://katsencoaching.nl/van-nieuw-naar-presterend-team/")</li><li>Several backlinks appear to be from directories or listings rather than contextual links</li><li>Quality contextual links include those from heuvelruggezond.nl and indekerngezond.nl, which are relevant to the coaching industry</li></ul><br><p><strong>Backlink Opportunities:</strong></p><ul><li>Several medium-quality backlinks appear to be from SEO services rather than natural editorial links</li><li>Limited backlinks from high-authority Dutch coaching or business websites</li><li>No backlinks from educational institutions or professional organizations that could provide authority</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Shift outreach toward niche Dutch coaching associations, HR blogs, and educational platforms to secure high-authority contextual links rather than general directories.</p><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p><strong>Current Content Strategy:</strong></p><p>The site employs several content approaches:</p><ul><li><strong>Service-focused pages</strong>: Targeting specific coaching services (self-confidence, conflict coaching)</li><li><strong>Location-based pages</strong>: Targeting specific cities (Woerden, Houten)</li><li><strong>Blog/Articles</strong>: Covering topics like introversion/extraversion, difficult colleagues, people-pleasing behavior, imposter syndrome, and cognitive distortions</li><li><strong>Podcast content</strong>: Promoting podcast episodes related to insecurity</li><li><strong>Free offers</strong>: Content promoting free coaching sessions for specific issues</li><li><strong>Testimonials</strong>: The website features undated client testimonials highlighting increased self-confidence and appreciation for the coaching style</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Leverage high-engagement formats (e.g., video snippets of coaching sessions) within blog posts to increase on-page time and social sharing potential.</p><br><p><strong>Content Optimization Opportunities Based on Keyword Analysis:</strong></p><ul><li>Create dedicated landing pages for high-priority keywords:</li><li>"persoonlijke ontwikkeling coaching" (445 monthly searches)</li><li>"zakelijke coaching" (240 monthly searches)</li><li>"training assertiviteit" (212 monthly searches)</li><li>Develop content clusters around self-confidence keywords:</li><li>"opbouwen zelfvertrouwen" (140 monthly searches)</li><li>"zelfvertrouwen opbouwen" (140 monthly searches)</li><li>Enhance existing content for keywords ranking in positions 11-30 to push them into the top 10</li><li>Develop more location-specific content to capture local search intent</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><p>Audit internal linking structure to ensure new landing pages inherit authority and support existing underperforming pages.</p><br><p><strong>New Content Opportunities:</strong></p><ul><li>The page <code>https://katsencoaching.nl/2025/introvert-extraverte-wereld/</code> shows promise, suggesting content about introversion in the workplace resonates with the audience</li><li>Develop more content around trending topics like imposter syndrome and people-pleasing behavior</li><li>If Kats en Coaching offers ACT-based coaching, create dedicated landing pages targeting "ACT cursus" and "ACT opleiding" keywords to compete with actinactie.nl</li><li>Create content that can attract backlinks from quality Dutch coaching and business websites</li><li>Implement a strategy to collect and publish recent, dated client reviews and testimonials to generate fresh content and extract valuable keywords from client language</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><p>Outline a content calendar mapping 6–8 new posts or pillar pages over the next quarter focused on trending coaching topics and high-priority keywords.</p><br><p><strong>Review and Testimonial Strategy:</strong></p><ul><li>Our research found no recent dated reviews for Kats en Coaching on major platforms or their website</li><li>Existing testimonials on the website are undated and cannot be confirmed as recent</li><li>Implementing a systematic approach to collecting, dating, and publishing client testimonials would:</li><li>Provide fresh content for SEO</li><li>Offer authentic language for keyword extraction</li><li>Build social proof similar to competitor actinactie.nl's approach</li><li>Create opportunities for schema markup to enhance SERP appearance</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><p>Deploy a simple review capture form post-coaching sessions and integrate Google Business Profile reviews to feed fresh, date-stamped testimonials.</p><br></div></section>
+                <section id="next-steps-and-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tasks"></i></div>
+                        <h2 class="section-title">Next Steps and Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><ol><li><strong>Technical SEO Improvements:</strong></li></ol><ul><li>Optimize DOM size and address render-blocking resources to improve page speed</li><li>Add descriptive title attributes to images</li><li>Simplify complex DOM structures with many child elements</li></ul><br><ol><li><strong>Content Optimization:</strong></li></ol><ul><li>Create dedicated landing pages for the top three high-priority keywords identified:</li><li>"persoonlijke ontwikkeling coaching" (445 monthly searches)</li><li>"coaching persoonlijke ontwikkeling" (445 monthly searches)</li><li>"zakelijke coaching" (240 monthly searches)</li><li>Prioritize enhancement of pages ranking in positions 11-30 to push them into top 10</li><li>Consolidate or improve underperforming content in positions 71-100</li><li>Expand the successful self-confidence coaching content with additional supporting pages</li><li>Create dedicated landing pages for specific coaching methodologies (like ACT if offered)</li><li>Implement a structured testimonial collection system with dates and specific outcomes</li></ul><br><ol><li><strong>Keyword Strategy:</strong></li></ol><ul><li>Focus on moving existing keywords in positions 4-30 higher in rankings</li><li>Target the identified high-value, medium-competition keywords as primary focus</li><li>Develop content for long-tail, low-competition keywords like "training in assertiviteit" (32 monthly searches)</li><li>Create more location-specific content to capture local search intent</li><li>Consider targeting ACT-related keywords if relevant to services offered</li><li>Extract keywords from client testimonials to identify natural language patterns</li></ul><br><ol><li><strong>SERP Optimization:</strong></li></ol><ul><li>Improve meta titles and descriptions to include target keywords and compelling value propositions</li><li>Model the approach of actinactie.nl by highlighting expertise and including social proof</li><li>A/B test different meta title and description variations to optimize click-through rates</li><li>Implement review schema markup for testimonials to enhance SERP appearance</li></ul><br><ol><li><strong>Unique Selling Proposition Development:</strong></li></ol><ul><li>Clearly define and communicate what makes Kats en Coaching unique compared to competitors</li><li>Highlight this USP in meta descriptions and website content</li><li>Consider emphasizing specific coaching methodologies, niche focus, or particular expertise</li><li>Use client testimonials to reinforce and validate the USP</li></ul><br><ol><li><strong>Backlink Development Strategy:</strong></li></ol><ul><li><strong>Quality Over Quantity:</strong> Focus on acquiring backlinks from high-authority Dutch coaching and business websites rather than general directories</li><li><strong>Content-Driven Link Building:</strong> Create shareable resources (guides, infographics, research) on coaching topics that naturally attract links</li><li><strong>Local Partnerships:</strong> Develop relationships with local business organizations and educational institutions for quality backlinks</li><li><strong>Guest Posting:</strong> Contribute guest articles to relevant Dutch coaching, HR, and business websites</li><li><strong>Podcast Appearances:</strong> Leverage the existing podcast content to appear on other industry podcasts, generating natural backlinks</li><li><strong>Review Existing Backlinks:</strong> Monitor the medium-spam score backlinks for potential negative SEO impact</li><li><strong>Competitor Backlink Analysis:</strong> Target websites linking to competitors like actinactie.nl that aren't currently linking to Kats en Coaching</li><li><strong>Testimonial Exchange:</strong> Offer testimonials to partners and suppliers in exchange for backlinks</li></ul><br><ol><li><strong>Review and Testimonial Strategy:</strong></li></ol><ul><li>Implement a systematic approach to collecting recent client reviews</li><li>Create a dedicated testimonials page with dates and specific outcomes</li><li>Request reviews on Google Business Profile and other relevant platforms</li><li>Feature testimonials strategically throughout the website, especially on service pages</li><li>Use testimonial content to identify natural language patterns for keyword targeting</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Establish quarterly milestones to track improvements in ETV, keyword positions, and backlink growth—adjust tactics based on performance data.</p><br><p>By implementing these recommendations, Kats en Coaching can reverse the current traffic decline, improve their search visibility for high-value keywords, and establish stronger domain authority in the Dutch coaching market. The keyword analysis clearly shows significant opportunities to target valuable search terms with dedicated content, which could dramatically improve their current position of having no keywords in the top 10 search results.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Kats en Coaching',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

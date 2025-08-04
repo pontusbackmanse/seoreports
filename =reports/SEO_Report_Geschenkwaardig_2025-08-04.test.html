@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Geschenkwaardig</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Geschenkwaardig • https://geschenkwaardig.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 4, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary-geschenkwaardig-seo-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary: Geschenkwaardig SEO Analysis</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change (Last 12 Months)</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="positive">346.36 (↑ 196.41% from 116.85)</td></tr><tr><td class="">Keywords in Position 1</td><td class="">0</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">1</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">11</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="">45</td></tr><tr><td class="">Keywords in Positions 21-30</td><td class="">55</td></tr><tr><td class="">Keywords in Positions 31-100</td><td class="">189</td></tr><tr><td class="">Monthly Ranking Volatility</td><td class="">100+ new rankings gained, 60-80 lost per month</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The steep ETV growth signals strong content relevance but zero top-three placements indicate the need for targeted on-page tweaks.</li><li>Prioritizing keywords in positions 4–10 could yield quick gains into top spots with focused optimization (meta, headings, internal links).</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Keywords They Rank Well For (Geschenkwaardig Ranks Poorly)</th></tr></thead><tbody><tr><td class=""><strong>Bol.com</strong></td><td class="">"mok met tekst," "t-shirt met tekst," "glazen onderzetter"</td></tr><tr><td class=""><strong>Xenos.nl</strong></td><td class="">"onderzetters blauw," "tulpenvaas groot," "senseo kopjes"</td></tr><tr><td class=""><strong>Heinendelftsblauw.nl</strong></td><td class="">"delfts blauw tulpenvaas," "heinen delfts blauw wandbord"</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit the top competitor pages that outrank us for these terms; identify their content structure, word count, and on-page elements.</li><li>Map out quick wins by replicating their keyword placement in title tags and H1s.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume (SV)</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">"delfts blauw vaas"</td><td class="">2400-3600</td><td class="">High</td><td class="">High volume, aligns with core product theme</td></tr><tr><td class="">"tulpen vaas delfts blauw"</td><td class="">480-1300</td><td class="">High</td><td class="">Strong niche relevance, product-specific</td></tr><tr><td class="">"originele relatiegeschenken"</td><td class="">320-1300</td><td class="">High</td><td class="">Corporate gift market potential</td></tr><tr><td class="">"mok met tekst" / "mokken met tekst"</td><td class="">High</td><td class="">High</td><td class="">Personalization focus, competitor gap</td></tr><tr><td class="">"cadeauwinkel Middelburg"</td><td class="">Low</td><td class="">Low</td><td class="">Local SEO leverage, physical store advantage</td></tr><tr><td class="">"originele relatiegeschenken bedrukken"</td><td class="">0-40</td><td class="">Low</td><td class="">Long-tail, low competition, personalization</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Kick off content projects for “delfts blauw vaas” and “originele relatiegeschenken” to capture high-volume, high-intent searches.</li><li>Develop a lightweight local page for Middelburg to own that low-competition territory.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Geschenkwaardig’s organic traffic grew by 196% in 12 months but has no keywords in position 1 yet.</li><li>Most keywords rank between positions 11-100, indicating strong potential for optimization.</li><li>Top competitors dominate broad and high-volume keywords where Geschenkwaardig ranks poorly.</li><li>High-value keyword opportunities exist around Delftware vases, personalized mugs, and local Middelburg searches.</li><li>Technical SEO is strong overall but needs fixes for render-blocking resources, alt text, and caching.</li><li>Backlink profile is limited with only 14 referring domains; local and industry-specific link building is a major opportunity.</li><li>Content gaps include lack of blog content and weak category pages compared to competitors.</li><li>Leveraging the physical store and personalization USP can differentiate Geschenkwaardig in the Dutch market.</li><li>Seasonal content aligned with Dutch holidays can boost traffic during peak gift-buying periods.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Align quick-win optimizations (meta, titles, internal links) with the highest-potential pages first.</li><li>Outline a 3-month roadmap that balances technical fixes, content creation, and local SEO activation.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-geschenkwaardig" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Geschenkwaardig</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Geschenkwaardig is a Dutch webshop specializing in personalized gifts and clothing <a href="https://geschenkwaardig.nl" class="link-reference" target="_blank" rel="noopener">Company Website</a>. Their product range includes tableware (particularly Heinen Delfts Blauw), t-shirts with custom texts, Zeeland-related food products, home decor items like tulip vases and cushions, and toys. A strong maritime and Zeeland provincial theme runs throughout their product offerings, positioning the site as a destination for distinctly Dutch gifts and souvenirs.</p><br></div></section>
+                <section id="research-scope" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Research Scope</h2>
+                    </div>
+                    <div class="section-content"><p>This report analyzes Geschenkwaardig's SEO performance in the Netherlands, focusing on organic visibility, keyword opportunities, competitive landscape, and backlink profile to provide actionable recommendations for improving their search presence.</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-traffic-growth">Organic Visibility and Traffic Growth</h3><ul><li><strong>Impressive Growth</strong>: 196.41% increase in Estimated Traffic Volume (ETV) from August 2024 to July 2025 [SEO Performance Data]</li><li><strong>Current Position Distribution</strong> (as of July 2025) [SEO Performance Data]:</li><li>Position 1: 0 keywords</li><li>Positions 2-3: 1 keyword</li><li>Positions 4-10: 11 keywords</li><li>Positions 11-20: 45 keywords</li><li>Positions 21-30: 55 keywords</li><li>Lower positions (31-100): 189 keywords</li><li><strong>Total Organic Traffic</strong>: Current ETV of 346.36, up from 116.85 twelve months prior [SEO Performance Data]</li><li><strong>Ranking Volatility</strong>: Significant monthly fluctuations with an average of 100+ new ranked elements and 60-80 lost rankings each month [SEO Performance Data]</li></ul><br><h3 id="page-performance-analysis">Page Performance Analysis</h3><ul><li><strong>Top Performers</strong> [SEO Performance Data]:</li><li>Homepage (https://geschenkwaardig.nl/): Highest ETV (35.66)</li><li>Product page for coaster holders: ETV of 24.31 with relatively good positions</li><li>Marine tableware Senseo cups page: ETV of 22.19 with positions in top 20</li><li>T-shirts with text category page: ETV of 14.89</li><li><strong>Underperforming Pages</strong> [SEO Performance Data]:</li><li>Many individual product pages rank in positions 41-100 with ETVs below 1</li><li>Category pages like "servies/" (tableware) performing poorly</li><li>Limited presence in top 10 search results across all keywords</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><ul><li><strong>Strengths</strong> [SEO Performance Data]:</li><li>High on-page score (97.07)</li><li>HTTPS implementation</li><li>Proper canonical tags</li><li>Mobile-friendly design</li><li>SEO-friendly URL structure</li><li>Appropriate meta tags implementation</li><li><strong>Issues to Address</strong> [SEO Performance Data]:</li><li>Render-blocking resources (4 scripts, 8 stylesheets)</li><li>Low content-to-code ratio</li><li>Missing image alt text</li><li>Large DOM size (89,143)</li><li>No cache control implementation</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize fixing render-blocking assets and implementing cache control to improve load times and user experience.</li><li>Audit image galleries and ensure descriptive alt attributes are added site-wide.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-keyword-performance">Current Keyword Performance</h3><ul><li><strong>Top Performing Keywords (Positions 1-10)</strong> [Keyword Analysis Data]:</li><li>"belle knoppe" (SV: 90, Position: 3)</li><li>"heinen delfts blauw teckel" (SV: 90, Position: 6)</li><li>"trui boef" (SV: 110, Position: 7)</li><li>"originele senseo kopjes" (SV: 170, Position: 8)</li><li>"skyline middelburg" (SV: 90, Position: 8)</li><li>"salmiak staafjes" (SV: 140, Position: 8)</li><li>"onderzetter houder" (SV: 590, Position: 9)</li><li>"roomboterbabbelaar" (SV: 90, Position: 9)</li><li>"vaas meisje met de parel" (SV: 50, Position: 10)</li></ul><br><ul><li><strong>High-Value Keywords with Room for Improvement</strong> [Keyword Analysis Data]:</li><li>"senseo kopjes" (SV: 720, Position: 15)</li><li>"tulpenvaas groot" (SV: 720, Position: 22)</li><li>"houder voor onderzetters" (SV: 590, Position: 14)</li><li>"boef trui" and "kopje senseo" (positions 11-30)</li></ul><br><h3 id="keyword-opportunities">Keyword Opportunities</h3><ul><li><strong>High-Priority Keywords to Target</strong> [Keyword Analysis Data]:</li><li>"delfts blauw vaas" (SV: 2400-3600, High competition)</li><li>"tulpen vaas delfts blauw" (SV: 480-1300, High competition)</li><li>"originele relatiegeschenken" (SV: 320-1300, High competition)</li><li>"glazen onderzetter" (High search volume, high competition) [Competitive Analysis Data]</li><li>"mok met tekst"/"mokken met tekst" (High search volume, aligns with personalization focus) [Competitive Analysis Data]</li></ul><br><ul><li><strong>Secondary Keywords with Good Potential</strong> [Keyword Analysis Data]:</li><li>"delfts blauw vaas merktekens" (SV: 50-170, Medium competition)</li><li>"vaas delfts blauw waarde" (SV: 210-390, High competition)</li><li>"delfts blauw vaas waarde" (SV: 210-390, High competition)</li><li>"originele relatiegeschenken met logo" (SV: 50-210, High competition)</li></ul><br><ul><li><strong>Long-Tail Opportunities</strong> [Keyword Analysis Data & Competitive Analysis Data]:</li><li>"originele relatiegeschenken bedrukken" (SV: 0-40, Low competition)</li><li>"zeeland souvenirs" (SV: 10-90, High competition)</li><li>"gepersonaliseerde mok met foto en naam" (Low competition, aligns with business focus)</li><li>"cadeauwinkel Middelburg" (Location-based, low competition)</li></ul><br><h3 id="keyword-gaps-and-competitor-performance">Keyword Gaps and Competitor Performance</h3><ul><li><strong>Keywords Where Competitors Outrank Geschenkwaardig</strong> [Competitive Analysis Data]:</li><li>Bol.com dominates broad product keywords like "mok met tekst," "t-shirt met tekst," and "glazen onderzetter"</li><li>Xenos.nl performs well for home decor terms like "onderzetters blauw," "tulpenvaas groot," and "senseo kopjes"</li><li>Heinendelftsblauw.nl excels in Delftware-specific terms like "delfts blauw tulpenvaas" and "heinen delfts blauw wandbord"</li></ul><br><h3 id="seasonal-trends">Seasonal Trends</h3><ul><li>Gift-related keywords show seasonal spikes around Dutch holidays and special occasions [Keyword Analysis Data]</li><li>Planning content around these seasonal trends could capture additional traffic</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-competitors-overview">Top Competitors Overview</h3><ul><li><strong>Bol.com</strong> [Competitive Analysis Data]:</li><li><strong>Key Strengths</strong>: High domain authority, vast product range, strong brand recognition</li><li><strong>Type</strong>: Indirect competitor (large marketplace)</li><li><strong>Strategy</strong>: Optimizes for broad keywords, uses category pages effectively</li><li><strong>SERP Elements</strong>: Uses broad category titles with benefit-driven meta descriptions highlighting selection, free returns, and fast delivery</li></ul><br><ul><li><strong>Xenos.nl</strong> [Competitive Analysis Data]:</li><li><strong>Key Strengths</strong>: Strong focus on home decor and gifts, physical store presence</li><li><strong>Type</strong>: Direct competitor (similar gift and home decor items)</li><li><strong>Strategy</strong>: Optimizes for specific product keywords</li><li><strong>SERP Elements</strong>: Uses descriptive titles and meta descriptions highlighting benefits like free shipping</li></ul><br><ul><li><strong>Heinendelftsblauw.nl</strong> [Competitive Analysis Data]:</li><li><strong>Key Strengths</strong>: Specializes in Delftware, high authority in niche keywords</li><li><strong>Type</strong>: Direct competitor (more specialized in Delftware)</li><li><strong>Strategy</strong>: Uses specific product titles and descriptions, strong brand identity</li><li><strong>SERP Elements</strong>: Uses specific product titles and meta descriptions highlighting uniqueness and range of Delftware</li></ul><br><h3 id="competitor-content-strategies">Competitor Content Strategies</h3><ul><li><strong>Successful Content Types</strong> [Competitive Analysis Data]:</li><li><strong>Category Pages</strong>: Bol.com and Xenos effectively use category pages to rank for broad keywords</li><li><strong>Product Pages</strong>: Heinendelftsblauw.nl uses detailed product pages to rank for specific Delftware items</li><li><strong>Benefit-Driven Descriptions</strong>: All competitors highlight benefits like free shipping, returns, or wide selection</li></ul><br><h3 id="competitive-gaps-and-opportunities">Competitive Gaps and Opportunities</h3><ul><li><strong>Location Advantage</strong>: Geschenkwaardig has a physical store in Middelburg that could be leveraged for local SEO [Competitive Analysis Data]</li><li><strong>Personalization Focus</strong>: Opportunity to emphasize personalization capabilities more strongly in titles and descriptions [Competitive Analysis Data]</li><li><strong>Content Marketing</strong>: None of the competitors appear to have strong blog/content marketing, presenting an opportunity [Competitive Analysis Data]</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li><strong>Overall Metrics</strong> [Backlink Analysis Data]:</li><li>Total backlinks: 761</li><li>Referring domains: 14</li><li>Domain rank: 231</li><li>Backlink spam score: 3 (low)</li><li>Target spam score: 2 (low)</li><li><strong>Geographic Distribution</strong> [Backlink Analysis Data]:</li><li>.com domains: 660 backlinks</li><li>.nl domains: 69 backlinks</li><li>.nu domains: 18 backlinks</li><li>Other TLDs: 14 backlinks</li></ul><br><h3 id="backlink-quality-assessment">Backlink Quality Assessment</h3><ul><li><strong>Referring Domain Quality</strong> [Backlink Analysis Data]:</li><li>7 domains with low spam scores (0-30%)</li><li>7 domains with medium spam scores (31-60%)</li><li>No domains with high spam scores (61-100%)</li><li><strong>Notable Quality Backlinks</strong> [Backlink Analysis Data]:</li><li>leuntje.com (0% spam score)</li><li>uitinmiddelburg.nl (0% spam score)</li><li>zeeuwschezoute.nl (5% spam score)</li><li>petitparisshop.nl (10% spam score)</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><ul><li><strong>Dominant Anchor Text</strong> [Backlink Analysis Data]:</li><li>"Maak je eigen ontwerp" (Create your own design) - appears frequently from leuntje.com</li><li>"geschenkwaardig.nl" - appears on uitinmiddelburg.nl</li><li><strong>Anchor Text Distribution</strong> [Backlink Analysis Data]:</li><li>Text anchors: 732 backlinks</li><li>Image anchors: 21 backlinks</li><li>Nofollow links: 26 backlinks</li></ul><br><h3 id="backlink-competitors">Backlink Competitors</h3><ul><li><strong>Key Backlink Competitor</strong> [Backlink Analysis Data]:</li><li>mijnwebwinkel.nl (rank: 14, intersections: 2)</li><li>This competitor likely shares similar referring domains, suggesting potential outreach opportunities</li></ul><br><h3 id="backlink-gaps-and-opportunities">Backlink Gaps and Opportunities</h3><ul><li><strong>Missing Authoritative Links</strong> [Backlink Analysis Data]:</li><li>Limited number of referring domains (only 14) indicates significant room for growth</li><li>Few links from high-authority Dutch websites</li><li>Opportunity to acquire more links from tourism and gift-related websites</li><li><strong>Link Building Opportunities</strong> [Backlink Analysis Data]:</li><li>Local Middelburg and Zeeland tourism websites</li><li>Dutch gift and home decor blogs</li><li>E-commerce directories and review sites</li><li>Partnerships with complementary businesses</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Initiate outreach to local Zeeland tourism and Middelburg event sites to secure high-authority .nl links.</li><li>Draft guest post pitches for Dutch home decor blogs highlighting personalization USP.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="serp-optimization-strategy">SERP Optimization Strategy</h3><ul><li><strong>Improve Meta Descriptions</strong> [Competitive Analysis Data]:</li><li>Rewrite meta descriptions to include compelling benefit statements (e.g., "Personalized gifts for every occasion. Fast shipping and unique designs!")</li><li>Highlight free shipping, returns, or wide selection similar to competitors</li></ul><br><ul><li><strong>Optimize Product Titles</strong> [Competitive Analysis Data]:</li><li>Include relevant keywords in product titles while keeping them concise and descriptive</li><li>Example: "Delfts Blauw Tulpenvaas - Hand-Painted Ceramic" instead of just "Tulpenvaas"</li></ul><br><h3 id="keyword-driven-content-optimization">Keyword-Driven Content Optimization</h3><ul><li><strong>Optimize for High-Volume Keywords</strong> [Keyword Analysis Data]:</li><li>Create dedicated content targeting "delfts blauw vaas" and related terms</li><li>Develop comprehensive guides around "originele relatiegeschenken" (original corporate gifts)</li><li>Enhance product pages for "senseo kopjes" and "onderzetter houder" to improve rankings</li></ul><br><ul><li><strong>Product Page Optimization</strong> [Keyword Analysis Data & Competitive Analysis Data]:</li><li>Ensure each product page has clear, keyword-rich titles</li><li>Write detailed, engaging descriptions highlighting product features and benefits</li><li>Implement proper internal linking between related products and categories</li></ul><br><ul><li><strong>Address Content Gaps</strong> [Keyword Analysis Data & Competitive Analysis Data]:</li><li>Create informational blog content around popular product categories</li><li>Develop guides like "How to Choose the Perfect Senseo Cup" or "The History and Art of Delfts Blauw"</li><li>Create content around "vaas delfts blauw waarde" to capture valuation-related searches</li></ul><br><h3 id="location-based-seo-strategy">Location-Based SEO Strategy</h3><ul><li><strong>Create Location-Based Content</strong> [Competitive Analysis Data]:</li><li>Develop a dedicated page targeting "cadeauwinkel Middelburg" and other local keywords</li><li>Highlight the physical store's address, hours, and unique offerings</li><li>Create content about shopping in Middelburg to capture tourist traffic</li></ul><br><h3 id="category-page-enhancement">Category Page Enhancement</h3><ul><li><strong>Expand Category Pages</strong> [Competitive Analysis Data]:</li><li>Create more comprehensive category pages for key product categories (e.g., "Mokken," "Onderzetters," "Delftware")</li><li>Optimize these pages with relevant keywords, internal links, and compelling content</li><li>Follow Bol.com's approach of using category pages to target broad keywords</li></ul><br><h3 id="backlink-acquisition-strategy">Backlink Acquisition Strategy</h3><ul><li><strong>Local Link Building</strong> [Backlink Analysis Data]:</li><li>Pursue partnerships with Middelburg tourism websites (similar to uitinmiddelburg.nl)</li><li>Reach out to local businesses for cross-promotion opportunities</li><li>Create location-specific content that attracts links from local news and event sites</li></ul><br><ul><li><strong>Industry-Specific Outreach</strong> [Backlink Analysis Data]:</li><li>Target Dutch gift and home decor blogs for product reviews and features</li><li>Pursue relationships with complementary businesses (not direct competitors)</li><li>Consider guest posting on relevant Dutch lifestyle and interior design websites</li></ul><br><ul><li><strong>Leverage Personalization USP</strong> [Backlink Analysis Data]:</li><li>Create shareable content around personalized gift ideas</li><li>Develop linkable assets like gift guides, personalization tools, or design inspiration</li><li>Emphasize the "Maak je eigen ontwerp" (Create your own design) feature in outreach</li></ul><br><h3 id="technical-and-on-page-improvements">Technical and On-Page Improvements</h3><ul><li><strong>Image Optimization</strong> [SEO Performance Data]:</li><li>Add descriptive alt text to all product images using relevant keywords</li><li>Optimize image file sizes to improve page load speed</li></ul><br><ul><li><strong>Local SEO Enhancement</strong> [Keyword Analysis Data & Competitive Analysis Data]:</li><li>Optimize for local Zeeland and Middelburg-related keywords</li><li>Ensure Google Business Profile is claimed and optimized</li></ul><br><ul><li><strong>Seasonal Content Planning</strong> [Keyword Analysis Data]:</li><li>Create gift guides for Dutch holidays and special occasions</li><li>Plan content calendar around seasonal keyword trends</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Build a 6-month content calendar prioritizing high-volume and seasonal topics.</li><li>Assign internal ownership for blog creation, local page build, and category expansions.</li></ul><br></div></section>
+                <section id="quick-wins-vs-long-term-strategy" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Quick Wins vs. Long-Term Strategy</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="quick-wins-1-3-months-">Quick Wins (1-3 months)</h3><ul><li>Rewrite meta descriptions for top-selling products and categories [Competitive Analysis Data]</li><li>Optimize product titles with relevant keywords [Competitive Analysis Data]</li><li>Create a basic "cadeauwinkel Middelburg" page [Competitive Analysis Data]</li><li>Fix technical SEO issues like missing alt text and render-blocking resources [SEO Performance Data]</li><li>Reach out to existing referring domains for additional link opportunities [Backlink Analysis Data]</li></ul><br><h3 id="long-term-opportunities-3-12-months-">Long-Term Opportunities (3-12 months)</h3><ul><li>Develop a content marketing strategy focused on gift-giving and Delftware [Competitive Analysis Data]</li><li>Build out comprehensive category pages with optimized content [Competitive Analysis Data]</li><li>Explore partnerships with local businesses or tourism organizations in Middelburg [Competitive Analysis Data]</li><li>Create seasonal content calendars aligned with Dutch holidays and gift-giving occasions [Keyword Analysis Data]</li><li>Implement a systematic backlink acquisition strategy targeting quality Dutch websites [Backlink Analysis Data]</li></ul><br></div></section>
+                <section id="summary-of-key-opportunities" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Summary of Key Opportunities</h2>
+                    </div>
+                    <div class="section-content"><ol><li>Optimize existing product pages that already rank well (positions 4-20) to push them into top positions</li><li>Create dedicated content targeting high-volume keywords like "delfts blauw vaas" (2400-3600 SV)</li><li>Address technical SEO issues to improve site performance and user experience</li><li>Leverage the physical store in Middelburg through location-based SEO</li><li>Improve meta descriptions and product titles following competitor best practices</li><li>Develop a content marketing strategy to establish authority in the personalized gifts space</li><li>Focus on personalization as a key differentiator in product descriptions and marketing</li><li>Expand the backlink profile by targeting quality Dutch websites and local partnerships</li><li>Emphasize the "Maak je eigen ontwerp" (Create your own design) feature as a unique selling point</li></ol><br><p>This comprehensive SEO roadmap provides actionable steps to improve Geschenkwaardig's search visibility, outrank competitors, and capture untapped opportunities in the Netherlands.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Geschenkwaardig',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

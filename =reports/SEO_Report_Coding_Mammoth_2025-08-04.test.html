@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Coding Mammoth</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Coding Mammoth • https://semonto.com</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Belgium Market</span>
+                        <span><i class="fas fa-calendar"></i> August 4, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change (Belgium)</th><th>Notes</th></tr></thead><tbody><tr><td class="">Organic Visibility Change</td><td class="negative">-36.93% (Aug 2024 - Jul 2025)</td><td class="">Significant decline in visibility</td></tr><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">7,696 (Jul 2025) from 12,201 (Aug 2024)</td><td class="">Negative traffic growth over 12 months</td></tr><tr><td class="">Keywords in Top 10 Positions</td><td class="">0</td><td class="">No top 10 rankings in Belgium</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="">1</td><td class="">"test website online" (Rank 18, SV 90)</td></tr><tr><td class="">Keywords in Positions 21-30</td><td class="">3</td><td class="">Includes "website online tester" (SV 90)</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The steep drop in visibility and traffic signals urgent optimization needs in on-page SEO, content targeting, and backlink quality.</li><li>Zero keywords in the top 10 indicate low organic authority and relevance for primary search queries.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a rapid audit of top pages to identify low-hanging technical fixes.</li><li>Prioritize optimization of pages that already rank on page two or three for high-volume keywords.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Key Ranking Keywords (Belgium)</th><th>Semonto Ranking on These Keywords</th><th>Competitor Strength / Strategy Highlights</th></tr></thead><tbody><tr><td class="">URLVoid</td><td class="">"url checker", "url check"</td><td class="">Poor (outside top 10)</td><td class="">Clear value proposition in titles/meta, direct URL analysis focus</td></tr><tr><td class="">VirusTotal</td><td class="">"url checker", "url check"</td><td class="">Poor (outside top 10)</td><td class="">High authority, broad security suite, strong brand recognition</td></tr><tr><td class="">Uptrends</td><td class="">"web test page", "website down or is it just me", "website online test"</td><td class="">Poor (outside top 10)</td><td class="">Dedicated tool pages, focused keyword targeting</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Competitors leverage clear, benefit-driven messaging and dedicated tool pages—an approach Semonto can replicate and adapt in Dutch and English.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume (Belgium)</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">"url checker"</td><td class="">480</td><td class="">Low</td><td class="">High volume, low competition, relevant to Semonto</td></tr><tr><td class="">"url check"</td><td class="">480</td><td class="">Low</td><td class="">High volume, low competition, relevant to Semonto</td></tr><tr><td class="">"website monitoring tool"</td><td class="">10-30</td><td class="">Low</td><td class="">Directly related to Semonto’s core product</td></tr><tr><td class="">"website uptime monitoring free"</td><td class="">10-20</td><td class="">High</td><td class="">High intent, competitive but valuable</td></tr><tr><td class="">Dutch keywords:</td><td class=""></td><td class=""></td><td class="">Critical for Belgian market localization</td></tr><tr><td class="">- "url controleren"</td><td class="">~90 (estimated)</td><td class="">Low</td><td class="">Untapped Dutch keyword, local relevance</td></tr><tr><td class="">- "website testen"</td><td class="">~70 (estimated)</td><td class="">Low</td><td class="">Untapped Dutch keyword, local relevance</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create dedicated landing pages optimized for each high-value keyword, starting with "url checker" and its Dutch equivalent.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Semonto’s organic visibility and traffic in Belgium have declined sharply (-36.93% visibility, ETV down from 12,201 to 7,696).</li><li>No keywords rank in the top 10 positions in Belgium, limiting organic traffic potential.</li><li>Strong technical SEO foundation but meta keywords relevance and image optimization need improvement.</li><li>Major competitors dominate key high-volume keywords with better-targeted titles, meta descriptions, and dedicated tool pages.</li><li>Semonto lacks Dutch language content, a critical gap for the Belgian market.</li><li>Toxic backlinks with high spam scores exist and should be disavowed.</li><li>Backlink profile is healthy but could be improved by acquiring links from high-authority domains linking to competitors (e.g., nist.gov, web.dev).</li><li>Content strategy should focus on creating Dutch content, dedicated tool pages, and backlink-attracting assets like case studies and industry reports.</li><li>Quick wins include optimizing titles/meta descriptions, adding Dutch content, and disavowing toxic backlinks.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Immediate focus on quick wins will yield early performance improvements, building momentum for longer-term authority-building activities.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-coding-mammoth-semonto" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Coding Mammoth & Semonto</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for Coding Mammoth, a software agency based in Antwerp, Belgium, with particular focus on their website monitoring tool, Semonto. The analysis covers their current SEO performance, keyword opportunities, competitive landscape, and backlink profile within the Belgian market, concluding with actionable recommendations to improve their search visibility and organic traffic.</p><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Coding Mammoth is a software agency based in Antwerp, Belgium that develops proprietary software products and provides security services to other companies. Their main offerings include:</p><br><ul><li><strong>Semonto</strong>: A website monitoring tool for website owners, SEO specialists, and web agencies (<a href="https://codingmammoth.com/" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</li><li><strong>QuickScale</strong>: A tool to resize large amounts of pictures quickly (<a href="https://codingmammoth.com/" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</li><li><strong>MijnLijn</strong>: A mobile app providing real-time bus and tram timetables for DeLijn in Flanders, Belgium (<a href="https://codingmammoth.com/" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</li></ul><br><p>Additionally, they offer security services specializing in compliance frameworks such as ISO 27001, GDPR, AI Act, and NIS2 (<a href="https://codingmammoth.com/" class="link-reference" target="_blank" rel="noopener">Company Website</a>).</p><br></div></section>
+                <section id="1-overall-seo-performance" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-rankings">Organic Visibility and Rankings</h3><p>Semonto.com has experienced a significant decline in organic visibility over the past year. From August 2024 to July 2025, there was a 36.93% decrease in Estimated Traffic Volume (ETV).</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>A drop of this magnitude often indicates issues with keyword targeting relevance or a gap in fresh, authoritative content.</li></ul><br><h3 id="organic-traffic-growth">Organic Traffic Growth</h3><p>The organic traffic growth for Semonto.com has been negative over the analyzed period. The ETV decreased from 12,201 in August 2024 to 7,696 in July 2025.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Review Google Search Console for traffic drop patterns and adjust content strategy to recapture lost queries.</li></ul><br><h3 id="current-organic-visibility-metrics">Current Organic Visibility Metrics</h3><p>As of July 2025, Semonto.com's organic visibility metrics are as follows:</p><ul><li>Position 1-10: 0 keywords</li><li>Position 11-20: 1 keyword</li><li>Position 21-30: 3 keywords</li><li>Position 31-40: 3 keywords</li><li>Position 41-50: 6 keywords</li><li>Position 51-60: 4 keywords</li><li>Position 61-100: 5 keywords</li><li>Total ETV: 7,696</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Moving keywords up from positions 11-30 into the top 10 can dramatically increase visibility; focus on these near-ranking queries first.</li></ul><br><h3 id="top-performing-and-underperforming-pages">Top-Performing and Underperforming Pages</h3><p>Top-performing page:</p><ul><li>https://semonto.com/tools/website-reachability-check (ETV: 4.76, SERP count: 14)</li></ul><br><p>Underperforming pages:</p><ul><li>https://semonto.com/blog/what-is-a-404-error-and-why-is-it-called-that-way (ETV: 0.55, SERP count: 1)</li><li>https://semonto.com/blog/the-ultimate-guide-to-404-pages (ETV: 0.19, SERP count: 1)</li><li>https://semonto.com/tools/https-checker (ETV: 1.45, SERP count: 3)</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>SERP count refers to the number of keywords for which the page appears in search results.</li></ul><br><h3 id="technical-seo-analysis">Technical SEO Analysis</h3><p>Semonto.com demonstrates strong technical SEO fundamentals:</p><ul><li>On-page SEO score: 100</li><li>HTTPS implementation: Yes</li><li>Mobile-friendly: Yes</li><li>Good page speed</li><li>Proper use of canonical tags and character set</li></ul><br><p>Areas for improvement:</p><ul><li>Meta keywords relevance</li><li>Image optimization (missing title attributes)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Add descriptive title attributes to all images and audit meta keywords to align with targeted search terms.</li></ul><br></div></section>
+                <section id="2-keyword-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-keyword-rankings">Current Keyword Rankings</h3><p>A critical finding is that Semonto currently has no keywords ranking in the top 10 positions in Belgium. This represents a significant opportunity for improvement, as top 10 rankings are essential for driving meaningful organic traffic.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Use existing second- and third-page keywords to craft optimized content expansions, aiming to push them into page one.</li></ul><br><h3 id="keyword-opportunities">Keyword Opportunities</h3><br><p>Second Page Rankings (Positions 11-20):</p><ul><li>"test website online" (Rank 18, Search Volume 90)</li></ul><br><p>Third Page Rankings (Positions 21-30):</p><ul><li>"website online tester" (Rank 27, Search Volume 90)</li><li>"website online test" (Rank 29, Search Volume 90)</li><li>"404 pages" (Rank 26, Search Volume 90)</li></ul><br><p>Fourth Page Rankings (Positions 31-40):</p><ul><li>"url check" (Rank 33, Search Volume 480) - Highest search volume opportunity</li><li>"site test" (Rank 35, Search Volume 90)</li><li>"test my website" (Rank 38, Search Volume 70)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The keyword “url check” on page four is low-hanging fruit; a targeted on-page optimization could yield quick top-10 placement.</li></ul><br><h3 id="recommended-priority-keywords">Recommended Priority Keywords</h3><p>Based on search volume, competition, and relevance to Semonto's services, we recommend prioritizing these keywords:</p><br><p>Top Priority:</p><ul><li>"url checker" (Search Volume: 480, Competition: LOW)</li><li>"url check" (Search Volume: 480, Competition: LOW)</li><li>"website monitoring tool" (Search Volume: 10-30, Competition: LOW)</li><li>"website uptime monitoring free" (Search Volume: 10-20, Competition: HIGH)</li></ul><br><p>Secondary Priority:</p><ul><li>"web test page" (Search Volume: 210, Competition: LOW)</li><li>"website down or is it just me" (Search Volume: 110, Competition: LOW)</li><li>"website online test" (Search Volume: 90, Competition: MEDIUM)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Map each priority keyword to a specific landing page and update headers, body copy, and meta tags accordingly.</li></ul><br><h3 id="dutch-language-keywords">Dutch Language Keywords</h3><p>A significant gap in Semonto's keyword strategy is the lack of Dutch language targeting, which is crucial for the Belgian market. We recommend prioritizing Dutch translations of high-value keywords such as:</p><ul><li>"url controleren" (Dutch for "url check")</li><li>"website testen" (Dutch for "test my website")</li><li>"website bereikbaarheid" (Dutch for "website reachability")</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Localizing content into Dutch will unlock untapped search demand and improve regional relevance.</li></ul><br><h3 id="seasonal-trends">Seasonal Trends</h3><p>We identified a significant drop in search volume for website testing keywords during summer months (April/May to June), suggesting seasonal fluctuations in user behavior. In contrast, keywords related to "404 https" showed relatively stable search volumes throughout the year.</p><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Plan content calendars around peak interest periods to maximize visibility—for example, launching new monitoring features before the summer dip.</li></ul><br></div></section>
+                <section id="3-competitive-landscape" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><p>Our analysis identified three main competitors in the Belgian market:</p><br><ol><li><strong>URLVoid (www.urlvoid.com)</strong></li></ol><ul><li><strong>Key Strength</strong>: Dominates the "url checker" and "url check" keyword space</li><li><strong>Type</strong>: Direct competitor offering similar URL analysis functionality</li><li><strong>Top Keywords</strong>: "url checker", "url check"</li><li><strong>Strategy</strong>: Clear value proposition in titles and meta descriptions that directly addresses user intent</li></ul><br><ol><li><strong>VirusTotal (www.virustotal.com)</strong></li></ol><ul><li><strong>Key Strength</strong>: High authority and brand recognition in the security space</li><li><strong>Type</strong>: Direct competitor offering URL analysis as part of a broader security suite</li><li><strong>Top Keywords</strong>: "url checker", "url check"</li><li><strong>Strategy</strong>: Leverages brand recognition in titles and emphasizes range of analysis options in meta descriptions</li></ul><br><ol><li><strong>Uptrends (uptrends.com)</strong></li></ol><ul><li><strong>Key Strength</strong>: Comprehensive suite of website monitoring and performance testing tools</li><li><strong>Type</strong>: Indirect competitor focusing on broader website monitoring and performance</li><li><strong>Top Keywords</strong>: "web test page", "website down or is it just me", "website online test"</li><li><strong>Strategy</strong>: Uses dedicated pages for each specific tool with focused keyword targeting</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Emulate competitor success by creating distinct, benefit-focused pages for each monitoring feature, tailored in both English and Dutch.</li></ul><br><h3 id="competitor-content-strategies">Competitor Content Strategies</h3><p>Our competitors employ several effective content strategies:</p><br><ol><li>Dedicated Tool Pages: Competitors create separate pages for different types of website tests (e.g., "Website Speed Test," "Website Uptime Test") allowing for more targeted keyword optimization.</li><li>Clear Value Proposition: Competitors clearly state the benefit of using their tools in both titles and meta descriptions:</li></ol><ul><li>URLVoid: "URLVoid: Check if a Website is Malicious/Scam or Safe/Legit"</li><li>VirusTotal: Emphasizes the range of analysis offered (files, domains, IPs, URLs) and the community aspect</li><li>Uptrends: Focuses on specific tools and their benefits (e.g., identifying elements that slow down websites)</li></ul><ol><li>Effective Keyword Integration: Competitors effectively integrate target keywords into their titles and meta descriptions, improving their relevance for search queries.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit current page titles and meta descriptions, then rewrite them to match competitor clarity and keyword usage, adding Dutch variations.</li></ul><br><h3 id="competitive-gaps-and-opportunities">Competitive Gaps and Opportunities</h3><p>Based on competitor analysis, we identified these opportunities for Semonto:</p><br><ul><li>Dutch Language Content: None of the competitors effectively target Dutch language keywords, creating a significant opportunity for Semonto in the Belgian market.</li><li>Title and Meta Description Optimization: Semonto's current titles and meta descriptions are generic compared to competitors.</li><li>Dedicated Tool Pages: Creating separate pages for different website testing functionalities would allow for more targeted keyword optimization.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Filling these gaps can differentiate Semonto and capture search traffic that competitors currently miss in the Dutch-speaking segment.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><p>Our analysis of Semonto.com's backlink profile reveals the following metrics:</p><br><ul><li><strong>Total Backlinks</strong>: 2,485</li><li><strong>Referring Domains</strong>: 427</li><li><strong>Referring Main Domains</strong>: 267</li><li><strong>Domain Rank</strong>: 371</li><li><strong>Target Spam Score</strong>: 7 (Low)</li><li><strong>Backlinks Spam Score</strong>: 12 (Low)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>While the profile is healthy, targeted outreach to high-authority domains can accelerate improvements in domain rank.</li></ul><br><h3 id="geographic-distribution-of-backlinks">Geographic Distribution of Backlinks</h3><p>The geographic distribution of Semonto's backlinks reveals important insights:</p><br><ul><li><strong>Top TLDs in Referring Links</strong>:</li><li>.org: 477 links</li><li>.netlify.app: 343 links</li><li>.com: 342 links</li><li>.be (Belgium): 147 links</li><li>.nl (Netherlands): 117 links</li></ul><br><ul><li><strong>Top Countries of Referring Links</strong>:</li><li>United States: 183 links</li><li>Belgium: 150 links</li><li>Netherlands: 120 links</li><li>Germany: 17 links</li><li>United Kingdom: 10 links</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop partnerships with Belgian tech blogs and directories to increase .be-domain backlinks and boost local relevance.</li></ul><br><h3 id="toxic-backlinks">Toxic Backlinks</h3><p>Our analysis identified several potentially harmful backlinks with high spam scores that could be negatively impacting Semonto's SEO performance:</p><br><ul><li>kamfaiwongs.com (95% spam score)</li><li>free.fr (75% spam score)</li><li>great-choice-for-pbn-domains.co.uk (65% spam score)</li><li>australianwebdirectory.shop (65% spam score)</li><li>belonnanotservice.ga (85% spam score)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prepare and submit a disavow file for identified toxic domains to Google Search Console.</li></ul><br><h3 id="competitor-backlink-comparison">Competitor Backlink Comparison</h3><p>Our analysis identified several high-authority domains that link to Semonto's competitors but not to Semonto:</p><br><ul><li>nist.gov (Rank: 87)</li><li>web.dev (Rank: 2)</li><li>gtmetrix.com (Rank: 8)</li><li>uptimerobot.com (Rank: 19)</li><li>kinsta.com (Rank: 32)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Securing backlinks from these authoritative sources can drive significant credibility gains and improve rankings for competitive keywords.</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><p>The analysis of anchor texts in Semonto's backlink profile reveals opportunities for optimization:</p><br><ul><li>Many backlinks use generic anchor texts like "Visit website" or raw URLs</li><li>Limited use of keyword-rich anchor texts related to Semonto's core services</li><li>Strong presence of branded anchor texts ("Semonto", "Status Page")</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Launch a content campaign encouraging partners to use targeted anchor texts (e.g., “website uptime monitoring”).</li></ul><br><h3 id="backlink-opportunities">Backlink Opportunities</h3><p>Based on our analysis, we recommend pursuing backlinks from the following sources:</p><br><ol><li><strong>High-Authority Security and Web Development Sites</strong>:</li></ol><ul><li>Target sites like nist.gov, web.dev, and gtmetrix.com that link to competitors</li><li>Focus on creating valuable content that these sites would want to reference</li></ul><ol><li><strong>Belgian Tech and Business Websites</strong>:</li></ol><ul><li>Increase local relevance by targeting more Belgian domains</li><li>Examples include digitaleversnelling.be and other Belgian tech communities</li></ul><ol><li><strong>Industry Publications and Forums</strong>:</li></ol><ul><li>Target websites like securitybuzz.com and webhostingtalk.nl that already link to Semonto</li><li>Create more linkable assets to attract natural backlinks from these sources</li></ul><ol><li><strong>Educational Institutions</strong>:</li></ol><ul><li>Belgian universities and technical schools could provide valuable .edu backlinks</li><li>Consider offering student discounts or educational resources to facilitate partnerships</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>A tiered outreach plan focusing first on high-authority domains, then local Belgian sites, will maximize ROI and build a diverse, authoritative backlink profile.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="content-topic-suggestions">Content Topic Suggestions</h3><p>Based on keyword analysis and competitor strategies, we recommend creating content around:</p><ul><li>Website monitoring tools and their benefits</li><li>Common website errors (like 404 errors) and how to fix them</li><li>HTTPS and website security best practices</li><li>Comprehensive guides on website monitoring topics (e.g., SSL certificates, broken link checking, uptime monitoring)</li><li>"Is it just me or is this website down?" type content to capture this search intent</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign each topic to writers with clear keyword and localization briefs, ensuring both English and Dutch versions are produced.</li></ul><br><h3 id="title-and-meta-description-optimization">Title and Meta Description Optimization</h3><p>We recommend optimizing titles and meta descriptions for key pages:</p><br><p><strong>Website Reachability Check:</strong></p><ul><li><strong>Current Title</strong>: "Free Website Reachability Check"</li><li><strong>Proposed Title (English)</strong>: "Free Website Uptime Checker | Is Your Site Down?"</li><li><strong>Proposed Title (Dutch)</strong>: "Gratis Website Uptime Checker | Is Uw Site Offline?"</li><li><strong>Current Meta Description</strong>: "Is your website down or available? Do a quick test from multiple locations worldwide with our free reachability checker. Just enter your URL and get instant..."</li><li><strong>Proposed Meta Description (English)</strong>: "Check if your website is down from multiple locations. Our free uptime checker instantly diagnoses website reachability issues."</li><li><strong>Proposed Meta Description (Dutch)</strong>: "Controleer of uw website offline is vanaf meerdere locaties. Onze gratis uptime checker diagnosticeert direct problemen met de bereikbaarheid van uw website."</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Meta descriptions should be under 160 characters and include primary keywords near the beginning for maximum impact.</li></ul><br><h3 id="content-structure-improvements">Content Structure Improvements</h3><ol><li><strong>Create Dedicated Tool Pages</strong>: Instead of having a single "Website Reachability Check" page, create separate pages for different types of website tests (e.g., "Website Speed Test," "Website Uptime Test") to better target specific keywords and user intents.</li><li><strong>Dutch Language Content</strong>: Develop Dutch versions of all key tool pages and blog content to better serve the Belgian market.</li><li><strong>Content Expansion</strong>: Create content that directly addresses the "is it just me?" search intent, which competitor Uptrends ranks well for.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit site architecture to determine where new pages can be slotted in and update navigation to surface these dedicated tools prominently.</li></ul><br><h3 id="localization-strategy">Localization Strategy</h3><p>Given the target audience in Belgium, we recommend:</p><ul><li>Creating content in Dutch to better serve the local market</li><li>Addressing local concerns and referencing Belgian regulations where relevant</li><li>Implementing proper hreflang tags for language targeting</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Coordinate with translators and developers to implement hreflang tags and ensure multilingual content is correctly indexed.</li></ul><br><h3 id="topical-authority-development">Topical Authority Development</h3><p>Focus on developing more comprehensive content around website monitoring, security, and performance optimization to establish Semonto as an authority in these areas.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Long-form cornerstone content (e.g., ultimate guides, whitepapers) will serve as link magnets and strengthen topical relevance.</li></ul><br><h3 id="backlink-driven-content-strategy">Backlink-Driven Content Strategy</h3><p>Based on our backlink analysis, we recommend creating content specifically designed to attract backlinks:</p><br><ol><li><strong>Case Studies</strong>: Create detailed case studies on how Semonto helped Belgian businesses improve website performance and security.</li><li><strong>Industry Reports</strong>: Develop comprehensive reports on website security trends in Belgium that industry publications would want to reference.</li><li><strong>Educational Resources</strong>: Create educational content about website monitoring and security that could attract backlinks from educational institutions.</li><li><strong>Tool Comparisons</strong>: Publish objective comparisons between different website monitoring tools, positioning Semonto as an industry authority.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft an outreach calendar targeting specific influencers, publications, and academic partners for each content asset.</li></ul><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><p>Semonto.com has experienced a significant decline in organic visibility over the past year, with a complete absence of top 10 keyword rankings in Belgium. While the website has strong technical SEO fundamentals, there's substantial room for improvement in keyword targeting, content optimization, and backlink building.</p><br><p>Key areas to address:</p><br><ol><li><strong>Keyword Strategy</strong>: Focus on pushing second and third-page rankings into the top 10, particularly for high-value keywords like "url check" with 480 monthly searches.</li><li><strong>Dutch Language Optimization</strong>: Create Dutch-language content to better serve the Belgian market, targeting keywords like "url controleren" and "website testen" that competitors are not effectively targeting.</li><li><strong>Title and Meta Description Optimization</strong>: Implement more compelling and keyword-rich titles and meta descriptions following competitor best practices.</li><li><strong>Content Structure</strong>: Create dedicated pages for different website testing tools to better target specific keywords and user intents.</li><li><strong>Backlink Profile Cleanup</strong>: Disavow toxic backlinks with high spam scores (65-95%) that could be harming SEO performance.</li><li><strong>Backlink Acquisition Strategy</strong>: Target high-authority domains like nist.gov and web.dev that link to competitors but not to Semonto.</li><li><strong>Local Relevance</strong>: Increase the number of backlinks from Belgian domains to improve local search relevance.</li><li><strong>Anchor Text Optimization</strong>: Diversify anchor texts to include more relevant keywords related to Semonto's core services.</li></ol><br><p>Quick wins:</p><ul><li>Optimize titles and meta descriptions for the Website Reachability Check page</li><li>Create Dutch translations of existing content</li><li>Implement proper hreflang tags</li><li>Disavow toxic backlinks with high spam scores</li></ul><br><p>Longer-term opportunities:</p><ul><li>Develop dedicated pages for different website testing tools</li><li>Create content targeting specific user intents and long-tail keywords</li><li>Build backlinks from relevant websites in the Belgian market</li><li>Create linkable assets designed to attract natural backlinks from high-authority domains</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Combining quick wins with a structured, long-term content and backlink strategy will reverse visibility declines and build sustainable organic growth in Belgium.</li></ul><br><p><em>This research report was prepared by WP SEO AI, providing comprehensive AI-driven SEO toolsets to help businesses improve their organic traffic and search engine rankings.</em></p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Coding Mammoth',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

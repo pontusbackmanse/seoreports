@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Flow</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Flow • www.flowbrunch.com</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 4, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th></tr></thead><tbody><tr><td class="">Total Ranking Keywords</td><td class="">34</td></tr><tr><td class="">Keywords in Position 1</td><td class="">2</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">0</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">5</td></tr><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">1,570.61 (July 2025)</td></tr><tr><td class="">ETV Growth (Jan to Jul 2025)</td><td class="positive">+534,121.08%</td></tr><tr><td class="">Month-over-Month ETV Growth</td><td class="positive">+32.6% (June to July 2025)</td></tr><tr><td class="">New Keywords Ranked (Last Mo.)</td><td class="">13</td></tr><tr><td class="">Improved Keywords (Last Mo.)</td><td class="">13</td></tr></tbody></table></div><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Keywords They Rank Well For (Flow’s Position)</th></tr></thead><tbody><tr><td class="">Florentinbrunch.com</td><td class="">"brunch de pijp" (Flow #29), "de pijp brunch" (Flow #31), "brunch amsterdam" (Flow not ranking)</td></tr><tr><td class="">Bakersandroasters.com</td><td class="">"brunch amsterdam" (Flow not ranking), "locals all day brunch" (Flow not ranking), "brunch all day" (Flow #21)</td></tr><tr><td class="">Eatwelldogood.nl</td><td class="">"brunch amsterdam" (Flow not ranking), "all-day brunch amsterdam" (Flow #12), "brunch all day" (Flow #21)</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Competitors consistently include location cues ("Amsterdam", "De Pijp") in page titles and meta descriptions.</li><li>Florentinbrunch.com leverages unique cuisine messaging; Eatwelldogood.nl emphasizes “all-day brunch.”</li><li>Flow can differentiate by combining location plus specialty coffee USP in snippets.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume</th><th>Current Position</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">brunch amsterdam</td><td class="">9,900</td><td class="">Not ranking</td><td class="">High volume, strong commercial intent</td></tr><tr><td class="">paasbrunch amsterdam (Easter)</td><td class="">260</td><td class="">Not ranking</td><td class="">Seasonal spike, opportunity for timely content</td></tr><tr><td class="">brunch de pijp</td><td class="">480</td><td class="">#29</td><td class="">Location-specific, neighborhood relevance</td></tr><tr><td class="">all day brunch amsterdam</td><td class="">170</td><td class="">#14</td><td class="">Growing trend, captures all-day dining intent</td></tr><tr><td class="">frühstücken amsterdam (German)</td><td class="">1,900</td><td class="">Not ranking</td><td class="">Targets German tourists, expanding audience</td></tr><tr><td class="">ontbijt de pijp (breakfast)</td><td class="">170</td><td class="">Not ranking</td><td class="">Dutch language, local intent</td></tr><tr><td class="">vegan brunch amsterdam</td><td class="">(estimated 100-200)</td><td class="">Not ranking</td><td class="">Dietary niche, growing demand</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop dedicated landing pages for highest-volume keywords (“brunch amsterdam,” “frühstücken amsterdam”)</li><li>Schedule seasonal content calendar for “paasbrunch amsterdam” with promotion in March</li><li>Create multi-language sections (Dutch and German) to capture local and tourist queries</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Flow’s organic visibility and traffic have grown explosively (+534,121% ETV growth in 7 months), but total ranking keywords remain low (34).</li><li>Strong presence for branded keywords but poor rankings for high-volume, non-branded, and location-specific keywords.</li><li>Competitors dominate key high-volume keywords like "brunch amsterdam" and "brunch de pijp" with clear location and USP messaging.</li><li>Technical SEO issues (missing meta descriptions, H1 tags, image alt attributes, render-blocking resources) limit ranking potential.</li><li>Backlink profile is small with some toxic links; opportunities exist to gain authoritative local backlinks from food blogs and tourism sites.</li><li>Content gaps include neighborhood-specific pages, all-day brunch, specialty coffee, seasonal events (Easter brunch), and dietary restrictions.</li><li>Recommendations include fixing technical SEO, creating Dutch-language content, optimizing for location and high-value keywords, and strategic link building.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The explosive ETV growth confirms strong content resonance; focus next on converting that visibility into high-value keyword rankings.</li><li>Prioritize technical fixes and local content to build on momentum.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-flow-amsterdam-" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Flow (Amsterdam)</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Flow is a brunch and specialty coffee establishment in Amsterdam that offers a "serene escape" with high-quality coffee and flavorful brunch dishes. Their menu features popular items like Smashed Avocado, Eggs Benedict, Turkish Eggs, and French Toast, alongside specialty coffee drinks using freshly sourced beans. <a href="https://www.flowbrunch.com" class="link-reference" target="_blank" rel="noopener">Company Website</a></p><br><hr><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-organic-visibility">Current Organic Visibility</h3><p>Flow's organic visibility in the Netherlands has shown remarkable growth, increasing from virtually no visibility in January 2025 (0.29 ETV) to 1,570.61 ETV by July 2025 - a 534,121.08% increase. This demonstrates strong positive momentum but still indicates significant room for improvement in capturing more relevant search traffic.</p><br><h3 id="search-engine-rankings">Search Engine Rankings</h3><ul><li>Latest organic visibility breakdown (July 2025):</li><li>Position 1: 2 keywords</li><li>Positions 2-3: 0 keywords</li><li>Positions 4-10: 5 keywords</li><li>Positions 11-20: 2 keywords</li><li>Positions 21-30: 10 keywords</li><li>Positions 31-40: 10 keywords</li><li>Positions 41-50: 2 keywords</li><li>Positions 51-100: 3 keywords</li><li>Total ranking keywords: 34</li></ul><br><h3 id="organic-traffic-trends-last-7-months-">Organic Traffic Trends (Last 7 Months)</h3><ul><li>Current monthly ETV: 1,570.61 (July 2025)</li><li>Growth from January to July 2025: 534,121.08% increase</li><li>Recent month-over-month growth (June to July): 32.6% increase</li><li>New rankings in latest month: 13 keywords</li><li>Improved rankings in latest month: 13 keywords</li></ul><br><h3 id="top-performing-pages">Top Performing Pages</h3><ol><li>https://www.flowbrunch.com/ - The homepage is currently the only page showing significant ranking performance, with an estimated paid traffic cost value of $684.38.</li></ol><br><h3 id="underperforming-pages-with-potential">Underperforming Pages with Potential</h3><ol><li>http://www.flowbrunch.com/ (non-secure version) - Currently not ranking at all, indicating a critical technical issue with duplicate content or improper redirects.</li></ol><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><ul><li>On-page score: 91.59 (Good overall, but with specific issues to address)</li><li>Critical issues identified:</li><li>Missing meta description</li><li>Missing H1 tag</li><li>Images missing "alt" and "title" attributes</li><li>Render-blocking stylesheets affecting page load speed</li><li>Duplicate "viewport" meta tags</li><li>Low content-to-code ratio</li><li>Resource errors with "Bogus comment detected" (status code 501)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign a technical SEO sprint to resolve critical items within two weeks:</li><li>Add missing H1 and meta descriptions sitewide</li><li>Optimize images with descriptive alt attributes</li><li>Consolidate viewport tags and defer non-critical CSS</li></ul><br><hr><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><p>Our analysis reveals Flow is performing well for branded terms but has significant opportunities for improvement with non-branded keywords:</p><br><p><strong>Top Performing Keywords (Positions 1-10):</strong></p><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">flow brunch</td><td class="">4,400</td><td class="">1</td></tr><tr><td class="">flow brunch amsterdam</td><td class="">140</td><td class="">1</td></tr><tr><td class="">flow amsterdam</td><td class="">2,900</td><td class="">10</td></tr><tr><td class="">flow menu</td><td class="">110</td><td class="">8</td></tr></tbody></table></div><p><strong>Keywords with High Potential (Positions 11-30):</strong></p><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">all day brunch amsterdam</td><td class="">170</td><td class="">14</td></tr><tr><td class="">all-day brunch amsterdam</td><td class="">170</td><td class="">12</td></tr><tr><td class="">flow restaurant</td><td class="">260</td><td class="">12</td></tr><tr><td class="">brunch all day</td><td class="">320</td><td class="">21</td></tr><tr><td class="">restaurant flow</td><td class="">110</td><td class="">20</td></tr><tr><td class="">brunch de pijp</td><td class="">480</td><td class="">29</td></tr><tr><td class="">de pijp brunch</td><td class="">170</td><td class="">31</td></tr><tr><td class="">locals all day brunch menu</td><td class="">70</td><td class="">28</td></tr><tr><td class="">flow food</td><td class="">110</td><td class="">29</td></tr><tr><td class="">locals all day brunch amsterdam</td><td class="">110</td><td class="">29</td></tr></tbody></table></div><hr><br><h3 id="high-value-target-keywords">High-Value Target Keywords</h3><p>Based on search volume and commercial intent, these high-value keywords should be prioritized:</p><br><p><strong>Top Priority Keywords:</strong></p><ol><li>"brunch amsterdam" - 9,900 monthly searches (competitor-dominated keyword)</li><li>"frühstücken amsterdam" - 1,900 monthly searches (German tourists searching for breakfast)</li><li>"brunch de pijp" - 480 monthly searches, currently ranking #29</li><li>"all day brunch amsterdam" - 170 monthly searches, currently ranking #14</li><li>"all-day brunch amsterdam" - 170 monthly searches, currently ranking #12</li></ol><br><p><strong>Secondary Keywords:</strong></p><ol><li>"de pijp brunch" - 170 monthly searches, currently ranking #31</li><li>"ontbijt de pijp" (breakfast de pijp) - 170 monthly searches</li><li>"ontbijt in de pijp" - 90 monthly searches</li><li>"de pijp breakfast" - 170 monthly searches</li></ol><br><hr><br><h3 id="location-specific-keyword-opportunities">Location-Specific Keyword Opportunities</h3><p>Flow is located in the De Pijp neighborhood of Amsterdam, and our research shows significant search volume for neighborhood-specific terms:</p><ul><li>"brunch de pijp" - 480 monthly searches (currently ranking #29)</li><li>"de pijp brunch" - 170 monthly searches (currently ranking #31)</li><li>"ontbijt de pijp" (breakfast de pijp) - 170 monthly searches</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>A dedicated De Pijp landing page can improve relevance and boost these positions.</li><li>Include maps, neighborhood highlights, and user reviews to enrich on-page content.</li></ul><br><hr><br><h3 id="seasonal-keyword-trends">Seasonal Keyword Trends</h3><p>We identified valuable seasonal keyword opportunities:</p><ul><li>"paasbrunch amsterdam" (Easter brunch Amsterdam) - 260 monthly searches with significant spikes in April</li></ul><br><h3 id="content-gap-keywords">Content Gap Keywords</h3><p>Based on the current keyword rankings and competitor analysis, these content gaps should be addressed:</p><ol><li>Neighborhood-specific content (De Pijp)</li><li>Menu item-specific keywords</li><li>Dutch-language keywords like "ontbijt" (breakfast) and "koffie" (coffee)</li><li>Specialty coffee related terms</li><li>Dietary restriction terms (vegan, gluten-free)</li></ol><br><hr><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><p>Our analysis identified three main competitors dominating the Amsterdam brunch market:</p><br><ol><li><strong>Florentinbrunch.com</strong></li></ol><ul><li><strong>Key Strengths:</strong> High average keyword position (2), strong focus on location-based keywords ("de Pijp"), consistent messaging in meta descriptions</li><li><strong>SERP Strategy:</strong> Titles are simply "Florentin Brunch" or "Florentin". Meta descriptions consistently highlight the Tel Aviv-inspired cuisine and Amsterdam location</li><li><strong>Type:</strong> Direct competitor (brunch restaurant in Amsterdam)</li></ul><br><ol><li><strong>Bakersandroasters.com</strong></li></ol><ul><li><strong>Key Strengths:</strong> Highest estimated traffic volume, strong performance for high-volume keywords ("brunch amsterdam", "locals all day brunch"), includes location in meta description</li><li><strong>SERP Strategy:</strong> Titles are simply "Home - Bakers & Roasters". Meta descriptions are inconsistent, sometimes including location and hours, sometimes focusing on the "Kiwi charm with Brazilian soul" concept</li><li><strong>Type:</strong> Direct competitor (brunch restaurant in Amsterdam)</li></ul><br><ol><li><strong>Eatwelldogood.nl (Dignita)</strong></li></ol><ul><li><strong>Key Strengths:</strong> Strong performance for high-volume keywords ("brunch amsterdam", "brunch all day"), mentions multiple locations in meta description</li><li><strong>SERP Strategy:</strong> Titles are "Dignita - all-day brunch". Meta descriptions consistently highlight the multiple locations and all-day brunch concept</li><li><strong>Type:</strong> Direct competitor (brunch restaurant with multiple locations in Amsterdam)</li></ul><br><h3 id="competitor-keyword-performance">Competitor Keyword Performance</h3><p>Our analysis identified these high-volume keywords where competitors are outperforming Flow:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Current Status</th></tr></thead><tbody><tr><td class="">brunch amsterdam</td><td class="">9,900</td><td class="">Not ranking</td></tr><tr><td class="">frühstücken amsterdam</td><td class="">1,900</td><td class="">Not ranking</td></tr><tr><td class="">brunch de pijp</td><td class="">480</td><td class="">Position #29</td></tr><tr><td class="">brunch all day</td><td class="">320</td><td class="">Position #21</td></tr><tr><td class="">paasbrunch amsterdam</td><td class="">260</td><td class="">Not ranking</td></tr><tr><td class="">all day brunch amsterdam</td><td class="">170</td><td class="">Position #14</td></tr><tr><td class="">de pijp brunch</td><td class="">170</td><td class="">Position #31</td></tr><tr><td class="">all-day brunch amsterdam</td><td class="">170</td><td class="">Position #12</td></tr><tr><td class="">all day breakfast amsterdam</td><td class="">140</td><td class="">Not ranking</td></tr><tr><td class="">all-day breakfast amsterdam</td><td class="">140</td><td class="">Not ranking</td></tr><tr><td class="">locals all day brunch amsterdam</td><td class="">110</td><td class="">Position #29</td></tr><tr><td class="">locals brunch</td><td class="">110</td><td class="">Not ranking</td></tr><tr><td class="">brunch in de pijp</td><td class="">90</td><td class="">Not ranking</td></tr><tr><td class="">locals all day brunch</td><td class="">14,800</td><td class="">Not ranking</td></tr></tbody></table></div><h3 id="competitor-content-strategies">Competitor Content Strategies</h3><p>Based on our analysis, competitors are successfully implementing these strategies:</p><br><ol><li>Location Emphasis: Competitors like Florentinbrunch.com and Eatwelldogood.nl clearly state their location (Amsterdam, de Pijp) in their meta descriptions, improving relevance for location-based searches.</li><li>Unique Selling Proposition (USP) Highlighting:</li></ol><ul><li>Florentinbrunch.com highlights its Tel Aviv inspiration</li><li>Bakersandroasters.com emphasizes its "Kiwi charm with Brazilian soul"</li><li>Eatwelldogood.nl highlights its multiple locations</li></ul><ol><li>"All-Day Brunch" Messaging: Eatwelldogood.nl consistently uses "all-day brunch" in both title and meta description, capturing this high-value search term.</li><li>Location-Specific Landing Pages: Competitors appear to be using dedicated pages for specific neighborhoods like De Pijp, improving their rankings for these location-specific searches.</li></ol><br><hr><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><p>Our detailed backlink analysis reveals that Flow has a relatively small but growing backlink profile:</p><br><ul><li>Total backlinks: 27</li><li>Referring domains: 22</li><li>Backlink spam score: 32% (medium risk)</li><li>Domain rank: 21</li><li>First backlink detected: March 28, 2024</li></ul><br><h3 id="quality-of-referring-domains">Quality of Referring Domains</h3><p>The backlink profile consists of a mix of quality levels:</p><ul><li>Low spam score domains (0-30%): 9 domains, including valuable links from:</li><li>yourlittleblackbook.me (0% spam score)</li><li>bartsboekje.com (0% spam score)</li><li>coffeeinsurrection.com (20% spam score)</li><li>leaveyoursword.com (25% spam score)</li><li>Medium spam score domains (31-60%): 8 domains, including:</li><li>openstreetmap.app (35% spam score)</li><li>seobacklinks.agency (45% spam score)</li><li>rankgrow.agency (45% spam score)</li><li>High spam score domains (61-100%): 5 domains, including potentially harmful links from:</li><li>belonnanotservice.ga (85% spam score)</li><li>what-happens-next.xyz (85% spam score)</li><li>thebestbacklinksavailable.click (65% spam score)</li></ul><br><h3 id="types-of-referring-websites">Types of Referring Websites</h3><p>The backlink analysis shows that Flow's links come from various platform types:</p><ul><li>Blogs: 17 links</li><li>CMS platforms: 16 links</li><li>Organization websites: 6 links</li><li>Unknown sources: 8 links</li></ul><br><h3 id="high-quality-backlinks">High-Quality Backlinks</h3><p>Several high-quality backlinks provide significant SEO value:</p><br><ol><li>Your Little Black Book (yourlittleblackbook.me) - A popular Amsterdam lifestyle blog featuring Flow in their "Lunch hotspots in De Pijp" article with the anchor text "flowbrunch.com"</li><li>Barts Boekje (bartsboekje.com) - A well-known Dutch food and lifestyle platform featuring Flow in their "New restaurants in Amsterdam" list with the anchor text "Flow Brunch"</li><li>Coffee Insurrection (coffeeinsurrection.com) - A specialty coffee blog featuring Flow with the anchor text "Flowbrunch.com"</li><li>Leave Your Sword (leaveyoursword.com) - A kombucha company listing Flow as a partner with the anchor text "Flow"</li></ol><br><h3 id="potentially-harmful-backlinks">Potentially Harmful Backlinks</h3><p>Several potentially toxic backlinks should be considered for disavowal:</p><br><ol><li>belonnanotservice.ga (85% spam score) - Appears to be a link farm with automated listings</li><li>what-happens-next.xyz (85% spam score) - Contains spammy link lists</li><li>thebestbacklinksavailable.click (65% spam score) - Suspicious domain with automated link lists</li><li>browseallexpireddomains.us (65% spam score) - Likely a PBN or link farm</li><li>mundotecnologia.info (65% spam score) - Contains suspicious link patterns</li></ol><br><h3 id="backlink-gap-analysis">Backlink Gap Analysis</h3><p>Our analysis identified several authoritative Dutch websites that link to competitors but not to Flow:</p><br><ol><li>Amsterdam Foodie (amsterdamfoodie.nl) - Links to multiple brunch competitors</li><li>I Amsterdam (iamsterdam.com) - Official city tourism site linking to other brunch spots</li><li>Awesome Amsterdam (awesomeamsterdam.com) - Popular city guide with restaurant listings</li><li>Dutch Review (dutchreview.com) - Lifestyle site covering Amsterdam dining</li></ol><br><h3 id="link-building-opportunities">Link Building Opportunities</h3><p>Based on our analysis, we recommend pursuing backlinks from these types of websites:</p><br><ol><li>Local Food Blogs: Target Dutch food bloggers for reviews and features</li><li>Tourism Websites: Pursue listings on Amsterdam tourism sites</li><li>Neighborhood Guides: Seek inclusion in De Pijp neighborhood guides</li><li>Coffee Industry Sites: Leverage specialty coffee connections for backlinks</li><li>Local Business Directories: Ensure presence on reputable Dutch business directories</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create an outreach calendar targeting top 4 gap domains over the next quarter</li><li>Develop linkable assets (neighborhood guide PDF, seasonal brunch infographic) for pitches</li><li>Monitor toxic link removal and submit disavow for identified harmful domains</li></ul><br><hr><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="recommended-content-topics">Recommended Content Topics</h3><p>Based on the keyword analysis and competitive landscape, Flow should develop:</p><br><ol><li>De Pijp Neighborhood Guide - Target "brunch de pijp" (480 searches) and "de pijp brunch" (170 searches)</li><li>All-Day Brunch Guide - Target "all day brunch amsterdam" (170 searches) and "brunch all day" (320 searches)</li><li>Specialty Coffee in Amsterdam - Target coffee-related keywords like "koffie amsterdam" (1,450 searches)</li><li>Seasonal Content - Create dedicated content for "paasbrunch amsterdam" (Easter brunch, 260 searches) well before April</li><li>Dietary Restriction Guides - Create content targeting "vegan brunch amsterdam" and "gluten-free brunch de pijp"</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize neighborhood and all-day brunch pages first to capture high local intent.</li><li>Schedule specialty coffee and dietary guides to follow, aligning with peak travel and dietary interest periods.</li></ul><br><h3 id="content-optimization-opportunities">Content Optimization Opportunities</h3><ol><li>Homepage Optimization:</li></ol><ul><li>Add a proper H1 tag</li><li>Create a compelling meta description that includes location (Amsterdam, De Pijp) and USP</li><li>Optimize image alt attributes</li><li>Improve content-to-code ratio</li></ul><ol><li>Content Diversification:</li></ol><ul><li>Create dedicated pages beyond the homepage to target specific keywords</li><li>Develop a "De Pijp" specific landing page</li><li>Create a comprehensive menu page optimized for "flow menu" (110 searches)</li></ul><ol><li>Snippet Optimization:</li></ol><ul><li>Current SERP snippets are repetitive, focusing on address and hours</li><li>Test different meta descriptions highlighting unique selling points</li><li>Showcase menu items, ambiance, or unique offerings in snippets</li><li>Include location (Amsterdam, De Pijp) in all meta descriptions</li></ul><ol><li>Technical Improvements:</li></ol><ul><li>Implement schema markup (Restaurant schema, LocalBusiness schema)</li><li>Create a Dutch-language version of the website</li></ul><br><h3 id="content-format-recommendations">Content Format Recommendations</h3><ol><li>Create a blog section featuring:</li></ol><ul><li>Coffee brewing guides</li><li>Brunch recipes</li><li>Amsterdam neighborhood guides (especially De Pijp)</li><li>Behind-the-scenes content about sourcing and preparation</li></ul><ol><li>Develop visual content showcasing:</li></ol><ul><li>Food photography with proper alt text</li><li>Coffee preparation videos</li><li>Restaurant ambiance highlights</li></ul><br><hr><br></div></section>
+                <section id="conclusion-and-next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion and Next Steps</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our comprehensive analysis, Flow has shown impressive organic growth over the past 7 months, with a 534,121.08% increase in Estimated Traffic Volume. However, significant opportunities remain to improve SEO performance in the Amsterdam and broader Dutch market. By addressing technical issues, optimizing for high-value keywords, creating strategic content, and building quality backlinks, Flow can substantially increase its organic visibility and traffic.</p><br><h3 id="recommended-priority-actions-">Recommended Priority Actions:</h3><ol><li><strong>Fix technical SEO issues:</strong></li></ol><ul><li>Add meta descriptions to all pages that include location (Amsterdam, De Pijp) and USP</li><li>Implement proper H1 tags</li><li>Add alt attributes to all images</li><li>Address render-blocking resources</li><li>Ensure proper redirects from HTTP to HTTPS</li><li>Increase content-to-code ratio</li><li>Implement schema markup (Restaurant, LocalBusiness)</li></ul><ol><li><strong>Develop content targeting identified keyword gaps:</strong></li></ol><ul><li>Create a dedicated "De Pijp" neighborhood page (targeting "brunch de pijp" - 480 searches)</li><li>Develop comprehensive menu pages with keyword-rich descriptions</li><li>Create content around "all day brunch amsterdam" (170 searches)</li><li>Add Amsterdam-specific location content</li></ul><ol><li><strong>Implement local SEO optimizations specific to Amsterdam:</strong></li></ol><ul><li>Ensure Google My Business profile is optimized</li><li>Build citations on Dutch directories</li><li>Target Amsterdam neighborhood keywords, especially De Pijp</li></ul><ol><li><strong>Begin strategic backlink improvement:</strong></li></ol><ul><li>Disavow potentially harmful backlinks (identified 5 domains with high spam scores)</li><li>Pursue quality backlinks from identified gap opportunities (amsterdamfoodie.nl, iamsterdam.com)</li><li>Leverage existing relationships with quality referring domains (yourlittleblackbook.me, bartsboekje.com)</li><li>Target local food bloggers and tourism websites for new backlinks</li><li>Create shareable content that naturally attracts links</li></ul><ol><li><strong>Optimize existing pages for identified high-value keywords:</strong></li></ol><ul><li>Enhance homepage content with target keywords</li><li>Create a proper site structure with keyword-focused URLs</li><li>Develop seasonal content strategies, especially for Easter brunch</li></ul><ol><li><strong>Create a Dutch-language version of the website:</strong></li></ol><ul><li>Translate all content, meta descriptions, and titles to Dutch</li><li>Target Dutch-language keywords like "ontbijt de pijp" (170 searches)</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Aim for Quick Wins (items 1–3) to be completed within 4–6 weeks.</li><li>Longer-term initiatives (backlink building, Dutch site version) should be phased over the next 3–6 months based on resource availability.</li></ul><br><h3 id="quick-wins-">Quick Wins:</h3><ol><li>Optimize the homepage meta description with clear location and USP</li><li>Create a basic "Brunch in de Pijp" landing page</li><li>Fix HTTP to HTTPS redirects</li><li>Add proper H1 tags to all pages</li><li>Implement basic schema markup</li><li>Submit disavow file for the 5 identified toxic backlink domains</li></ol><br><h3 id="longer-term-opportunities-">Longer-Term Opportunities:</h3><ol><li>Develop a comprehensive content strategy targeting brunch-related keywords</li><li>Build high-quality backlinks from relevant websites</li><li>Create a full Dutch-language version of the website</li><li>Develop content around specific dietary restrictions and menu items</li><li>Improve domain authority through strategic link building with quality Dutch websites</li></ol><br><p>Implementation of these recommendations would position Flow to build on its impressive growth trajectory and compete more effectively against identified competitors in Amsterdam's competitive brunch and coffee market, particularly in the De Pijp neighborhood where they have significant ranking potential.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Flow',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Kroon</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Kroon • https://kroonenergie.nl/</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 4, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th><th>Notes</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">225.61 (Latest)</td><td class="positive">+13.90% growth over last 12 months</td></tr><tr><td class="">Keywords in Position 1</td><td class="">3 (Latest)</td><td class="positive">+200% increase over last 12 months</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">2 (Latest)</td><td class="">-</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">17 (Latest)</td><td class="positive">+183% increase over last 12 months</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="negative">Significant drop (-53.85%)</td><td class="">Indicates ranking losses in mid-tier range</td></tr><tr><td class="">Keywords in Positions 31-40</td><td class="negative">Significant drop (-46.15%)</td><td class="">Further ranking decay in lower positions</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The steep drop in positions 11–40 is creating a “leaky bucket” effect. Conduct a focused content audit on mid-tier pages to identify quick-win topics for consolidation or expansion.</li><li>Prioritize pages with potential to move into the Top 10 by improving on-page signals (titles, headings, internal links).</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Strong Ranking Keywords (Kroon Energie Ranks Poorly)</th><th>Notable Strategy Snippet</th></tr></thead><tbody><tr><td class="">Essent.nl</td><td class="">"zonnepanelen winter," "winter performance zonnepanelen"</td><td class="">"Hoeveel stroom wekken zonnepanelen op in de winter? En wat is de invloed van sneeuw? We leggen het uit."</td></tr><tr><td class="">Vattenfall.nl</td><td class="">"zonnestroom," "dakcheck"</td><td class="">"Doe de Dakcheck en ontdek binnen 1 minuut hoeveel zonnepanelen er op jouw dak passen."</td></tr><tr><td class="">Gaslicht.com</td><td class="">"energie vergelijken," "energie contracten"</td><td class="">"Energie vergelijken 2024</td><td class="positive">100% onafhankelijk</td><td class="">Gaslicht.com"</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Review competitor content themes—Essent’s data-driven winter guides and Vattenfall’s interactive tool—to inspire your own winter performance hub and roof-check feature.</li><li>Benchmark user engagement on those pages and outline a simplified, faster-loading alternative for Kroon Energie.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Monthly Search Volume (NL)</th><th>Competition Level</th><th>Opportunity / Reason</th></tr></thead><tbody><tr><td class="">zonnepanelen zakelijk kaufen</td><td class="">210</td><td class="">Low</td><td class="">High commercial intent, low competition</td></tr><tr><td class="">zakelijk zonnepanelen kaufen</td><td class="">210</td><td class="">Low</td><td class="">High commercial intent, low competition</td></tr><tr><td class="">zonnepanelen opbrengst winter</td><td class="">170</td><td class="">Low</td><td class="">Content gap, seasonal interest, very high potential</td></tr><tr><td class="">opbrengst zonnepanelen winter</td><td class="">170</td><td class="">Low</td><td class="">Content gap, seasonal interest, very high potential</td></tr><tr><td class="">zonnepanelen in de winter</td><td class="">110</td><td class="">Medium</td><td class="">Seasonal content opportunity</td></tr><tr><td class="">zonnepanelen amsterdam</td><td class="">320</td><td class="">Medium</td><td class="">Strong local search volume, existing mid-rank</td></tr><tr><td class="">airco amsterdam</td><td class="">260</td><td class="">Medium</td><td class="">Local service keyword, opportunity to improve rank</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Low-competition, high-intent terms like "zonnepanelen zakelijk kopen" should be the first targets for new landing pages or quick blog posts.</li><li>Align content creation with seasonal spikes—prepare winter-focused assets ahead of Q4 to capture early demand.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li><strong>Organic Growth:</strong> +13.90% ETV growth with strong gains in top 10 keyword rankings, but significant losses in mid-tier rankings (positions 11-40).</li><li><strong>Top Pages:</strong> Homepage and local pages (Amsterdam, Katwijk) drive most traffic; many blog and location pages underperform.</li><li><strong>Keyword Opportunities:</strong> Low-competition, high-intent keywords around winter solar performance and business solar panel purchases are untapped.</li><li><strong>Competitors:</strong> Essent and Vattenfall dominate winter and interactive tool content; Gaslicht.com leads in energy contract comparison.</li><li><strong>Backlinks:</strong> 255 backlinks with 36% medium-risk spam score; opportunity to gain authoritative links from Energie Nederland and MilieuCentraal.</li><li><strong>Technical SEO Issues:</strong> Multiple H1 tags, render-blocking scripts, missing alt texts, and toxic backlinks need fixing.</li><li><strong>Content Strategy:</strong> Focus on winter solar content hub, local Amsterdam content, solar window pages, and interactive roof suitability tools.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Organize a cross-functional kick-off meeting to align on immediate priorities: technical fixes, content hub creation, local page optimizations, and tool development. Assign clear owners and deadlines.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-kroon-energie" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Kroon Energie</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><br><p>This report provides a data-driven SEO analysis for Kroon Energie, an energy company in the Netherlands. Our research indicates that while Kroon Energie has achieved positive growth in organic traffic and secured several top-ranking keywords, there are significant underlying weaknesses that are hindering its full potential.</p><br><p>Key findings show a <strong>13.90% increase in Estimated Traffic Volume (ETV)</strong> over the last year, driven by strong performance for top-10 keywords. However, the company is simultaneously losing a substantial number of rankings in positions 11-50, indicating a "leaky bucket" issue. Furthermore, specific technical SEO flaws like multiple H1 tags and render-blocking scripts, combined with a portfolio of underperforming content, present clear opportunities for improvement.</p><br><p>This report outlines a strategic roadmap for Kroon Energie to fix these issues, optimize existing assets, and outmaneuver competitors in the Dutch market. WP SEO AI is perfectly positioned to execute this strategy, leveraging our AI-driven toolset to enhance content, resolve technical errors, and build sustainable organic growth.</p><br></div></section>
+                <section id="1-company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">1. Company Overview</h2>
+                    </div>
+                    <div class="section-content"><br><p>Kroon Energie operates in the Dutch energy sector, offering solar panel solutions and energy contracts to consumers (<a href="about:blank" class="link-reference" target="_blank" rel="noopener">Competitive Analysis</a>). The company competes with major players like Essent and Vattenfall, as well as comparison aggregators like Gaslicht.com. Their focus on local SEO for solar panel installation is a key part of their current strategy.</p><br></div></section>
+                <section id="2-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">2. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p>Kroon Energie has a mixed but promising SEO profile in the Dutch market.</p><br><ul><li><strong>Organic Growth:</strong> The domain has seen a <strong>+13.90% increase in Estimated Traffic Volume (ETV)</strong> over the last 12 months. This growth is primarily fueled by a <strong>+200% increase in keywords ranking in position 1</strong> and a <strong>+183% increase in keywords ranking in positions 4-10</strong>.</li><li><strong>Current Organic Visibility (Latest Month):</strong></li><li><strong>Estimated Traffic Volume (ETV):</strong> 225.61</li><li><strong>Keywords in Position 1:</strong> 3</li><li><strong>Keywords in Positions 2-3:</strong> 2</li><li><strong>Keywords in Positions 4-10:</strong> 17</li><li><strong>Total Keywords in Top 10:</strong> 22</li><li><strong>Key Challenge:</strong> Despite success at the top, the site has experienced significant ranking drops in lower positions: <strong>-53.85% in positions 11-20</strong> and <strong>-46.15% in positions 31-40</strong>. This suggests that while some content is highly optimized, a larger portion is losing visibility and requires attention.</li><li><strong>Top-Performing Pages:</strong></li><li>https://kroonenergie.nl/ (Homepage): ETV of 59.48</li><li>https://kroonenergie.nl/zonnepanelen-amsterdam/: ETV of 53.64, indicating strong local search performance.</li><li>https://kroonenergie.nl/locations/katwijk/: ETV of 21.43, ranking in position 1 for key local terms.</li><li><strong>Underperforming Pages:</strong> A significant number of blog posts and location-specific pages have low ETV (below 5) and rank poorly. These pages represent untapped potential. Examples include:</li><li>/zonnepanelen-in-de-winter-hoe-werken-ze-als-de-zon-minder-schijnt/</li><li>/bespaar-op-je-energiekosten-met-deze-handige-tips/</li><li>/zonnepanelen-nieuw-vennep/</li><li>/airco-amsterdam-noord/</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Refresh or merge underperforming location and blog pages to consolidate authority and improve ETV.</li><li>Identify common content gaps (e.g., seasonal performance, local subsidies) and address them in revamped assets.</li></ul><br></div></section>
+                <section id="3-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">3. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-keyword-performance">Current Keyword Performance</h3><br><p>Our analysis reveals Kroon Energie's current keyword rankings:</p><br><p>Top-Performing Keywords (Positions 1-10):</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">kroon energie</td><td class="">110</td><td class="">1</td></tr><tr><td class="">kroon energie katwijk</td><td class="">70</td><td class="">1</td></tr><tr><td class="">kroon energie lisse</td><td class="">70</td><td class="">1</td></tr><tr><td class="">zonneramen</td><td class="">40</td><td class="">4</td></tr><tr><td class="">kroon lisserbroek</td><td class="">90</td><td class="">3</td></tr><tr><td class="">zonnepanelen lisse</td><td class="">70</td><td class="">5</td></tr><tr><td class="">zonnepanelen amsterdam</td><td class="">320</td><td class="">7</td></tr><tr><td class="">zonnepanelen in amsterdam</td><td class="">320</td><td class="">8</td></tr><tr><td class="">zonnepanelen hoofddorp</td><td class="">90</td><td class="">10</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit meta titles and descriptions for these top-ranking terms to further improve CTR and defend positions.</li></ul><br><p>Opportunity Keywords (Positions 11-30):</p><br><ul><li>"airco amsterdam" (260 searches, position 14)</li><li>"air conditioning amsterdam" (210 searches, position 12)</li><li>"zonnepanelen in raam" (position 11)</li><li>"zonnepanelen ramen" (position 13)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Target near-miss keywords with quick content updates—e.g., add “airco amsterdam” into relevant service pages and FAQs to push these into the Top 10.</li></ul><br><h3 id="high-value-keyword-opportunities">High-Value Keyword Opportunities</h3><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Monthly Search Volume (NL)</th><th>Competition Level</th><th>Opportunity for Kroon</th></tr></thead><tbody><tr><td class="">zonnestroom</td><td class="">9,900</td><td class="">Medium</td><td class="">High</td></tr><tr><td class="">zonnepanelen dak</td><td class="">590</td><td class="">High</td><td class="">High</td></tr><tr><td class="">zonnepanelen opbrengst winter</td><td class="">170</td><td class="">Low</td><td class="">Very High</td></tr><tr><td class="">opbrengst zonnepanelen winter</td><td class="">170</td><td class="">Low</td><td class="">Very High</td></tr><tr><td class="">hoeveel zonnepanelen op mijn dak</td><td class="">70</td><td class="">Medium</td><td class="">High</td></tr><tr><td class="">voordelen zonne energie</td><td class="">140</td><td class="">Low</td><td class="">High</td></tr><tr><td class="">zonnepanelen in de winter</td><td class="">110</td><td class="">Medium</td><td class="">Very High</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Develop detailed content clusters around winter performance and roof suitability topics to capture search demand and build topical authority.</li></ul><br><h3 id="prioritized-target-keywords">Prioritized Target Keywords</h3><br><p>Based on search volume, competition, and commercial intent, we recommend prioritizing these keywords:</p><br><p><strong>Top Priority Keywords:</strong></p><ul><li>zonnepanelen zakelijk kopen: 210 searches, LOW competition</li><li>zakelijk zonnepanelen kopen: 210 searches, LOW competition</li><li>Nederland duurzame energie: 230 searches, LOW competition</li><li>Duurzame energie in Nederland: 230 searches, LOW competition</li></ul><br><p><strong>Secondary Keywords:</strong></p><ul><li>zonnepanelen kopen prijs: 330 searches, HIGH competition</li><li>prijs zonnepanelen: 2,300 searches, HIGH competition</li><li>zonnepanelen prijs: 2,300 searches, HIGH competition</li></ul><br><p><strong>Long-term Opportunities:</strong></p><ul><li>zonnepanelen kopen of huren: 130 searches, MEDIUM competition</li><li>zonnepanelen huren of kopen: 130 searches, MEDIUM competition</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create a content calendar assigning these top-priority keywords to dedicated landing pages and blog posts, ensuring high-quality briefs for each.</li></ul><br><h3 id="keyword-gaps-seasonal-trends">Keyword Gaps & Seasonal Trends</h3><br><ol><li><strong>Winter Solar Performance:</strong> Keywords related to solar panel performance in winter have low competition and high user intent. This is a major content gap.</li><li><strong>Solar Panel Suitability:</strong> Practical, "how-to" keywords about installation and roof suitability show strong transactional intent.</li><li><strong>Seasonal Interest:</strong> The Dutch market shows peak interest in solar panels in spring/summer and energy efficiency/contracts in the fall/winter. A content strategy aligned with these trends is crucial.</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Map your editorial schedule to these seasonal trends—plan winter performance assets for late summer and spring/summer educational pieces in Q1.</li></ul><br></div></section>
+                <section id="4-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">4. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitor-strategies">Key Competitor Strategies</h3><br><ol><li><strong>Essent.nl:</strong></li></ol><ul><li>Strength: Dominates informational queries with a comprehensive "Kennisbank" (knowledge base). Ranks highly for winter performance keywords.</li><li>Strategy Snippet: Uses action-oriented meta descriptions like "Hoeveel stroom wekken zonnepanelen op in de winter? En wat is de invloed van sneeuw? We leggen het uit."</li></ul><br><ol><li><strong>Vattenfall.nl:</strong></li></ol><ul><li>Strength: Ranks for broad terms like "zonnestroom" and effectively uses interactive tools.</li><li>Strategy Snippet: Integrates tools into their content with calls-to-action like "Doe de Dakcheck en ontdek binnen 1 minuut hoeveel zonnepanelen er op jouw dak passen."</li></ul><br><ol><li><strong>Gaslicht.com:</strong></li></ol><ul><li>Strength: Dominates energy contract comparison keywords.</li><li>Strategy Snippet: Builds trust in SERPs with titles like "Energie vergelijken 2024 | 100% onafhankelijk | Gaslicht.com", emphasizing their unbiased position.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Implement an interactive roof-check tool with clear, time-bound benefits (e.g., “Binnen 1 minuut inzicht”) and concise CTAs to match competitor engagement levels.</li></ul><br></div></section>
+                <section id="5-backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">5. Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><p>Our analysis of Kroon Energie's backlink profile reveals both strengths and weaknesses.</p><br><ul><li><strong>Profile Summary:</strong> 255 backlinks from 134 referring domains, with a majority from authoritative <code>.nl</code> domains.</li><li><strong>Spam Score:</strong> A <strong>medium-risk spam score of 36%</strong> indicates the presence of low-quality links, primarily from directory and aggregator sites (e.g., <code>eigenstart.nl</code>, <code>boogo.nl</code>). These links could be hindering ranking potential.</li><li><strong>Anchor Text:</strong> The anchor text profile shows a strong focus on local SEO (e.g., "zonnepanelen in Amsterdam-Noord," "zonnepanelen in Diemen"), which aligns with their top-performing pages.</li><li><strong>Opportunities:</strong> There is a clear opportunity to acquire high-quality backlinks from authoritative industry sites where competitors are present but Kroon is not, such as <strong>Energie Nederland (energie-nederland.nl)</strong> and <strong>MilieuCentraal (milieucentraal.nl)</strong>.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Launch an outreach campaign targeting Energie Nederland and MilieuCentraal for guest contributions, research collaborations, or citation in their resource pages.</li><li>Prioritize high-authority <code>.nl</code> domains to improve the overall trust profile.</li></ul><br></div></section>
+                <section id="6-content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">6. Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><ol><li><strong>Optimize Underperforming Content:</strong> Use the list of low-ETV pages (e.g., <code>/zonnepanelen-in-de-winter.../</code>) as a starting point. WP SEO AI's content tools can analyze and rewrite this content to better target user intent and rank for relevant keywords.</li><li><strong>Create "Winter Performance" Content Hub:</strong> Capitalize on the low-competition keyword gap. Develop a data-driven content cluster around "zonnepanelen opbrengst winter," including articles, infographics, and calculators.</li><li><strong>Develop Location-Specific Landing Pages:</strong> Double down on the successful local SEO strategy. Create dedicated, highly-optimized pages for every service area, incorporating local testimonials, case studies, and schema.</li><li><strong>Build a Solar Panel Suitability Tool:</strong> To compete with Essent and Vattenfall, develop an interactive "dakscan" (roof check) tool. This serves as a powerful lead generation magnet and builds topical authority.</li><li><strong>Optimize "Zonneramen" Content:</strong> The keyword "zonneramen" (solar windows) ranks well (position 4), but related keywords like "zonnepanelen in raam," "zonnepanelen ramen," and "zonnepaneel raam" rank much lower (positions 11-15). Create a dedicated service page for solar windows with comprehensive information.</li><li><strong>Amsterdam-Focused Content Strategy:</strong> Leverage the strong performance for "zonnepanelen amsterdam" (position 7, 320 searches) and "airco amsterdam" (position 14, 260 searches) by creating more in-depth content specifically for Amsterdam residents, including case studies, local subsidies information, and product comparisons suited to Amsterdam's climate and building types.</li><li><strong>Blog Content Optimization:</strong> Enhance the blog post "Vijf voordelen van zonne-energie" which currently ranks in position 11 for "voordelen van zonne energie" keywords. Optimize by including the keyword in the title, headings, and throughout the content.</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Sequence these initiatives by ease and impact: start with the winter performance hub and local page optimizations, then move to interactive tool development and deep-dive service pages.</li></ul><br></div></section>
+                <section id="7-technical-seo-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-cogs"></i></div>
+                        <h2 class="section-title">7. Technical SEO Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><p>Our audit revealed specific technical issues that need immediate attention.</p><br><ol><li><strong>Fix On-Page Errors:</strong></li></ol><ul><li>Multiple H1 Tags: Resolve pages with more than one H1 tag to improve semantic structure and keyword focus.</li><li>Missing Image Alt Texts: Add descriptive alt text to all relevant images to improve accessibility and image search visibility.</li></ul><ol><li><strong>Improve Page Speed:</strong></li></ol><ul><li>Address Render-Blocking Scripts: Defer or asynchronously load non-critical scripts that are slowing down page load times, a key ranking factor.</li></ul><ol><li><strong>Backlink Profile Cleanup:</strong></li></ol><ul><li>Conduct a full backlink audit to identify and disavow the toxic links contributing to the 36% spam score. This will improve the site's trust signals with search engines.</li></ul><ol><li><strong>Improve Internal Linking:</strong> Many pages are ranking for keywords that are relevant to other pages on the site. Enhance internal linking to help users find relevant information and improve the site's overall SEO.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Schedule a technical SEO sprint to resolve H1 tag issues, optimize script loading, and initiate the disavow process for toxic backlinks.</li><li>Implement an internal linking framework to boost relevance signals and distribute authority.</li></ul><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><br><p>Kroon Energie is at a pivotal point. The company has a solid foundation with positive traffic growth and strong local rankings. However, its growth is being actively undermined by decaying mid-tier rankings, a partially toxic backlink profile, specific technical errors, and a portfolio of under-optimized content.</p><br><p>By implementing the targeted strategies outlined in this report, Kroon Energie can plug these leaks and build a dominant organic presence. Our analysis reveals immediate opportunities to:</p><br><ol><li>Target low-competition, high-value keywords like "zonnepanelen zakelijk kopen" (210 searches, LOW competition)</li><li>Optimize existing content for "zonneramen" and related keywords</li><li>Develop Amsterdam-specific content to capitalize on high search volumes (320 searches)</li><li>Create a comprehensive winter solar performance content hub</li></ol><br><p>WP SEO AI offers the ideal all-in-one solution to achieve this, providing the AI-powered tools necessary to refine content, track and outrank competitors, and maintain perfect technical SEO health. We are confident that a partnership would unlock significant, sustainable growth in the Dutch market.</p><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>All recommended actions can be executed by your in-house SEO and development teams or accelerated using WP SEO AI’s automation features.</li></ul></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Kroon',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

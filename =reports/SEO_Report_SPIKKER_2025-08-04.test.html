@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - SPIKKER</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">SPIKKER • www.spikker.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 4, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary-spikker-seo-analysis-netherlands-market" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary: SPIKKER SEO Analysis – Netherlands Market</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Overall SEO Performance & Growth (Last 12 Months)</strong></th></tr></thead><tbody><tr><td class=""><strong>Metric</strong></td><td class=""><strong>Value / Change</strong></td></tr><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">470.57 monthly visits</td></tr><tr><td class="">ETV Growth</td><td class="negative">-23.36% (decline)</td></tr><tr><td class="">Paid Traffic Cost Value</td><td class="">€1,133.49</td></tr><tr><td class="">Keywords Position 1</td><td class="">2</td></tr><tr><td class="">Keywords Positions 2-3</td><td class="positive">6 (500% YoY increase)</td></tr><tr><td class="">Keywords Positions 4-10</td><td class="positive">10 (233.33% YoY increase)</td></tr><tr><td class="">Keywords Positions 11-20</td><td class="">25</td></tr><tr><td class="">Keywords Positions 21-30</td><td class="">25</td></tr><tr><td class="">Keywords Positions 31-40</td><td class="">30</td></tr><tr><td class="">Keywords Positions 41-100</td><td class="">49</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The decline in ETV despite growth in mid-tail keyword rankings suggests a gap in capturing high-intent searches. Prioritize content that converts to reverse the traffic downturn.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Top Competitors & Keywords They Rank Well For (SPIKKER Ranks Poorly)</strong></th></tr></thead><tbody><tr><td class=""><strong>Competitor</strong></td><td class=""><strong>Keywords</strong></td><td class=""><strong>Search Volume</strong></td><td class=""><strong>SPIKKER Position</strong></td><td class=""><strong>Competitor Position</strong></td></tr><tr><td class="">WJWebdesign.nl</td><td class="">wordpress website laten maken</td><td class="">1600</td><td class="">Poor</td><td class="">High</td></tr><tr><td class="">Best4u.nl</td><td class="">maatwerk website</td><td class="">880</td><td class="">Poor</td><td class="">High</td></tr><tr><td class="">Best4u.nl</td><td class="">website maatwerk</td><td class="">140</td><td class="">Poor</td><td class="">High</td></tr><tr><td class="">Best4u.nl</td><td class="">maatwerk webdesign</td><td class="">90</td><td class="">Poor</td><td class="">High</td></tr><tr><td class="">Nowweb.nl</td><td class="">website abonnement</td><td class="">90</td><td class="">Not ranking</td><td class="">High</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop targeted content briefs for each competitor-dominant keyword (e.g., “wordpress website laten maken”) to close the ranking gap.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Opportunity Keywords to Target & Why</strong></th></tr></thead><tbody><tr><td class=""><strong>Keyword</strong></td><td class=""><strong>Search Volume</strong></td><td class=""><strong>Competition</strong></td><td class=""><strong>Why Target?</strong></td></tr><tr><td class="">webshop laten maken</td><td class="">1000-2400 (seasonal)</td><td class="">Medium</td><td class="">High commercial intent, seasonal peaks</td></tr><tr><td class="">woocommerce webshop laten maken</td><td class="">320-1300 (seasonal)</td><td class="">Low</td><td class="">Platform-specific, low competition</td></tr><tr><td class="">professioneel webshop laten maken</td><td class="">260-1000 (seasonal)</td><td class="">Low</td><td class="">Quality-focused, low competition</td></tr><tr><td class="">social media uitbesteden</td><td class="">590-1900 (seasonal)</td><td class="">Low</td><td class="">Direct service match, underutilized</td></tr><tr><td class="">wordpress website laten maken</td><td class="">1600</td><td class="">Low</td><td class="">High commercial intent, competitor ranks well</td></tr><tr><td class="">kosten webshop laten maken</td><td class="">170-720 (seasonal)</td><td class="">Low</td><td class="">Price-conscious audience, untapped</td></tr><tr><td class="">maatwerk website</td><td class="">880</td><td class="">Low</td><td class="">Competitor strength, SPIKKER ranks poorly</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Seasonal peaks for webshop-related queries occur in winter; align content publication and promotion schedules accordingly to capture demand surges.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR – Key Findings</h3><br><ul><li>SPIKKER’s organic traffic declined by 23.36% over the past year despite growth in keywords ranking in positions 2-10.</li><li>Strong brand keyword rankings locally (e.g., “spikker,” “spikker urk”) but weak performance on high-value service keywords like webshop development and social media marketing.</li><li>Technical SEO issues (unclosed HTML tags, render-blocking CSS) and low content-to-code ratio hinder performance.</li><li>Competitors WJWebdesign.nl, Best4u.nl, and Nowweb.nl outperform SPIKKER on key commercial keywords, especially in WordPress and custom website services.</li><li>Backlink profile is healthy but lacks keyword-rich anchor text; several authoritative Dutch domains link to competitors but not SPIKKER.</li><li>Immediate content opportunities include webshop-related keywords, pricing transparency, and social media marketing services.</li><li>Seasonal webshop keyword trends peak in winter; aligning content calendar accordingly is advised.</li><li>Technical fixes and optimized meta titles/descriptions can yield quick ranking improvements.</li><li>Developing location-specific landing pages and subscription-based website services can open new market segments.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Map out a 90-day action plan prioritizing technical fixes and meta optimization for underperforming pages to generate quick wins.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-spikker" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: SPIKKER</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>SPIKKER is a strategic and creative marketing agency based in Urk, Flevoland, Netherlands. They offer services across three main areas: Creative (design, photography, videography, corporate identity), Online Marketing (including SEO, Google Ads, social media marketing), and Website Development (WordPress sites, webshops, custom websites). Their business focuses on helping organizations effectively tell their stories and achieve growth in revenue, brand awareness, and reach. <a href="https://spikker.nl" class="link-reference" target="_blank" rel="noopener">Company Website</a></p><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>The agency’s diverse service mix presents opportunities to cross-link authoritative content between creative, marketing, and development pages for SEO synergy.</li></ul><br></div></section>
+                <section id="research-objectives" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Research Objectives</h2>
+                    </div>
+                    <div class="section-content"><p>This report aims to provide a comprehensive SEO analysis for SPIKKER in the Dutch market, focusing on actionable insights that demonstrate how WP SEO AI can address their specific needs and challenges.</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p><strong>Organic Visibility Trends:</strong></p><ul><li>SPIKKER has experienced a 23.36% decrease in estimated traffic volume (ETV) over the past year</li><li>Current ETV stands at 470.57 monthly visits (as of July 2025)</li><li>Estimated paid traffic cost value: €1,133.49 (indicating the value of their organic traffic if purchased through paid channels)</li></ul><br><p><strong>Current Ranking Distribution:</strong></p><ul><li>Position 1: 2 keywords</li><li>Positions 2-3: 6 keywords (500% increase year-over-year)</li><li>Positions 4-10: 10 keywords (233.33% increase year-over-year)</li><li>Positions 11-20: 25 keywords</li><li>Positions 21-30: 25 keywords</li><li>Positions 31-40: 30 keywords</li><li>Positions 41-100: 49 keywords</li></ul><br><p><strong>Top-Performing Pages:</strong></p><ul><li><code>/cases/nieuw-logo-gemeente-urk/</code>: Case study performing exceptionally well with high ETV (180.71)</li><li><code>/creatief/logo-laten-ontwerpen/</code>: Service page with high ETV (99.85)</li><li>Homepage (<code>/</code>): Strong performance with ETV of 77.14</li></ul><br><p><strong>Underperforming Pages:</strong></p><ul><li><code>/online-marketing/google-ads/</code>: Despite being a core service, ranks mostly in positions 61-100</li><li><code>/creatief/fotografie/</code>: Low ETV despite being a key service</li><li><code>/creatief/bedrijfsfilm-laten-maken/</code>: Poor visibility for video production services</li><li><code>/online-marketing/social-media-marketing/</code>: Underperforming compared to other service pages</li><li><code>/conversie-optimalisatie/</code>: Ranks in positions 71-80 with low ETV</li></ul><br><p><strong>Technical SEO Issues:</strong></p><ul><li>Unclosed HTML tags affecting proper rendering</li><li>Render-blocking stylesheets impacting page load speed</li><li>HTML structure issues including excessive depth (exceeds 32 tags)</li><li>Low content rate requiring optimization</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Schedule a technical SEO sprint to fix HTML/CSS issues and aim for sub-3-second load times on key service pages.</li></ul><br><p><strong>Key Observations:</strong></p><ul><li>No paid search traffic detected, suggesting SPIKKER is not currently leveraging PPC advertising</li><li>Case studies show mixed performance, with some performing exceptionally well while others struggle</li><li>Many service pages rank outside the top 20 positions, limiting their visibility and traffic potential</li><li>Blog content contributes to overall visibility but could be further optimized</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Consider creating a centralized resource hub for service pages to consolidate authority and improve internal linking.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p><strong>Top Performing Keywords (Positions 1-10):</strong></p><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">spikker</td><td class="">140</td><td class="">1</td></tr><tr><td class="">spikker urk</td><td class="">70</td><td class="">1</td></tr><tr><td class="">gemeente urk logo</td><td class="">90</td><td class="">3</td></tr><tr><td class="">logo gemeente urk</td><td class="">90</td><td class="">3</td></tr><tr><td class="">logo urk</td><td class="">390</td><td class="">3</td></tr><tr><td class="">nieuw logo urk</td><td class="">140</td><td class="">2</td></tr><tr><td class="">nieuwe logo urk</td><td class="">140</td><td class="">2</td></tr><tr><td class="">gbu urk</td><td class="">90</td><td class="">4</td></tr><tr><td class="">online marketing campagnes</td><td class="">110</td><td class="">6</td></tr><tr><td class="">logo en huisstijl laten ontwerpen</td><td class="">170</td><td class="">7</td></tr><tr><td class="">online campagne</td><td class="">140</td><td class="">8</td></tr><tr><td class="">email marketing uitbesteden</td><td class="">260</td><td class="">9</td></tr><tr><td class="">huisstijl laten ontwerpen</td><td class="">390</td><td class="">10</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Interlink top-branded pages (e.g., “nieuw logo urk”) with commercial service pages to funnel authority toward high-value conversions.</li></ul><br><p><strong>High-Value Keyword Opportunities:</strong></p><br><p><em>Top Priority Keywords:</em></p><ul><li><strong>webshop laten maken:</strong> 1000-2400 (seasonal) | MEDIUM competition | High commercial intent</li><li><strong>woocommerce webshop laten maken:</strong> 320-1300 (seasonal) | LOW competition | Platform-specific</li><li><strong>professioneel webshop laten maken:</strong> 260-1000 (seasonal) | LOW competition | Quality-focused</li><li><strong>social media uitbesteden:</strong> 590-1900 (seasonal) | LOW competition | Direct service match</li><li><strong>wordpress website laten maken:</strong> 1600 | LOW competition | High commercial intent</li></ul><br><p><em>Secondary Keywords:</em></p><ul><li><strong>wordpress webshop laten maken:</strong> 320-1300 (seasonal) | LOW competition | Platform-specific</li><li><strong>kosten webshop laten maken:</strong> 170-720 (seasonal) | LOW competition | Price-conscious audience</li><li><strong>magento webshop laten maken:</strong> 140-720 (seasonal) | MEDIUM competition | Platform-specific</li><li><strong>website laten bouwen wordpress:</strong> 390-1600 (seasonal) | LOW competition | Service-specific</li><li><strong>maatwerk website:</strong> 880 | LOW competition | Custom solution seekers</li><li><strong>website maatwerk:</strong> 140 | LOW competition | Custom solution seekers</li><li><strong>maatwerk webdesign:</strong> 90 | LOW competition | Custom solution seekers</li></ul><br><p><em>Long-term Opportunities:</em></p><ul><li><strong>shopify webshop laten maken:</strong> 140-590 (seasonal) | MEDIUM competition | Growing platform</li><li><strong>social media advertenties uitbesteden:</strong> 140-720 (seasonal) | LOW competition | Specific service</li><li><strong>website abonnement:</strong> 90 | MEDIUM competition | Subscription model</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop and publish dedicated landing pages for each top-priority keyword cluster within the next quarter.</li></ul><br><p><strong>Seasonal Trends:</strong></p><ul><li>Webshop-related keywords show clear seasonal patterns with peaks during winter months</li><li>Planning content and campaigns around these seasonal trends could maximize visibility</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Create evergreen blog posts that can be updated annually to capture recurring winter demand spikes.</li></ul><br><p><strong>Content Gap Analysis:</strong></p><ul><li>Strong performance for branding and logo design keywords</li><li>Significant gaps in webshop development keywords despite offering these services</li><li>Underutilization of platform-specific keywords (WordPress, WooCommerce, Magento)</li><li>Limited visibility for social media marketing services despite market demand</li><li>Opportunity to target location-specific keywords (e.g., "webshop laten maken rotterdam")</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit existing service pages, identify thin content, and expand with targeted subheadings and FAQs to fill identified gaps.</li></ul><br><p><strong>Key Observations:</strong></p><ul><li>Brand keywords perform well, indicating strong brand recognition in their local market</li><li>Service-specific keywords show mixed performance with significant room for improvement</li><li>Price-related keywords ("kosten," "prijs") represent untapped opportunities to attract price-conscious customers</li><li>Platform-specific keywords offer low-competition opportunities to showcase expertise</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p><strong>Top Competitors Overview:</strong></p><br><ol><li><strong>WJWebdesign.nl</strong></li></ol><ul><li>Strength: High estimated traffic volume (2464.5)</li><li>Ranks well for high-volume keyword "wordpress website laten maken"</li><li>Effective title strategy including price points in meta titles</li><li>Descriptions highlight price and platform (WordPress)</li></ul><br><ol><li><strong>Best4u.nl</strong></li></ol><ul><li>Strength: Very high average keyword position (2)</li><li>Outperforms SPIKKER on multiple "maatwerk" (custom) website keywords</li><li>Uses questions in descriptions to engage users</li><li>Strong focus on WordPress website development</li></ul><br><ol><li><strong>Nowweb.nl</strong></li></ol><ul><li>Strength: Subscription model for websites</li><li>Ranks higher for "website abonnement"</li><li>Well-optimized meta titles and descriptions</li><li>Clear calls to action in descriptions</li></ul><br><p><strong>Keyword Performance Comparison:</strong></p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th><th>SPIKKER Position</th><th>Top Competitor Position</th></tr></thead><tbody><tr><td class="">wordpress website laten maken</td><td class="">1600</td><td class="">LOW</td><td class="">Poor</td><td class="">WJWebdesign.nl (high)</td></tr><tr><td class="">maatwerk website</td><td class="">880</td><td class="">LOW</td><td class="">Poor</td><td class="">Best4u.nl (high)</td></tr><tr><td class="">website maatwerk</td><td class="">140</td><td class="">LOW</td><td class="">Poor</td><td class="">Best4u.nl (high)</td></tr><tr><td class="">maatwerk webdesign</td><td class="">90</td><td class="">LOW</td><td class="">Poor</td><td class="">Best4u.nl (high)</td></tr><tr><td class="">website abonnement</td><td class="">90</td><td class="">MEDIUM</td><td class="">Not ranking</td><td class="">Nowweb.nl (high)</td></tr></tbody></table></div><p><strong>SERP Strategy Analysis:</strong></p><ul><li><strong>SPIKKER.nl:</strong> Titles and descriptions are generic and don't always directly address target keywords</li><li><strong>Competitors' Effective Strategies:</strong></li><li>Keyword-rich titles that directly address search intent</li><li>Benefit-oriented descriptions highlighting price, speed, SEO, and customization</li><li>Questions in descriptions to engage users</li><li>Clear calls to action encouraging clicks</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Adopt competitor-style meta descriptions by integrating clear CTAs (e.g., “Vraag vandaag nog een offerte aan!”) and price signals to boost CTR.</li></ul><br><p><strong>Strategic Recommendations Based on Competitor Analysis:</strong></p><br><p><em>Quick Wins:</em></p><ul><li>Rewrite title and meta description for "WordPress website laten maken" page</li><li>Example title: "WordPress Website Laten Maken? Professioneel & Betaalbaar | Spikker.nl"</li><li>Example description: "WordPress website laten maken door experts? Snelle oplevering, betaalbare prijzen & uitstekende SEO. Vraag vandaag nog een offerte aan!"</li><li>Optimize title and meta description for "Maatwerk website" page</li><li>Example title: "Maatwerk Webdesign | Unieke Websites voor Jouw Bedrijf | Spikker.nl"</li><li>Example description: "Laat een maatwerk website ontwerpen die perfect aansluit bij jouw wensen. Professioneel design, optimale functionaliteit & uitstekende SEO. Vraag een offerte aan!"</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Launch A/B tests on revised meta titles and descriptions for these two pages over a two-week period to measure performance uplift.</li></ul><br><p><em>Longer-Term Opportunities:</em></p><ul><li>Create more comprehensive content for key service pages</li><li>Build a portfolio showcasing successful website projects</li><li>Explore the possibility of offering a subscription-based website service</li><li>Create separate pages for "maatwerk website," "website maatwerk," and "maatwerk webdesign" if content justifies it</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p><strong>Backlink Profile Overview:</strong></p><ul><li>Total backlinks: 6,556</li><li>Referring domains: 132</li><li>Referring main domains: 128</li><li>Domain rank: 375</li><li>Backlink spam score: 2 (very low, indicating a healthy profile)</li></ul><br><p><strong>Backlink Quality Analysis:</strong></p><ul><li>Most backlinks come from Dutch domains (.nl): 5,745 links</li><li>Strong presence in the footer section of websites: 5,934 links</li><li>Majority of links come from blogs/CMS platforms: 4,867 links</li><li>Most links are from organization websites: 4,693 links</li><li>Very few toxic backlinks detected (only 11 domains with high spam scores)</li></ul><br><p><strong>Client Website Backlinks:</strong></p><p>SPIKKER has strong backlink relationships with client websites, particularly in the food/seafood industry:</p><ul><li>visscherseafood.com</li><li>norwegianseafoodas.no</li><li>vershuysurk.nl</li><li>visspecialiteitenbaarssen.nl</li><li>vershuysheerde.nl</li><li>rookmetsmaak.nl</li><li>tomscreek.nl</li></ul><br><p><strong>Anchor Text Distribution:</strong></p><ul><li>Most backlinks use "SPIKKER" as anchor text (brand-focused)</li><li>Limited use of keyword-rich anchor text</li><li>Common anchor text pattern: "Website door SPIKKER" or "Copyright © 2025 - Website door SPIKKER"</li><li>Some service-specific anchor text from alleseenadres.nl (e.g., "Websites", "Online marketing", "Inbound marketing")</li></ul><br><p><strong>Competitor Backlink Analysis:</strong></p><ul><li>Top backlink competitors include:</li><li>nbs-partner.ru (245 intersecting backlinks)</li><li>kiekreclame.nl (13 intersecting backlinks)</li><li>topbegin.nl (13 intersecting backlinks)</li><li>gbu.nl (11 intersecting backlinks)</li><li>High-authority domains linking to competitors but not to SPIKKER:</li><li>tomtom.com (rank: 35)</li><li>urk.nl (rank: 29)</li><li>madeliefverloskundige.nl (rank: 25)</li><li>umaidelivery.nl (rank: 15)</li></ul><br><p><strong>Potential Toxic Backlinks:</strong></p><p>Several high spam score directories should be monitored:</p><ul><li>topbilliondirectory.com (65% spam score)</li><li>dotiqo.com (70% spam score)</li><li>backlinktime.com (70% spam score)</li><li>apsoz.com (70% spam score)</li><li>toparticlesdirectory.com (65% spam score)</li></ul><br><p><strong>Key Observations:</strong></p><ul><li>SPIKKER has a healthy backlink profile with a low spam score</li><li>Most backlinks come from client websites, indicating strong client relationships</li><li>Limited use of keyword-rich anchor text represents a missed opportunity</li><li>Several high-authority domains link to competitors but not to SPIKKER</li><li>Some potentially toxic backlinks from directory sites should be monitored</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Implement a balanced anchor text strategy by securing service-specific backlinks through targeted outreach to existing clients and partners.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p><strong>Immediate Opportunities:</strong></p><ul><li>Develop comprehensive content targeting high-value webshop keywords, particularly "webshop laten maken" and platform-specific variations (WordPress, WooCommerce)</li><li>Create transparent pricing content to capture "kosten" and "prijs" related searches</li><li>Optimize existing service pages for social media marketing to target "social media uitbesteden" keywords</li><li>Leverage the success of the Urk municipality logo case study as a template for other case studies</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign clear authors, deadlines, and word-count targets for each high-value content piece in your editorial workflow.</li></ul><br><p><strong>Content Optimization Based on Competitor Analysis:</strong></p><ul><li>Rewrite meta titles and descriptions for key service pages to be more keyword-focused and compelling</li><li>Create dedicated pages for "wordpress website laten maken" and "maatwerk website" with comprehensive content</li><li>Showcase examples of successful projects in a portfolio section on service pages</li><li>Consider developing a subscription model offering to compete with Nowweb.nl</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Tackle pages with the thinnest content first to achieve the fastest SEO lift before expanding new assets.</li></ul><br><p><strong>Backlink Strategy Recommendations:</strong></p><ul><li>Develop a strategy to acquire more keyword-rich anchor text from existing client relationships</li><li>Reach out to high-authority domains that link to competitors but not to SPIKKER (e.g., tomtom.com, urk.nl)</li><li>Create shareable content assets (infographics, studies, tools) to attract natural backlinks</li><li>Consider disavowing toxic backlinks from spammy directory sites</li><li>Leverage existing client relationships to obtain testimonial-based backlinks with service-specific anchor text</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Implement a quarterly backlink audit process to identify and disavow low-quality domains while scaling outreach.</li></ul><br><p><strong>Technical Optimization:</strong></p><ul><li>Address HTML structure issues and unclosed tags</li><li>Optimize page load speed by addressing render-blocking resources</li><li>Improve content-to-code ratio on key pages</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Integrate ongoing technical checks into your CI/CD pipeline to ensure new content adheres to performance standards.</li></ul><br><p><strong>Seasonal Strategy:</strong></p><ul><li>Develop seasonal content strategy aligned with webshop keyword trends (winter peak)</li><li>Create location-specific landing pages to target geographic keywords</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Set up automated rank-tracking alerts for seasonal keywords to proactively update content ahead of peak periods.</li></ul><br><p><strong>Industry-Specific Content Opportunities:</strong></p><ul><li>Create case studies highlighting successful projects for seafood industry clients (leveraging existing backlink relationships)</li><li>Develop content targeting the food industry in the Netherlands, where SPIKKER already has strong client relationships</li><li>Create content showcasing local expertise in Urk and surrounding areas</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Co-author niche articles with seafood clients to boost domain authority and attract specialized backlinks.</li></ul><br></div></section>
+                <section id="conclusion-and-next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion and Next Steps</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our comprehensive analysis of SPIKKER's SEO performance in the Netherlands, we recommend the following prioritized action plan:</p><br><p><strong>Immediate Actions (1-3 months):</strong></p><ol><li>Optimize underperforming service pages with keyword-rich titles, meta descriptions, and content</li><li>Address technical SEO issues to improve site speed and crawlability</li><li>Develop a backlink acquisition strategy focusing on high-authority domains that link to competitors</li></ol><br><p><strong>Medium-Term Actions (3-6 months):</strong></p><ol><li>Create comprehensive content targeting high-value webshop and WordPress development keywords</li><li>Develop case studies highlighting successful projects, especially in the food/seafood industry</li><li>Implement a content calendar aligned with seasonal keyword trends</li></ol><br><p><strong>Long-Term Strategy (6-12 months):</strong></p><ol><li>Expand service offerings to include subscription-based website services</li><li>Develop location-specific landing pages for major Dutch cities</li><li>Create shareable content assets to attract natural backlinks</li></ol><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Immediate actions deliver quick visibility gains, medium-term builds depth and authority, and long-term initiatives ensure sustained competitive advantage. Allocate resources accordingly to balance quick wins with foundational growth.</li></ul><br><p>This data-driven SEO roadmap will help SPIKKER improve their search visibility, outrank competitors, and capture untapped opportunities in the Dutch market. WP SEO AI's comprehensive toolset is ideally positioned to support SPIKKER in implementing these recommendations through our AI-powered keyword analysis, content generation, and technical SEO audit capabilities.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - SPIKKER',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

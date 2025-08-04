@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - VisieCon</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">VisieCon • Www.visiecon.com</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 4, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary-visiecon-seo-analysis-netherlands-market" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary: VisieCon SEO Analysis – Netherlands Market</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Overall SEO Performance & Growth (Last 12 Months)</strong></th></tr></thead><tbody><tr><td class=""><strong>Estimated Traffic Volume (ETV)</strong>: 73.09 (latest)</td></tr><tr><td class="positive"><strong>ETV Growth</strong>: +2239.30% increase</td></tr><tr><td class=""><strong>Paid Traffic Cost Equivalent</strong>: $415.88</td></tr><tr><td class=""><strong>Keyword Rankings Distribution</strong>:</td></tr><tr><td class="">- Positions 4-10: 15 keywords</td></tr><tr><td class="">- Positions 11-20: 21 keywords</td></tr><tr><td class="">- Positions 21-30: 21 keywords</td></tr><tr><td class="">- Positions 31-100: 19 keywords</td></tr><tr><td class=""><strong>New Keywords Ranked (Last Month)</strong>: 50</td></tr><tr><td class=""><strong>Top Performing Page</strong>: /glasvezel-almelo (ETV: 14.99)</td></tr><tr><td class=""><strong>Underperforming Pages</strong>: Homepage (ETV: 0.15), location pages mostly outside top 20</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The massive +2239% growth indicates recent optimizations are paying off, but with an absolute ETV of 73, scaling into top-10 positions—especially for high-volume city terms—should be the next priority to sustain momentum.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Top Competitors & Keywords They Dominate</strong></th></tr></thead><tbody><tr><td class=""><strong>KPN</strong></td></tr><tr><td class="">- Keywords: glasvezel [city] (Amsterdam, Rotterdam, Den Haag, Utrecht, etc.)</td></tr><tr><td class="">- Strategy: Speed claims (up to 4 Gbit/s), coverage stats, “Goed nieuws!” meta openings</td></tr><tr><td class=""><strong>Previder</strong></td></tr><tr><td class="">- Keywords: managed firewall, cloud connect</td></tr><tr><td class="">- Strategy: Question-based titles, direct answers in meta descriptions</td></tr><tr><td class=""><strong>Zakelijk-Glasvezel.nl</strong></td></tr><tr><td class="">- Keywords: zakelijk glasvezel [city]</td></tr><tr><td class="">- Strategy: Advisory/comparison content, experience emphasis</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>KPN’s “Goed nieuws!” hooks and explicit speed/coverage stats drive strong CTRs. Test similar urgency and data-driven snippets on VisieCon’s city pages to stand out in SERPs.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Opportunity Keywords to Target & Why</strong></th></tr></thead><tbody><tr><td class=""><strong>zakelijke internetverbinding</strong> (10-50 searches, LOW competition)</td><td class="">High intent, low competition business keyword</td></tr><tr><td class=""><strong>kpn glasvezel buitengebied</strong> (10-30 searches, LOW competition)</td><td class="">Rural fiber niche, less competitive</td></tr><tr><td class=""><strong>cloud connect</strong> (260 searches, LOW competition)</td><td class="">Service-specific, aligns with VisieCon offerings</td></tr><tr><td class=""><strong>managed firewall</strong> (110 searches, LOW competition)</td><td class="">Security service focus, underutilized</td></tr><tr><td class=""><strong>glasvezel amsterdam</strong> (880 searches, HIGH competition)</td><td class="">High volume city keyword, critical for visibility</td></tr><tr><td class=""><strong>glasvezel buitengebied</strong> (90-260 searches, HIGH competition)</td><td class="">Rural market opportunity</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize low-competition, high-intent terms like <strong>zakelijke internetverbinding</strong> and <strong>managed firewall</strong> in your next content cycle. Assign dedicated landing pages and clear CTAs within 30 days.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR – Key Findings</h3><br><ul><li>VisieCon’s organic traffic grew +2239% in 12 months but lacks top 10 keyword rankings in the Netherlands.</li><li>Homepage and many location pages rank poorly; strongest page is /glasvezel-almelo.</li><li>Technical SEO is strong overall but needs fixes on title tags, H1 usage, and render-blocking resources.</li><li>Competitors like KPN dominate high-volume city fiber keywords with compelling meta descriptions and speed claims.</li><li>Previder leads in managed firewall and cloud connect keywords using question-based content.</li><li>Backlink profile has quality issues: 74% broken backlinks, toxic links from high-spam domains, and limited authoritative Dutch links.</li><li>Content strategy should expand beyond “glasvezel + city” to include business-focused, service-specific, and rural area keywords.</li><li>Quick wins include optimizing title tags/meta descriptions, disavowing toxic backlinks, and fixing broken pages.</li><li>Longer-term: implement postcode check tool, develop local partnerships, and improve backlink quality.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Run a two-week optimization sprint to update title tags/meta descriptions for underperforming pages and submit a disavow file for identified toxic backlinks.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-visiecon" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: VisieCon</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>VisieCon is a Dutch provider of tailored connectivity, data, and security solutions for businesses (<a href="http://www.visiecon.com/" class="link-reference" target="_blank" rel="noopener">Company Website</a>). Their service portfolio includes:</p><br><ul><li><strong>Connectivity Solutions</strong>: Fiber, Starlink, radiolink, and copper connections</li><li><strong>Data Services</strong>: Internet, IP-VPN, Ethernet VPN, Cloud Connect, Private Line, and SD-WAN</li><li><strong>Security Solutions</strong>: Managed firewalls and Anti-DDoS protection</li><li><strong>Cost Analysis</strong>: Optimization of business spending on connectivity and VoIP solutions</li></ul><br><p>The company positions itself as delivering high availability and competitive pricing through customized ICT solutions.</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-traffic-growth">Organic Visibility and Traffic Growth</h3><ul><li><strong>Remarkable Growth</strong>: VisieCon has experienced a significant <strong>+2239.30% increase in Estimated Traffic Volume (ETV)</strong> over the past 12 months in the Netherlands (<a href="#" class="link-reference" target="_blank" rel="noopener">SEO Performance Data</a>)</li><li><strong>Current Traffic Metrics</strong>: Latest ETV stands at <strong>73.09</strong> with an estimated paid traffic cost equivalent of <strong>$415.88</strong></li><li><strong>Keyword Position Distribution</strong>:</li><li>Positions 4-10: 15 keywords</li><li>Positions 11-20: 21 keywords</li><li>Positions 21-30: 21 keywords</li><li>Positions 31-100: 19 keywords</li><li><strong>New Rankings</strong>: 50 newly ranked keywords in the most recent month</li></ul><br><h3 id="page-performance-analysis">Page Performance Analysis</h3><ul><li><strong>Top-Performing Pages</strong>:</li><li><code>glasvezel-almelo</code> page has the highest traffic volume (ETV: 14.99) and estimated paid traffic cost ($80.07), ranking in top 10 positions for multiple keywords (<a href="#" class="link-reference" target="_blank" rel="noopener">SEO Performance Data</a>)</li></ul><br><ul><li><strong>Underperforming Pages</strong>:</li><li>Homepage ranks poorly (positions 41-50) with minimal traffic (ETV: 0.15)</li><li>Many location-based pages like <code>glasvezel-delft</code> (ETV: 3.27), <code>glasvezel-zoetermeer</code> (ETV: 1.59), and <code>glasvezel-breda</code> (ETV: 0.90) rank outside top 20 positions</li><li>News/blog content shows limited organic visibility</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><ul><li><strong>Positive Aspects</strong>:</li><li>High on-page score of 96.34</li><li>Fast page load time (Time to Interactive: 44ms)</li><li>HTTPS implementation and canonical tags</li><li>Mobile-friendly design</li><li>No broken links or resources</li></ul><br><ul><li><strong>Technical Issues</strong>:</li><li>Inadequate title tag ("Home" - too short and non-descriptive)</li><li>Render-blocking resources affecting page speed</li><li>Low content-to-code ratio</li><li>Multiple H1 tags (SEO best practice violation)</li><li>Missing image titles</li><li>DOM structure issues (node with excessive child elements)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Tackle title tag rewrites and H1 tag consolidation first. Run a resource audit to defer or async CSS/JS that blocks rendering and improve your content-to-code ratio by embedding critical content higher in the DOM.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-keyword-strategy">Current Keyword Strategy</h3><ul><li><strong>Primary Focus</strong>: Location-specific "glasvezel" (fiber optic) keywords targeting Dutch cities</li><li><strong>Secondary Focus</strong>: Limited visibility for security-related terms (e.g., DDoS protection)</li><li><strong>Domain Authority</strong>: Low domain rank of 80, indicating room for improvement in overall site authority (<a href="#" class="link-reference" target="_blank" rel="noopener">Keyword Analysis Data</a>)</li></ul><br><h3 id="keyword-performance">Keyword Performance</h3><ul><li><strong>Critical Gap</strong>: No keywords currently ranking in positions 1-10, indicating significant opportunity for improvement (<a href="#" class="link-reference" target="_blank" rel="noopener">Keyword Analysis Data</a>)</li><li><strong>Strongest Rankings</strong>: Several city-specific fiber optic terms ranking in positions 11-30:</li><li>Glasvezel Drachten</li><li>Glasvezel Almelo</li><li>Glasvezel Gorinchem</li><li>Glasvezel Heerhugowaard</li><li>Glasvezel Capelle aan den IJssel</li><li>Glasvezel Almere</li><li>Glasvezel in Almere</li><li>Glasvezel in Gorinchem</li><li><strong>Search Volume Trends</strong>: Many keywords show negative year-over-year search volume trends, suggesting changing search behavior or increased competition (<a href="#" class="link-reference" target="_blank" rel="noopener">Keyword Analysis Data</a>)</li><li><strong>Keyword Difficulty</strong>: Generally low (0-15), indicating potential for ranking improvement with targeted optimization</li><li><strong>Competition Level</strong>: Generally high, reflecting competitive market for fiber connectivity keywords</li></ul><br><h3 id="high-value-keyword-opportunities">High-Value Keyword Opportunities</h3><p>Based on search volume, competition level, and relevance to VisieCon's business, we've identified these priority keyword targets:</p><br><p><strong>Top Priority Keywords</strong>:</p><ul><li><strong>zakelijke internetverbinding</strong>: 10-50 monthly searches | LOW competition</li><li><strong>kpn glasvezel buitengebied</strong>: 10-30 monthly searches | LOW competition</li><li><strong>solcon glasvezel buitengebied</strong>: 0-10 monthly searches | MEDIUM competition</li></ul><br><p><strong>Secondary Keywords</strong>:</p><ul><li><strong>glasvezel buitengebied</strong>: 90-260 monthly searches | HIGH competition</li><li><strong>buitengebied glasvezel</strong>: 90-260 monthly searches | HIGH competition</li><li><strong>glasvezel in buitengebied</strong>: 90-260 monthly searches | HIGH competition</li><li><strong>glasvezel in het buitengebied</strong>: 90-260 monthly searches | HIGH competition</li></ul><br><p><strong>Location-Specific High-Volume Opportunities</strong>:</p><ul><li><strong>glasvezel amsterdam</strong>: 880 monthly searches | HIGH competition</li><li><strong>glasvezel rotterdam</strong>: 590 monthly searches | HIGH competition</li><li><strong>glasvezel den haag</strong>: 480 monthly searches | HIGH competition</li><li><strong>glasvezel utrecht</strong>: 480 monthly searches | HIGH competition</li><li><strong>glasvezel zoetermeer</strong>: 260 monthly searches | MEDIUM competition</li><li><strong>glasvezel eindhoven</strong>: 170 monthly searches | MEDIUM competition</li></ul><br><p><strong>Service-Specific Opportunities</strong>:</p><ul><li><strong>cloud connect</strong>: 260 monthly searches | LOW competition</li><li><strong>managed firewall</strong>: 110 monthly searches | LOW competition</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Group these keywords into thematic clusters (e.g., business connectivity, rural fiber, service pages) and interlink for stronger topical authority. Start with “zakelijke internetverbinding” and “managed firewall” for a business-focused pillar page.</li></ul><br><h3 id="content-performance">Content Performance</h3><ul><li><strong>Current Strategy</strong>: Location-based landing pages (e.g., /glasvezel-almelo) are the primary content type</li><li><strong>SERP Snippets</strong>: Current snippets typically include city name, statement about fiber availability, and sometimes specific location information</li><li><strong>Optimization Opportunity</strong>: Snippets are relevant but generic, with potential for more compelling messaging to improve click-through rates</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors-analysis">Key Competitors Analysis</h3><br><h4 id="kpn-www-kpn-com-">KPN (www.kpn.com)</h4><ul><li><strong>Type</strong>: Direct competitor offering similar services (glasvezel, cloud connect, managed firewall)</li><li><strong>SEO Strengths</strong>:</li><li>High domain authority and established brand recognition</li><li>Extensive infrastructure coverage</li><li>Clear messaging focused on "betrouwbaar & snel internet" (reliable & fast internet)</li><li>Specific speed claims (up to 4 Gbit/s) in meta descriptions</li><li>Highlights percentage of homes already connected</li><li><strong>Content Strategy</strong>:</li><li>Location-specific landing pages for each city</li><li>"Goed nieuws!" (Good news!) opening in meta descriptions creates excitement</li><li>Consistent title structure: "Glasvezel [City]: Betrouwbaar & snel internet"</li><li>Emphasis on installation progress and coverage statistics</li><li><strong>Keyword Dominance</strong>: Outranks VisieCon for numerous "glasvezel [city]" keywords (<a href="#" class="link-reference" target="_blank" rel="noopener">Competitive Analysis Data</a>)</li></ul><br><h4 id="previder-previder-nl-">Previder (previder.nl)</h4><ul><li><strong>Type</strong>: Direct competitor focusing on broader IT solutions</li><li><strong>SEO Strengths</strong>:</li><li>Strong focus on IT solutions for organizations</li><li>Emphasis on 100% Dutch datacenters as a selling point</li><li>Strong rankings for "managed firewall" and "cloud connect"</li><li><strong>Content Strategy</strong>:</li><li>Question-based titles (e.g., "Wat is een Managed Firewall?")</li><li>Direct answers in meta descriptions</li><li>Informational content that addresses common user questions</li></ul><br><h4 id="zakelijk-glasvezel-nl-zakelijk-glasvezel-nl-">Zakelijk-Glasvezel.nl (zakelijk-glasvezel.nl)</h4><ul><li><strong>Type</strong>: Indirect competitor acting as comparison platform/advisor</li><li><strong>SEO Strengths</strong>:</li><li>Focus on comparing providers and advising on business fiber solutions</li><li>Emphasis on experience in data communication</li><li><strong>Content Strategy</strong>:</li><li>Titles using format "Zakelijk glasvezel in [City]"</li><li>Meta descriptions highlighting experience and advisory services</li></ul><br><h3 id="competitive-serp-strategy-analysis">Competitive SERP Strategy Analysis</h3><ul><li><strong>Title Tag Patterns</strong>:</li><li>KPN: "Glasvezel [City]: Betrouwbaar & snel internet"</li><li>Previder: Question-based titles like "Wat is een Managed Firewall?"</li><li>Zakelijk-Glasvezel.nl: "Zakelijk glasvezel in [City]"</li><li>VisieCon: Generic "Glasvezel [City]" structure</li></ul><br><ul><li><strong>Meta Description Effectiveness</strong>:</li><li>KPN: Highlights ongoing fiber installation, specific speeds, and coverage percentage</li><li>Previder: Provides direct answers to questions posed in titles</li><li>Zakelijk-Glasvezel.nl: Emphasizes experience and advisory services</li><li>VisieCon: Generic descriptions starting with "In [City] zijn er volop mogelijkheden..."</li></ul><br><ul><li><strong>Most Effective Competitor Tactics</strong>:</li><li>KPN's speed claims (4 Gbit/s)</li><li>KPN's coverage percentage statistics</li><li>Previder's question-based content approach</li><li>KPN's "Goed nieuws!" opening creating urgency and excitement</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li><strong>Overall Health</strong>: Medium-risk profile with a backlink spam score of 44% (<a href="#" class="link-reference" target="_blank" rel="noopener">Backlink Analysis Data</a>)</li><li><strong>Backlink Metrics</strong>:</li><li>Total backlinks: 31</li><li>Referring domains: 23</li><li>Referring main domains: 23</li><li>Referring IPs: 21</li><li>Domain rank: 80</li><li><strong>Link Quality Issues</strong>:</li><li>23 broken backlinks (74% of total backlinks)</li><li>160 broken pages identified</li><li>10 referring domains using nofollow attributes</li></ul><br><h3 id="backlink-source-analysis">Backlink Source Analysis</h3><ul><li><strong>Quality Distribution</strong>:</li><li>Low spam score sources (0-30%): 6 domains</li><li>Medium spam score sources (31-60%): 9 domains</li><li>High spam score sources (61-100%): 8 domains</li><li><strong>Top-Quality Referring Domains</strong>:</li><li>bedrijvenopdekaart.nl (30% spam score)</li><li>10software.nl (0% spam score)</li><li>hotfrog.nl (0% spam score)</li><li>royalseohub.com (30% spam score)</li><li>lusha.com (0% spam score)</li></ul><br><h3 id="toxic-backlink-identification">Toxic Backlink Identification</h3><p>Several potentially harmful backlinks were identified from domains with high spam scores:</p><ul><li>australianwebdirectory.pro (70% spam score)</li><li>great-choice-for-pbn-domains.co.uk (65% spam score)</li><li>australianwebdirectory.shop (65% spam score)</li><li>belonnanotservice.ga (85% spam score)</li><li>thebestbacklinksavailable.click (65% spam score)</li><li>what-happens-next.xyz (85% spam score)</li><li>browseallexpireddomains.us (65% spam score)</li><li>mundotecnologia.info (65% spam score)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Submit a disavow file for the eight high-spam domains and reach out to owners of broken backlinks to update URLs within the next two weeks.</li></ul><br><h3 id="backlink-content-analysis">Backlink Content Analysis</h3><ul><li><strong>Anchor Text Profile</strong>:</li><li>Most backlinks use the domain name "visiecon.com" as anchor text</li><li>Limited use of branded or keyword-rich anchor text</li><li>Several backlinks appear in lists of domains without contextual relevance</li><li><strong>Link Placement</strong>:</li><li>Many links appear in directory-style listings</li><li>Few links appear within contextually relevant content</li><li>Limited links from authoritative Dutch business or technology websites</li></ul><br><h3 id="competitor-backlink-comparison">Competitor Backlink Comparison</h3><ul><li><strong>Missing Opportunities</strong>: VisieCon lacks backlinks from authoritative Dutch business directories and industry publications that competitors have secured</li><li><strong>Local Authority Gap</strong>: Limited backlinks from local Dutch websites compared to competitors like KPN and Previder</li><li><strong>Quality Differential</strong>: Higher proportion of low-quality backlinks compared to industry leaders</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize outreach to Chamber of Commerce (KVK.nl) and leading Dutch tech blogs. This dual focus will bolster authority and drive industry-relevant referral traffic.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="keyword-driven-recommendations">Keyword-Driven Recommendations</h3><ul><li><strong>Expand Keyword Strategy</strong>: Go beyond "glasvezel + city" to include:</li><li>"Zakelijk glasvezel [city]" (Business fiber)</li><li>"Glasvezel abonnement [city]" (Fiber subscription)</li><li>"Snel internet [city]" (Fast internet)</li><li>"[City] internet providers"</li><li>"Goedkoopste glasvezel [city]" (Cheapest fiber)</li></ul><br><ul><li><strong>Target "Buitengebied" Opportunities</strong>: Create dedicated content for rural/outlying areas (buitengebied) where competition with major providers like KPN and Solcon exists</li></ul><br><ul><li><strong>Service-Specific Keywords</strong>: Develop content targeting "cloud connect" (260 monthly searches) and "managed firewall" (110 monthly searches) with low competition</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft a 3-month content calendar covering one business-focused article, two rural pages, and new service pages. Assign deadlines and authors by the end of this week.</li></ul><br><h3 id="location-page-optimization">Location Page Optimization</h3><ul><li><strong>Revamp High-Volume City Pages</strong>: Prioritize optimization for Amsterdam, Rotterdam, Den Haag, Utrecht, Zoetermeer, and Eindhoven pages based on search volume data</li></ul><br><ul><li><strong>Title Tag Improvements</strong>:</li><li>Current: "Glasvezel [City]"</li><li>Recommended: "Glasvezel [City]: Betrouwbaar & Snel Internet voor Bedrijven"</li></ul><br><ul><li><strong>Meta Description Enhancement</strong>:</li><li>Current: Generic "In [City] zijn er volop mogelijkheden..."</li><li>Recommended: "Goed nieuws! Glasvezel wordt aangelegd in [City]. Profiteer van betrouwbaar en snel internet tot wel [realistic speed] voor uw bedrijf. Doe de postcodecheck!"</li></ul><br><ul><li><strong>Content Improvements</strong>:</li><li>Add sections highlighting specific benefits for businesses in each city</li><li>Include customer testimonials or case studies from local businesses</li><li>Provide information about specific service areas within each city</li><li>Implement clear calls to action</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Integrate local testimonials and a postcode check CTA into all priority city pages during the next development sprint.</li></ul><br><h3 id="service-page-optimization">Service Page Optimization</h3><ul><li><strong>"Managed Firewall" Page</strong>:</li><li>Adopt Previder's question-based approach ("Wat is een Managed Firewall?")</li><li>Create comprehensive content answering common questions about managed firewalls</li><li>Highlight specific benefits for different business types and sizes</li></ul><br><ul><li><strong>"Cloud Connect" Page</strong>:</li><li>Clearly explain the benefits focusing on security, reliability, and performance</li><li>Include use cases and implementation examples</li><li>Add comparison tables showing advantages over standard connections</li></ul><br></div></section>
+                <section id="6-backlink-strategy-improvements" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">6. Backlink Strategy Improvements</h2>
+                    </div>
+                    <div class="section-content"><ul><li><strong>Toxic Backlink Disavowal</strong>: Submit a disavow file to Google for the 8 identified high-spam-score domains</li><li><strong>Broken Backlink Recovery</strong>: Contact referring domains with broken links to update them to current URLs</li><li><strong>Quality Backlink Acquisition</strong>:</li><li>Target legitimate Dutch business directories like KVK.nl and other Chamber of Commerce websites</li><li>Pursue industry-specific directories for IT and telecommunications</li><li>Develop relationships with Dutch technology blogs and news sites</li><li>Create shareable content (infographics, studies) about Dutch connectivity trends</li><li><strong>Local Authority Building</strong>:</li><li>Partner with local businesses for case studies</li><li>Participate in local business events and secure coverage</li><li>Contribute guest articles to Dutch business publications</li></ul><br></div></section>
+                <section id="7-technical-seo-improvements" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-cogs"></i></div>
+                        <h2 class="section-title">7. Technical SEO Improvements</h2>
+                    </div>
+                    <div class="section-content"><ul><li><strong>Website Speed</strong>: Address render-blocking resources and optimize images</li><li><strong>Mobile Optimization</strong>: Ensure fully responsive design across all devices</li><li><strong>Site Structure</strong>: Improve crawlability with clear, logical site structure</li><li><strong>Technical Fixes</strong>: Address H1 tag issues, image optimization, and DOM structure problems</li><li><strong>Broken Page Resolution</strong>: Fix the 160 identified broken pages to recover link equity</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Schedule a bi-weekly technical audit to verify no new render-blocking issues emerge and to confirm broken pages stay remediated.</li></ul><br></div></section>
+                <section id="8-quick-wins-immediate-implementation-" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">8. Quick Wins (Immediate Implementation)</h2>
+                    </div>
+                    <div class="section-content"><ol><li><strong>Meta Description Updates</strong>: Immediately revise meta descriptions for high-volume city pages to include speed claims and calls to action</li><li><strong>Title Tag Optimization</strong>: Update title tags for high-volume city pages to include "Betrouwbaar & Snel Internet voor Bedrijven"</li><li><strong>Homepage Enhancement</strong>: Revise homepage title tag, meta description, and content to improve rankings</li><li><strong>Disavow Toxic Links</strong>: Submit disavow file for the 8 highest-spam-score domains</li><li><strong>Fix Broken Pages</strong>: Prioritize fixing the most linked-to broken pages</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>These quick wins can yield noticeable ranking and traffic lifts in 4–6 weeks, providing early proof points while longer-term efforts ramp up.</li></ul><br></div></section>
+                <section id="9-longer-term-opportunities" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">9. Longer-Term Opportunities</h2>
+                    </div>
+                    <div class="section-content"><ol><li><strong>Postcode Check Tool</strong>: Implement a tool on city pages allowing users to quickly determine fiber availability at their location</li><li><strong>Content Marketing</strong>: Create blog posts and articles about fiber benefits for businesses, targeting specific industries</li><li><strong>Local Partnerships</strong>: Explore partnerships with local businesses or organizations to promote VisieCon's services and build local authority</li><li><strong>Competitor Differentiation</strong>: Develop unique selling propositions that distinguish VisieCon from KPN and other competitors</li><li><strong>Backlink Quality Improvement</strong>: Gradually replace low-quality backlinks with authoritative industry and local sources</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Build a 6-month roadmap, assign owners, and set milestones for the postcode tool, partnership outreach, and high-authority link acquisition.</li></ul></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - VisieCon',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

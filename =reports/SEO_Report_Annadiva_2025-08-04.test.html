@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Annadiva</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Annadiva • https://www.annadiva.nl/</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 4, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Current Value (July 2025)</th><th>12-Month Change</th></tr></thead><tbody><tr><td class="">Position 1 Keywords</td><td class="">181</td><td class="negative">-21.65%</td></tr><tr><td class="">Position 2-3 Keywords</td><td class="">360</td><td class="positive">+10.43%</td></tr><tr><td class="">Position 4-10 Keywords</td><td class="">907</td><td class="negative">-18.21%</td></tr><tr><td class="">Total Keywords Ranked</td><td class="">~4,423</td><td class="">N/A</td></tr><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">57,701</td><td class="negative">-44.44%</td></tr><tr><td class="">Estimated Paid Traffic Cost</td><td class="">€57,583</td><td class="">N/A</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Focus on moving keywords currently in positions 2–3 into the top spot. Small ranking gains here can yield significant traffic recovery without large content investments.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Strengths / Top Keywords They Rank For (Where Annadiva Ranks Poorly)</th></tr></thead><tbody><tr><td class="">Livera</td><td class="">"lingerie" (60,500), "bh maat berekenen" (5,400), "bikini dames" (40,500), "badpak" (22,200)</td></tr><tr><td class="">Hunkemöller</td><td class="">"lingerie" (60,500), "bh maat berekenen" (5,400), "bikini dames" (40,500), "sport bh" (medium volume)</td></tr><tr><td class="">Farfallina</td><td class="">"grote cup" related keywords, "grote maten bikini" (4,400), niche "grote cup" content</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a detailed gap analysis of competitor top keywords vs. Annadiva’s rankings. Prioritize content briefs for the highest-volume opportunities.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Monthly Search Volume (NL)</th><th>Competition Level</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">"bikini voor grote cupmaat"</td><td class="">1,900</td><td class="">Medium</td><td class="">High volume, strong purchase intent, seasonal peak in summer</td></tr><tr><td class="">"grote cupmaat bikini"</td><td class="">1,900</td><td class="">Medium</td><td class="">High volume, niche focus aligns with Annadiva’s specialization</td></tr><tr><td class="">"badmode große cupmaat"</td><td class="">170</td><td class="">Moderate</td><td class="">Consistent year-round interest, less competition</td></tr><tr><td class="">"bh maat berekenen"</td><td class="">5,400</td><td class="">Moderate</td><td class="">Informational, drives engagement and conversions</td></tr><tr><td class="">"triangel bikini grote cupmaat"</td><td class="">50</td><td class="">Low</td><td class="">Long-tail, low competition, targeted content opportunity</td></tr><tr><td class="">"bandeau bikini grote cupmaat"</td><td class="">70</td><td class="">Low</td><td class="">Long-tail, seasonal interest, complements swimwear range</td></tr><tr><td class="">"strapless bh grote cup zonder beugel"</td><td class="">Low to moderate</td><td class="">Low</td><td class="">Specific product query, high conversion potential</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Align content publication schedule with swimwear seasonality (April–July). Plan content in Q1 to capture early search interest for “bikini voor grote cupmaat.”</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Annadiva’s organic traffic has dropped sharply by 44.44% over the past 12 months, with notable declines in top 10 keyword rankings.</li><li>Strong performance remains in cup size-specific pages and some brand pages, but many category and informational pages underperform.</li><li>Technical SEO issues (HTML errors, missing alt tags, site speed) are hindering crawlability and user experience.</li><li>Competitors Livera and Hunkemöller dominate broad, high-volume keywords; Farfallina leads in the “grote cup” niche.</li><li>Annadiva lacks optimized content for high-value swimwear keywords and informational queries like “bh maat berekenen.”</li><li>Backlink profile is healthy but underutilizes opportunities from authoritative Dutch fashion and lifestyle sites.</li><li>Several toxic backlinks identified; broken backlinks present a recovery opportunity.</li><li>Recommended focus: fix technical SEO, optimize meta tags, create targeted landing pages for high-volume and niche keywords, improve size guide content, and pursue strategic backlink acquisition.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Immediate wins come from addressing critical technical SEO fixes and refreshing meta tags on high-traffic pages to improve CTR and restore lost visibility.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-annadiva" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Annadiva</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Annadiva is a Dutch retailer specializing in intimate apparel with both online and physical store presence <a href="https://www.annadiva.nl/" class="link-reference" target="_blank" rel="noopener">Company Website</a>. They offer a wide range of products including lingerie, swimwear, shapewear, sportswear, hosiery, and nightwear, with cup sizes ranging from A to K. The company carries various premium brands like PrimaDonna, Marie Jo, Freya, and Anita, alongside their own Annadiva brand. Their physical stores are located in Amsterdam, Den Bosch, and Nijmegen, complementing their e-commerce operations.</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-traffic-trends">Organic Visibility and Traffic Trends</h3><p>Our analysis reveals a concerning trend in Annadiva's organic search performance. The data shows a significant <strong>44.44% decrease in Estimated Traffic Volume (ETV)</strong> from August 2024 to July 2025. This decline in organic visibility represents a substantial loss of potential customers and revenue.</p><br><h3 id="current-organic-visibility-july-2025-">Current Organic Visibility (July 2025)</h3><ul><li><strong>Position 1 rankings</strong>: 181 keywords (-21.65% decrease year-over-year)</li><li><strong>Positions 2-3</strong>: 360 keywords (+10.43% increase year-over-year)</li><li><strong>Positions 4-10</strong>: 907 keywords (-18.21% decrease year-over-year)</li><li><strong>Total Estimated Traffic Volume</strong>: 57,701 (down from 103,848 in August 2024)</li><li><strong>Estimated Paid Traffic Cost</strong>: €57,583 (value of organic traffic if purchased through paid channels)</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><p>Several pages demonstrate strong organic performance:</p><br><ol><li><strong>Cup Size Pages</strong>: Pages targeting specific cup sizes show excellent performance:</li></ol><ul><li>Cup C page (ETV: 4,272)</li><li>Cup D page (ETV: 2,308)</li><li>Cup E page (ETV: 1,565)</li><li>Cup F page (ETV: 1,123)</li></ul><br><ol><li><strong>Specialized Category Pages</strong>:</li></ol><ul><li>Large cup bikini page (ETV: 2,537)</li><li>Large cup sizes page (ETV: 1,751)</li></ul><br><ol><li><strong>Brand Pages</strong>:</li></ol><ul><li>PrimaDonna lingerie (ETV: 1,393)</li><li>Beachlife (ETV: 1,021)</li></ul><br><ol><li><strong>Homepage</strong>: Strong performance (ETV: 1,650) with position 1 ranking</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Use top-performing cup size pages to internally link to underperforming category pages, boosting their authority and potential rankings.</li></ul><br><h3 id="underperforming-pages">Underperforming Pages</h3><p>Several pages show poor organic performance and require optimization:</p><br><ol><li><strong>Product Category Pages</strong>:</li></ol><ul><li>Bodys-hemdjes (very low ETV)</li><li>Naadloos-ondergoed (very low ETV)</li><li>Several seasonal collection pages</li></ul><br><ol><li><strong>Informational Content</strong>:</li></ol><ul><li>Several advice pages with potential for higher rankings</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a targeted content audit on these underperforming pages. Benchmark against top-performing templates and refresh with additional keywords and internal links.</li></ul><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><p>Our analysis identified several technical issues affecting Annadiva's search performance:</p><br><ol><li>HTML validation errors affecting crawlability</li><li>Missing image alt attributes impacting accessibility and image search visibility</li><li>Site speed optimization opportunities, particularly on mobile devices</li><li>Structured data implementation gaps</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize a development sprint to:</li><li>Resolve HTML validation errors</li><li>Add missing alt attributes to top 50 images</li><li>Optimize mobile page speed (aim for <3s load time)</li><li>Implement basic Product and Breadcrumb schema on key pages</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-keyword-rankings">Current Keyword Rankings</h3><p>Annadiva currently ranks for approximately 4,423 keywords in the Netherlands (as of July 2025). The distribution across positions shows:</p><br><ul><li><strong>Position 1</strong>: 181 keywords</li><li><strong>Positions 2-3</strong>: 360 keywords</li><li><strong>Positions 4-10</strong>: 907 keywords</li><li><strong>Positions 11-20</strong>: 801 keywords</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Focus on pushing mid-funnel keywords (positions 4–10) into the top 3. Quick content or on-page tweaks here can yield a spike in traffic.</li></ul><br><h3 id="top-performing-keywords">Top Performing Keywords</h3><p>Our analysis reveals Annadiva excels in several keyword categories:</p><br><ol><li><strong>Cup Size Specific Keywords</strong>:</li></ol><ul><li>"75f" (170 monthly searches, Position 1)</li><li>"70c cup" (90 monthly searches, Position 2)</li><li>"70f bh" (90 monthly searches, Position 1)</li><li>"75a cup" (140 monthly searches, Position 1)</li><li>"75e cup" (140 monthly searches, Position 1)</li></ul><br><ol><li><strong>Brand + Product Type Keywords</strong>:</li></ol><ul><li>"annadiva badpakken" (480 monthly searches, Position 1)</li><li>"annadiva badmode" (170 monthly searches, Position 1)</li><li>"annadiva sale" (210 monthly searches, Position 1)</li><li>"aubade bh's" (1000 monthly searches, Position 1)</li></ul><br><ol><li><strong>Location-Based Keywords</strong>:</li></ol><ul><li>"annadiva amsterdam" (320 monthly searches, Position 1)</li><li>"annadiva den bosch" (880 monthly searches, Position 1)</li><li>"annadiva nijmegen" (1000 monthly searches, Position 1)</li></ul><br><ol><li><strong>Specialized Product Keywords</strong>:</li></ol><ul><li>"badpak grote borsten" (210 monthly searches, Position 1)</li><li>"badpakken cup g" (90 monthly searches, Position 1)</li><li>"balconette bikini" (590 monthly searches, Position 1)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Leverage these high-ranking pages for internal linking to category and informational pages. Add contextual CTAs to cross-sell related products.</li></ul><br><h3 id="high-value-keyword-opportunities">High-Value Keyword Opportunities</h3><p>Our analysis identified several high-value keywords with strong search intent that Annadiva should target:</p><br><ol><li><strong>Swimwear Keywords with High Search Volume</strong>:</li></ol><ul><li>"bikini voor grote cupmaat" (1900 monthly searches in July, 1600 in June)</li><li>"grote cupmaat bikini" (1900 monthly searches in July, 1600 in June)</li><li>"badmode grote cupmaat" (170 monthly searches year-round)</li><li>"badmode met große cupmaat" (170 monthly searches year-round)</li></ul><br><ol><li><strong>Specific Style Keywords</strong>:</li></ol><ul><li>"triangel bikini grote cupmaat" (50 monthly searches in July, 30 in June)</li><li>"bandeau bikini grote cupmaat" (70 monthly searches in July, 170 in June)</li><li>"bikini grote cupmaat met beugel" (170 monthly searches in July, 70 in June)</li><li>"witte bikini grote cupmaat" (90 monthly searches in July, 40 in June)</li></ul><br><ol><li><strong>Brand-Specific Keywords</strong>:</li></ol><ul><li>"anita badmode grote cupmaat" (70 monthly searches in July, 90 in June)</li></ul><br><ol><li><strong>General Lingerie Keywords</strong>:</li></ol><ul><li>"lingerie" (60,500 monthly searches, high competition)</li><li>"bh" (18,100 monthly searches, high competition)</li><li>"grote maten lingerie" (high volume, moderate competition)</li><li>"bh zonder beugel" (high volume, moderate competition)</li><li>"naadloze bh" (high volume, moderate competition)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft content briefs for dedicated landing pages targeting the top four high-value swimwear and lingerie keywords. Aim to publish within 6–8 weeks.</li></ul><br><h3 id="long-tail-keyword-opportunities">Long-Tail Keyword Opportunities</h3><p>Several long-tail keywords present excellent opportunities for targeted content:</p><br><ol><li><strong>Informational Queries</strong>:</li></ol><ul><li>"hoe meet je je cupmaat" (how to measure cup size)</li><li>"welke bh bij welke borstvormen" (which bra for which breast shape)</li><li>"verschil tussen balconette en plunge bh" (difference between balconette and plunge bra)</li></ul><br><ol><li><strong>Specific Product Queries</strong>:</li></ol><ul><li>"strapless bh grote cup zonder beugel" (strapless bra large cup without underwire)</li><li>"badpak met buikcontrole en beugel" (swimsuit with tummy control and underwire)</li><li>"sportbeha grote maten hoge impact" (sports bra large sizes high impact)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Integrate these long-tail queries into FAQ sections and “People Also Ask” optimizations to capture featured snippets and voice search traffic.</li></ul><br><h3 id="seasonal-keyword-trends">Seasonal Keyword Trends</h3><p>Our analysis revealed clear seasonal patterns in search behavior:</p><br><ol><li><strong>Swimwear</strong>: Peak search volume from April to July</li></ol><ul><li>"bikini voor grote cupmaat" shows highest volume in July (1900 searches)</li><li>"bandeau bikini grote cupmaat" increases from 70 searches in July to 170 in June</li></ul><br><ol><li><strong>Lingerie</strong>: Peaks around Valentine's Day (February) and Christmas/holiday season (November-December)</li></ol><br><ol><li><strong>Shapewear</strong>: Increases during wedding season (May-September) and before holidays</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Align editorial calendar with these peaks. Prepare pillar content 2–3 months in advance to capture rising trends.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><p>Our analysis identified the following key competitors in the Dutch intimate apparel market:</p><br><ol><li><strong>Livera (www.livera.nl)</strong></li></ol><ul><li>Strengths: Strong SEO strategy with consistently higher rankings for high-volume keywords</li><li>Focus: Broad range of lingerie, swimwear, and nightwear</li><li>SERP Strategy: Uses concise titles with main keywords and clear value propositions (e.g., "Lingerie, bad- en nachtmode voor elke vrouw kopen")</li><li>Meta Descriptions: Highlights breadth of collection with clear calls to action ("Bekijk onze collectie en bestel vandaag nog!")</li></ul><br><ol><li><strong>Hunkemöller (www.hunkemoller.nl)</strong></li></ol><ul><li>Strengths: Dominance in ranking for core keywords, suggesting very effective SEO and strong brand presence</li><li>Focus: Similar product range to Livera</li><li>SERP Strategy: Direct keyword targeting in titles (e.g., "Bikini kopen? Koop je dames bikini's online bij...")</li><li>Meta Descriptions: Emphasizes variety of styles and designs available</li></ul><br><ol><li><strong>Farfallina (farfallina.nl)</strong></li></ol><ul><li>Strengths: Dominates niche keywords related to "grote cup" (large cup) sizes, indicating a targeted SEO approach</li><li>Focus: Specializes in lingerie and swimwear for larger cup sizes</li><li>SERP Strategy: Very detailed meta descriptions including keywords, cup sizes, free shipping, and payment options</li><li>Backlink Profile: Strong quality backlinks</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Mirror competitor CTAs and value propositions in your metadata while maintaining Annadiva’s unique brand voice. Use A/B testing to refine messaging.</li></ul><br><h3 id="competitor-keyword-performance">Competitor Keyword Performance</h3><p>Our analysis revealed specific keywords where competitors consistently outrank Annadiva:</p><br><ol><li><strong>High-Volume Keywords (Livera & Hunkemöller)</strong>:</li></ol><ul><li>"lingerie" (60,500 monthly searches)</li><li>"bikini" (60,500 monthly searches)</li><li>"bikini dames" (40,500 monthly searches)</li><li>"badpak" (22,200 monthly searches)</li><li>"bh" (18,100 monthly searches)</li><li>"tankini" (medium volume)</li><li>"bralette" (medium volume)</li><li>"sport bh" (medium volume)</li></ul><br><ol><li><strong>Niche Keywords (Farfallina)</strong>:</li></ol><ul><li>"grote cup" related keywords</li><li>"grote maten bikini" (4,400 monthly searches)</li></ul><br><ol><li><strong>Informational Keywords</strong>:</li></ol><ul><li>"bh maat berekenen" (5,400 monthly searches) - Livera and Hunkemöller rank higher</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize a gap analysis on these high-impact keywords. Allocate content and on-page resources to bridge the difference within the next quarter.</li></ul><br><h3 id="content-gap-analysis">Content Gap Analysis</h3><p>Compared to competitors, Annadiva lacks content in several key areas:</p><br><ol><li><strong>Value Proposition in Titles</strong>: Competitors clearly state what users will find (e.g., "badmode voor elke vrouw," "groot assortiment bikini's")</li><li><strong>Strong Call to Action</strong>: Competitors include clear CTAs in meta descriptions (e.g., "Bekijk onze collectie," "Shop nu")</li><li><strong>Optimized Category Pages</strong>: Competitors effectively optimize category pages for broad keywords like "lingerie" and "bikini"</li><li><strong>Size Guides/Calculators</strong>: Livera and Hunkemöller rank well for "bh maat berekenen" with dedicated size guide pages</li><li><strong>"Grote Cup" Content</strong>: Farfallina dominates this niche with dedicated content while Annadiva's approach is less focused</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Host an internal workshop to define 3–5 pillar topics addressing these gaps. Assign cross-functional teams to deliver each pillar within 8 weeks.</li></ul><br><h3 id="serp-snippet-patterns">SERP Snippet Patterns</h3><p>Analysis of Annadiva's SERP snippets reveals:</p><br><ol><li><strong>Consistent Title Tag Structure</strong>: Cup size pages follow a pattern like "Cupmaat [Size] BH of bikinitop nodig? cup..."</li><li><strong>Description Value Proposition</strong>: Descriptions highlight Annadiva's specialization in all cup sizes and stock availability</li><li><strong>Call to Action</strong>: Includes phrases like "Koop jouw cup [Size] BH of bikinitop bij Annadiva"</li><li><strong>Use of Emojis</strong>: Heart emoji in descriptions adds visual appeal but could be optimized further</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Test removing or varying emojis in meta descriptions. Monitor click-through rates over a 4-week A/B test to determine impact.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><p>Our detailed analysis of Annadiva's backlink profile reveals:</p><br><ul><li><strong>Total Backlinks</strong>: 69,478 backlinks</li><li><strong>Referring Domains</strong>: 1,679 unique referring domains</li><li><strong>Domain Rank</strong>: 411</li><li><strong>Backlink Spam Score</strong>: Very low at 5%, indicating high-quality backlinks</li><li><strong>Broken Backlinks</strong>: 712 broken backlinks identified (opportunity for recovery)</li><li><strong>Geographic Distribution</strong>: Strong backlink presence from Belgium (26,747 links), Germany (22,181 links), and Netherlands (2,957 links)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Begin broken link recovery by creating 301 redirects for high-value URLs and outreach to referring domains within the next month.</li></ul><br><h3 id="backlink-quality-analysis">Backlink Quality Analysis</h3><p>The quality of Annadiva's backlink profile is generally strong:</p><br><ol><li><strong>High-Quality Referring Domains</strong>:</li></ol><ul><li>Pinterest.com (0% spam score)</li><li>FashionUnited.com (10% spam score)</li><li>Thuiswinkel.org (0% spam score)</li><li>Kiyoh.com (0% spam score)</li></ul><br><ol><li><strong>Link Types and Attributes</strong>:</li></ol><ul><li>37,896 image links</li><li>13,839 alternate links</li><li>6,502 anchor links</li><li>Only 536 nofollow links (less than 1% of total backlinks)</li></ul><br><ol><li><strong>Anchor Text Analysis</strong>:</li></ol><ul><li>Strong brand-focused anchor texts ("Annadiva")</li><li>Product-specific anchors ("Prima Donna lingerie", "bikini high waist")</li><li>Opportunity to diversify anchor text profile with more generic industry terms</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Launch an outreach campaign targeting 10 new high-authority Dutch fashion and lifestyle sites. Aim for 20–30 new backlinks per quarter.</li></ul><br><h3 id="backlink-opportunities">Backlink Opportunities</h3><p>Our analysis identified several authoritative websites in the Dutch fashion and lifestyle sector that link to competitors but not to Annadiva:</p><br><ol><li><strong>Major E-commerce Competitors with Backlink Overlap</strong>:</li></ol><ul><li>Zalando.nl (rank: 157, 3,875 shared backlinks)</li><li>Wehkamp.nl (rank: 142, 2,377 shared backlinks)</li><li>Bol.com (rank: 135, 1,470 shared backlinks)</li><li>Debijenkorf.nl (rank: 115, 1,424 shared backlinks)</li></ul><br><ol><li><strong>Direct Industry Competitors</strong>:</li></ol><ul><li>Hunkemoller.nl (rank: 117, 770 shared backlinks)</li><li>Livera.nl (rank: 84, 505 shared backlinks)</li></ul><br><ol><li><strong>Untapped Opportunities</strong>:</li></ol><ul><li>Dutch fashion media (Vogue.nl, Elle.nl, Libelle.nl)</li><li>Lifestyle bloggers with strong domain authority</li><li>Industry directories and associations</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Segment outreach targets by domain rank and shared backlink count. Focus first on high-authority domains with a clear brand fit.</li></ul><br><h3 id="toxic-backlinks">Toxic Backlinks</h3><p>While Annadiva's overall backlink profile is healthy, we identified a small number of potentially harmful backlinks from:</p><br><ol><li>Medium spam score domains (35-50% spam score) including:</li></ol><ul><li>noingoaithat.org (35% spam score)</li><li>baltimoreofficesmovers.com (36% spam score)</li><li>komornik.pl (50% spam score)</li></ul><br><ol><li>These represent a small portion of the overall profile but should be disavowed to maintain a clean backlink profile.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prepare and submit a disavow file for the identified toxic domains. Monitor backlink profile monthly to ensure no new harmful links appear.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our comprehensive analysis, we recommend the following content strategy initiatives:</p><br><h3 id="on-page-optimization">On-Page Optimization</h3><ol><li><strong>Improve Title Tags and Meta Descriptions</strong>:</li></ol><ul><li>Add clear value propositions in titles (e.g., "Lingerie: Shop Premium Brands & Find Your Perfect Fit at Annadiva")</li><li>Create compelling meta descriptions with strong calls to action (e.g., "Shop the latest bikini collection at Annadiva! Free shipping on orders over €50")</li><li>Ensure natural integration of primary and secondary keywords</li><li>Consider A/B testing different SERP snippets to improve click-through rates</li></ul><br><ol><li><strong>Enhance Category Pages</strong>:</li></ol><ul><li>Expand product descriptions with more detailed information</li><li>Improve filtering options for better user experience</li><li>Implement enhanced schema markup</li><li>Strengthen internal linking structure between related pages</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit the top 20 category pages for metadata and content completeness. Set weekly sprints to deploy updates.</li></ul><br><h3 id="keyword-focused-content-development">Keyword-Focused Content Development</h3><ol><li><strong>Target High-Priority Keywords</strong>:</li></ol><ul><li>Create dedicated landing pages for "bikini voor grote cupmaat" (1900 monthly searches) and "grote cupmaat bikini" (1900 monthly searches)</li><li>Develop content around "badmode große cupmaat" (170 monthly searches) and "badmode met große cupmaat" (170 monthly searches)</li><li>Optimize existing pages for style-specific keywords like "triangel bikini grote cupmaat" and "bandeau bikini grote cupmaat"</li></ul><br><ol><li><strong>Expand "Grote Cup" Content</strong>:</li></ol><ul><li>Create more in-depth content specifically targeting "grote cup" sizes</li><li>Develop buying guides, blog posts, and dedicated category pages</li><li>Model Farfallina's approach to this niche</li></ul><br><ol><li><strong>Enhance Swimwear Content</strong>:</li></ol><ul><li>Develop comprehensive content around swimwear</li><li>Create style guides, trend reports, and fit guides</li><li>Target high-volume keywords like "bikini dames" (40,500 searches) and "badpak dames" (22,200 searches)</li></ul><br><ol><li><strong>Optimize Size Guide</strong>:</li></ol><ul><li>Improve the "Cupmaat Berekenen" page with a more user-friendly calculator</li><li>Provide clearer instructions to compete with Livera and Hunkemöller for "bh maat berekenen" (5,400 searches)</li></ul><br><ol><li><strong>Blog Content Development</strong>:</li></ol><ul><li>Create blog posts addressing common questions and concerns:</li><li>"How to measure your bra size at home"</li><li>"The best swimwear for different body types"</li><li>"Lingerie trends for [Year]"</li><li>"How to care for delicate lingerie"</li></ul><br><ol><li><strong>Video Content</strong>:</li></ol><ul><li>Develop video content showcasing products</li><li>Create bra fitting tutorials</li><li>Feature customer testimonials</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Establish a bi-weekly content sprint to produce and publish high-priority pages. Use performance data to refine topics and formats.</li></ul><br><h3 id="backlink-strategy">Backlink Strategy</h3><p>Based on our backlink analysis, we recommend:</p><br><ol><li><strong>Broken Link Recovery</strong>: Reclaim 712 identified broken backlinks through:</li></ol><ul><li>301 redirects to relevant pages</li><li>Outreach to referring domains with updated URLs</li></ul><br><ol><li><strong>Competitor Backlink Acquisition</strong>: Target the 3,875 domains linking to Zalando.nl and 2,377 domains linking to Wehkamp.nl that could also link to Annadiva.</li></ol><br><ol><li><strong>Anchor Text Diversification</strong>: Develop a strategy to diversify anchor text profile beyond brand terms to include more product category and informational terms.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Define clear KPIs (e.g., 50 new high-quality backlinks per quarter). Assign outreach responsibilities and track progress in a shared dashboard.</li></ul><br><h3 id="technical-seo-improvements">Technical SEO Improvements</h3><ol><li><strong>Structured Data Implementation</strong>: Implement schema markup to enhance SERP snippets with additional information like product availability, ratings, and price</li></ol><br><ol><li><strong>Internal Linking</strong>: Ensure strong internal linking between relevant pages, especially for cup size and product category pages</li></ol><br><ol><li><strong>Address "People Also Ask" Questions</strong>: Identify and create content that directly answers common questions appearing in SERPs for target keywords</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Rank and prioritize technical fixes by impact and effort. Schedule fortnightly reviews with the development team to monitor progress.</li></ul><br><h3 id="quick-wins">Quick Wins</h3><ol><li><strong>Meta Description Optimization</strong>: Immediately rewrite meta descriptions for top-performing pages to include clear value propositions and calls to action</li><li><strong>Product Filtering</strong>: Ensure website allows users to easily filter swimwear by cup size and style (e.g., triangle, bandeau, underwire)</li><li><strong>Technical SEO Fixes</strong>: Address critical HTML validation errors and missing image alt attributes</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Implement these changes in the next two weeks and measure impact on impressions and CTR via Google Search Console.</li></ul><br></div></section>
+                <section id="conclusion-and-next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion and Next Steps</h2>
+                    </div>
+                    <div class="section-content"><br><p>Annadiva has a strong foundation in the Dutch intimate apparel market but faces significant challenges with declining organic visibility and strong competition from Livera, Hunkemöller, and Farfallina. By implementing the recommendations in this report, Annadiva can reverse the negative trend and achieve substantial growth in organic traffic and conversions.</p><br><p>We recommend prioritizing the following actions:</p><br><ol><li>Address critical technical SEO issues affecting crawlability and indexing</li><li>Optimize title tags and meta descriptions following competitor best practices</li><li>Create dedicated landing pages for high-priority keywords like "bikini voor grote cupmaat" (1900 searches)</li><li>Expand content for "grote cup" sizes to compete with Farfallina in this niche</li><li>Enhance swimwear content to better compete with Livera and Hunkemöller</li><li>Improve the bra size calculator page to target the valuable "bh maat berekenen" keyword</li><li>Implement a strategic backlink acquisition campaign focusing on the 712 broken backlinks and competitor backlink opportunities</li></ol><br><p>With a structured approach to these recommendations, Annadiva can expect to see improvements in organic visibility within 3–6 months and significant traffic growth within 12 months.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Annadiva',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

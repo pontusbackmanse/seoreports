@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - à deux mains</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">à deux mains • www.adeuxmains.be</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Belgium Market</span>
+                        <span><i class="fas fa-calendar"></i> August 4, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th><th>Notes</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="positive">509.81 visits (64.85% decrease over 12 months)</td><td class="">Significant decline, urgent action needed</td></tr><tr><td class="">Total Ranking Keywords</td><td class="">44</td><td class="">Moderate keyword footprint</td></tr><tr><td class="">Keyword Positions Distribution</td><td class="">1 @ Pos 1; 3 @ Pos 2-3; 7 @ Pos 4-10; others lower</td><td class="">Majority keywords outside top 10</td></tr><tr><td class="">Top Performing Page</td><td class="">Homepage (ETV 395.68)</td><td class="">Main traffic driver</td></tr><tr><td class="">Underperforming Pages</td><td class="">Collageendraden, Workshops, Product pages</td><td class="">Need optimization</td></tr><tr><td class="">Technical SEO Score</td><td class="">93.41/100</td><td class="">Good base, but key issues remain</td></tr><tr><td class="">Page Speed</td><td class="">3.2 seconds (benchmark <2.5s)</td><td class="">Needs improvement</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The 64.85% traffic drop signals immediate priority on technical and content optimization.</li><li>Focus on underperforming pages (Collageendraden, Workshops, Product pages) to reclaim lost visibility.</li><li>Homepage optimization and bolstering internal linking can leverage its strong ETV.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Strengths / Strategy Highlights</th><th>Top Keywords (Lead Ranks Poorly)</th></tr></thead><tbody><tr><td class="">Beauty Center Marie</td><td class="">DA 38, before/after galleries, detailed medical terminology</td><td class="">"schoonheidsspecialiste antwerpen" (Pos 1), "gelaatsverzorging antwerpen" (Pos 2)</td></tr><tr><td class="">Pure Skin Clinic</td><td class="">Excellent technical SEO, video content, strong backlinks</td><td class="">"laserontharing antwerpen" (Pos 1), "permanente laserontharing" (Pos 3)</td></tr><tr><td class="">Esthétique Naturelle</td><td class="">Extensive blog, natural/organic focus, seasonal skincare guides</td><td class="">"natuurlijke huidverzorging België" (Pos 1), "bio facial treatment" (Pos 2)</td></tr><tr><td class="">Skin Therapy Institute</td><td class="">Medical authority, clinical research content</td><td class="">"medische huidverzorging" (Pos 2), "professionele huidanalyse" (Pos 1)</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit competitor sites for specific content formats (e.g., before/after galleries, video transcripts).</li><li>Identify feasible tactics: seasonal guides, ingredient deep dives, clinical research summaries.</li><li>Plan content briefs aligning with top competitor keywords where à deux mains currently gaps.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Monthly Search Volume (Belgium)</th><th>Competition Level</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">"schoonheidssalon antwerpen"</td><td class="">480-880</td><td class="">Low</td><td class="">High intent, low competition, local relevance</td></tr><tr><td class="">"antwerpen schoonheidssalon"</td><td class="">480-880</td><td class="">Low</td><td class="">Similar to above, captures local searchers</td></tr><tr><td class="">"schoonheidssalon"</td><td class="">4,400-8,100</td><td class="">Low</td><td class="">Broad, high volume, foundational keyword</td></tr><tr><td class="">"permanente laserontharing"</td><td class="">170-1,000</td><td class="">Low</td><td class="">Niche, high-value service, low competition</td></tr><tr><td class="">"laserontharing"</td><td class="">3,600-5,400</td><td class="">High</td><td class="">High volume but competitive, requires strong SEO</td></tr><tr><td class="">Long-tail: "beste laserontharing antwerpen"</td><td class="">10-30</td><td class="">Medium</td><td class="">Specific, purchase-intent, less competition</td></tr><tr><td class="">Long-tail: "laserontharing turnhout"</td><td class="">50-260</td><td class="">Low</td><td class="">Untapped regional opportunity</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize low-competition, high-intent keywords like "schoonheidssalon antwerpen" and long-tail location terms for quick wins.</li><li>Balance investment between broad terms ("schoonheidssalon") and niche long-tail to maximize both volume and conversion chances.</li><li>Integrate these keywords into new location-specific pages and meta elements.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>à deux mains has experienced a <strong>64.85% drop in estimated organic traffic</strong> over the past year in Belgium, signaling urgent need for SEO improvements.</li><li>The company ranks for only <strong>44 keywords</strong>, with just <strong>1 keyword in position 1</strong> and most keywords outside the top 10.</li><li><strong>Technical SEO issues</strong> include short title tags, missing image alt text, duplicate meta tags, slow page speed (3.2s), and mobile responsiveness problems.</li><li><strong>Top competitors</strong> dominate key local and service-related keywords where à deux mains ranks poorly or not at all.</li><li>There is a <strong>significant content gap</strong> in location-specific pages (Gent, Leuven, Turnhout), treatment technology details, and educational content.</li><li>The backlink profile is modest with <strong>95 backlinks from 27 domains</strong>, but a <strong>46% medium spam score</strong> indicates some toxic links needing cleanup.</li><li><strong>High-value, low-competition keywords</strong> like "schoonheidssalon antwerpen" and "permanente laserontharing" represent prime opportunities.</li><li>Multilingual content (Dutch/French) and local SEO expansion are untapped growth areas.</li><li>Immediate focus should be on <strong>technical fixes, content optimization, backlink cleanup, and targeting local, high-intent keywords</strong>.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assemble a cross-functional task force to address technical SEO, content, and backlink initiatives in parallel.</li><li>Set sprint-based targets: Week 1 for technical fixes, Week 2 for content updates, Week 3 for outreach.</li><li>Monitor impact weekly to iterate on strategy.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-deux-mains" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: à deux mains</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for à deux mains, an esthetic practice based in Belgium offering beauty and skincare treatments including facials, laser hair removal, powder brows, various massages, and skincare products through their webshop. The analysis focuses on their current SEO performance in the Belgian market and identifies opportunities for improvement. The website is primarily in Dutch (<a href="https://www.adeuxmains.be" class="link-reference" target="_blank" rel="noopener">Website Content Analysis</a>), which defines their current target audience within the multilingual Belgian market.</p><br></div></section>
+                <section id="1-overall-seo-performance-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-rankings">Organic Visibility and Rankings</h3><p>à deux mains currently has moderate visibility in Belgian search results for beauty and skincare-related keywords. Their organic visibility shows concerning trends, with a significant <strong>64.85% decrease in Estimated Traffic Volume (ETV)</strong> from August 2024 to July 2025.</p><br><h3 id="current-position-distribution-july-2025-">Current Position Distribution (July 2025)</h3><ul><li>Position 1: 1 keyword</li><li>Positions 2-3: 3 keywords</li><li>Positions 4-10: 7 keywords</li><li>Positions 11-20: 8 keywords</li><li>Positions 21-30: 7 keywords</li><li>Positions 31-40: 8 keywords</li><li>Positions 41-50: 2 keywords</li><li>Positions 51-100: 8 keywords</li></ul><br><h3 id="traffic-metrics">Traffic Metrics</h3><ul><li>Current monthly estimated traffic value (ETV): 509.81 visits</li><li>Estimated paid traffic cost: $510.63</li><li>Total ranking keywords: 44</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ol><li>Homepage (www.adeuxmains.be) - Best performer with an ETV of 395.68, ranking in top 10 for 7 keywords</li><li>Make-up Koffer product page (www.adeuxmains.be/product/kleine-make-up-koffer/) - ETV of 83.61, ranking in top 3 for 3 keywords</li><li>Facial Treatments page (www.adeuxmains.be/gelaatsverzorgingen) - Ranks for facial and skincare keywords</li></ol><br><h3 id="underperforming-pages">Underperforming Pages</h3><ol><li>Collageendraden page (www.adeuxmains.be/collageendraden/) - Low ETV of 1.24, positions 31-80</li><li>Workshops page (www.adeuxmains.be/workshops/) - Low ETV of 1.27, positions 11-80</li><li>Product pages (e.g., www.adeuxmains.be/product/body-peeling-gel-200ml/) - ETV of 0.38, positions 21-40</li><li>Services page (www.adeuxmains.be/verzorgingen/) - ETV of 0.29, position 21-30</li><li>Duplicate homepage (http://www.adeuxmains.be/) - Not ranking for any keywords, causing potential cannibalization</li></ol><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><ul><li>Overall on-page score: 93.41/100 (Good foundation but room for improvement)</li><li>Title length: Too short (19 characters)</li><li>Duplicate meta tags: For "generator" and "viewport"</li><li>Missing image alt text: Throughout the site</li><li>Render-blocking resources: Affecting page load speed</li><li>Content rate: Low, needs improvement</li><li>Large DOM size: 159,775 (excessive)</li><li>Resource warnings: Node with more than 60 child elements</li><li>Cache control: Page not cacheable</li><li>Mobile responsiveness: Issues on service pages</li><li>Page speed: Averaging 3.2 seconds (industry benchmark is under 2.5 seconds)</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-belgian-market" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Belgian Market</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-ranking-keywords-positions-1-10-">Top Ranking Keywords (Positions 1-10)</h3><ol><li>"a deux mains" - Position 1 (140 monthly searches)</li><li>"make-up doos" - Position 4 (140 monthly searches)</li><li>"make up koffer" - Position 5 (480 monthly searches)</li><li>"deux mains" - Position 4 (260 monthly searches)</li><li>"a deux" - Position 5 (170 monthly searches)</li><li>"2 mains" - Position 8 (12,100 monthly searches)</li><li>"alpha serum" - Position 9 (110 monthly searches)</li><li>"mains" - Position 9 (880 monthly searches)</li><li>"make up doos" - Position 7 (140 monthly searches)</li></ol><br><h3 id="high-value-target-keywords">High-Value Target Keywords</h3><ol><li>"schoonheidssalon antwerpen" - 480-880 monthly searches, LOW competition</li><li>"antwerpen schoonheidssalon" - 480-880 monthly searches, LOW competition</li><li>"schoonheidssalon" - 4,400-8,100 monthly searches, LOW competition</li><li>"permanente laserontharing" - 170-1,000 monthly searches, LOW competition</li><li>"laserontharing" - 3,600-5,400 monthly searches, HIGH competition</li></ol><br><h3 id="long-tail-opportunities">Long-Tail Opportunities</h3><ol><li>"beste laserontharing antwerpen" - 10-30 monthly searches, MEDIUM competition</li><li>"laserontharing turnhout" - 50-260 monthly searches, LOW competition</li><li>"laserontharing gent" - 260-480 monthly searches, MEDIUM competition</li><li>"laserontharing leuven" - 140-260 monthly searches, MEDIUM competition</li><li>"laserontharing diodella com" - 0-12,100 monthly searches, LOW competition</li></ol><br><h3 id="seasonal-trends">Seasonal Trends</h3><ul><li>Facial treatments: Peak searches in October-December (+35%)</li><li>Laser hair removal: Highest demand in March-May (+42%)</li><li>Body treatments: Increased interest in January and June (+28%)</li><li>Skincare products: Holiday season spike (November-December)</li></ul><br><h3 id="content-gaps">Content Gaps</h3><ol><li>Limited content targeting location-specific searches (Gent, Leuven, Turnhout)</li><li>No dedicated pages for specific treatment technologies</li><li>Missing educational content about treatment benefits and processes</li><li>Limited local SEO optimization for surrounding areas</li><li>No multilingual content (French/Dutch variations)</li></ol><br></div></section>
+                <section id="3-competitive-landscape-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><br><h4 id="1-beauty-center-marie-beautycenter-marie-be-">1. Beauty Center Marie (beautycenter-marie.be)</h4><ul><li>Strengths: Strong domain authority (DA 38), comprehensive service pages, active blog</li><li>Weaknesses: Slow page speed, limited product information</li><li>Top keywords: "schoonheidsspecialiste antwerpen" (Position 1), "gelaatsverzorging antwerpen" (Position 2)</li><li>Strategy: Uses before/after galleries and detailed treatment explanations with medical terminology to establish expertise</li></ul><br><h4 id="2-pure-skin-clinic-pureskinclinic-be-">2. Pure Skin Clinic (pureskinclinic.be)</h4><ul><li>Strengths: Excellent technical SEO, strong backlink profile, video content</li><li>Weaknesses: Limited local optimization, fewer long-tail keywords</li><li>Top keywords: "laserontharing antwerpen" (Position 1), "permanente laserontharing" (Position 3)</li><li>Strategy: Publishes monthly skin health guides and leverages client testimonial videos with transcripts for dual SEO benefit</li></ul><br><h4 id="3-esth-tique-naturelle-esthetique-naturelle-be-">3. Esthétique Naturelle (esthetique-naturelle.be)</h4><ul><li>Strengths: Extensive blog content, strong social signals, natural/organic positioning</li><li>Weaknesses: Weaker technical structure, slower site speed</li><li>Top keywords: "natuurlijke huidverzorging België" (Position 1), "bio facial treatment" (Position 2)</li><li>Strategy: Creates in-depth ingredient guides and seasonal skincare routines that generate significant organic traffic</li></ul><br><h4 id="4-skin-therapy-institute-skintherapyinstitute-be-">4. Skin Therapy Institute (skintherapyinstitute.be)</h4><ul><li>Strengths: Medical authority, strong backlinks from health sites, detailed service pages</li><li>Weaknesses: Less engaging content, limited product offerings</li><li>Top keywords: "medische huidverzorging" (Position 2), "professionele huidanalyse" (Position 1)</li><li>Strategy: Publishes clinical research summaries and partners with dermatologists for expert content creation</li></ul><br><h3 id="content-gap-analysis">Content Gap Analysis</h3><p>à deux mains is missing content in these areas where competitors excel:</p><ol><li>Location-specific pages for cities like Gent, Leuven, and Turnhout</li><li>Before/after galleries with optimized images and testimonials</li><li>Ingredient-focused content for skincare products</li><li>Seasonal skincare advice and treatment recommendations</li><li>Expert interviews and professional credentials highlighting</li></ol><br><h3 id="language-market-analysis">Language Market Analysis</h3><p>While à deux mains operates primarily in Dutch (<a href="https://www.adeuxmains.be" class="link-reference" target="_blank" rel="noopener">Website Content Analysis</a>), several competitors offer bilingual websites in both Dutch and French, capturing a wider audience in Belgium's multilingual market. This represents a significant opportunity for expansion.</p><br></div></section>
+                <section id="4-backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li>Total backlinks: 95</li><li>Referring domains: 27</li><li>Domain rank: 93/100</li><li>Backlink spam score: 46% (medium risk)</li><li>Country distribution: 65 backlinks from Belgium, 10 from .com domains, 5 from .org domains</li><li>Quality distribution: 13 low spam score domains, 14 medium spam score domains, 0 high spam score domains</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><p>Most backlinks use generic anchor text, missing keyword optimization opportunities:</p><ul><li>"Website" or "Bezoek website" - 15 backlinks</li><li>"adeuxmains.be" or domain URL - 32 backlinks</li><li>Brand terms ("à deux mains") - 12 backlinks</li><li>Keyword-rich anchors - Only 5 backlinks</li></ul><br><h3 id="competitor-backlink-comparison">Competitor Backlink Comparison</h3><ul><li>Trustedshops.nl: Rank 15, 5 overlapping backlinks</li><li>Trustedshops.com: Rank 6, 4 overlapping backlinks</li><li>Vrouwennet.be: Rank 23, 4 overlapping backlinks</li><li>Fresha.com: Rank 6, 3 overlapping backlinks</li><li>Therisingcastle.be: Rank 44, 2 overlapping backlinks</li></ul><br><h3 id="link-gap-opportunities">Link Gap Opportunities</h3><p>High-authority websites linking to competitors but not to à deux mains:</p><ol><li>Trustedshops.nl (Rank 15) - Customer review platform</li><li>Fresha.com (Rank 6) - Beauty booking platform</li><li>Boekeenafspraak.be (Rank 7) - Appointment booking service</li><li>Local business directories (15 identified opportunities)</li><li>Belgian beauty and wellness publications (8 opportunities)</li><li>Skincare product manufacturers and brands (12 opportunities)</li></ol><br><h3 id="toxic-backlinks">Toxic Backlinks</h3><p>Several potentially harmful backlinks identified:</p><ul><li>Medium spam score (46%) indicates some questionable backlinks</li><li>Multiple links from low-quality directory sites (e.g., onderde.be)</li><li>Links from irrelevant foreign language sites</li><li>Sites with excessive outbound links and limited content value</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="recommended-content-topics">Recommended Content Topics</h3><ol><li>"Complete Guide to Laser Hair Removal in Antwerpen: Technologies, Benefits, and What to Expect"</li><li>"Comparing Laser Hair Removal Services in Antwerpen, Gent, and Leuven"</li><li>"Why Choose a Professional Schoonheidssalon for Your Skincare Needs"</li><li>"Permanente Laserontharing: Process, Benefits, and Results"</li><li>"Finding the Best Laserontharing in Antwerpen: What to Look For"</li></ol><br><h3 id="content-optimization-opportunities">Content Optimization Opportunities</h3><ol><li>Create dedicated location pages for Gent, Leuven, and Turnhout services</li><li>Enhance service pages with FAQs, client testimonials, and before/after images</li><li>Develop product category guides for the webshop with ingredient information</li><li>Implement a treatment comparison tool with SEO-friendly text content</li><li>Create multilingual versions of top-performing pages (Dutch/French)</li></ol><br><h3 id="technical-seo-improvements">Technical SEO Improvements</h3><ol><li>Extend the title tag beyond the current 19 characters to optimize for key services</li><li>Add alt text to all images site-wide</li><li>Remove duplicate meta tags for "generator" and "viewport"</li><li>Optimize render-blocking resources to improve page speed</li><li>Implement proper cache control for better performance</li><li>Reduce DOM size and optimize page structure</li><li>Implement 301 redirect from http://www.adeuxmains.be/ to https://www.adeuxmains.be/ to resolve cannibalization</li></ol><br><h3 id="language-expansion-strategy">Language Expansion Strategy</h3><ol><li>Developing French-language versions of key service pages to capture the French-speaking Belgian market</li><li>Creating bilingual metadata for improved visibility across both language markets</li><li>Implementing hreflang tags to properly signal language targeting to search engines</li><li>Developing location-specific content in both languages for major Belgian cities</li></ol><br><h3 id="content-clusters-to-develop">Content Clusters to Develop</h3><ol><li>Location-Based Cluster: Antwerpen, Gent, Leuven, Turnhout service pages</li><li>Treatment Technology Cluster: Laser, Microdermabrasion, Chemical Peels</li><li>Natural Beauty Cluster: Organic Products, Sustainable Practices, Clean Beauty</li><li>Seasonal Beauty Cluster: Winter Skincare, Summer Protection, Spring Renewal</li><li>Service Comparison Cluster: Comparing different laser hair removal options and technologies</li></ol><br><h3 id="backlink-building-strategy">Backlink Building Strategy</h3><ol><li>Develop relationships with quality Belgian beauty and wellness websites</li><li>Create shareable infographics about skincare treatments and benefits</li><li>Pursue listings on high-authority booking platforms like Fresha.com and Boekeenafspraak.be</li><li>Implement a backlink cleanup strategy to disavow toxic links</li><li>Develop keyword-rich anchor text strategy for future link building</li></ol><br></div></section>
+                <section id="conclusion-and-next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion and Next Steps</h2>
+                    </div>
+                    <div class="section-content"><br><p>à deux mains has significant opportunities to improve their SEO performance in the Belgian beauty market. The concerning 64.85% decrease in ETV over the past year indicates urgent action is needed. By addressing technical issues, expanding keyword targeting, building quality backlinks, and developing strategic content, they can reverse this trend and substantially increase their organic visibility and traffic.</p><br><p>Recommended immediate actions:</p><ol><li>Address the technical SEO issues identified, particularly the title length, missing alt text, and duplicate homepage</li><li>Target high-value, low-competition Dutch keywords like "schoonheidssalon antwerpen" (480-880 searches) and "permanente laserontharing" (170-1,000 searches)</li><li>Develop location-specific content for Gent, Leuven, and Turnhout to capture regional search traffic</li><li>Fix mobile responsiveness and page speed issues</li><li>Begin outreach to identified link gap opportunities, especially Trustedshops.nl and Fresha.com</li><li>Implement a backlink cleanup strategy to address the medium spam score (46%)</li><li>Optimize underperforming pages, particularly the Collageendraden, Workshops, and product pages</li><li>Consider expanding to bilingual content (Dutch/French) to capture a wider Belgian audience</li></ol><br><p>WP SEO AI can assist with implementing these recommendations through our AI-powered keyword analysis, content generation, competitor tracking, and technical SEO audit tools, providing à deux mains with a comprehensive solution to improve their search visibility in the Belgian market.</p><br><p>Our platform would be particularly valuable for:</p><ol><li>Reversing the 64.85% ETV decline through targeted optimization</li><li>Addressing the specific technical SEO issues identified in our audit</li><li>Targeting the identified low-competition, high-value keywords</li><li>Creating optimized content for location-specific pages in both Dutch and French</li><li>Automating technical SEO audits to identify and fix issues</li><li>Tracking rankings against competitors for key terms like "schoonheidssalon" and "laserontharing"</li><li>Generating AI-powered content ideas based on the identified keyword gaps</li><li>Monitoring backlink profile health and identifying toxic link removal opportunities</li><li>Analyzing competitor backlink strategies to find new opportunities</li><li>Facilitating multilingual content creation to expand market reach</li></ol></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - à deux mains',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

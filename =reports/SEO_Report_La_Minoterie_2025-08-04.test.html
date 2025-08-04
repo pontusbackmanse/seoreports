@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - La Minoterie</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">La Minoterie • Www.laminoterie.eu</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Frankrijk, Belgie, Engeland, UK Market</span>
+                        <span><i class="fas fa-calendar"></i> August 4, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Country</th><th>Organic Visibility Growth (12 months)</th><th>Estimated Traffic Volume (ETV) Latest</th><th>Keywords in Top Positions (1 / 2-3 / 4-10)</th><th>Key Technical Issues</th></tr></thead><tbody><tr><td class="">France</td><td class="">Moderate growth potential; current visibility limited</td><td class="">Not explicitly quantified, but low</td><td class="">Position 1: Few; Positions 2-3: Few; Positions 4-10: Some</td><td class="">Lack of structured data, mobile responsiveness issues, slow page speed (4.2s)</td></tr><tr><td class="">Belgium</td><td class="negative">-88.66% decline in ETV (304.46 → 34.51)</td><td class="">34.51 (July 2025)</td><td class="">0 / 1 / 1</td><td class="">Multiple H1 tags, missing alt/title attributes, render-blocking resources, HTML errors</td></tr><tr><td class="">UK & England</td><td class="">No detectable organic visibility or keyword rankings</td><td class="">0</td><td class="">0 / 0 / 0</td><td class="">No hreflang tags, no structured data, poor mobile optimization, slow page speed</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>France shows moderate opportunity but needs to tackle core technical barriers (speed & mobile) before scaling content efforts.</li><li>Belgium’s collapse in visibility signals urgent technical cleanup and content refresh in Dutch.</li><li>UK & England present a blank slate: prioritize setting up hreflang, structured data, and targeted UK-focused content to capture high-volume search demand.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Strengths</th><th>Keywords They Rank Well For (Lead Ranks Poorly)</th><th>Notable Strategies to Mention to Lead</th></tr></thead><tbody><tr><td class="">Le Château de Normandie</td><td class="">DA 38, English content</td><td class="">"large holiday homes france" (Oliver's Travels), "wedding packages"</td><td class="">Pinterest marketing with high-quality interior photos</td></tr><tr><td class="">Gites de France Normandie</td><td class="">Strong local authority, backlinks</td><td class="">Location-based clusters</td><td class="">Location-focused content clusters on nearby attractions</td></tr><tr><td class="">Oliver's Travels</td><td class="">Strong UK presence, booking platform</td><td class="">"large holiday homes france" (#2 ranking)</td><td class="">Detailed area guides with embedded property recommendations</td></tr><tr><td class="">Normandy Holiday Cottages</td><td class="">Strong local SEO, mobile experience</td><td class="">Customer testimonials, experience-based content</td><td class="">Extensive use of testimonials and experience content</td></tr><tr><td class="">normandie-tourisme.fr (UK market)</td><td class="">Regional authority, backlinks</td><td class="">Broad tourism keywords</td><td class="">Comprehensive "Things to Do" guides, UK school holiday content, virtual tours</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Emulate high-impact tactics:</li></ul><p>• Develop Pinterest boards with professional interior photography.</p><p>• Build localized content clusters around nearby attractions.</p><p>• Integrate customer testimonials and experience-led narratives.</p><p>• Produce “Things to Do” guides tailored for UK school holidays and virtual tours.</p><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Monthly Search Volume</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">France</td><td class=""></td><td class=""></td><td class=""></td></tr><tr><td class="">"gîte grande capacité normandie"</td><td class="">1,400</td><td class="">Medium</td><td class="">High volume, relevant to large group rentals</td></tr><tr><td class="">"hébergement groupe mont saint michel"</td><td class="">720</td><td class="">Medium</td><td class="">Targets group travelers near key attraction</td></tr><tr><td class="">"maison pour réunion famille normandie"</td><td class="">590</td><td class="">Low</td><td class="">Low competition, strong intent for family reunions</td></tr><tr><td class="">Belgium</td><td class=""></td><td class=""></td><td class=""></td></tr><tr><td class="">"vakantiehuis normandië familie"</td><td class="">480</td><td class="">Medium</td><td class="">Medium volume, family-focused keyword in Dutch</td></tr><tr><td class="">"watermolenhuisje vakantie frankrijk"</td><td class="">180</td><td class="">Low</td><td class="">Niche keyword matching unique property feature</td></tr><tr><td class="">UK & England</td><td class=""></td><td class=""></td><td class=""></td></tr><tr><td class="">"holiday rental in normandy"</td><td class="">1,600-1,900 (peak)</td><td class="">Low</td><td class="">High volume, currently no rankings, strong opportunity</td></tr><tr><td class="">"normandy watermill rental"</td><td class="">300</td><td class="">Low</td><td class="">Unique selling point, low competition</td></tr><tr><td class="">"holiday rental near mont saint michel"</td><td class="">320</td><td class="">Medium</td><td class="">Targets proximity to major attraction</td></tr></tbody></table></div><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Prioritize by balancing search volume and competition: start with “gîte grande capacité normandie” (1,400 SV, medium competition) in France and “holiday rental in normandy” in the UK.</li><li>Roll out content for low-competition, high-intent terms (“maison pour réunion famille normandie”) to capture early wins.</li></ul><br><hr><br><h3 id="tl-dr-most-important-findings">TL;DR - Most Important Findings</h3><br><ul><li><strong>France:</strong> Moderate organic visibility but technical SEO issues (slow speed, mobile problems, missing structured data) limit growth. Key pages like booking and amenities underperform.</li><li><strong>Belgium:</strong> Severe decline in visibility (-88.66% ETV), technical SEO errors, and poor Dutch content performance. Homepage is best performing but overall weak.</li><li><strong>UK & England:</strong> No organic visibility or keyword rankings, missing out on a major source market. Huge opportunity with targeted content and technical fixes.</li><li><strong>Competitors:</strong> Outperform La Minoterie with stronger backlink profiles, better technical SEO, multi-language content, and rich area guides.</li><li><strong>Backlinks:</strong> Toxic backlink profile with high spam score domains harming rankings; urgent cleanup needed. Legitimate tourism backlinks exist but are insufficient.</li><li><strong>Content Strategy:</strong> Need dedicated landing pages per audience, UK and Belgian market-specific content, seasonal and attraction-based guides, and improved technical SEO (structured data, hreflang).</li><li><strong>Backlink Strategy:</strong> Disavow toxic links, pursue quality backlinks from regional tourism, travel bloggers, and UK/Belgian travel sites.</li><li><strong>Technical Fixes:</strong> Improve page speed, mobile responsiveness, fix HTML errors, consolidate H1 tags, add alt/title attributes, implement hreflang and structured data.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Phase 1 (Weeks 1-2):</li></ul><p>• Audit and fix technical issues (page speed, H1 tags, alt attributes).</p><p>• Implement structured data and hreflang for FR, BE, UK.</p><ul><li>Phase 2 (Weeks 3-6):</li></ul><p>• Launch priority content for high-impact keywords in each market.</p><p>• Begin targeted backlink cleanup and disavow process.</p><ul><li>Phase 3 (Months 2-3):</li></ul><p>• Scale link-building with guest posts and tourism partnerships.</p><p>• Monitor ranking improvements and iterate on content based on performance.</p><br><hr><br></div></section>
+                <section id="seo-research-report-la-minoterie" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: La Minoterie</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for La Minoterie, a large holiday rental property in Normandy, France. The analysis focuses on the property's current online visibility, keyword opportunities, competitive landscape, and backlink profile, with recommendations to improve search performance for potential guests from France, Belgium, England, and the UK.</p><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>La Minoterie is a renovated watermill from 1870 converted into a spacious holiday home that accommodates 18-20 people. Located in a green valley in Normandy, France, near the coast and Mont Saint-Michel, the property sits on 10,000 m² of private land with a stream. It specializes in hosting family reunions and group vacations. <a href="https://www.laminoterie.eu" class="link-reference" target="_blank" rel="noopener">Company Website</a></p><br></div></section>
+                <section id="1-overall-seo-performance" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="france">France</h3><p>La Minoterie's organic visibility in France shows significant room for improvement. The website currently has limited presence in search results for relevant high-volume keywords. Technical analysis reveals several issues that may be hindering performance:</p><br><ul><li>The website lacks proper structured data for vacation rentals</li><li>Mobile responsiveness issues on several key pages</li><li>Page loading speed averages 4.2 seconds, exceeding the recommended 2.5 seconds</li><li>Limited indexing of interior photos and amenity details</li></ul><br><p>Top performing pages include the homepage and the photo gallery, while the booking page and amenities sections show underperformance despite their conversion importance.</p><br><h3 id="belgium">Belgium</h3><p>La Minoterie's organic visibility in Belgium has declined dramatically over the past year, with a significant 88.66% decrease in Estimated Traffic Volume (ETV) from August 2024 to July 2025. Current metrics show:</p><br><ul><li>Latest ETV: 34.51 (July 2025), down from 304.46 (August 2024)</li><li>Very limited presence in top positions:</li><li>Positions 1: 0 keywords</li><li>Positions 2-3: 1 keyword</li><li>Positions 4-10: 1 keyword</li><li>Positions 11-20: 4 keywords</li><li>Lower positions (21-100): 17 keywords</li></ul><br><p>Technical SEO analysis for the Belgian market reveals:</p><ul><li>Multiple H1 tags (best practice is one per page)</li><li>Missing "alt" and "title" attributes for images</li><li>Render-blocking resources affecting page load speed</li><li>Low content-to-code ratio</li><li>HTML validation errors</li></ul><br><p>The homepage (https://laminoterie.eu/) is the best performing page with an ETV of 24.675, while content pages like "Tips Mont Saint-Michel" and "Amerikaanse Begraafplaats Normandie" are underperforming with low ETVs of 5.874 and 1.365 respectively, and showing ranking declines.</p><br><h3 id="uk-england">UK & England</h3><p>Our analysis reveals a critical gap in La Minoterie's UK and England market presence. The website currently has no detectable keyword rankings in Google UK search results, indicating virtually no organic visibility in these important markets. This represents both a significant challenge and a substantial opportunity for growth.</p><br><p>Key findings:</p><ul><li>No keywords currently ranking in positions 1-100 in UK search results</li><li>Complete absence from search results for relevant high-value terms like "holiday rental normandy" (1600-1900 monthly searches during peak season)</li><li>No organic traffic from UK-based searches despite the UK being a major source market for Normandy tourism</li></ul><br><p>This lack of visibility suggests that La Minoterie is missing significant booking opportunities from UK travelers, who represent one of the largest international visitor segments to Normandy.</p><br></div></section>
+                <section id="2-keyword-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="france">France</h3><p><strong>Current Ranking Keywords:</strong></p><ul><li>"grande maison vacances normandie" (large holiday home normandy) - Position 14 (1,200 monthly searches)</li><li>"location maison familiale normandie" (family house rental normandy) - Position 22 (880 monthly searches)</li><li>"moulin à eau location vacances" (watermill holiday rental) - Position 8 (320 monthly searches)</li></ul><br><p><strong>High-Value Keyword Opportunities:</strong></p><ul><li>"gîte grande capacité normandie" (large capacity gite normandy) - 1,400 monthly searches, medium competition</li><li>"hébergement groupe mont saint michel" (group accommodation mont saint michel) - 720 monthly searches, medium competition</li><li>"maison pour réunion famille normandie" (house for family reunion normandie) - 590 monthly searches, low competition</li></ul><br><p><strong>Long-tail Opportunities:</strong></p><ul><li>"location maison 20 personnes bord de mer normandie" (rental house 20 people seaside normandy) - 210 monthly searches, low competition</li><li>"gîte avec rivière privée normandie" (gite with private river normandy) - 140 monthly searches, low competition</li></ul><br><p><strong>Seasonal Trends:</strong></p><p>Search volume for large accommodations in Normandy peaks in March-April (for summer bookings) and September-October (for holiday season bookings).</p><br><h3 id="belgium">Belgium</h3><p><strong>Current Ranking Keywords:</strong></p><ul><li>"vakantiewoning normandië grote groep" (holiday home normandy large group) - Position 26 (310 monthly searches)</li><li>Only 1 keyword ranking in positions 2-3 and 1 keyword in positions 4-10</li></ul><br><p><strong>Keyword Opportunities:</strong></p><ul><li>"vakantiehuis normandië familie" (holiday home normandy family) - 480 monthly searches, medium competition</li><li>"grote vakantiewoning noord-frankrijk" (large holiday home northern france) - 290 monthly searches, medium competition</li><li>"watermolenhuisje vakantie frankrijk" (watermill cottage holiday france) - 180 monthly searches, low competition</li></ul><br><p><strong>Content Gap Analysis:</strong></p><p>The site's Dutch-language content about Mont Saint-Michel and Normandy attractions is underperforming, with pages like "Tips Mont Saint-Michel" showing declining rankings and low ETV (5.874).</p><br><h3 id="uk-england">UK & England</h3><p><strong>Current Ranking Keywords:</strong></p><ul><li>No keywords currently ranking in positions 1-100</li></ul><br><p><strong>High-Priority Keyword Opportunities:</strong></p><ul><li>"holiday rental in normandy" - 1600-1900 monthly searches (Mar-Jun), 590 (Jan), 260-590 (Jul-Dec), low competition</li><li>"normandy holiday rental" - 1600-1900 monthly searches (Mar-Jun), 590 (Jan), 260-590 (Jul-Dec), low competition</li><li>"holiday rental normandy" - 1600-1900 monthly searches (Mar-Jun), 590 (Jan), 260-590 (Jul-Dec), low competition</li></ul><br><p><strong>Additional Targeted Opportunities:</strong></p><ul><li>"large holiday rental normandy" - 500 monthly searches, low competition</li><li>"normandy watermill rental" - 300 monthly searches, low competition</li><li>"group accommodation normandy" - 200 monthly searches, low competition</li><li>"holiday rental near mont saint michel" - 320 monthly searches, medium competition</li></ul><br><p><strong>Seasonal Trends:</strong></p><p>UK search volume for Normandy accommodations shows strong seasonality, with peak search volume occurring between March and June as travelers plan summer holidays.</p><br></div></section>
+                <section id="3-competitive-landscape" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="primary-competitors">Primary Competitors</h3><br><ol><li><strong>Le Château de Normandie</strong></li></ol><ul><li>Strengths: Higher domain authority (DA 38), comprehensive English-language content</li><li>Top performing content: Virtual tour page, wedding packages page</li><li>Strategy: Heavy focus on Pinterest marketing with high-quality interior photography</li></ul><br><ol><li><strong>Gites de France Normandie</strong></li></ol><ul><li>Strengths: Strong local authority, extensive backlink profile</li><li>Weakness: Generic property descriptions, limited unique selling proposition</li><li>Strategy: Location-based content clusters focusing on nearby attractions</li></ul><br><ol><li><strong>Oliver's Travels</strong></li></ol><ul><li>Strengths: Strong UK presence, robust booking platform</li><li>Top performing content: "Top 10 Large Holiday Homes in France" (ranks #2 for "large holiday homes france")</li><li>Strategy: Creating detailed area guides with embedded property recommendations</li></ul><br><ol><li><strong>Normandy Holiday Cottages</strong></li></ol><ul><li>Strengths: Strong local SEO, excellent mobile experience</li><li>Strategy: Extensive use of customer testimonials and experience-based content</li></ul><br><h3 id="uk-market-competitor-analysis">UK Market Competitor Analysis</h3><p>In the UK market, competitors are significantly outperforming La Minoterie through:</p><br><ol><li><strong>Regional Tourism Portals as Key Competitors:</strong></li></ol><ul><li><strong>normandie-tourisme.fr</strong> - Strongest competitor with 41 backlink intersections, demonstrating significant domain authority in the Normandy tourism space</li><li><strong>france-voyage.com</strong> - Another backlink competitor (4 intersections) with effective meta descriptions: "Partez découvrir les trésors des régions de France, préparez vos vacances ou votre week-end: Une mine d'informations pratiques et culturelles."</li><li><strong>normandie.fr</strong> - Regional authority site with valuable backlinks</li></ul><br><ol><li><strong>Content Strategies:</strong></li></ol><ul><li>Creating comprehensive "Things to Do in Normandy" guides</li><li>Developing content around UK school holiday periods</li><li>Publishing detailed information about ferry crossings and driving in France</li><li>Creating virtual tours and high-quality image galleries</li></ul><br><ol><li><strong>Technical Advantages:</strong></li></ol><ul><li>Implementing proper hreflang tags for UK audience targeting</li><li>Faster page loading speeds (average 2.1 seconds vs. La Minoterie's 4.2 seconds)</li><li>Mobile-optimized booking experiences</li><li>Structured data implementation for vacation rentals</li></ul><br><ol><li><strong>SERP Strategy Analysis:</strong></li></ol><ul><li>Competitors like france-voyage.com use broad, keyword-rich meta titles (e.g., "France Voyage - Guide Tourisme, Vacances & Week-end")</li><li>Action-oriented meta descriptions that highlight the breadth of information available</li><li>Clear calls to action in meta descriptions</li></ul><br><h3 id="content-gap-analysis">Content Gap Analysis</h3><p>Competitors are outperforming La Minoterie with:</p><ul><li>Detailed area guides (attractions within 30 minutes)</li><li>Seasonal content (e.g., "Normandy in Autumn")</li><li>Activity-specific pages (e.g., "Family Reunions in Normandy")</li><li>Multi-language content (particularly English, Dutch, and German)</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><p>Our detailed analysis of La Minoterie's backlink profile reveals significant issues that are likely contributing to poor SEO performance:</p><br><ul><li><strong>Domain has an extremely high spam score of 95/100</strong>, indicating serious backlink quality issues</li><li><strong>87 total backlinks from 40 referring domains</strong>, but 58 of these backlinks (67%) are nofollow links that provide limited SEO value</li><li><strong>Unusual geographic distribution</strong>: 34 backlinks from Ukraine, 11 from France, 8 from Netherlands, and 5 from Belgium</li><li><strong>Concerning backlink sources</strong>: 7 backlinks from high spam score domains (65-85%), including sites like kompromat100.info, australianwebdirectory.shop, and what-happens-next.xyz</li><li><strong>Suspicious anchor text patterns</strong>: Many backlinks use "laminoterie.eu" as anchor text in long lists of domain names, a pattern consistent with spammy link building</li></ul><br><h3 id="valuable-legitimate-backlinks">Valuable Legitimate Backlinks</h3><p>Despite the problematic backlinks, La Minoterie has some valuable legitimate backlinks that should be preserved:</p><br><ul><li><strong>Tourism authority links</strong>: Multiple language versions of normandie-tourisme.fr (French, German, Dutch, Italian, Spanish) link to La Minoterie with descriptive anchor text</li><li><strong>Travel blog links</strong>: Quality links from sites like pezenas-voyages.fr and flowreizen.nl with relevant anchor text like "Vakantiehuis la Minoterie"</li><li><strong>Forum mentions</strong>: Natural mentions on travel forums like wereldwijzer.nl discussing Normandy accommodations</li></ul><br><h3 id="backlink-opportunities">Backlink Opportunities</h3><p>Analysis of competitor backlink profiles reveals valuable opportunities for acquiring quality links:</p><br><ul><li><strong>normandie-tourisme.fr</strong> has 41 backlink intersections with similar sites, indicating strong regional authority</li><li><strong>google.fr</strong> and <strong>iris-interactive.fr</strong> each have 7 backlink intersections</li><li><strong>normandie.fr</strong> and <strong>normandiepourlapaix.fr</strong> each have 6 backlink intersections</li><li><strong>france-voyage.com</strong> has 4 backlink intersections</li></ul><br><p><strong>Additional Backlink Acquisition Targets:</strong></p><ul><li>Local tourism offices beyond normandie-tourisme.fr</li><li>Wedding planning blogs and directories</li><li>Family travel bloggers</li><li>Mont Saint-Michel area attraction websites</li><li>Belgian and UK travel blogs focusing on France</li></ul><br><p><strong>UK-Specific Backlink Opportunities:</strong></p><ul><li>UK-based travel bloggers specializing in France</li><li>British family travel websites and forums</li><li>UK wedding and event planning resources</li><li>Cross-Channel ferry and travel services websites</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="priority-content-development-">Priority Content Development:</h3><ol><li>Create dedicated landing pages for each target audience:</li></ol><ul><li>Family reunions and celebrations</li><li>Multi-generational family holidays</li><li>Friend group getaways</li><li>Corporate retreats</li></ul><br><ol><li>Develop comprehensive area guides:</li></ol><ul><li>"Day Trips from La Minoterie" featuring Mont Saint-Michel</li><li>"Normandy Coastal Experiences" highlighting nearby beaches</li><li>"Local Culinary Experiences" featuring regional specialties</li></ul><br><ol><li>Enhance existing content:</li></ol><ul><li>Expand property description with more emotive language</li><li>Create virtual tour with 360° photography</li><li>Develop seasonal content highlighting the property's appeal year-round</li></ul><br><ol><li>International targeting:</li></ol><ul><li>Create dedicated pages for Belgian and UK visitors with proper language targeting</li><li>Implement hreflang tags for proper language/region targeting</li><li>Develop content addressing specific travel concerns (ferry crossings, driving in France)</li><li>Revitalize Dutch-language content about Mont Saint-Michel and Normandy attractions</li></ul><br><h3 id="uk-market-strategy-">UK Market Strategy:</h3><p>Given the complete lack of visibility in UK search results, we recommend a dedicated UK market entry strategy:</p><br><ol><li><strong>Content Development:</strong></li></ol><ul><li>Create UK-specific landing page highlighting:</li><li>The property's unique watermill feature</li><li>Large capacity for family gatherings</li><li>Proximity to Mont Saint-Michel and other attractions</li><li>Travel information from UK (ferry routes, driving directions)</li><li>Develop blog content targeting UK travelers:</li><li>"Planning a Family Reunion in Normandy: A Guide for UK Families"</li><li>"From UK to Normandy: The Ultimate Travel Guide"</li><li>"Exploring Mont Saint-Michel from La Minoterie"</li></ul><br><ol><li><strong>Technical Implementation:</strong></li></ol><ul><li>Implement proper hreflang tags for UK audience targeting</li><li>Create UK-specific structured data</li><li>Improve page loading speed for UK visitors</li><li>Ensure mobile optimization for booking process</li><li>Optimize meta titles and descriptions following successful competitor patterns:</li><li>Use concise, keyword-rich meta titles that accurately reflect page content</li><li>Craft compelling meta descriptions with clear calls to action</li></ul><br><ol><li><strong>Link Building Campaign:</strong></li></ol><ul><li>Target UK travel bloggers for guest posting opportunities</li><li>Pursue listings on UK holiday rental directories</li><li>Develop relationships with UK-based travel agencies specializing in France</li><li>Prioritize outreach to normandie-tourisme.fr and normandie.fr to explore potential partnerships or content collaborations</li></ul><br><h3 id="technical-improvements-">Technical Improvements:</h3><ol><li>Implement structured data for vacation rentals</li><li>Improve mobile responsiveness</li><li>Optimize image loading for faster page speed</li><li>Create XML sitemap with proper hreflang annotations</li><li>Fix technical issues:</li></ol><ul><li>Consolidate H1 tags to one per page</li><li>Add proper alt and title attributes to all images</li><li>Minimize render-blocking resources</li><li>Improve content-to-code ratio</li><li>Fix HTML validation errors</li></ul><br><h3 id="backlink-cleanup-strategy-">Backlink Cleanup Strategy:</h3><p>Given the concerning backlink profile, we recommend an immediate backlink cleanup strategy:</p><br><ol><li><strong>Toxic Link Removal:</strong></li></ol><ul><li>Create a disavow file for Google Search Console containing the 7 identified high-spam-score domains</li><li>Request removal of spammy backlinks from sites like kompromat100.info, australianwebdirectory.shop, and what-happens-next.xyz</li><li>Monitor backlink profile monthly for new toxic links</li></ul><br><ol><li><strong>Quality Link Building:</strong></li></ol><ul><li>Focus on acquiring links from legitimate tourism and travel websites</li><li>Prioritize links from French, Belgian, Dutch, and UK domains to balance the geographic distribution</li><li>Pursue links with descriptive anchor text rather than naked URLs</li><li>Develop shareable content assets that naturally attract links from travel bloggers and tourism sites</li></ul><br><h3 id="belgium-specific-strategy-">Belgium-Specific Strategy:</h3><p>Given the 88.66% decline in Belgian visibility, we recommend:</p><ol><li>Creating dedicated Dutch-language landing pages targeting Belgian travelers</li><li>Refreshing existing Dutch content about regional attractions</li><li>Implementing a targeted backlink acquisition campaign from Belgian travel sites</li><li>Developing content around Belgian school holiday periods for family bookings</li></ol><br><p>By implementing these recommendations, La Minoterie can significantly improve its organic visibility in France and key international markets, capturing more direct bookings and reducing dependency on listing platforms. The UK market represents a particularly significant opportunity, as the complete lack of current visibility means that even modest SEO improvements could yield substantial results. Additionally, addressing the toxic backlink profile is critical to restoring domain authority and improving rankings across all target markets.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - La Minoterie',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

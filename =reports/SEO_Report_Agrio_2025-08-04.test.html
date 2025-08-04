@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Agrio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Agrio • agrio.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 4, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Current Value (July 2025)</th><th>12-Month Change</th></tr></thead><tbody><tr><td class="">Organic Visibility - Position 1 Keywords</td><td class="">3</td><td class="negative">-40%</td></tr><tr><td class="">Organic Visibility - Positions 2-3 Keywords</td><td class="">12</td><td class="negative">-20%</td></tr><tr><td class="">Organic Visibility - Positions 4-10 Keywords</td><td class="">16</td><td class="negative">-5.88%</td></tr><tr><td class="">Organic Visibility - Positions 11-20 Keywords</td><td class="">12</td><td class="negative">-45.45%</td></tr><tr><td class="">Organic Visibility - Positions 21-30 Keywords</td><td class="">26</td><td class="positive">+23.81%</td></tr><tr><td class="">Organic Visibility - Positions 31-40 Keywords</td><td class="">29</td><td class="positive">+45%</td></tr><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">5,647.58/month</td><td class="negative">-17.24%</td></tr><tr><td class="">Estimated Paid Traffic Cost</td><td class="">€8,448.63/month</td><td class="">N/A</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Focus on reclaiming top 3 positions by auditing and optimizing title tags, meta descriptions, and H1 usage for your highest-potential pages.</li><li>Leverage competitor SERP patterns (value-driven titles) to inform your on-page copy improvements.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor Website</th><th>Key Keywords They Rank Well For (Agrio Ranks Poorly)</th><th>Agrio's Position</th><th>Search Volume (NL)</th><th>Competition Level</th></tr></thead><tbody><tr><td class="">melkvee.nl</td><td class="">"melkvee"</td><td class="">6</td><td class="">14,800</td><td class="">Low</td></tr><tr><td class="">melkvee.nl</td><td class="">"melkvee nieuws"</td><td class="">>20</td><td class="">260</td><td class="">Low</td></tr><tr><td class="">nieuweoogst.nl</td><td class="">"agrarisch nieuws"</td><td class="">25</td><td class="">1,000</td><td class="">Low</td></tr><tr><td class="">nieuweoogst.nl</td><td class="">"agrarische vacatures"</td><td class="">92</td><td class="">880</td><td class="">Medium</td></tr><tr><td class="">trekkerweb.nl</td><td class="">"trekkerweb aanbod"</td><td class="">N/A</td><td class="">N/A</td><td class="">N/A</td></tr><tr><td class="">-</td><td class="">"stal"</td><td class="">68</td><td class="">5,400</td><td class="">Low</td></tr><tr><td class="">-</td><td class="">"akkerbouwer"</td><td class="">51</td><td class="">2,400</td><td class="">Low</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Identify verticals where competitors excel (e.g., dairy, job listings) and build dedicated category or subdomain pages to match their structure.</li><li>Use their high-ranking pages as benchmarks for keyword inclusion and content depth.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume (NL)</th><th>Current Position</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">"vacatures agrarische"</td><td class="">8,320</td><td class="">Not ranking well</td><td class="">Medium</td><td class="">High search volume, transactional intent, job market opportunity</td></tr><tr><td class="">"melkvee"</td><td class="">14,800</td><td class="">6</td><td class="">Low</td><td class="">High volume, core sector keyword, competitor dominance</td></tr><tr><td class="">"stal"</td><td class="">5,400</td><td class="">68</td><td class="">Low</td><td class="">Missed opportunity, informational intent</td></tr><tr><td class="">"agrarische vacatures friesland"</td><td class="">980</td><td class="">Low</td><td class="">Medium</td><td class="">Regional focus, medium competition</td></tr><tr><td class="">"melkvee nieuws"</td><td class="">260</td><td class="">12</td><td class="">Low</td><td class="">Content gap, competitor strength</td></tr><tr><td class="">"print advertenties"</td><td class="">50</td><td class="">11</td><td class="">Low</td><td class="">Service-related, monetization potential</td></tr><tr><td class="">"afbeelding weidevogels"</td><td class="">210</td><td class="">17</td><td class="">Low</td><td class="">Seasonal visual content opportunity</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize content creation for high-volume, low-competition keywords ("melkvee", "stal").</li><li>Develop landing pages or blog posts for "vacatures agrarische" and region-specific variants to capture job searchers.</li></ul><br><hr><br><h3 id="tl-dr-most-important-findings">TL;DR - Most Important Findings</h3><br><ul><li>Agrio’s organic visibility and traffic have declined significantly over the past 12 months, especially in top-ranking positions.</li><li>Strong brand-related keywords perform well, but broader agricultural terms and high-volume keywords like "melkvee" and "stal" are underperforming.</li><li>Competitors melkvee.nl, nieuweoogst.nl, and trekkerweb.nl dominate key sector keywords and have optimized SERP strategies with keyword-rich titles and dedicated category/job pages.</li><li>Agrio’s backlink profile is strong in volume but weak in quality: many links are template-based with a high percentage of nofollow and some toxic backlinks.</li><li>Significant backlink opportunities exist with authoritative Dutch agricultural institutions and competitors’ linking domains.</li><li>Content gaps include agricultural job listings, sector-specific news hubs, regional content, and service-focused pages.</li><li>Technical SEO issues (image optimization, crawlability, site speed) need urgent fixing to improve rankings.</li><li>Recommended strategic actions: optimize titles/meta, create dedicated category and job pages, improve backlink quality, and develop content clusters around jobs, news, marketing, and sustainability.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign owners and set deadlines for each strategic pillar: on-page optimization, content development, technical fixes, and link-building outreach.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-agrio" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Agrio</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for Agrio, a media company focused on the agricultural sector in the Netherlands. The analysis examines Agrio's current SEO performance, keyword strategy, competitive landscape, and backlink profile, with actionable recommendations to improve their search visibility in the Dutch market.</p><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Agrio is a specialized media company that serves as a communication partner for businesses looking to reach the agricultural sector in the Netherlands. Their services include print and online advertising, knowledge partnerships, video production, event organization, lead generation, studio rental, and marketing services such as market research and customer journey analysis. They also run a "Sterke Erven" (Strong Farms) initiative. <a href="https://agrio.nl/over-agrio/" class="link-reference" target="_blank" rel="noopener">Source: [Company Website</a>]</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-rankings">Organic Visibility and Rankings</h3><p>Agrio is currently experiencing a concerning decline in organic visibility in the Dutch market. Our analysis shows a 17.24% decrease in Estimated Traffic Volume (ETV) over the past year, with significant drops in top-ranking positions.</p><br><h4 id="current-organic-visibility-breakdown-july-2025-">Current Organic Visibility Breakdown (July 2025):</h4><ul><li>Position 1: 3 keywords (-40% year-over-year)</li><li>Positions 2-3: 12 keywords (-20% year-over-year)</li><li>Positions 4-10: 16 keywords (-5.88% year-over-year)</li><li>Positions 11-20: 12 keywords (-45.45% year-over-year)</li><li>Positions 21-30: 26 keywords (+23.81% year-over-year)</li><li>Positions 31-40: 29 keywords (+45% year-over-year)</li><li>Positions 41-100: 95 keywords (mixed performance)</li></ul><br><div class="highlight-box"><strong>Clarification:</strong> Growth in positions 21-40 indicates emerging content that can be optimized further to push into top 20.</div><br><h4 id="estimated-traffic-value-etv-5-647-58-month">Estimated Traffic Value (ETV): 5,647.58/month</h4><h4 id="estimated-paid-traffic-cost-8-448-63-month">Estimated Paid Traffic Cost: 8,448.63/month</h4><br><h3 id="traffic-growth-analysis">Traffic Growth Analysis</h3><p>Organic search traffic has shown a concerning 17.24% decrease year-over-year, with the most significant losses in high-value top positions. While there has been some growth in middle-ranking positions (21-40), these don't compensate for the loss of highly-visible top rankings.</p><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ol><li><strong>https://www.agrio.nl/mediamerken/pigbusiness/</strong> - Very high ETV of 1,312.65</li><li><strong>https://www.agrio.nl/mediamerken/pluimveeweb/</strong> - High ETV of 1,103.03</li><li><strong>https://www.agrio.nl/mediamerken/melkvee/</strong> - Strong ETV of 702.30</li><li><strong>https://abonnement.agrio.nl/trekkerweb/Trekkerweb-Vakblad/TRWAJRVAKMAAND1JR</strong> - Good ETV of 652.55</li><li><strong>https://www.agrio.nl/</strong> (Homepage) - Ranks for a broad range of keywords with solid traffic</li></ol><br><h3 id="underperforming-pages">Underperforming Pages</h3><ol><li><strong>Article pages under /deelt/artikel/</strong> - Low positions (21-100) with minimal traffic despite content investment</li><li><strong>Job/vacancy pages under /over-agrio/vacatures/</strong> - Poor rankings (positions 51-90) with low visibility</li><li><strong>Creative service pages under /creatie/</strong> - Very low rankings (positions 91-100) with negligible traffic</li><li><strong>Many subscription pages under /abonnement.agrio.nl/</strong> - Underperforming with positions 31-100</li></ol><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><ul><li>Image optimization issues (missing alt texts and titles)</li><li>Content rate problems affecting crawlability</li><li>Render-blocking resources slowing page load times</li><li>HTML errors affecting user experience</li><li>Caching issues impacting site speed</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Perform a full technical audit with prioritized fixes (start with page speed and alt texts) and re-test using Lighthouse.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-ranking-keywords">Top Ranking Keywords</h3><p>Based on our detailed analysis of Agrio's current rankings, their strongest performing keywords include:</p><br><ol><li><strong>Brand-related keywords:</strong></li></ol><ul><li>"agrio uitgeverij" - 140 monthly searches, Position 1</li><li>"trekkerweb agrio" - 90 monthly searches, Position 1</li><li>"agrio" - 590 monthly searches, Position 2</li></ul><br><ol><li><strong>Media brand keywords:</strong></li></ol><ul><li>"akkerwijzer" - 5,400 monthly searches, Position 2</li><li>"pigbusiness" - 8,100 monthly searches, Position 2</li><li>"pluimveeweb" - 6,600 monthly searches, Position 3</li><li>"stal en akker" - 590 monthly searches, Position 2</li><li>"vee en gewas" - 1,000 monthly searches, Position 2</li><li>"veldpost" - 480 monthly searches, Position 2</li><li>"trekkerweb" - 9,900 monthly searches, Position 4</li><li>"melkvee" - 14,800 monthly searches, Position 6</li></ul><br><ol><li><strong>Other strong keywords:</strong></li></ol><ul><li>"ekoland" - 210 monthly searches, Position 2</li><li>"landbouw agenda" - 320 monthly searches, Position 2</li><li>"landbouwagenda" - 320 monthly searches, Position 2</li><li>"agraaf" - 480 monthly searches, Position 3</li></ul><br><h3 id="high-value-target-keywords">High-Value Target Keywords</h3><p>These keywords show potential for improved rankings and significant traffic:</p><br><ol><li><strong>Keywords in positions 11-20:</strong></li></ol><ul><li>"melkvee nieuws" - 260 monthly searches, Position 12</li><li>"bijbaan journalistiek" - 70 monthly searches, Position 12</li><li>"melkvee magazine" - 140 monthly searches, Position 12</li><li>"print advertenties" - 50 monthly searches, Position 11</li><li>"mediakit" - 390 monthly searches, Position 13</li><li>"melkvee 100 plus" - 720 monthly searches, Position 12</li></ul><br><ol><li><strong>High-volume keywords with lower rankings:</strong></li></ol><ul><li>"vee" - 3,600 monthly searches, Position 21</li><li>"agrarische" - 1,600 monthly searches, Position 28</li><li>"boeren nieuws" - 90 monthly searches, Position 20</li></ul><br><ol><li><strong>Service-related keywords:</strong></li></ol><ul><li>"print advertentie" - 50 monthly searches, Position 13</li><li>"web banner leaderboard" - 50 monthly searches, Position 15</li><li>"ontzorging" - 260 monthly searches, Position 17</li><li>"event marketing" - 210 monthly searches, Position 21</li></ul><br><h3 id="long-tail-opportunities">Long-Tail Opportunities</h3><p>These longer, more specific queries have lower competition and high conversion potential:</p><br><ol><li><strong>Agricultural job-related keywords:</strong></li></ol><ul><li>"vacatures agrarische" - 8,320 monthly searches, Medium competition</li><li>"vacatures in agrarische sector" - 4,500 monthly searches, Medium competition</li><li>"agrarische sector vacatures" - 4,500 monthly searches, Medium competition</li><li>"agrarische vacatures friesland" - 980 monthly searches, Medium competition</li><li>"agrarische kinderopvang vacatures" - 970 monthly searches, Medium competition</li></ul><br><ol><li><strong>Agricultural news keywords:</strong></li></ol><ul><li>"nieuws varkenshouderij" - 410 monthly searches, Low competition</li><li>"akkerbouw nieuws" - 540 monthly searches, Low competition</li><li>"pigbusiness varkensprijzen" - 90 monthly searches, Position 15</li></ul><br><ol><li><strong>Regional agricultural keywords:</strong></li></ol><ul><li>"agrarische vacatures gelderland" - 780 monthly searches, Medium competition</li><li>"agrarische vacatures zeeland" - 420 monthly searches, Low competition</li></ul><br><h3 id="seasonal-keyword-trends">Seasonal Keyword Trends</h3><ul><li>"afbeelding weidevogels" (210 monthly searches, Position 17) shows higher search volume in spring (March-May), likely related to bird migration and breeding season</li><li>"greenscreen action" (170 monthly searches, Position 8) has a decreasing search volume trend</li><li>Agricultural event terms peak in January-February and August-September</li><li>Harvest-related terms show strong seasonality in July-September</li><li>Agricultural policy and subsidy terms peak in November-December and March-April</li></ul><br><h3 id="content-gaps">Content Gaps</h3><ul><li>Limited content targeting agricultural job-related keywords despite high search volumes</li><li>No dedicated news sections for each media brand (e.g., "melkvee nieuws", "boeren nieuws")</li><li>Insufficient service-focused content for print advertising, online advertising, and event marketing</li><li>Minimal coverage of regional agricultural topics (e.g., Friesland, Gelderland, Zeeland)</li><li>Underutilization of image optimization for keywords like "afbeelding weidevogels"</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><p>Based on our competitive analysis, Agrio faces three primary competitors in the Dutch agricultural media market:</p><br><ol><li><strong>www.melkvee.nl</strong></li></ol><ul><li><strong>Key Strengths:</strong> Strong focus on dairy farming (melkvee), high estimated traffic volume, ranks #1 for many keywords related to "melkvee" and "melkvee nieuws"</li><li><strong>Type:</strong> Direct competitor focusing on a specific segment of the agricultural market (dairy farming)</li><li><strong>SERP Strategy:</strong> Uses clear, value-driven titles like "Nieuws en kennis voor de melkveehouder" that directly address search intent</li></ul><br><ol><li><strong>www.nieuweoogst.nl</strong></li></ol><ul><li><strong>Key Strengths:</strong> Broad coverage of agricultural news across sectors (veehouderij, akkerbouw, tuinbouw), high estimated traffic volume</li><li><strong>Type:</strong> Direct competitor covering a wider range of agricultural topics</li><li><strong>SERP Strategy:</strong> Uses keyword-rich titles and meta descriptions with clear value propositions (e.g., "Agrarisch Nieuws | Veehouderij, Akkerbouw...")</li><li><strong>Content Strategy:</strong> Effectively uses category pages (e.g., /sector/veehouderij/melkveehouderij) to target specific sectors and maintains a dedicated job board (vacatures.nieuweoogst.nl) that ranks well for "agrarische vacatures"</li></ul><br><ol><li><strong>www.trekkerweb.nl</strong></li></ol><ul><li><strong>Key Strengths:</strong> Focus on agricultural mechanization (tractors, machinery), high estimated traffic volume</li><li><strong>Type:</strong> Direct competitor specializing in agricultural machinery and technology</li><li><strong>Content Strategy:</strong> Successfully uses product listing pages (markt.trekkerweb.nl) that rank well for "trekkerweb aanbod"</li></ul><br><h3 id="keyword-performance-analysis">Keyword Performance Analysis</h3><p>Our analysis reveals several high-value keywords where competitors are outperforming Agrio:</p><br><ol><li><strong>"melkvee"</strong> (Search Volume: 14,800, Competition: LOW):</li></ol><ul><li>Search Intent: Informational - users seeking information about dairy farming</li><li>Agrio.nl ranks 6th while melkvee.nl dominates this keyword</li></ul><br><ol><li><strong>"stal"</strong> (Search Volume: 5,400, Competition: LOW):</li></ol><ul><li>Search Intent: Informational - users seeking information about farm buildings</li><li>Agrio.nl ranks 68th, representing a significant missed opportunity</li></ul><br><ol><li><strong>"akkerbouwer"</strong> (Search Volume: 2,400, Competition: LOW):</li></ol><ul><li>Search Intent: Informational - users seeking information about arable farming</li><li>Agrio.nl ranks 51st, well behind competitors</li></ul><br><ol><li><strong>"agrarisch nieuws"</strong> (Search Volume: 1,000, Competition: LOW):</li></ol><ul><li>Search Intent: Informational - users seeking agricultural news</li><li>Agrio.nl ranks 25th while nieuweoogst.nl ranks much higher</li></ul><br><ol><li><strong>"agrarische vacatures"</strong> (Search Volume: 880, Competition: MEDIUM):</li></ol><ul><li>Search Intent: Transactional - users seeking jobs in the agricultural sector</li><li>Agrio.nl ranks 92nd, missing significant monetization potential</li></ul><br><h3 id="serp-strategy-analysis">SERP Strategy Analysis</h3><p>Comparing SERP elements reveals clear patterns in competitor success:</p><br><ol><li><strong>Title and Meta Description Optimization:</strong></li></ol><ul><li><strong>Agrio.nl:</strong> Often uses brand names or generic descriptions in titles and meta descriptions. Many SERP elements are for the homepage, which is not optimized for specific keywords.</li><li><strong>Competitors:</strong> More frequently use keyword-rich titles and meta descriptions that directly address search intent. Nieuweoogst.nl includes clear value propositions and mentions key topics covered.</li></ul><br><ol><li><strong>Effective Patterns in Competitor SERP Elements:</strong></li></ol><ul><li><strong>Keyword Prominence:</strong> Competitors place target keywords early in titles</li><li><strong>Value Proposition:</strong> They clearly state what users will find (e.g., "latest news," "market data")</li><li><strong>Topic Specificity:</strong> They mention specific agricultural sectors or topics covered</li></ul><br><ol><li><strong>Successful Content Types:</strong></li></ol><ul><li><strong>News Articles:</strong> Nieuweoogst.nl's success with news-related keywords suggests timely, relevant news content is highly valued</li><li><strong>Category Pages:</strong> Nieuweoogst.nl effectively uses category pages to target specific sectors</li><li><strong>Job Boards:</strong> Nieuweoogst.nl's dedicated job board ranks well for "agrarische vacatures"</li><li><strong>Product Listing Pages:</strong> Trekkerweb.nl's product listings perform well for relevant keywords</li></ul><br><h3 id="strategic-recommendations-based-on-competitive-analysis">Strategic Recommendations Based on Competitive Analysis</h3><ol><li><strong>Improve Title and Meta Description Optimization:</strong></li></ol><ul><li>Rewrite titles and meta descriptions for key pages to include target keywords prominently and clearly state value propositions</li><li>Example: Instead of "Melkvee, ons paradepaardje!", use "Melkvee Nieuws: Actueel nieuws voor melkveehouders | Agrio.nl"</li></ul><br><ol><li><strong>Create Dedicated Category Pages:</strong></li></ol><ul><li>Develop dedicated category pages for key agricultural sectors (e.g., /melkvee, /pluimvee, /akkerbouw)</li><li>Aggregate relevant news, articles, and resources on these pages</li></ul><br><ol><li><strong>Develop a Dedicated Job Board:</strong></li></ol><ul><li>Create a separate section or subdomain (e.g., /vacatures or vacatures.agrio.nl) for agricultural job listings</li><li>This will improve rankings for "agrarische vacatures" and create a new revenue stream</li></ul><br><ol><li><strong>Content Optimization for General Agricultural Terms:</strong></li></ol><ul><li>Create comprehensive resource pages targeting broad terms like "agrarisch" and "agrarische sector"</li><li>Define terms, discuss current trends, and link to relevant content on Agrio.nl</li></ul><br><ol><li><strong>Strengthen Internal Linking:</strong></li></ol><ul><li>Ensure strong internal linking between relevant pages (e.g., link from news articles about dairy farming to the "Melkvee" category page)</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><p>Our analysis reveals that Agrio.nl has a substantial backlink profile with 616,310 backlinks from 438 referring domains. Key metrics include:</p><br><ul><li>Domain rank: 437</li><li>Backlink spam score: 9% (medium risk)</li><li>Referring domains: 438 (328 main domains)</li><li>Broken backlinks: 70 (indicating technical issues)</li><li>Referring pages: 420,542</li><li>Nofollow links: 311,257 (74% of total backlinks)</li></ul><br><p>The majority of backlinks (99.3%) come from Dutch (.nl) domains, which is excellent for local SEO in the Netherlands. However, the high percentage of nofollow links (74%) indicates missed SEO value opportunities.</p><br><h3 id="link-distribution-analysis">Link Distribution Analysis</h3><p>The backlink profile shows concerning patterns:</p><ul><li>52.3% of links are in footer sections (219,932 links)</li><li>26.2% are in navigation elements (110,142 links)</li><li>Only 0.8% are in main content areas (3,402 links)</li><li>Only 0.05% are in article bodies (197 links)</li></ul><br><p>This distribution suggests most links are template-based rather than editorially given within content, limiting their SEO value.</p><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><p>The anchor text distribution is heavily skewed toward generic terms like "Algemene voorwaarden" (General Terms and Conditions), with very few keyword-rich anchors. This represents a missed opportunity for improving keyword rankings through relevant anchor text.</p><br><h3 id="toxic-backlinks">Toxic Backlinks</h3><p>Our analysis identified several high-spam-score domains linking to Agrio that could be harming rankings:</p><ul><li>prodirectoryguide.com (65% spam score)</li><li>businessrankdirectory.com (65% spam score)</li><li>backlinktime.com (70% spam score)</li><li>eenpunt.nl (90% spam score)</li></ul><br><p>These should be disavowed to prevent negative SEO impact.</p><br><h3 id="link-gap-analysis">Link Gap Analysis</h3><p>High-authority Dutch websites linking to competitors but not to Agrio include:</p><ol><li>wur.nl (Wageningen University & Research) - Rank 183</li><li>minlnv.nl (Dutch Ministry of Agriculture) - Rank 1</li><li>nieuweoogst.nl - Rank 20</li><li>agriholland.nl - Rank 5</li><li>uitzendbureau.nl - Rank 5</li><li>groenkennisnet.nl - Rank 9</li></ol><br><p>These represent significant opportunities for authoritative backlink acquisition in the Dutch agricultural sector.</p><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="recommended-content-topics">Recommended Content Topics</h3><ol><li><strong>Agricultural Job Hub:</strong></li></ol><ul><li>Create a comprehensive job portal targeting "vacatures agrarische" (8,320 monthly searches)</li><li>Develop region-specific job sections for Friesland, Gelderland, and Zeeland</li><li>Include resources for job seekers in the agricultural sector</li></ul><br><ol><li><strong>Media Brand News Sections:</strong></li></ol><ul><li>Develop dedicated news sections for each media brand (e.g., "melkvee nieuws", "akkerbouw nieuws")</li><li>Create a centralized "boeren nieuws" hub with categorized content</li><li>Implement a content calendar aligned with seasonal agricultural trends</li></ul><br><ol><li><strong>Service-Focused Content:</strong></li></ol><ul><li>Create in-depth guides on print and online advertising in the agricultural sector</li><li>Develop case studies showcasing successful event marketing campaigns</li><li>Create resources on marketing services like "ontzorging" (260 monthly searches)</li></ul><br><ol><li><strong>Visual Content Strategy:</strong></li></ol><ul><li>Optimize existing images for keywords like "afbeelding weidevogels" (210 monthly searches)</li><li>Create seasonal visual content aligned with agricultural cycles</li><li>Develop infographics on agricultural topics with high search interest</li></ul><br><h3 id="content-optimization-opportunities">Content Optimization Opportunities</h3><ol><li><strong>Media Brand Pages:</strong></li></ol><ul><li>Enhance <code>/mediamerken/</code> pages with more comprehensive content</li><li>Improve internal linking between media brand pages and related content</li><li>Add structured data to improve SERP visibility</li></ul><br><ol><li><strong>Underperforming Content:</strong></li></ol><ul><li>Revitalize <code>/deelt/artikel/</code> content with improved keyword targeting</li><li>Enhance job/vacancy pages under <code>/over-agrio/vacatures/</code> to target high-volume job keywords</li><li>Optimize creative service pages under <code>/creatie/</code> with portfolio examples and testimonials</li></ul><br><ol><li><strong>Technical Optimizations:</strong></li></ol><ul><li>Implement image optimization for all visual content</li><li>Address content rate problems to improve crawlability</li><li>Fix render-blocking resources to improve page load times</li><li>Correct HTML errors affecting user experience</li><li>Implement proper caching to enhance site speed</li></ul><br><h3 id="content-clusters-for-topical-authority">Content Clusters for Topical Authority</h3><ol><li><strong>Agricultural Jobs Cluster:</strong></li></ol><ul><li>Hub: "Werken in de Agrarische Sector"</li><li>Spokes: Regional job markets, agricultural specializations, career development</li></ul><br><ol><li><strong>Agricultural News Cluster:</strong></li></ol><ul><li>Hub: "Landbouw Nieuws Nederland"</li><li>Spokes: Sector-specific news, regional updates, policy changes, market trends</li></ul><br><ol><li><strong>Agricultural Marketing Cluster:</strong></li></ol><ul><li>Hub: "Marketing voor de Agrarische Sector"</li><li>Spokes: Print advertising, online advertising, event marketing, content marketing</li></ul><br><ol><li><strong>Sustainable Farming Cluster:</strong></li></ol><ul><li>Hub: "Duurzame Landbouw in Nederland"</li><li>Spokes: Emissions reduction, circular agriculture, biodiversity, water management</li></ul><br></div></section>
+                <section id="conclusion-and-next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion and Next Steps</h2>
+                    </div>
+                    <div class="section-content"><br><p>Agrio has established strong brand authority within the Dutch agricultural sector, particularly with its media brands like PigBusiness, Pluimveeweb, and Trekkerweb. However, the company is experiencing a concerning decline in organic visibility that requires immediate attention.</p><br><p>Priority actions should include:</p><br><ol><li><strong>Keyword Optimization:</strong></li></ol><ul><li>Focus on improving rankings for high-volume keywords like "melkvee" (14,800 searches), "stal" (5,400 searches), and "agrarische" (1,600 searches)</li><li>Target agricultural job-related keywords with significant search volumes</li><li>Develop content for seasonal keywords aligned with agricultural cycles</li></ul><br><ol><li><strong>Content Development:</strong></li></ol><ul><li>Create dedicated news sections for each media brand</li><li>Develop comprehensive service pages targeting relevant keywords</li><li>Implement a regional content strategy focusing on key Dutch agricultural regions</li></ul><br><ol><li><strong>Technical Improvements:</strong></li></ol><ul><li>Address image optimization issues</li><li>Fix content rate problems affecting crawlability</li><li>Resolve render-blocking resources slowing page load times</li><li>Correct HTML errors affecting user experience</li><li>Implement proper caching to enhance site speed</li></ul><br><ol><li><strong>Backlink Strategy:</strong></li></ol><ul><li>Disavow toxic backlinks from high-spam-score domains</li><li>Pursue backlink opportunities with high-authority Dutch agricultural websites</li><li>Improve anchor text diversity beyond generic terms</li><li>Focus on acquiring in-content links rather than footer/navigation links</li><li>Fix broken backlinks to recapture lost link equity</li></ul><br><ol><li><strong>Competitive Strategy:</strong></li></ol><ul><li>Implement successful competitor strategies:</li><li>Create clear, value-driven titles and meta descriptions like melkvee.nl</li><li>Develop dedicated category pages for specific agricultural sectors like nieuweoogst.nl</li><li>Launch a dedicated job board similar to vacatures.nieuweoogst.nl</li><li>Create comprehensive resource pages for general agricultural terms</li><li>Focus on Agrio's strengths in media brand recognition and specialized content</li></ul><br><p>With these strategic improvements, Agrio can reverse its declining organic visibility, strengthen its position as a leading agricultural media company in the Netherlands, and capture significant additional organic search traffic.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Agrio',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

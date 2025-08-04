@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Craftr</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Craftr • www.craftr.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 4, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th><th>Notes</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">5.44 (July 2025)</td><td class="positive">+310.88% growth over last 12 months</td></tr><tr><td class="">Keyword Positions</td><td class="">Positions 4-10: 2 keywords</td><td class="">No keywords in top 3; growth mainly in lower top 10 and beyond</td></tr><tr><td class=""></td><td class="">Positions 31-40: 1 keyword</td><td class=""></td></tr><tr><td class=""></td><td class="">Positions 51-60: 1 keyword</td><td class=""></td></tr><tr><td class=""></td><td class="">Positions 81-90: 1 keyword</td><td class=""></td></tr><tr><td class="">Paid Traffic Cost Equivalent</td><td class="">€18.11</td><td class="">Indicative of organic traffic value</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Leverage the strong ETV growth by prioritizing optimization for positions 4–10 to push those keywords into top 3, capturing higher CTR and ROI.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Keywords They Rank Well For (Craftr Ranks Poorly)</th><th>Notes on Competitor Strengths & Strategies</th></tr></thead><tbody><tr><td class="">Michael Page</td><td class="">"recruitment strategie", "strategisch recruitment", "recruitmentstrategie"</td><td class="">Strong domain authority, high traffic, broad keyword coverage</td></tr><tr><td class="">Time to Hire</td><td class="">"recruitment strategie", "strategisch recruitment"</td><td class="">Uses action-oriented titles (e.g., "in 9 stappen naar succes"), benefit-focused meta descriptions</td></tr><tr><td class="">Recruitment Now</td><td class="">"recruitmentstrategie", "recruitment strategie"</td><td class="">Keyword-rich titles, clear definitions in meta descriptions, dedicated keyword pages</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Adopt action-oriented titles and benefit-focused meta descriptions similar to Time to Hire and Recruitment Now to boost click-through rates.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume (Netherlands)</th><th>Competition Level</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">holacratie</td><td class="">320</td><td class="">Low</td><td class="">Position 11, close to top 10; high volume keyword</td></tr><tr><td class="">personeelsplanning software</td><td class="">720-1000</td><td class="">Low</td><td class="">High volume, low competition, untapped content gap</td></tr><tr><td class="">software personeelsplanning</td><td class="">320-1000</td><td class="">Low</td><td class="">Alternative phrasing, strong volume, low competition</td></tr><tr><td class="">werving en selectie bureau</td><td class="">590-1000</td><td class="">High</td><td class="">Core service keyword, strategic for brand visibility</td></tr><tr><td class="">it werving en selectie bureau</td><td class="">20-50</td><td class="">Low</td><td class="">Niche, low competition, industry-specific</td></tr><tr><td class="">personeelsplanning software gratis</td><td class="">10-30</td><td class="">Low</td><td class="">Intent-specific, targets users seeking free solutions</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit existing content for these keywords and map out new or optimized pages to target each opportunity.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li><strong>Strong organic growth:</strong> +310.88% increase in estimated traffic volume over the past year, but still limited presence in top 3 search positions.</li><li><strong>Keyword ranking gaps:</strong> No keywords in top 3; key terms like "holacratie" and "recruitmentstrategie" rank just outside top 10.</li><li><strong>Content optimization needed:</strong> Top pages like "holacratie" and recruitment strategy content can be improved with competitor-inspired titles, meta descriptions, and structured formats.</li><li><strong>High-value keyword opportunities:</strong> Large search volumes with low competition exist for "personeelsplanning software" and related terms, representing untapped growth.</li><li><strong>Competitors outperform on content and SEO:</strong> Michael Page, Time to Hire, and Recruitment Now rank higher on core keywords using specific, benefit-driven content strategies.</li><li><strong>Backlink profile is modest:</strong> 48 backlinks from 10 domains, mostly generic anchor texts; opportunity to acquire authoritative Dutch recruitment/HR backlinks.</li><li><strong>Technical SEO concerns:</strong> URL format errors and unknown site speed issues may be limiting indexing and rankings.</li><li><strong>Seasonal trends:</strong> Recruitment-related keywords peak in March/April, suggesting optimal timing for campaigns and content updates.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize quick wins by optimizing "holacratie" and "recruitmentstrategie" pages, while building out a longer-term backlink and technical SEO roadmap.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-craftr" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Craftr</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Craftr is a Dutch company specializing in People & Culture and Recruitment solutions. They offer services including Recruitment as a Service (RaaS), Interim recruitment, Werving en selectie (recruitment and selection), and People & Culture solutions. Their business model focuses on helping companies attract and retain top talent aligned with their mission, providing tailored approaches to each organization's unique needs and values. <a href="http://www.craftr.nl" class="link-reference" target="_blank" rel="noopener">Company Website</a></p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-organic-visibility">Current Organic Visibility</h3><ul><li><strong>Impressive Growth Trajectory</strong>: Craftr has experienced a remarkable +310.88% increase in Estimated Traffic Volume (ETV) from August 2024 to July 2025, indicating significant improvement in organic visibility. [SEO Performance Data]</li><li><strong>Current Position Distribution</strong> (as of July 2025):</li><li>Positions 4-10: 2 keywords</li><li>Positions 31-40: 1 keyword</li><li>Positions 51-60: 1 keyword</li><li>Positions 81-90: 1 keyword</li><li><strong>Latest ETV</strong>: 5.44 (July 2025), with an estimated paid traffic cost equivalent of €18.11</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Use this growth narrative to secure additional budget and resources for on-page and technical SEO improvements.</li></ul><br><h3 id="page-performance-analysis">Page Performance Analysis</h3><ul><li><strong>Top-Performing Pages</strong>:</li><li><code>craftr.nl/dit-is-holacratie/</code>: ETV of 3.62, ranking in top 10 positions for at least one keyword</li><li><code>craftr.nl/zo-kies-je-de-perfecte-recruitmentstrategie/</code>: ETV of 1.71, also ranking in top 10 positions</li><li><strong>Underperforming Pages</strong>:</li><li><code>craftr.nl/navigeren-door-de-toekomst-van-werk-de-rol-van-arbeids-en-kennismigranten/</code>: Very low ETV of 0.10, ranking between positions 51-60</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a content audit on underperforming pages to decide whether to consolidate, update, or remove based on traffic thresholds and relevance.</li></ul><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><ul><li><strong>Indexing Concerns</strong>: Technical audit encountered an error with URL format validation, suggesting potential indexing issues that could be limiting organic visibility</li><li><strong>Site Speed Assessment</strong>: Unable to complete due to technical audit limitations, representing a critical area for investigation</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Resolving indexing errors and improving site speed can yield immediate ranking lifts for multiple URLs, enhancing overall visibility.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><ul><li><strong>Top Performing Keywords</strong>:</li><li>"recruitmentstrategie" - Search Volume: 70 - Position: 9 - URL: https://craftr.nl/zo-kies-je-de-perfecte-recruitmentstrategie/ [Keyword Analysis Data]</li><li>"holacratie" - Search Volume: 320 - Position: 11 - URL: https://craftr.nl/dit-is-holacratie/ [Keyword Analysis Data]</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Implement targeted on-page optimizations for these two keywords: refine headers, meta tags, and internal linking structure.</li></ul><br><h3 id="keyword-opportunities">Keyword Opportunities</h3><ul><li><strong>High-Value Opportunities</strong>:</li><li>"holacratie" (Position 11, SV: 320): Just outside top 10 with significant search volume, representing immediate growth potential with minimal optimization</li><li>"personeelsplanning software" (SV: 720-1000, Low Competition): High search volume with low competition, ideal for new content development</li><li>"software personeelsplanning" (SV: 320-1000, Low Competition): Alternative phrasing with substantial search volume</li><li>"werving en selectie bureau" (SV: 590-1000, High Competition): Core service keyword with significant search volume</li></ul><br><ul><li><strong>Niche Keyword Opportunities</strong>:</li><li>"it werving en selectie bureau" (SV: 20-50, Low Competition): Industry-specific variation with low competition</li><li>"personeelsplanning software retail" (SV: 10-90, Low Competition): Sector-specific keyword opportunity</li><li>"software voor personeelsplanning" (SV: 10-260, Low Competition): Alternative phrasing with decent search volume</li><li>"personeelsplanning software gratis" (SV: 10-30, Low Competition): Intent-specific variation targeting users seeking free solutions</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Target low-competition, high-volume keywords first to build momentum, then allocate resources to more competitive core terms.</li></ul><br><h3 id="seasonal-trends">Seasonal Trends</h3><ul><li><strong>Recruitment Keyword Seasonality</strong>: Search volume for recruitment strategy keywords peaks in March/April and declines toward the end of the year, suggesting optimal timing for content updates and campaigns [Keyword Analysis Data]</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Schedule content refreshes and new article publications in February to align with the March/April search peak.</li></ul><br><h3 id="content-gaps">Content Gaps</h3><ul><li><strong>Identified Content Gaps</strong>:</li><li>"navigeer naar mijn werk" (Position 62): Currently ranking with misaligned content that doesn't address user intent, representing an opportunity for targeted content creation</li><li>Lack of content targeting high-volume keywords like "personeelsplanning software" (SV: 720-1000)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Filling these gaps with intent-focused, in-depth content can capture incremental traffic with minimal technical investment.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-competitors-overview">Top Competitors Overview</h3><ul><li><strong>Michael Page (www.michaelpage.nl)</strong>:</li><li><strong>Strengths</strong>: High estimated traffic volume and very high average keyword position (2), indicating strong SEO presence and domain authority</li><li><strong>Type</strong>: Direct competitor offering similar recruitment and staffing services</li><li><strong>Competitive Edge</strong>: Established brand with strong overall SEO presence [Competitive Analysis Data]</li></ul><br><ul><li><strong>Time to Hire (timetohire.nl)</strong>:</li><li><strong>Strengths</strong>: Ranks higher than Craftr for specific recruitment strategy keywords</li><li><strong>Type</strong>: Direct competitor specializing in Recruitment Process Outsourcing (RPO)</li><li><strong>Content Strategy</strong>: Uses action-oriented titles (e.g., "Strategisch recruitmentplan: in 9 stappen naar succes") and benefit-focused meta descriptions [Competitive Analysis Data]</li></ul><br><ul><li><strong>Recruitment Now (recruitmentnow.nl)</strong>:</li><li><strong>Strengths</strong>: Also outranks Craftr for recruitment strategy keywords</li><li><strong>Type</strong>: Direct competitor emphasizing recruitment knowledge and marketing expertise</li><li><strong>Content Strategy</strong>: Uses direct keyword matching in titles (e.g., "Recruitmentstrategie - Recruitment Now") and clearly defines terms in meta descriptions [Competitive Analysis Data]</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Benchmark Craftr’s content formats directly against competitors’ top-ranking pages to pinpoint structural and messaging improvements.</li></ul><br><h3 id="keyword-competition-analysis">Keyword Competition Analysis</h3><ul><li><strong>Outperforming Keywords</strong>: Competitors are ranking higher for these valuable terms:</li><li>"recruitment strategie" (SV: 90, Competition: LOW)</li><li>"strategisch recruitment" (SV: 70, Competition: MEDIUM)</li><li>"recruitmentstrategie" (SV: 70, Competition: LOW)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create a prioritized list of these keywords and assign them to page owners for on-page and content development tasks.</li></ul><br><h3 id="competitors-content-strategies">Competitors' Content Strategies</h3><ul><li><strong>Effective Title Patterns</strong>:</li><li><strong>Specificity</strong>: Time to Hire uses highly specific titles with tangible outcomes (e.g., "in 9 stappen naar succes")</li><li><strong>Keyword Prominence</strong>: Recruitment Now places keywords prominently in titles</li><li><strong>Content Types</strong>: Both competitors use blog post formats that are ranking higher than Craftr's similar content</li></ul><br><ul><li><strong>Meta Description Strategies</strong>:</li><li>Both Time to Hire and Recruitment Now use benefit-oriented meta descriptions that highlight the value of reading their content</li><li>Clear definition of terms and concepts in meta descriptions</li></ul><br><ul><li><strong>Content Structure</strong>:</li><li>Time to Hire uses step-by-step guides (e.g., "9 stappen naar succes")</li><li>Recruitment Now creates dedicated keyword pages for important terms</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Adopting step-by-step guides and dedicated keyword pages will improve topical authority and user engagement, mirroring competitor successes.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li><strong>Overall Metrics</strong>: Craftr has 48 backlinks from 10 referring domains, with a medium spam score of 32% [Backlink Analysis Data]</li><li><strong>Geographic Distribution</strong>: 23 backlinks come from .nl domains, indicating strong local presence in the Netherlands</li><li><strong>Link Quality</strong>: 8 out of 40 backlinks are nofollow, potentially limiting their SEO impact</li><li><strong>Anchor Text Analysis</strong>: Most anchor texts are generic (e.g., "Craftr.nl" or "www.craftr.nl"), showing limited anchor text diversity</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Strengthening the backlink profile with authoritative .nl industry sources can significantly boost local SEO performance.</li></ul><br><h3 id="backlink-quality-assessment">Backlink Quality Assessment</h3><ul><li><strong>Spam Score Distribution</strong>:</li><li>Low spam score (0-30%): 2 referring domains (recruitee.com, royalseohub.com)</li><li>Medium spam score (31-60%): 8 referring domains (including businessvocal.com, seobacklinks.agency)</li><li>High spam score (61-100%): None detected</li><li><strong>Link Sources</strong>: Some backlinks come from SEO service providers (seobacklinks.agency, rankgrow.agency), suggesting active link-building efforts</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit medium spam score referring domains and prepare a disavow list for any that begin to impact rankings negatively.</li></ul><br><h3 id="backlink-opportunities">Backlink Opportunities</h3><ul><li><strong>Competitor Backlink Analysis</strong>: Limited overlap with competitors' backlink profiles, with only recruitee.com identified as a common referring domain</li><li><strong>Industry Authority Gaps</strong>: Need to acquire backlinks from authoritative Dutch recruitment and HR industry websites that currently link to competitors but not to Craftr</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Outreach to HR associations, recruitment blogs, and local business chambers can yield high-authority, relevant backlinks that competitors currently hold.</li></ul><br><h3 id="toxic-backlink-assessment">Toxic Backlink Assessment</h3><ul><li><strong>Risk Level</strong>: No high spam score referring domains were identified, indicating a relatively clean backlink profile</li><li><strong>Potential Concerns</strong>: Several medium spam score domains (8) require monitoring to ensure they don't negatively impact rankings</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="content-optimization-opportunities">Content Optimization Opportunities</h3><ul><li><strong>Optimize "Holacratie" Content</strong>: With a search volume of 320 and current position of 11, improving this page could yield substantial traffic gains:</li><li>Enhance internal linking to this page from other relevant content</li><li>Refresh content to ensure comprehensiveness and address user questions</li><li>Optimize keyword placement in title, headings, and meta description</li></ul><br><ul><li><strong>Improve Recruitment Strategy Content</strong>:</li><li><strong>Title Optimization</strong>: Replace current title "Zo kies je de perfecte recruitmentstrategie voor jouw organisatie" with a more specific, benefit-oriented title like "Recruitment Strategie: Een Stappenplan voor Succesvolle Werving"</li><li><strong>Meta Description Enhancement</strong>: Rewrite to highlight key takeaways and benefits, e.g., "Leer hoe je een effectieve recruitmentstrategie ontwikkelt en implementeert. Ontdek de belangrijkste stappen en tools voor succesvolle werving."</li><li><strong>Content Structure</strong>: Add a table of contents to improve readability and user experience</li><li><strong>Format Improvement</strong>: Consider restructuring as a step-by-step guide similar to Time to Hire's successful "9 stappen naar succes" format</li></ul><br><ul><li><strong>Address "Navigeer naar mijn werk" Content Gap</strong>: Create targeted content that properly addresses user intent for this keyword</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft A/B test variants for titles and meta descriptions on these optimized pages, then measure impact on CTR and rankings.</li></ul><br><h3 id="content-development-recommendations">Content Development Recommendations</h3><ul><li><strong>Develop Content for High-Value Keywords</strong>: Create new content targeting "personeelsplanning software" and related variations with high search volumes and low competition</li><li><strong>Create Dedicated Keyword Pages</strong>: Following Recruitment Now's strategy, develop dedicated pages for key terms like "recruitment strategie" and "strategisch recruitment"</li><li><strong>Implement Seasonal Content Strategy</strong>: Plan content updates and new releases to coincide with peak search periods (March/April) for recruitment-related keywords</li><li><strong>Enhance Internal Linking</strong>: Add internal links from other relevant pages to the "recruitmentstrategie" article to improve its visibility and authority</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Building pillar pages around core topics will centralize authority and support a cluster of related long-tail articles, driving sustained traffic growth.</li></ul><br><h3 id="backlink-acquisition-strategy">Backlink Acquisition Strategy</h3><ul><li><strong>Diversify Anchor Text</strong>: Work on acquiring backlinks with more diverse and keyword-rich anchor texts beyond the generic "Craftr.nl"</li><li><strong>Target Quality .nl Domains</strong>: Focus on acquiring more backlinks from authoritative Dutch websites in the recruitment and HR sectors</li><li><strong>Convert Nofollow to Dofollow</strong>: Identify opportunities to convert some of the 8 nofollow backlinks to dofollow links for greater SEO impact</li><li><strong>Leverage Existing Relationships</strong>: Use connections with recruitee.com to potentially acquire additional backlinks or strengthen existing ones</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Identify 20 high-priority .nl domains (HR blogs, associations, industry publications) and initiate a tailored outreach campaign by month’s end.</li></ul><br><h3 id="serp-optimization-strategy">SERP Optimization Strategy</h3><ul><li><strong>Implement Competitor-Proven Tactics</strong>:</li><li>Use more specific and action-oriented titles that promise tangible outcomes</li><li>Ensure keywords appear prominently in titles</li><li>Create benefit-focused meta descriptions that clearly communicate value to the reader</li><li>Structure content in easily digestible formats (step-by-step guides, checklists)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Regularly monitor SERP features (featured snippets, "People Also Ask") and adjust content formatting to capture these placements for high-impact keywords.</li></ul><br></div></section>
+                <section id="next-steps-and-opportunities" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-arrow-right"></i></div>
+                        <h2 class="section-title">Next Steps and Opportunities</h2>
+                    </div>
+                    <div class="section-content"><br><ol><li><strong>Technical SEO Remediation</strong>: Address the URL format issues identified in the technical audit</li><li><strong>Keyword Expansion Strategy</strong></li></ol><ul><li>Optimize the "holacratie" page to push it from position 11 into the top 10</li><li>Create content targeting high-volume, low-competition keywords like "personeelsplanning software"</li><li>Improve rankings for "recruitment strategie" and related terms by implementing competitor strategies</li></ul><ol><li><strong>Content Optimization Plan</strong></li></ol><ul><li>Enhance underperforming pages using competitor-proven tactics</li><li>Develop a content calendar aligned with seasonal keyword trends</li><li>Implement snippet optimization techniques identified in successful competitor pages</li></ul><ol><li><strong>Backlink Development Plan</strong></li></ol><ul><li>Create a targeted outreach strategy to acquire quality backlinks from relevant Dutch recruitment and HR websites</li><li>Diversify anchor text profile beyond generic brand mentions</li><li>Monitor and potentially disavow any backlinks that approach high spam scores</li></ul><ol><li><strong>Competitive Gap Closure</strong></li></ol><ul><li>Adopt successful content structures from Time to Hire and Recruitment Now</li><li>Create dedicated keyword pages for important terms</li><li>Improve title and meta description strategies based on competitor analysis</li></ul></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Craftr',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

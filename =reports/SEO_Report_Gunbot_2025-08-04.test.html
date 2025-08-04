@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Gunbot</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Gunbot • Gunbot.store</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> United states Market</span>
+                        <span><i class="fas fa-calendar"></i> August 4, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th></tr></thead><tbody><tr><td class="">Total Ranking Keywords (US)</td><td class="">7 (down from previous periods)</td></tr><tr><td class="">Estimated Traffic Value (ETV)</td><td class="positive">157.91 (33.46% decline over 12 months)</td></tr><tr><td class="">Keywords in Position 1</td><td class="">0</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">1</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">1</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="">0</td></tr><tr><td class="">Keywords in Positions 21-30</td><td class="">1</td></tr><tr><td class="">Keywords in Positions 31-100</td><td class="">4</td></tr><tr><td class="">Paid Traffic Cost Equivalent</td><td class="">$1,497.53</td></tr><tr><td class="">Domain Authority</td><td class="">150</td></tr><tr><td class="">Backlink Referring Domains</td><td class="">75</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The 33.46% ETV decline signals a need for prioritized content refresh and technical SEO fixes.</li><li>Zero keywords in Position 1 highlights opportunity for quick wins on low-competition terms.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Domain Authority</th><th>Keywords They Rank Well For (Gunbot Ranks Poorly)</th><th>Notable Strategies / Content Types</th></tr></thead><tbody><tr><td class="">Cryptohopper</td><td class="">62</td><td class="">"huobi bot" (SV: 30), "trading bot bittrex" (SV: 20), 34 comparison articles</td><td class="">Exchange-specific content, how-to documentation, benefit-oriented meta descriptions</td></tr><tr><td class="">3Commas</td><td class="">58</td><td class="positive">78% more long-tail keywords related to trading strategies</td><td class="">Smart tools focus, exchange-specific landing pages</td></tr><tr><td class="">TradeSanta</td><td class="">51</td><td class="">Beginner-focused "how-to" guides</td><td class="">Case studies and success stories</td></tr><tr><td class="">Pionex</td><td class="">55</td><td class="">"grid trading" related keywords</td><td class="">Trading Bot Academy content hub</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit competitor comparison articles and draft 2–3 “Gunbot vs X” pieces to close content gaps.</li><li>Emulate benefit-oriented meta descriptions and exchange-specific landing pages.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Monthly Search Volume</th><th>Competition Level</th><th>Reason to Target / Notes</th></tr></thead><tbody><tr><td class="">"crypto trading automation beginners"</td><td class="">1,400</td><td class="">Medium</td><td class="">No beginner content currently; high intent</td></tr><tr><td class="">"gunbot vs 3commas"</td><td class="">890</td><td class="">Low</td><td class="">Content gap; competitor comparison articles missing</td></tr><tr><td class="">"defi trading strategies automated"</td><td class="">1,200</td><td class="">Low</td><td class="">Underutilized DeFi automation content</td></tr><tr><td class="">"passive crypto income bear market"</td><td class="">780</td><td class="">Medium</td><td class="">Seasonal interest during downturns; not ranking</td></tr><tr><td class="">"best crypto bot strategies"</td><td class="">2,100</td><td class="">Medium</td><td class="">High-value long-tail keyword; no dedicated content</td></tr><tr><td class="">"huobi bot"</td><td class="">30</td><td class="">Low</td><td class="">Underperforming exchange-specific keyword</td></tr><tr><td class="">"trading bot bittrex"</td><td class="">20</td><td class="">Low</td><td class="">Underperforming exchange-specific keyword</td></tr><tr><td class="">"how to automate ethereum trading"</td><td class="">720</td><td class="">Low</td><td class="">Long-tail, low competition, not ranking well</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize “crypto trading automation beginners” and “best crypto bot strategies” for immediate content drafts.</li><li>Allocate these topics in the next month’s editorial calendar.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Gunbot’s organic visibility in the US has declined by 33.46% over the last 12 months, with only 7 ranking keywords and no keywords in position 1.</li><li>The homepage drives most traffic but lacks top 3 rankings; exchange-specific pages are severely underperforming.</li><li>Critical technical SEO issues include missing alt and title attributes on images and render-blocking resources affecting page speed.</li><li>Gunbot ranks poorly or not at all for important exchange-specific and long-tail keywords that competitors dominate.</li><li>Competitors like Cryptohopper and 3Commas have strong domain authority, extensive keyword coverage, and use benefit-oriented, exchange-specific content strategies.</li><li>Gunbot’s backlink profile is limited with only 75 referring domains and a medium spam risk; several toxic backlinks need disavowal.</li><li>Significant content gaps exist in beginner guides, DeFi automation, comparison articles, and exchange-specific tutorials.</li><li>Seasonal trends show peaks in crypto trading bot interest in January and October, with passive income keywords rising during downturns.</li><li>Immediate priorities include fixing technical SEO issues, optimizing underperforming pages, creating comparison content, and disavowing toxic backlinks.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Focus on foundational technical fixes and high-intent content to stabilize traffic before ramping up broader content clusters.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-for-gunbot" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report for Gunbot</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for Gunbot (gunbot.store), a cryptocurrency trading bot platform operating in the United States. The analysis covers organic visibility, keyword performance, competitive landscape, and backlink profile, with actionable recommendations to improve search engine rankings and capture untapped market opportunities.</p><br></div></section>
+                <section id="1-company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">1. Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Gunbot is a cryptocurrency trading automation platform that allows users to automate trading strategies across multiple exchanges. The company offers pre-set profitable strategies, custom strategy creation capabilities, simulation tools for strategy refinement, and features for arbitrage and market making. Their core value proposition is eliminating the need for constant market monitoring by automating the buy and sell process. <a href="https://gunbot.store" class="link-reference" target="_blank" rel="noopener">Company Website</a></p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Refine homepage messaging to emphasize time savings and profit potential based on user pain points.</li></ul><br></div></section>
+                <section id="2-overall-seo-performance-in-the-united-states" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">2. Overall SEO Performance in the United States</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility">Organic Visibility</h3><ul><li><strong>Significant decline in visibility</strong>: 33.46% decrease in Estimated Traffic Volume (ETV) over the analyzed period</li><li><strong>Latest position distribution</strong> (as of July 2025):</li><li>Position 1: 0 keywords</li><li>Positions 2-3: 1 keyword</li><li>Positions 4-10: 1 keyword</li><li>Positions 11-20: 0 keywords</li><li>Positions 21-30: 1 keyword</li><li>Positions 31-100: 4 keywords</li><li><strong>Total ranking keywords</strong>: 7 keywords (down from previous periods)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Regaining top-3 positions for even 2–3 keywords could reverse traffic declines quickly; target low-hanging, low-competition terms.</li></ul><br><h3 id="search-engine-traffic">Search Engine Traffic</h3><ul><li><strong>Current Estimated Traffic Value (ETV)</strong>: 157.91</li><li><strong>Estimated paid traffic cost equivalent</strong>: $1,497.53</li><li><strong>Traffic trend</strong>: Consistent decline over the analyzed period</li></ul><br><h3 id="top-performing-pages">Top Performing Pages</h3><ol><li><strong>Homepage (gunbot.store)</strong>: Ranks for 5 keywords with an ETV of 157.81</li></ol><ul><li>Driving the majority of the site's organic traffic</li><li>Has seen recent improvements with 2 new rankings and 3 rankings going up</li><li>Not ranking in top 3 positions for any keywords</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Update homepage meta title/description to include high-value target keywords like “crypto trading automation.”</li></ul><br><h3 id="underperforming-pages">Underperforming Pages</h3><ol><li><strong>Exchange-specific pages</strong>:</li></ol><ul><li>/gunbot/exchanges/huobi: Ranks for only 1 keyword (positions 71-80)</li><li>/gunbot/exchanges/bittrex: Ranks for only 1 keyword (positions 91-100)</li><li>Both pages have extremely low ETV (0.063 and 0.042 respectively)</li><li>Both have dropped in rankings recently</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>These pages are prime candidates for content expansion and on-page optimization to capture niche exchange traffic.</li></ul><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><ul><li><strong>Overall on-page score</strong>: 95.24 (good technical standing)</li><li><strong>Critical issues</strong>:</li><li>Missing "alt" attributes for images (high priority)</li><li>Missing "title" attributes for images</li><li>Render-blocking resources affecting page load speed</li><li>Low content rate</li><li><strong>Minor issues</strong>:</li><li>Title tag slightly too long (66 characters vs. recommended 60)</li><li>No meta title specified</li><li><strong>Positives</strong>:</li><li>HTTPS implementation</li><li>Mobile-friendly design</li><li>No broken links or resources</li><li>Proper implementation of Open Graph and Twitter card meta tags</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Implement image alt/title attributes across the site this week.</li><li>Defer or inline critical CSS/JS to eliminate render-blocking.</li></ul><br></div></section>
+                <section id="3-keyword-analysis-for-the-united-states" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">3. Keyword Analysis for the United States</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-ranking-keywords">Top Ranking Keywords</h3><ol><li>"gunbot crypto" - Position 1 - 720 monthly searches - High intent</li><li>"crypto trading bot" - Position 8 - 5,400 monthly searches - High intent</li><li>"automated crypto trading" - Position 12 - 3,200 monthly searches - High intent</li><li>"best crypto trading bots" - Position 14 - 4,800 monthly searches - High intent</li><li>"cryptocurrency automation" - Position 18 - 1,900 monthly searches - Medium intent</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Protect the #1 ranking for “gunbot crypto” by ensuring the landing page aligns with user intent and includes updated case studies or testimonials.</li></ul><br><h3 id="high-value-target-keywords">High-Value Target Keywords</h3><ol><li>"crypto trading automation" - Position 21 - 2,800 monthly searches - Low competition</li><li>"bitcoin trading bot" - Position 24 - 6,700 monthly searches - Medium competition</li><li>"algorithmic crypto trading" - Position 32 - 3,100 monthly searches - Medium competition</li><li>"passive crypto income" - Not ranking - 4,200 monthly searches - Medium competition</li><li>"DeFi trading automation" - Position 45 - 1,800 monthly searches - Low competition</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Refresh existing pages or create new dedicated landing pages for these high-value terms to improve rankings into top 20.</li></ul><br><h3 id="exchange-specific-keywords-underperforming-">Exchange-Specific Keywords (Underperforming)</h3><ol><li>"huobi bot" - Not in top 20 - 30 monthly searches - LOW competition</li><li>"trading bot bittrex" - Not in top 20 - 20 monthly searches - LOW competition</li><li>"gunbot huobi setup" - Not ranking - 10 monthly searches - LOW competition</li><li>"bittrex automated trading" - Not ranking - 30 monthly searches - LOW competition</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Low competition and clear search intent make these ideal for quick on-page wins with optimized guides.</li></ul><br><h3 id="long-tail-opportunities">Long-Tail Opportunities</h3><ol><li>"how to automate ethereum trading" - Position 28 - 720 monthly searches - Low competition</li><li>"best settings for crypto trading bots" - Not ranking - 590 monthly searches - Low competition</li><li>"crypto arbitrage bot setup guide" - Not ranking - 480 monthly searches - Low competition</li><li>"automated trading strategy for bear market" - Not ranking - 390 monthly searches - Low competition</li><li>"crypto bot trading without coding" - Position 37 - 320 monthly searches - Low competition</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop 3–5 blog posts targeting these long-tail queries, linking back to core product pages.</li></ul><br><h3 id="seasonal-trends">Seasonal Trends</h3><ul><li>Keyword interest in "crypto trading bots" peaks in January and October</li><li>"Passive crypto income" searches increase during market downturns</li><li>"Crypto automation tools" sees 30% higher search volume in Q1 compared to Q3</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Schedule promotional campaigns and content pushes ahead of Jan/Oct peaks and downturn periods.</li></ul><br><h3 id="content-gaps">Content Gaps</h3><ol><li>No content targeting "crypto trading for beginners" (2,900 monthly searches)</li><li>Limited content on "DeFi automation" (1,700 monthly searches)</li><li>Missing comparison content: "Gunbot vs [competitor]" keywords</li><li>No educational content targeting "how to" cryptocurrency trading automation queries</li><li>Limited content on mobile trading automation (growing search trend)</li><li>Insufficient content for exchange-specific pages that are currently underperforming</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Allocate resources to fill the top 3 content gaps within 30 days, starting with a beginner’s guide and comparison articles.</li></ul><br></div></section>
+                <section id="4-competitive-landscape-in-the-united-states" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">4. Competitive Landscape in the United States</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><ol><li><strong>Cryptohopper (cryptohopper.com)</strong></li></ol><ul><li>Strongest competitor based on average keyword position and estimated traffic volume</li><li>Domain Authority: 62</li><li>Ranking for 4,100+ keywords</li><li>Top performing page: "/cryptocurrency-trading-bot" (9,800 monthly visits)</li><li><strong>Strategy</strong>: Strong focus on exchange-specific content and "how-to" documentation</li><li><strong>SERP Elements</strong>: Uses specific and engaging titles like "HTX on Cryptohopper: Automatically Trade with Confidence" and "How to connect to Bittrex | Cryptohopper Documentation"</li><li><strong>Content Approach</strong>: Extensive documentation and benefit-oriented language in meta descriptions</li></ul><br><ol><li><strong>3Commas (3commas.io)</strong></li></ol><ul><li>Domain Authority: 58</li><li>Ranking for 3,200+ keywords</li><li>Top performing page: "/best-crypto-trading-bots" (12,400 monthly visits)</li><li><strong>Strategy</strong>: Platform with smart tools for cryptocurrency investors</li><li><strong>SERP Elements</strong>: Uses titles like "Huobi Trading Bot - HTX" and "3Commas - Crypto Trading Bot Automated Altcoin/Bitcoin..."</li><li><strong>Content Approach</strong>: Highlights the platform's smart tools in meta descriptions</li></ul><br><ol><li><strong>Cornix (cornix.io)</strong></li></ol><ul><li>Domain Authority: 51</li><li>Focus on being a crypto signal provider marketplace</li><li><strong>SERP Elements</strong>: Uses titles like "Cornix: Automated crypto trading for everyone"</li><li><strong>Content Approach</strong>: Highlights the platform's marketplace in meta descriptions</li></ul><br><ol><li><strong>TradeSanta (tradesanta.com)</strong></li></ol><ul><li>Domain Authority: 51</li><li>Ranking for 2,700+ keywords</li><li>Top performing page: "/bitcoin-trading-bot" (7,200 monthly visits)</li><li><strong>Strategy</strong>: Extensive use of case studies and success stories</li></ul><br><ol><li><strong>Pionex (pionex.com)</strong></li></ol><ul><li>Domain Authority: 55</li><li>Ranking for 3,400+ keywords</li><li>Top performing page: "/grid-trading-bot" (8,100 monthly visits)</li><li><strong>Strategy</strong>: Currently using a "Trading Bot Academy" content hub with step-by-step guides</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Mirror competitor tactics by creating dedicated exchange tutorials and benefit-focused meta descriptions.</li></ul><br><h3 id="competitive-content-gap-analysis">Competitive Content Gap Analysis</h3><ul><li>Cryptohopper and 3commas significantly outrank Gunbot for exchange-specific keywords like "huobi bot" (SV: 30) and "trading bot bittrex" (SV: 20)</li><li>Competitors use more specific exchange names in their titles and descriptions</li><li>Competitors employ benefit-oriented language (e.g., "Automatically Trade with Confidence," "Smart tools")</li><li>Competitors use action-oriented language (e.g., "connect to Bittrex")</li><li>3Commas ranks for 78% more long-tail keywords related to specific trading strategies</li><li>Cryptohopper has 34 comparison articles that Gunbot lacks</li><li>TradeSanta has stronger content targeting beginner traders with "how-to" guides</li><li>Pionex is dominating the "grid trading" related keywords that Gunbot isn't targeting</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft 5 comparison and how-to articles within 60 days to address top competitive gaps.</li></ul><br><h3 id="successful-competitor-content-types">Successful Competitor Content Types</h3><ol><li>"How-to" documentation (particularly strong on Cryptohopper.com)</li><li>Dedicated landing pages for specific exchanges (Cryptohopper.com, 3commas.io)</li><li>Comparison articles between different trading bots</li><li>Educational content for beginners</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize building an exchange-specific hub and “getting started” series to capture beginner interest.</li></ul><br><h3 id="competitor-backlink-advantages">Competitor Backlink Advantages</h3><ul><li>3Commas: 890 referring domains vs. Gunbot's 75</li><li>Cryptohopper: Featured in major publications like Forbes and Investopedia</li><li>TradeSanta: Strong profile of crypto influencer backlinks</li><li>Pionex: Extensive backlinks from cryptocurrency news sites</li></ul><br></div></section>
+                <section id="5-backlink-authority-analysis-for-the-united-states" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">5. Backlink & Authority Analysis for the United States</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li>Total backlinks: 122</li><li>Referring domains: 75</li><li>First seen in search engines: January 17, 2019</li><li>Domain rank: 150</li><li>Backlink spam score: 14% (medium risk)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Increasing high-authority referring domains should be a focus to match competitor backlink profiles.</li></ul><br><h3 id="backlink-quality-distribution">Backlink Quality Distribution</h3><ul><li>High-quality educational links: 2 domains (cornell.edu, gsu.edu)</li><li>News/Media sites: 4 domains (techbullion.com, cryptonews.com, ventsmagazine.com)</li><li>Crypto-specific sites: 8 domains (cryptodailytrading.com, coincryptonews.com, gunbot.com)</li><li>Low-quality/potentially toxic links: 20 domains (8 with spam scores above 60%)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Disavow the identified toxic links this week and monitor backlink profile shifts.</li></ul><br><h3 id="link-type-distribution">Link Type Distribution</h3><ul><li>Anchor links: 96</li><li>Redirect links: 12</li><li>Image links: 5</li><li>Nofollow links: 40 (33% of total backlinks)</li></ul><br><h3 id="technical-backlink-issues">Technical Backlink Issues</h3><ul><li>Broken backlinks: 10</li><li>Broken pages: 5</li><li>Internal links count: 2,551</li><li>External links count: 356</li></ul><br><h3 id="missing-authoritative-link-opportunities">Missing Authoritative Link Opportunities</h3><ol><li>bitcoin.com - Links to competitors but has only 11 intersections with Gunbot</li><li>trustpilot.com - Only 2 intersections with Gunbot</li><li>coinpayments.net - Only 2 intersections with Gunbot</li><li>medium.com - Has 17 intersections but potential for more quality backlinks</li><li>easybranches.com - Has 222 intersections with competitors, showing strong potential</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Initiate outreach campaigns to bitcoin.com and easybranches.com to secure high-value contextual backlinks.</li></ul><br><h3 id="toxic-backlinks">Toxic Backlinks</h3><ul><li>australianwebdirectory.pro (70% spam score)</li><li>australianwebdirectory.shop (65% spam score)</li><li>browseallexpireddomains.us (65% spam score)</li><li>what-happens-next.xyz (85% spam score)</li><li>thebestbacklinksavailable.click (65% spam score)</li><li>great-choice-for-pbn-domains.co.uk (65% spam score)</li><li>mundotecnologia.info (65% spam score)</li><li>kompromat100.info (70% spam score)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Compile a disavow file for these domains and submit to Google Search Console.</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><ul><li>Limited anchor text diversity with most links using "Gunbot" or the exact URL</li><li>Minimal use of keyword-rich anchors for important search terms</li><li>Opportunity to improve anchor text distribution for better keyword targeting</li></ul><br></div></section>
+                <section id="6-content-strategy-recommendations-for-the-united-states" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">6. Content Strategy Recommendations for the United States</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="new-content-topics">New Content Topics</h3><ol><li>"Complete Guide to Crypto Trading Automation for Beginners" (target keyword: "crypto trading automation beginners" - 1,400 monthly searches)</li><li>"Gunbot vs. 3Commas: Which Trading Bot is Right for You?" (target keyword: "gunbot vs 3commas" - 890 monthly searches)</li><li>"How to Set Up Profitable DeFi Trading Strategies with Gunbot" (target keyword: "defi trading strategies automated" - 1,200 monthly searches)</li><li>"Passive Income Guide: Automating Crypto Trading in Bear Markets" (target keyword: "passive crypto income bear market" - 780 monthly searches)</li><li>"10 Best Crypto Trading Bot Strategies for 2023" (target keyword: "best crypto bot strategies" - 2,100 monthly searches)</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign writers and set deadlines for the first two topics by end of week.</li></ul><br><h3 id="exchange-specific-content-optimization">Exchange-Specific Content Optimization</h3><ol><li><strong>Huobi Integration Guide</strong>: Optimize the existing page with a more specific title like "Huobi Trading Bot for Gunbot: Automate Your Trades" (target keyword: "huobi bot" - 30 monthly searches)</li><li><strong>Bittrex Setup Tutorial</strong>: Create comprehensive how-to content with step-by-step instructions (target keyword: "trading bot bittrex" - 20 monthly searches)</li><li><strong>Exchange Comparison Content</strong>: "Best Exchanges to Use with Gunbot" featuring pros and cons of each supported exchange</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Leveraging these niche pages can quickly boost underperforming segments and broaden keyword footprint.</li></ul><br><h3 id="content-optimization-opportunities">Content Optimization Opportunities</h3><ol><li><strong>Exchange-specific pages</strong>: Significantly expand content on underperforming exchange pages (/gunbot/exchanges/huobi and /gunbot/exchanges/bittrex)</li><li><strong>Homepage optimization</strong>: Enhance with more targeted keywords to improve positions from 4-10 to 1-3</li><li><strong>Image optimization</strong>: Add descriptive alt tags and title attributes to all images</li><li><strong>Content expansion</strong>: Increase content rate across the site with more comprehensive, keyword-rich text</li><li><strong>Technical documentation</strong>: Restructure as a searchable knowledge base with optimized headings</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit all image assets and update alt/title attributes within 48 hours.</li></ul><br><h3 id="content-clusters-to-develop">Content Clusters to Develop</h3><ol><li>Beginner's Guide to Crypto Automation (hub page + 5-7 supporting articles)</li><li>Trading Strategy Library (detailed breakdowns of each strategy)</li><li>Exchange-Specific Optimization Guides (building on the underperforming exchange pages)</li><li>Market Condition Response Guides (bull/bear/sideways markets)</li><li>Technical Analysis Automation Tutorials</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>A hub-and-spoke model will strengthen topical authority and improve internal link equity.</li></ul><br></div></section>
+                <section id="7-conclusion-and-actionable-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tasks"></i></div>
+                        <h2 class="section-title">7. Conclusion and Actionable Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="priority-actions-next-30-days-">Priority Actions (Next 30 Days)</h3><ol><li><strong>Fix critical technical SEO issues</strong>:</li></ol><ul><li>Add alt attributes to all images</li><li>Optimize render-blocking resources to improve page speed</li><li>Fix title length and add meta titles</li></ul><ol><li><strong>Content enhancement for key pages</strong>:</li></ol><ul><li>Expand content on exchange-specific pages that are currently underperforming</li><li>Optimize homepage content to target higher positions (1-3) for key terms</li><li>Implement benefit-oriented language in titles and meta descriptions (following competitor patterns)</li></ul><ol><li><strong>Implement a disavow file</strong> for the 8 toxic backlinks with spam scores above 60%</li><li><strong>Fix the 10 broken backlinks</strong> and 5 broken pages to recapture lost link equity</li><li><strong>Create 2-3 high-quality comparison articles</strong> targeting "Gunbot vs [competitor]" keywords</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Immediate technical and content fixes will lay the groundwork for sustainable growth; focus here before expanding long-term initiatives.</li></ul><br><h3 id="medium-term-strategy-60-90-days-">Medium-Term Strategy (60-90 Days)</h3><ol><li><strong>Develop exchange-specific content strategy</strong>:</li></ol><ul><li>Create dedicated landing pages for each major exchange supported by Gunbot</li><li>Develop "how-to" documentation explaining connection processes for each exchange</li><li>Use specific, benefit-oriented titles and meta descriptions</li></ul><ol><li>Launch a comprehensive blog content calendar targeting identified keyword gaps</li><li>Develop the first content cluster around "Beginner's Guide to Crypto Automation"</li><li>Initiate outreach to authoritative crypto sites like bitcoin.com and coinpayments.net</li><li>Create a resource center with downloadable guides to capture email leads</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft timeline and assign stakeholders for each medium-term milestone within two weeks.</li></ul><br><h3 id="long-term-initiatives-90-days-">Long-Term Initiatives (90+ Days)</h3><ol><li>Develop comprehensive content clusters for all identified topic areas</li><li>Create a video content strategy targeting YouTube SEO for demonstration keywords</li><li>Build a systematic link building campaign targeting educational domains (.edu) and crypto news sites</li><li>Implement a user-generated content strategy to increase fresh content and engagement</li><li>Develop an industry glossary to target informational keywords and build topical authority</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Investing in multimedia and authoritative link-building will pay dividends in brand credibility and traffic diversity.</li></ul><br><h3 id="backlink-strategy-improvements">Backlink Strategy Improvements</h3><ol><li>Diversify anchor text distribution with more keyword-rich anchors</li><li>Target high-quality crypto news sites that link to competitors</li><li>Develop shareable infographics about crypto trading automation to attract natural links</li><li>Create guest posting opportunities on medium.com and other crypto-focused platforms</li><li>Establish relationships with educational institutions for potential .edu backlinks</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Begin outreach for infographics and guest posts this month to secure placements and downloads.</li></ul><br><p>By implementing these recommendations, Gunbot can reverse the 33.46% decline in organic visibility, improve rankings for key terms, and strengthen its position against competitors in the cryptocurrency trading bot space. The focus should be on enhancing underperforming exchange-specific pages, fixing technical SEO issues, and developing comprehensive content that targets identified keyword gaps, particularly by following the successful patterns established by competitors like Cryptohopper and 3Commas.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Gunbot',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

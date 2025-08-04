@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - T'inquiète maatkasten</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">T'inquiète maatkasten • www.tinquiete.be</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Belgium Market</span>
+                        <span><i class="fas fa-calendar"></i> August 4, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Status / Change Last 12 Months</th></tr></thead><tbody><tr><td class="">Organic Visibility</td><td class="">Minimal; no significant growth observed</td></tr><tr><td class="">Search Engine Traffic (ETV)</td><td class="">No measurable traffic from target Belgian Dutch keywords</td></tr><tr><td class="">Keyword Rankings</td><td class="">No competitive rankings for primary keywords</td></tr><tr><td class="">Top Competitors</td><td class="">Keywords They Rank Well For</td><td class="">T’inquiète Ranking Status</td></tr><tr><td class="">maatkastenonline.be</td><td class="">kasten op maat, maatkasten, inbouwkasten</td><td class="">Poor / No ranking</td></tr><tr><td class="">ilovemaatkasten.be</td><td class="">maatkasten, dressings op maat, custom wardrobes</td><td class="">Poor / No ranking</td></tr><tr><td class="">kastenexpertonline.be</td><td class="">maatwerk kasten, inloopkasten, custom-made wardrobes</td><td class="">Poor / No ranking</td></tr><tr><td class="">Opportunity Keywords</td><td class="">Reason for Opportunity</td></tr><tr><td class="">kasten op maat</td><td class="">High search volume, medium competition, primary target</td></tr><tr><td class="">maatkasten</td><td class="">High volume, medium-high competition, core service term</td></tr><tr><td class="">kasten op maat ikea</td><td class="">Medium volume, medium competition, long-tail variation</td></tr><tr><td class="">maatwerk kasten</td><td class="">Medium volume, medium competition, local relevance</td></tr><tr><td class="">[service] in [Belgian city]</td><td class="">Underutilized geo-targeted keywords, good conversion potential</td></tr><tr><td class="">Long-tail variations</td><td class="">Lower competition, good for blog and FAQ content</td></tr></tbody></table></div><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><ul><li>T’inquiète Maatkasten currently has negligible organic visibility and no measurable search traffic in the Belgian Dutch market.</li><li>The website is a well-structured single-page site but lacks content depth, multi-page keyword targeting, and technical SEO optimizations.</li><li>Competitors have strong domain authority, multi-page sites, and rank well for key terms where T’inquiète does not.</li><li>Keyword opportunities exist in high-volume primary terms, geo-targeted local keywords, and long-tail variations.</li><li>Backlink profile is weak with no authoritative Belgian industry links; competitors have stronger backlink profiles.</li><li>Recommendations include expanding to a multi-page site, improving technical SEO, developing targeted content (service, location, educational), and launching a focused link-building and PR campaign.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Focus immediate efforts on converting the single-page layout into a scalable multi-page architecture, prioritizing high-volume service and location pages to capture low-hanging keyword opportunities.</li></ul><br><hr><br></div></section>
+                <section id="seo-performance-analysis-for-t-inqui-te-maatkasten" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h1 class="section-title">SEO Performance Analysis for T'inquiète Maatkasten</h1>
+                    </div>
+                    <div class="section-content"><p><strong>Prepared by WP SEO AI Research Team</strong></p><p><strong>August 2025</strong></p><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><br><p>This research report provides a comprehensive analysis of T'inquiète Maatkasten's current SEO performance in the Belgian market, with a focus on Dutch-language visibility. Our analysis reveals that while the domain has implemented some basic SEO elements and has a well-structured website, it currently lacks significant organic visibility for relevant Dutch-language searches in Belgium. This represents a substantial opportunity for strategic SEO improvements. This report outlines key findings across five critical areas and provides actionable recommendations to enhance organic visibility and drive qualified traffic to the website.</p><br></div></section>
+                <section id="1-overall-seo-performance-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-visibility-status">Current Visibility Status</h3><ul><li><strong>Organic Visibility</strong>: The domain shows minimal organic visibility for relevant Dutch-language searches in Belgium.</li><li><strong>Search Engine Traffic</strong>: No measurable search engine traffic (ETV) from target keywords in the Belgian market.</li><li><strong>Ranking Positions</strong>: The website does not currently rank competitively for primary target keywords related to custom wardrobes and storage solutions in Belgium.</li></ul><br><h3 id="current-seo-implementation">Current SEO Implementation</h3><ul><li><strong>Website Structure</strong>: Single-page website with clear sections for "Recente realisaties" (Recent Projects), "Kwaliteit" (Quality), "Wat zeggen klanten?" (What Customers Say?), and "Contact" (<a href="https://www.tinquiete.be" class="link-reference" target="_blank" rel="noopener">Website Analysis</a>)</li><li><strong>Meta Title</strong>: "T'inquiète kasten op maat" - appropriately includes primary keyword but could be more compelling</li><li><strong>Meta Description</strong>: Likely includes quality messaging but lacks call-to-action (exact content not verified in source code)</li><li><strong>H1 Tag</strong>: "T'inquiète kasten op maat" - appears to be the main heading with section titles as H2 headings</li><li><strong>Main Keywords</strong>: The site currently targets appropriate terms including maatkasten, kasten op maat, inbouwkasten, dressing op maat, and Belgische maatkasten</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Audit the meta description and title tags for emotion-driven CTAs (e.g., "Get Your Custom Wardrobe Today") to improve click-through rates on SERPs.</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><ul><li><strong>Positive Elements</strong>:</li><li>Well-structured single-page website with logical navigation through internal links (<a href="https://www.tinquiete.be" class="link-reference" target="_blank" rel="noopener">Website Analysis</a>)</li><li>High-quality project images enhancing user experience and visual appeal</li><li>Customer testimonials with location information (e.g., "Charlotte - Edegem") supporting local SEO</li><li>Contact form improving user engagement</li><li>Consistent keyword focus on quality ("kwaliteit") and custom cabinets ("maatkasten")</li><li>Sectioned layout with clear headings for navigation</li></ul><br><ul><li><strong>Areas for Improvement</strong>:</li><li>Limited content depth for target keywords</li><li>Basic meta information implementation that could be enhanced</li><li>Potential render-blocking resources affecting page load speed</li><li>Suboptimal cache controls impacting page performance</li><li>Google Forms implementation for contact form limiting SEO customization options</li><li>Opportunity to expand H-tag structure beyond basic implementation</li><li>Missing or inadequate image alt attributes for project images</li><li>Single-page structure limiting keyword targeting opportunities</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Replace Google Forms with a custom contact solution (e.g., HTML form with AJAX) to embed schema markup and improve tracking.</li><li>Conduct a page speed audit, prioritize critical CSS and JavaScript deferral, and leverage browser caching best practices.</li></ul><br><p><strong>Recommendation</strong>: Build upon existing SEO elements and well-structured website with a more comprehensive technical SEO strategy, addressing content depth, meta optimization, page performance issues, image alt attributes, and replacing Google Forms with a more SEO-friendly contact solution. Consider expanding the single-page structure to include dedicated service pages for better keyword targeting.</p><br></div></section>
+                <section id="2-keyword-analysis-for-the-belgian-market" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Belgian Market</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="high-priority-keywords">High-Priority Keywords</h3><p>Based on search volume and competition analysis, we've identified the following high-priority keywords for the Belgian market:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Monthly Search Volume</th><th>Competition Level</th></tr></thead><tbody><tr><td class="">kasten op maat</td><td class="">High</td><td class="">Medium</td></tr><tr><td class="">maatkasten</td><td class="">High</td><td class="">Medium-High</td></tr><tr><td class="">inbouwkasten</td><td class="">Medium</td><td class="">Medium</td></tr><tr><td class="">dressings op maat</td><td class="">Medium</td><td class="">Medium</td></tr><tr><td class="">custom-made wardrobes</td><td class="">Medium</td><td class="">Medium-High</td></tr></tbody></table></div><h3 id="secondary-keywords">Secondary Keywords</h3><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Monthly Search Volume</th><th>Competition Level</th></tr></thead><tbody><tr><td class="">kasten op maat ikea</td><td class="">Medium</td><td class="">Medium</td></tr><tr><td class="">Belgian storage solutions</td><td class="">Low-Medium</td><td class="">Low</td></tr><tr><td class="">bespoke closet systems</td><td class="">Low</td><td class="">Medium</td></tr><tr><td class="">maatwerk kasten</td><td class="">Medium</td><td class="">Medium</td></tr><tr><td class="">inloopkasten</td><td class="">Medium</td><td class="">Medium</td></tr></tbody></table></div><h3 id="keyword-gaps-and-opportunities">Keyword Gaps and Opportunities</h3><ul><li>Long-tail variations of primary keywords show lower competition with good conversion potential</li><li>Seasonal trends indicate increased search volume for storage solutions during spring cleaning periods (March-May)</li><li>Underutilized local keywords combining "maatkasten" with Belgian city names present opportunities for geo-targeted content</li><li>Current website shows evidence of targeting appropriate keywords but lacks depth and optimization</li><li>Single-page structure limits the ability to target multiple keywords effectively</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Plan a content calendar that aligns long-tail blog posts (e.g., "5 tips voor kasten op maat in Antwerpen") with seasonal peaks to capture timely search interest.</li></ul><br><p><strong>Recommendation</strong>: Expand upon existing keyword targeting with a tiered keyword strategy focusing on high-priority terms for main service pages and long-tail variations for blog content and FAQ sections. Consider expanding the website structure to include dedicated pages for different service offerings and locations.</p><br></div></section>
+                <section id="3-competitive-landscape-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="primary-competitors">Primary Competitors</h3><ol><li><strong>maatkastenonline.be</strong></li></ol><ul><li>Strengths: Strong domain authority, comprehensive product pages</li><li>Content Strategy: In-depth guides on custom wardrobe design</li><li>Meta Pattern: "[Primary Keyword] | Expert Solutions | maatkastenonline.be"</li></ul><br><ol><li><strong>ilovemaatkasten.be</strong></li></ol><ul><li>Strengths: Visual-heavy approach, strong social signals</li><li>Content Strategy: Customer testimonials and project galleries</li><li>Meta Pattern: "Custom [Keyword] for Your Home - Free Design Consultation"</li></ul><br><ol><li><strong>kastenexpertonline.be</strong></li></ol><ul><li>Strengths: Technical expertise, detailed product specifications</li><li>Content Strategy: Educational content on materials and construction</li><li>Meta Pattern: "Professional [Keyword] | Expert Installation | kastenexpertonline.be"</li></ul><br><h3 id="competitive-insights">Competitive Insights</h3><ul><li>Competitors are leveraging visual content extensively, including interactive design tools</li><li>Educational content about materials, design options, and installation processes ranks well</li><li>Local service areas are prominently featured in title tags and meta descriptions</li><li>Customer testimonials and project galleries generate significant engagement and backlinks</li><li>T'inquiète has begun implementing testimonials and location-based content but lags behind competitors in depth and optimization</li><li>T'inquiète's effective use of high-quality project images is a strength to build upon (<a href="https://www.tinquiete.be" class="link-reference" target="_blank" rel="noopener">Website Analysis</a>)</li><li>Competitors typically use multi-page websites rather than single-page layouts, allowing for more targeted keyword optimization</li><li>Recent research confirms no significant news, events, or achievements for T'inquiète Maatkasten in the past three months, indicating the competitive landscape remains stable (<a href="https://wpseoai.com" class="link-reference" target="_blank" rel="noopener">Company News Research</a>)</li><li>The lack of recent public updates presents an opportunity for content marketing and PR initiatives to increase brand visibility</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Introduce an interactive design tool or quiz on-site to match competitor engagement tactics and gather user intent data.</li><li>Launch a quarterly news update cycle to showcase completed projects and industry insights, boosting fresh content signals.</li></ul><br><p><strong>Recommendation</strong>: Develop a content strategy that addresses competitor strengths while emphasizing T'inquiète Maatkasten's unique value propositions and expertise in the Belgian market, building upon the existing testimonial and location-based approach. Continue to leverage the strong visual content strategy already in place. Consider expanding the website structure to better compete with multi-page competitor sites. Implement a news/blog section to improve content freshness and increase opportunities for keyword targeting.</p><br></div></section>
+                <section id="4-backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li>Limited relevant backlinks from Belgian domains</li><li>No authoritative industry links from design, home improvement, or interior decoration websites</li><li>Absence of local business directory citations</li></ul><br><h3 id="competitor-backlink-analysis">Competitor Backlink Analysis</h3><ul><li>Competitors have secured links from:</li><li>Belgian home design publications</li><li>Interior design blogs</li><li>Local business directories</li><li>Industry associations</li><li>Home renovation forums</li></ul><br><h3 id="backlink-opportunities">Backlink Opportunities</h3><ul><li>Target high-authority Belgian design and home improvement websites</li><li>Develop relationships with interior designers for testimonials and case studies</li><li>Create shareable visual content to attract natural backlinks, building on existing high-quality project images</li><li>Establish presence in local business directories and chamber of commerce listings</li><li>Leverage existing customer testimonials (like "Charlotte - Edegem") to develop case studies that can earn backlinks</li><li>Create newsworthy content to address the current lack of media presence and recent updates</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize outreach to 5–10 top-tier Belgian design blogs and offer exclusive case study content to secure featured placements and high-DR links.</li></ul><br><p><strong>Recommendation</strong>: Implement a strategic link-building campaign focused on quality over quantity, targeting relevant Belgian websites in the home design and improvement sectors. Combine this with a PR strategy to generate news coverage and improve online visibility.</p><br></div></section>
+                <section id="5-content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="priority-content-development">Priority Content Development</h3><ol><li><strong>Service Pages</strong>:</li></ol><ul><li>Expand beyond the current single-page structure to create dedicated, comprehensive pages for each service offering</li><li>Include detailed specifications, material options, and process explanations</li><li>Continue to incorporate high-quality images of completed projects with proper alt attributes</li><li>Enhance meta titles and descriptions following competitive patterns</li></ul><br><ol><li><strong>Location-Specific Pages</strong>:</li></ol><ul><li>Build upon existing location testimonials to develop pages targeting major Belgian cities</li><li>Include area-specific testimonials and project examples</li><li>Optimize for "[service] in [location]" keyword patterns</li><li>Leverage existing customer references from specific locations (e.g., Edegem)</li></ul><br><ol><li><strong>Educational Content</strong>:</li></ol><ul><li>Design guides explaining custom wardrobe options</li><li>Material comparison articles</li><li>Space optimization tips for different room types</li><li>Maintenance and care instructions</li><li>Content highlighting quality ("kwaliteit") aspects already emphasized on the site</li></ul><br><ol><li><strong>Visual Content</strong>:</li></ol><ul><li>Expand the existing high-quality images into before/after project galleries with proper alt attributes</li><li>360° virtual tours of completed installations</li><li>Design inspiration lookbooks</li><li>Video tutorials and project walkthroughs</li></ul><br><ol><li><strong>News & Updates Section</strong>:</li></ol><ul><li>Create a dedicated blog or news section to address the current lack of fresh content</li><li>Publish regular updates about completed projects, industry trends, and company news</li><li>Develop content that can attract media attention and backlinks</li><li>Share customer success stories and testimonials as featured articles</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft outlines for the top three service pages and two city-specific pages within the next two weeks to maintain momentum.</li><li>Assign internal or external writers for educational blog posts tied to seasonal trends.</li></ul><br><h3 id="technical-content-optimization">Technical Content Optimization</h3><ul><li>Enhance existing H1 tags and implement proper heading structure throughout the site</li><li>Improve meta titles and descriptions following competitive patterns while maintaining current keyword focus</li><li>Increase content depth on service pages to 800+ words with proper keyword distribution</li><li>Implement schema markup for local business, products, and services</li><li>Optimize image files with descriptive filenames and alt text</li><li>Improve page load speed by addressing render-blocking resources and cache controls</li><li>Replace Google Forms with a more SEO-friendly contact solution that allows for better customization and tracking</li><li>Consider transitioning from a single-page to a multi-page website structure for better keyword targeting and user experience</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Implement a lightweight JSON-LD schema for LocalBusiness and Product types first, then expand to FAQ and Review markup as new content goes live.</li></ul><br></div></section>
+                <section id="conclusion-and-next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion and Next Steps</h2>
+                    </div>
+                    <div class="section-content"><br><p>T'inquiète Maatkasten has made initial steps toward SEO implementation with a well-structured website, effective use of images, and customer testimonials, but has a significant opportunity to establish stronger organic visibility in the Belgian market through strategic SEO improvements. By building upon existing elements, addressing technical issues, developing keyword-optimized content, building quality backlinks, and leveraging competitive insights, the company can create a robust online presence that drives qualified traffic and leads.</p><br><h3 id="recommended-implementation-timeline-">Recommended Implementation Timeline:</h3><ol><li><strong>Immediate (1-2 weeks)</strong>: Address critical technical SEO issues while preserving existing SEO elements and website structure</li><li><strong>Short-term (1-2 months)</strong>: Enhance and optimize core service pages, building upon current keyword targeting and visual content</li><li><strong>Medium-term (2-4 months)</strong>: Create educational and visual content assets, establish news/blog section</li><li><strong>Ongoing</strong>: Link building, content expansion, PR initiatives, and performance monitoring</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Schedule a kick-off meeting with development and content teams to align on milestones and assign responsibilities.</li><li>Set up a bi-weekly performance review to track rankings, traffic, and backlink growth.</li></ul><br><p>This SEO roadmap provides a data-driven approach to improving T'inquiète Maatkasten's organic visibility in Belgium, with specific tactics that can be implemented immediately to begin generating results. Our recent research confirms that the competitive landscape remains stable, making this an opportune time to implement these recommendations.</p><br><hr><br><p><em>This research report was prepared by WP SEO AI based on data collected in August 2025. For questions or additional analysis, please contact our research team.</em></p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - T'inquiète maatkasten',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Conceptic</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Conceptic • Conceptic</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> België Market</span>
+                        <span><i class="fas fa-calendar"></i> August 4, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th><th>Notes</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="positive">86.49 (↑ 193.48% over last 12 months)</td><td class="">Strong organic visibility growth in Belgium</td></tr><tr><td class="">Keyword Rankings Distribution</td><td class="">Positions 4-10: 7 keywords<br>Positions 11-20: 13 keywords<br>Positions 21-30: 2 keywords</td><td class="">Majority of keywords rank outside top 3, with growth potential</td></tr><tr><td class="">Paid Traffic Equivalent Value</td><td class="">€42.36</td><td class="">Indicative of organic ranking value</td></tr><tr><td class="">Competitor</td><td class="">Strong Ranking Keywords (Conceptic's Position)</td><td class="">Notes on Ranking Gaps & Strategies</td></tr><tr><td class="">Dtch Digitals</td><td class="">"advertentie google" (Conceptic: not top 10)</td><td class="">Uses direct benefit statements and question-based titles</td></tr><tr><td class="">Varamedia</td><td class="">"advertentie google", "google ads" related</td><td class="">Question-based meta titles addressing user intent</td></tr><tr><td class="">MonkeyProof</td><td class="">Shared keywords around Google Ads</td><td class="">Focus on lead generation content</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a quick audit of competitor meta titles and descriptions to identify question-based formats and direct benefit statements.</li><li>Update Conceptic’s “advertentie google” metadata to mirror successful competitor styles.</li></ul><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume (Belgium)</th><th>Competition Level</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">nores genk</td><td class="">1600</td><td class="">Medium</td><td class="">High volume, current rank 29, portfolio page underoptimized</td></tr><tr><td class="">casa rent</td><td class="">880</td><td class="">Medium</td><td class="">High volume, current rank 14-15, portfolio page needs boost</td></tr><tr><td class="">advertentie google</td><td class="">590</td><td class="">Low</td><td class="">Valuable keyword, Conceptic ranks poorly (71-80)</td></tr><tr><td class="">digitale marketing strategie</td><td class="">70-1300</td><td class="">Low</td><td class="">High potential, currently untapped content area</td></tr><tr><td class="">marketing kalender 2024</td><td class="">10-20</td><td class="">Null</td><td class="">Seasonal, low competition, aligns with topical calendar content</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize low-competition, high-volume keywords like "advertentie google" and "digitale marketing strategie" for faster impact.</li><li>Schedule seasonal content for "marketing kalender 2024" to capture early planner traffic.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Conceptic’s organic visibility in Belgium has grown by 193.48% in the last 12 months, with ETV now at 86.49.</li><li>Most keywords rank between positions 4-30, indicating room for improvement to top 3 rankings.</li><li>Portfolio pages for clients like "nores genk" and "casa rent" have high search volumes but rank poorly, representing quick-win optimization opportunities.</li><li>The keyword "advertentie google" (590 monthly searches, low competition) is a critical gap where competitors outrank Conceptic.</li><li>Competitors use question-based meta titles and direct benefit messaging to capture user intent effectively.</li><li>Technical SEO issues such as title tag length, render-blocking resources, and duplicate meta tags need fixing.</li><li>Backlink profile is strong locally but lacks diversity; one toxic backlink identified.</li><li>Content strategy should focus on expanding topical calendar content, filling keyword gaps, and improving local SEO for portfolio pages.</li><li>Immediate action recommended on Google Ads content and portfolio page optimization to capture high-value traffic.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-conceptic-belgium-" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Conceptic (Belgium)</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><br><p>Our comprehensive SEO analysis of Conceptic's online presence in Belgium reveals significant growth in organic visibility over the past year, with a 193.48% increase in Estimated Traffic Volume (ETV). However, we've identified several opportunities to further enhance search performance through targeted keyword optimization, content development, technical SEO improvements, and backlink profile enhancement. This report outlines our findings and provides actionable recommendations to strengthen Conceptic's digital footprint in the Belgian market.</p><br></div></section>
+                <section id="1-overall-seo-performance-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-growth">Organic Visibility Growth</h3><br><ul><li><strong>Significant Growth</strong>: Conceptic has achieved a remarkable 193.48% increase in Estimated Traffic Volume (ETV) from August 2024 to July 2025, demonstrating strong positive momentum in organic search visibility.</li><li><strong>Current Position Distribution</strong>: As of July 2025, Conceptic's keyword rankings are distributed as follows:</li><li>Positions 4-10: 7 keywords</li><li>Positions 11-20: 13 keywords</li><li>Positions 21-30: 2 keywords</li><li>Positions 41-50: 1 keyword</li><li>Positions 71-80: 2 keywords</li><li>Positions 81-90: 1 keyword</li><li><strong>Latest Traffic Metrics</strong>: Current ETV stands at 86.49 with an estimated paid traffic cost equivalent of €42.36, indicating the value of Conceptic's organic rankings.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Focus on moving keywords from positions 4-10 into the top 3 through targeted on-page adjustments.</li><li>Set up rank-tracking alerts for terms in positions 11-20 to monitor uplift from optimization efforts.</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><br><ul><li><strong>"Top Topical Kalender"</strong>: This page (https://conceptic.be/top-topical-kalender/) is the strongest performer with an ETV of 30.52, ranking in positions 4-10 for keywords like "top topical" (320 monthly searches), "top topical kalender" (90 monthly searches), and "top topicals 2024" (110 monthly searches).</li><li><strong>Business Visibility Article</strong>: The page "Waarom visibiliteit in het verkeer voor jouw bedrijf belangrijk is" has a high ETV of 27.67 and ranks in position 6 for "visibiliteit" (590 monthly searches), representing strong organic performance.</li></ul><br><h3 id="underperforming-areas">Underperforming Areas</h3><br><ul><li><strong>Portfolio Pages</strong>: Many portfolio pages have potential but are underperforming. For example:</li><li>"/portfolio/nores/" ranks in position 29 for "nores genk" (1600 monthly searches)</li><li>"/portfolio/casa-rent/" ranks in position 14-15 for "casa rent" (880 monthly searches) and "casarent" (480 monthly searches)</li><li><strong>Google Ads Content</strong>: The article "/de-revolutie-van-google-ads-wat-je-moet-weten-in-2024/" is ranking in positions 71-80 despite targeting valuable keywords, suggesting significant content optimization needs. Our competitive analysis reveals this is a critical area for improvement.</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><br><ul><li><strong>Strong Foundation</strong>: The site has a solid technical foundation with an on-page score of 96.34 for the homepage, HTTPS implementation, mobile-friendliness, and SEO-friendly URLs.</li><li><strong>Technical Issues</strong>: Several issues require attention:</li><li>Title tag length exceeds recommended character count (68 characters)</li><li>Render-blocking resources affecting page speed</li><li>Low content-to-code ratio</li><li>Duplicate meta tags (specifically generator tags)</li><li>Missing image title attributes</li><li>HTTPS to HTTP links</li><li>HTML errors</li><li>Large DOM size</li><li>Cache control not enabled</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Plan a technical SEO sprint to address high-impact issues (title tags, render-blocking, meta tags) within the next month.</li><li>Implement site speed improvements and schedule a follow-up audit post-deployment.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-keyword-performance">Current Keyword Performance</h3><br><h4 id="top-performing-keywords-positions-1-10-">Top Performing Keywords (Positions 1-10)</h4><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th><th>URL</th></tr></thead><tbody><tr><td class="">top topical</td><td class="">320</td><td class="">5</td><td class="">conceptic.be/top-topical-kalender/</td></tr><tr><td class="">top topical kalender</td><td class="">90</td><td class="">5</td><td class="">conceptic.be/top-topical-kalender/</td></tr><tr><td class="">visibiliteit</td><td class="">590</td><td class="">6</td><td class="">conceptic.be/waarom-visibiliteit-in-het-verkeer-voor-jouw-bedrijf-belangrijk-is/</td></tr><tr><td class="">nutrivida</td><td class="">70</td><td class="">7</td><td class="">conceptic.be/portfolio/nutrivida/</td></tr><tr><td class="">toptopical kalender</td><td class="">90</td><td class="">8</td><td class="">conceptic.be/top-topical-kalender/</td></tr><tr><td class="">top topicals 2024</td><td class="">110</td><td class="">10</td><td class="">conceptic.be/top-topical-kalender/</td></tr></tbody></table></div><h4 id="high-potential-keywords-positions-11-30-">High-Potential Keywords (Positions 11-30)</h4><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th><th>URL</th></tr></thead><tbody><tr><td class="">nores genk</td><td class="">1600</td><td class="">29</td><td class="">conceptic.be/portfolio/nores/</td></tr><tr><td class="">casa rent</td><td class="">880</td><td class="">14</td><td class="">conceptic.be/portfolio/casa-rent/</td></tr><tr><td class="">restaurant nores</td><td class="">590</td><td class="">17</td><td class="">conceptic.be/portfolio/nores/</td></tr><tr><td class="">casarent</td><td class="">480</td><td class="">15</td><td class="">conceptic.be/portfolio/casa-rent/</td></tr><tr><td class="">bakker knapen</td><td class="">390</td><td class="">16</td><td class="">conceptic.be/portfolio/bakkerij-knapen/</td></tr><tr><td class="">bakkerij knapen</td><td class="">390</td><td class="">15</td><td class="">conceptic.be/portfolio/bakkerij-knapen/</td></tr><tr><td class="">toptopical</td><td class="">320</td><td class="">15</td><td class="">conceptic.be/top-topical-kalender/</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize on-page improvements for keywords in positions 11-20 to push them into the top 10.</li><li>Leverage internal linking from top-performing pages to boost underperforming ones.</li></ul><br><h3 id="keyword-opportunities">Keyword Opportunities</h3><br><ul><li><strong>High-Value Targets</strong>: Keywords with high search volume but lower rankings represent immediate optimization opportunities:</li><li>"nores genk" (1600 searches, position 29)</li><li>"casa rent" (880 searches, position 14)</li><li>"restaurant nores" (590 searches, position 17)</li><li>"advertentie google" (590 searches, LOW competition) - Currently underperforming compared to direct competitors</li><li><strong>Seasonal Trends</strong>: The "Top Topical" keywords show a clear seasonal trend, peaking in the months leading up to and including the start of the year when businesses are planning their marketing calendars.</li><li><strong>Recommended New Keywords</strong>: Based on our analysis, these high-potential keywords align with Conceptic's services:</li><li>"digitale marketing strategie" (70-1300 monthly searches, LOW competition)</li><li>"online zichtbaarheid vergroten" (10-70 monthly searches, HIGH competition)</li><li>"marketing kalender 2024" (10-20 monthly searches, NULL competition)</li><li>"strategie digitale marketing" (0-10 monthly searches, NULL competition)</li><li>"website optimalisatie tips" (0-10 monthly searches, HIGH competition)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Launch targeted content updates for “nores genk” and “casa rent” portfolio pages in the next 2 weeks.</li><li>Draft new pillar content for “digitale marketing strategie” to capture emerging interest.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><br><p>Our analysis has identified several direct competitors in the Belgian market, particularly in the Google Ads service space:</p><br><ol><li><strong>Dtch Digitals</strong>: The strongest competitor based on estimated traffic volume and keyword match count. Their key strength is clear and direct messaging in meta titles and descriptions, focusing on growth and full-service offerings. They rank higher than Conceptic for the valuable "advertentie google" keyword.</li><li><strong>Varamedia</strong>: This competitor shows strong performance for shared keywords. Their key strength is direct and question-based title and description approach, addressing user intent with questions like "Wat is Google Ads? Hoe werkt het? Hoeveel kost Google Ads?"</li><li><strong>MonkeyProof</strong>: While showing lower traffic volume, they still outrank Conceptic for important shared keywords. Their content strategy focuses heavily on generating leads with Google Ads.</li></ol><br><h3 id="competitor-serp-strategies">Competitor SERP Strategies</h3><br><p>Our analysis reveals specific strategies competitors are using to outrank Conceptic:</p><br><ol><li><strong>Question-Based Titles and Descriptions</strong>: All three main competitors use question formats in their meta titles and descriptions to directly address user intent. For example:</li></ol><ul><li>Dtch Digitals uses "Adverteren op Google inzetten?" in their title</li><li>Varamedia uses "Google Ads in 2025 - Wat zijn de must-know's en hoe..."</li></ul><ol><li><strong>Direct Benefit Statements</strong>: Competitors highlight immediate benefits in their meta descriptions, such as visibility and lead generation, rather than focusing on technical aspects.</li><li><strong>Content Types</strong>: Competitors are primarily using blog posts and service pages to target high-value keywords, with comprehensive information addressing common user questions.</li></ol><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Our competitor analysis focuses on meta data formats, on-page content themes, and user-intent alignment to identify gaps in Conceptic’s approach.</li></ul><br><h3 id="content-strategy-analysis">Content Strategy Analysis</h3><br><p>Conceptic's content strategy appears to focus on three main areas:</p><br><ol><li><strong>Portfolio Showcase</strong>: A significant portion of ranking pages are portfolio items showcasing client work. These pages rank for client brand names (e.g., "ara architecten," "de boomkamer," "casa rent," "bakker knapen," "restaurant nores"), indicating that Conceptic is likely a web design or marketing agency.</li><li><strong>Marketing Expertise Articles</strong>: Blog posts on topics like Google Ads changes and business visibility demonstrate industry expertise and target valuable keywords.</li><li><strong>Service/Solutions Pages</strong>: Pages like "/ik-wil-vacatures-invullen/" target specific customer needs and solutions offered by Conceptic.</li></ol><br><h3 id="optimization-opportunities">Optimization Opportunities</h3><br><ul><li><strong>Portfolio Page Enhancement</strong>: Our analysis suggests that portfolio pages could be optimized with more detailed case studies, results metrics, and industry-specific keywords to improve their search performance. The high search volumes for client names (e.g., "nores genk" with 1600 monthly searches) represent significant traffic opportunities.</li><li><strong>Google Ads Service Page</strong>: There's a significant opportunity to optimize content for the high-value keyword "advertentie google" (590 monthly searches, LOW competition) where competitors are currently outranking Conceptic. The current title "De (r)evolutie van Google Ads: wat je moet weten in 2024" is somewhat broad and doesn't directly address the core keyword.</li><li><strong>Content Gap Filling</strong>: There are opportunities to create content around high-value marketing topics that competitors are targeting but Conceptic currently isn't, such as "digitale marketing strategie" (70-1300 monthly searches).</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Introduce a dedicated FAQ section on the Google Ads page to leverage question-based queries.</li><li>Embed mini case studies within portfolio pages to boost both user engagement and keyword relevance.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><br><ul><li><strong>Overall Metrics</strong>: Conceptic has 1,276 backlinks from 31 referring domains, with a domain rank of 367.</li><li><strong>Geographic Distribution</strong>: The backlink profile shows strong local relevance with 1,244 backlinks (97.5%) coming from Belgian (.be) domains, which is excellent for local SEO in Belgium.</li><li><strong>Backlink Quality</strong>:</li><li>Low spam score (0-30%): 23 referring domains</li><li>Medium spam score (31-60%): 7 referring domains</li><li>High spam score (61-100%): 1 referring domain (rock-radio.net with 65% spam score)</li><li><strong>Anchor Text Analysis</strong>: The majority of backlinks use the branded anchor text "Made by Conceptic" or "Met liefde gemaakt voor Matteo door Conceptic," indicating Conceptic is primarily a web design/development agency. This consistent branding in anchor texts is positive for brand recognition.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Schedule a backlink audit to disavow the high-spam domain and verify medium-risk links.</li><li>Reach out to existing clients to request testimonial links using varied anchor text.</li></ul><br><h3 id="backlink-competitors">Backlink Competitors</h3><br><ul><li><strong>Main Competitors</strong>: The analysis identified several backlink competitors:</li><li>concepticklanten.be (rank: 44, 12 intersecting backlinks)</li><li>goo.gl (rank: 141, 9 intersecting backlinks)</li><li>luxalad.com (rank: 14, 2 intersecting backlinks)</li><li>datawolk.be (rank: 25, 2 intersecting backlinks)</li><li>iubenda.com (rank: 91, 2 intersecting backlinks)</li></ul><br><h3 id="backlink-opportunities-issues">Backlink Opportunities & Issues</h3><br><ul><li><strong>Toxic Backlinks</strong>: The presence of one high spam score domain (rock-radio.net) suggests the need for a backlink audit and potential disavowal.</li><li><strong>Client Website Backlinks</strong>: Most backlinks come from client websites with a footer credit link ("Made by Conceptic"), which is valuable but creates a somewhat homogeneous backlink profile.</li><li><strong>Diversification Needed</strong>: The backlink profile could benefit from more diverse sources beyond client websites, including industry publications, business directories, and local Belgian media outlets.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Develop a link-bait resource (e.g., industry benchmarks or original survey) to attract natural links from varied Belgian publications.</li><li>Pursue guest posts on local marketing blogs with contextual, non-branded anchor text.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our analysis, we recommend the following content strategy enhancements:</p><br><h3 id="short-term-wins-1-3-months-">Short-Term Wins (1-3 Months)</h3><br><ol><li><strong>Optimize High-Value Portfolio Pages</strong>:</li></ol><ul><li>Prioritize optimization of the "/portfolio/nores/" page to improve ranking for "nores genk" (1600 monthly searches)</li><li>Enhance the "/portfolio/casa-rent/" page to move from position 14 to top 10 for "casa rent" (880 monthly searches)</li><li>Implement on-page SEO improvements including keyword placement in titles, headings, and content</li><li>Add more detailed case studies and results achieved for these clients</li></ul><ol><li><strong>Google Ads Page Optimization</strong> (Immediate Priority):</li></ol><ul><li>Revise the title tag to include the exact keyword "advertentie google" and a compelling benefit (e.g., "Advertentie Google: Meer Leads & Verkoop met Google Ads")</li><li>Rewrite the meta description to directly address user intent by answering common questions about Google Ads and highlighting Conceptic's expertise (e.g., "Wat is een Google Advertentie? Leer hoe Google Ads werkt en hoe Conceptic.be je kan helpen meer leads te genereren.")</li><li>Create a dedicated landing page for "advertentie google" that includes:</li><li>Clear explanation of what Google Ads are and how they work</li><li>Case studies showcasing successful Google Ads campaigns managed by Conceptic</li><li>Clear call to action (e.g., "Vraag een gratis Google Ads analyse aan")</li></ul><ol><li><strong>Leverage "Top Topical Kalender" Success</strong>:</li></ol><ul><li>Expand and update the existing content to maintain and improve current rankings</li><li>Create supporting content that links to this page to strengthen its authority</li><li>Plan for a 2025 version to capitalize on the seasonal trend, starting promotion in September/October 2024</li></ul><ol><li><strong>Technical SEO Fixes</strong>:</li></ol><ul><li>Address title length issues</li><li>Eliminate render-blocking resources</li><li>Fix duplicate meta tags</li><li>Implement proper cache control</li></ul><ol><li><strong>Backlink Profile Cleanup</strong>:</li></ol><ul><li>Conduct a thorough audit of all backlinks</li><li>Disavow the identified toxic backlink from rock-radio.net</li><li>Reach out to medium-risk domains to improve link quality or request removal if necessary</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign owners and set deadlines for each short-term task in the SEO project management tool this week.</li><li>Track progress with weekly stand-ups and a results dashboard.</li></ul><br><h3 id="medium-term-strategy-3-6-months-">Medium-Term Strategy (3-6 Months)</h3><br><ol><li><strong>Content Gap Filling</strong>:</li></ol><ul><li>Create comprehensive content targeting "digitale marketing strategie" (70-1300 monthly searches)</li><li>Develop content around "online zichtbaarheid vergroten" (10-70 monthly searches) to build on the success of the existing visibility article</li><li>Create a dedicated "marketing kalender 2024" resource (10-20 monthly searches)</li><li>Develop a series of blog posts addressing specific questions related to "advertentie google" (e.g., "Hoeveel kost adverteren op Google?", "Hoe kies je de juiste zoekwoorden voor Google Ads?")</li></ul><ol><li><strong>Local SEO Enhancement</strong>:</li></ol><ul><li>For client portfolio pages ranking for location-specific terms (e.g., "nores genk"), implement local SEO best practices:</li><li>Ensure proper Google Business Profile optimization</li><li>Encourage customer reviews</li><li>Build citations on relevant local directories</li><li>Create location-specific content</li></ul><ol><li><strong>Internal Linking Structure</strong>:</li></ol><ul><li>Develop a strategic internal linking plan to distribute link equity to underperforming pages</li><li>Create content clusters around core service areas</li></ul><ol><li><strong>Backlink Diversification Strategy</strong>:</li></ol><ul><li>Develop a targeted outreach campaign to Belgian industry publications</li><li>Create shareable content assets that naturally attract links</li><li>Pursue guest posting opportunities on relevant Belgian marketing and business websites</li><li>Target authoritative Belgian business directories not currently linking to Conceptic</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Align medium-term content themes with seasonal business cycles (e.g., planning calendars, budget cycles) for better timing and relevance.</li></ul><br><h3 id="long-term-vision-6-12-months-">Long-Term Vision (6-12 Months)</h3><br><ol><li><strong>Authority Building</strong>:</li></ol><ul><li>Develop comprehensive resources that position Conceptic as the go-to authority for specific marketing topics in Belgium</li><li>Create a regular content calendar based on the successful "Topical Kalender" concept</li><li>Consider creating video content explaining Google Ads and showcasing Conceptic's expertise</li></ul><ol><li><strong>Technical Excellence</strong>:</li></ol><ul><li>Implement advanced technical SEO improvements</li><li>Optimize site architecture for maximum crawlability and indexation</li></ul><ol><li><strong>Backlink Authority Growth</strong>:</li></ol><ul><li>Focus on acquiring links from higher-authority domains</li><li>Develop relationships with industry influencers and publications</li><li>Create case studies featuring successful client projects to attract industry attention and links</li></ul><ol><li><strong>Competitor Monitoring Strategy</strong>:</li></ol><ul><li>Implement ongoing monitoring of Dtch Digitals, Varamedia, and MonkeyProof's SERP performance</li><li>Analyze new keywords these competitors begin ranking for</li><li>Adapt content strategy based on competitive insights</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Allocate budget and resources for long-term initiatives in Q4 planning sessions.</li><li>Set quarterly goals for authority metrics (DR, referring domains, top-positions percentage).</li></ul><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><br><p>Conceptic has established strong organic growth momentum in Belgium, with a 193.48% increase in ETV over the past year. Our analysis reveals significant opportunities to further enhance search performance by:</p><br><ol><li>Optimizing high-potential portfolio pages for client brand keywords with substantial search volume</li><li>Capitalizing on the success of the "Top Topical Kalender" page and its seasonal trends</li><li>Immediately addressing the underperformance for the valuable "advertentie google" keyword where competitors are currently outranking Conceptic</li><li>Creating targeted content for high-value keywords like "digitale marketing strategie"</li><li>Addressing technical SEO issues to improve overall site performance</li><li>Cleaning up and diversifying the backlink profile to build domain authority</li><li>Implementing competitor-informed strategies, particularly adopting question-based titles and descriptions that directly address user intent</li></ol><br><p>WP SEO AI's comprehensive toolset is ideally positioned to help Conceptic implement these recommendations through our AI-powered keyword analysis, content optimization, technical SEO audits, competitor tracking, and backlink monitoring features. Our platform can streamline the execution of this strategy while providing ongoing monitoring and adjustment to ensure maximum ROI from SEO efforts.</p><br><hr><br><p><em>This research report is based on SEO data analysis for Conceptic in the Belgian market, focusing on actionable insights to improve organic search performance.</em></p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Conceptic',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

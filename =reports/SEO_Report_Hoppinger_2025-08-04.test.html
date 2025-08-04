@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Hoppinger</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Hoppinger • hoppinger.com</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 4, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>August 2024</th><th>July 2025</th><th>Change (%)</th></tr></thead><tbody><tr><td class="">Total Ranking Keywords</td><td class="">309</td><td class="">92</td><td class="negative">-70.23%</td></tr><tr><td class="">Keywords in Position 1</td><td class="">7</td><td class="">3</td><td class="negative">-57.14%</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">1</td><td class="">0</td><td class="negative">-100%</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">15</td><td class="">7</td><td class="negative">-53.33%</td></tr><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">4,204.33</td><td class="">713.17</td><td class="negative">-83.04%</td></tr><tr><td class="">Estimated Paid Traffic Cost</td><td class="">$1,689.21</td><td class="">$677.60</td><td class="negative">-59.91%</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The 70%+ drop in ranking keywords and 83% decline in ETV signals a need for immediate, high-impact optimizations.</li><li>Prioritize quick wins in title/tag optimizations and content refreshes on high-potential pages.</li><li>Allocate resources to address technical SEO gaps within 30 days.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Keywords They Rank Well For (Hoppinger Ranks Poorly)</th><th>Search Volume</th><th>Competition</th><th>Notes</th></tr></thead><tbody><tr><td class="">iodigital.com</td><td class="">klantportaal, klantportaal ontwikkelen, portaal ontwikkelen, drupal website</td><td class="">90 - 720</td><td class="">Low</td><td class="">Uses question-based titles, clear CTAs</td></tr><tr><td class="">skrepr.com</td><td class="">klantenportaal ontwikkelen</td><td class="">110</td><td class="">Low</td><td class="">Highlights CRM/ERP integration</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a detailed SERP feature analysis for “klantportaal” related queries to identify competitor rich snippets and Q&A usage.</li><li>Audit competitor landing pages to uncover structural and content elements driving their low-competition keyword success.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">klantportaal</td><td class="">720</td><td class="">Low</td><td class="">High search volume, low competition, aligns with core services</td></tr><tr><td class="">klantportaal ontwikkelen</td><td class="">110</td><td class="">Low</td><td class="">Strong transactional intent, competitor focus</td></tr><tr><td class="">klantenportaal ontwikkelen</td><td class="">110</td><td class="">Low</td><td class="">Similar to above, opportunity to capture market share</td></tr><tr><td class="">drupal website</td><td class="">210</td><td class="">Low</td><td class="">Technical expertise showcase, competitor ranks well</td></tr><tr><td class="">digitale transformatie partner</td><td class="">28</td><td class="">Low</td><td class="">Content gap, aligns with digital transformation services</td></tr><tr><td class="">ux design bureau</td><td class="">63</td><td class="">Medium</td><td class="">Growing interest, opportunity to improve rankings</td></tr><tr><td class="">room (student housing related)</td><td class="">22,200</td><td class="">Medium</td><td class="">Seasonal, high volume, existing partial rankings</td></tr><tr><td class="">AI and technology solutions for healthcare and education</td><td class="">N/A</td><td class="">Low</td><td class="">Sector-specific emerging topic, high relevance</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop a prioritized content roadmap focusing first on “klantportaal” (720 SV) and “drupal website” (210 SV) for early traffic gains.</li><li>Map each keyword to existing pages or plan new, optimized landing pages.</li><li>Assign deadlines: 2 weeks for mapping, 4 weeks for content creation.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li><strong>Organic Visibility Decline:</strong> 83% drop in estimated traffic volume and 70% reduction in ranking keywords over the past 12 months.</li><li><strong>Keyword Portfolio Shrinkage:</strong> Only 92 keywords currently ranking vs. 309 a year ago; most rankings outside top 10.</li><li><strong>Top Competitors:</strong> iodigital.com and skrepr.com outperform Hoppinger on key transactional keywords like "klantportaal ontwikkelen."</li><li><strong>Technical SEO Issues:</strong> Short homepage title (32 chars), unminified CSS/JS, missing alt text, duplicate titles, and production subdomain pages indexed.</li><li><strong>Content Gaps:</strong> Lack of content targeting broader digital transformation and innovation keywords.</li><li><strong>Backlink Profile:</strong> Healthy but with 31 broken backlinks and toxic links needing disavowal; opportunities to gain links from high-authority domains linking to competitors.</li><li><strong>Immediate Opportunities:</strong> Optimize titles/meta for "klantportaal," create dedicated portal pages, fix technical issues, expand case studies, and pursue targeted backlink outreach.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Form a cross-functional SEO task force (content, dev, UX) to tackle identified issues in parallel.</li><li>Use the TL;DR as a quarterly scoreboard to measure the impact of implemented changes.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-hoppinger" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Hoppinger</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Hoppinger is a digital partner that specializes in guiding clients through digital innovation and transformation. Their service offerings include digital strategy, UX design, data & performance, AI & innovation, and technology solutions. They work across multiple sectors including healthcare, housing, education, and industry. <a href="https://hoppinger.com" class="link-reference" target="_blank" rel="noopener">Company Website</a></p><br></div></section>
+                <section id="research-objectives" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Research Objectives</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for Hoppinger in the Netherlands market, focusing on actionable insights to improve their search visibility, outrank competitors, and capture untapped opportunities.</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-trend">Organic Visibility Trend</h3><p>Hoppinger has experienced a significant decline in organic visibility over the past year, with estimated traffic volume (ETV) decreasing by <strong>83.04%</strong> from August 2024 to July 2025. This alarming trend indicates an urgent need for SEO intervention.</p><br><h3 id="current-organic-visibility-july-2025-">Current Organic Visibility (July 2025)</h3><ul><li><strong>Position 1</strong>: 3 keywords (57.14% decrease from previous year)</li><li><strong>Positions 2-3</strong>: 0 keywords (100% decrease)</li><li><strong>Positions 4-10</strong>: 7 keywords (53.33% decrease)</li><li><strong>Positions 11-20</strong>: 19 keywords (50% decrease)</li><li><strong>Positions 21-30</strong>: 20 keywords (42.86% decrease)</li><li><strong>Total Estimated Traffic Volume (ETV)</strong>: 713.17</li><li><strong>Estimated Paid Traffic Cost</strong>: $677.60</li></ul><br><h3 id="historical-comparison-august-2024-">Historical Comparison (August 2024)</h3><ul><li><strong>Position 1</strong>: 7 keywords</li><li><strong>Positions 2-3</strong>: 1 keyword</li><li><strong>Positions 4-10</strong>: 15 keywords</li><li><strong>Total Estimated Traffic Volume (ETV)</strong>: 4,204.33</li><li><strong>Estimated Paid Traffic Cost</strong>: $1,689.21</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ol><li><code>https://www.hoppinger.com/nl/insights/roomnl-het-nieuwe-landelijk-inschrijfportaal-voor-studentenwoningen</code></li></ol><ul><li>Highest ETV (169.34)</li><li>Estimated paid traffic cost ($291.28)</li><li>Ranks for 6 keywords</li></ul><br><ol><li><code>https://www.hoppinger.com/</code> (Homepage)</li></ol><ul><li>High ETV (179.36)</li><li>Ranks in position 1</li></ul><br><ol><li><code>https://www.hoppinger.com/nl</code> (Dutch homepage)</li></ol><ul><li>High ETV (97.64)</li><li>Ranks in position 1</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Increase internal linking to top-performing pages to boost topical authority.</li><li>Update these pages with CTAs to capture and convert any additional organic traffic.</li></ul><br><h3 id="underperforming-pages">Underperforming Pages</h3><ol><li>Service/Solution Pages</li></ol><ul><li>Most <code>/nl/oplossingen/</code> pages have low ETV values (below 1)</li><li>Typically rank in positions 21-100</li></ul><br><ol><li>Case Study Pages</li></ol><ul><li>Many <code>/nl/cases/</code> pages have minimal organic traffic</li><li>Represent missed opportunities to showcase expertise</li></ul><br><ol><li>Production Environment Issues</li></ol><ul><li>Pages on <code>productie.hoppinger.com</code> subdomain are ranking in search results</li><li>These should be noindexed to prevent competition with main domain content</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize case study and service/solution pages with high conversion potential for content upgrades.</li><li>Noindex production subdomain pages to consolidate link equity on primary site.</li></ul><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><ol><li>Page Title Issues</li></ol><ul><li>Current title "Your Digital Partner | Hoppinger" is only 32 characters</li><li>Recommended minimum is 50 characters for optimal SEO performance</li><li>Missing important keywords and value propositions</li></ul><br><ol><li>On-Page Optimization Issues</li></ol><ul><li>1 image without alt text (accessibility and SEO issue)</li><li>1 unminified CSS file and 3 unminified JS files affecting performance</li><li>Render-blocking resources affecting page load speed</li><li>Low content-to-HTML ratio</li></ul><br><ol><li>Structural Issues</li></ol><ul><li>Non-SEO-friendly URL structure (contains special characters)</li><li>Duplicate title tags</li><li>Page load time is 0.372 seconds (good but could be optimized further)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Tackle title tag expansion and canonical/deduplication fixes within the next sprint.</li><li>Schedule a performance audit to minify CSS/JS and resolve render-blocking resources.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-keyword-performance">Current Keyword Performance</h3><p>Hoppinger's keyword portfolio has significantly shrunk, with the total number of ranking keywords decreasing from 309 in August 2024 to just 92 in July 2025. This represents a 70% reduction in keyword visibility.</p><br><h3 id="top-performing-keywords-positions-1-10-">Top Performing Keywords (Positions 1-10)</h3><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">digital partner hoppinger</td><td class="">320</td><td class="">1</td></tr><tr><td class="">hoppinger</td><td class="">590</td><td class="">1</td></tr><tr><td class="">marijn bom</td><td class="">70</td><td class="">1</td></tr><tr><td class="">zovio</td><td class="">140</td><td class="">4</td></tr><tr><td class="">apotheek partners</td><td class="">170</td><td class="">6</td></tr><tr><td class="">klantportaal ontwikkelen</td><td class="">110</td><td class="">6</td></tr><tr><td class="">room inschrijven</td><td class="">110</td><td class="">8</td></tr><tr><td class="">bibliotheek twente</td><td class="">590</td><td class="">9</td></tr><tr><td class="">room studentenwoning</td><td class="">90</td><td class="">9</td></tr><tr><td class="">klantportaal laten maken</td><td class="">170</td><td class="">10</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Ensure all top-10 keyword pages have optimized meta tags, H1s, and clear CTAs aligned with search intent.</li><li>Monitor fluctuations weekly to catch any ranking drops early.</li></ul><br><h3 id="high-value-keyword-opportunities-positions-11-30-">High-Value Keyword Opportunities (Positions 11-30)</h3><ul><li><strong>High Volume Keywords</strong>: "room" (22,200 searches), "rooms" (22,200), "gastronomix" (5,400), "gastronomixs" (5,400), "evofenedex" (3,600), "mycoa" (3,600), "lelystad bibliotheek" (2,900), "bibliotheek lelystad" (2,900)</li><li><strong>Medium Volume Keywords</strong>: "ihe delft institute for water education" (1,600), "ihe delft" (1,600), "flevomeer bibliotheek lelystad" (1,000), "liftinstituut" (880), "jaarplan" (720)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Keywords on page 2-3 offer low-effort, high-reward opportunities through targeted on-page optimization and internal linking.</li><li>Focus first on “room” and “gastronomix” clusters for immediate ETV improvements.</li></ul><br><h3 id="content-performance-by-keyword-type">Content Performance by Keyword Type</h3><ol><li><strong>Case Studies</strong>: A significant number of ranking keywords lead to case study pages (e.g., "zovio," "apotheek partners," "liftinstituut," "gastronomixs," "evofenedex," "mycoa"). This indicates case studies are a strong content format for Hoppinger.</li><li><strong>Service Pages</strong>: Keywords like "klantportaal ontwikkelen" and "klantenportaal ontwikkelen" rank for the "Platformen & Portalen" service page.</li><li><strong>Insights/Blog Posts</strong>: Keywords like "jaarplan" and "prototype testen" rank for blog posts/insights articles.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Expand case study formats into short-form blog posts summarizing key takeaways to capture informational queries.</li><li>Cross-link service pages and case study content to distribute authority.</li></ul><br><h3 id="seasonal-keyword-trends">Seasonal Keyword Trends</h3><ul><li><strong>Emerce 100</strong>: Keywords like "emerce 100" and "emerce top 100" show search volume spikes around April, coinciding with the release of the Emerce 100 list.</li><li><strong>Student Housing</strong>: "Room" and related keywords likely have seasonal fluctuations aligned with academic years.</li></ul><br><h3 id="content-gaps">Content Gaps</h3><p>A notable absence of rankings for broader digital transformation keywords (e.g., "digitale transformatie," "digitalisering bedrijf," "innovatie partner") represents a significant content opportunity.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>A digital transformation pillar page can serve as a hub for broader innovation topics, targeting high-intent audience segments.</li><li>Align new content with enterprise trends (e.g., AI in healthcare) to tap emerging search demand.</li></ul><br><h3 id="recommended-priority-keywords">Recommended Priority Keywords</h3><p>Based on search volume and competition analysis:</p><br><p><strong>Top Priority Keywords</strong>:</p><ul><li>"klantportaal" (720 monthly searches, LOW competition)</li><li>"klantportaal ontwikkelen" (110 monthly searches, LOW competition)</li><li>"klantenportaal ontwikkelen" (110 monthly searches, LOW competition)</li><li>"drupal website" (210 monthly searches, LOW competition)</li><li>"ux design bureau" (63 monthly searches, MEDIUM competition)</li><li>"digitale transformatie partner" (28 monthly searches, LOW competition)</li><li>"digital innovation and transformation" (high-value keyword with educational institutions dominating SERPs)</li><li>"UX design and data performance" (growing search trend with low competition)</li><li>"AI and technology solutions for healthcare and education" (sector-specific opportunity)</li></ul><br><p><strong>Secondary Keywords</strong>:</p><ul><li>"portaal ontwikkelen" (90 monthly searches, LOW competition)</li><li>"portal ontwikkelen" (90 monthly searches, LOW competition)</li><li>"ux design bureau rotterdam" (8 monthly searches, LOW competition)</li><li>"ux design bureau utrecht" (10 monthly searches, HIGH competition)</li><li>"ux design bureau amsterdam" (10 monthly searches, HIGH competition)</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><br><h4 id="1-io-digital-iodigital-com-">1. IO Digital (iodigital.com)</h4><ul><li><strong>Type</strong>: Direct competitor offering similar digital platform and portal development services</li><li><strong>Key Strengths</strong>:</li><li>Strong focus on "klantportaal" (customer portal) related keywords</li><li>Consistently high rankings for variations like "klantportaal ontwikkelen" and "portal ontwikkelen"</li><li>Content around Drupal development</li><li>Uses question-based titles for informational queries (e.g., "Wat zijn de kenmerken van een succesvol klantportaal?")</li><li>Clear, specific meta descriptions that provide compelling reasons to click</li></ul><br><h4 id="2-skrepr-skrepr-com-">2. Skrepr (skrepr.com)</h4><ul><li><strong>Type</strong>: Direct competitor offering similar software and IT solutions, including customer portals</li><li><strong>Key Strengths</strong>:</li><li>Dedicated page specifically targeting "klantportaal" services</li><li>Meta descriptions highlight integration with CRM/ERP systems as a strong selling point</li><li>Uses keyword-rich titles (e.g., "Klantenportaal - Klantportaal")</li><li>Clear value propositions in SERP elements</li></ul><br><h4 id="3-het-nieuwe-instituut-hetnieuweinstituut-nl-">3. Het Nieuwe Instituut (hetnieuweinstituut.nl)</h4><ul><li><strong>Type</strong>: Indirect competitor targeting similar audience interested in digital culture and innovation</li><li><strong>Key Strengths</strong>:</li><li>High number of backlink intersections with Hoppinger (85 shared backlinks)</li><li>Potential source for backlink opportunities</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Perform a SERP element audit for each competitor’s top-ranking pages to benchmark title tags, meta descriptions, and structured data usage.</li><li>Integrate key findings into Hoppinger’s page templates to match or exceed competitor standards.</li></ul><br><h3 id="keyword-performance-comparison">Keyword Performance Comparison</h3><br><h4 id="keywords-where-competitors-outperform-hoppinger-">Keywords Where Competitors Outperform Hoppinger:</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th><th>Top Competitor</th></tr></thead><tbody><tr><td class="">klantportaal</td><td class="">720</td><td class="">LOW</td><td class="">iodigital.com</td></tr><tr><td class="">klantportaal ontwikkelen</td><td class="">110</td><td class="">LOW</td><td class="">iodigital.com</td></tr><tr><td class="">klantenportaal ontwikkelen</td><td class="">110</td><td class="">LOW</td><td class="">skrepr.com</td></tr><tr><td class="">portaal ontwikkelen</td><td class="">90</td><td class="">LOW</td><td class="">iodigital.com</td></tr><tr><td class="">portal ontwikkelen</td><td class="">90</td><td class="">LOW</td><td class="">iodigital.com</td></tr><tr><td class="">drupal website</td><td class="">210</td><td class="">LOW</td><td class="">iodigital.com</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Target overlapping competitor keywords via cluster content strategies to capture intent and reduce head-to-head SERP battles.</li></ul><br><h3 id="serp-strategy-analysis">SERP Strategy Analysis</h3><br><h4 id="title-and-meta-description-comparison-">Title and Meta Description Comparison:</h4><br><ol><li><strong>Hoppinger.com</strong>:</li></ol><ul><li>Uses generic titles and meta descriptions focusing on "platforms & portals"</li><li>Doesn't specifically address user queries like "klantportaal"</li><li>Meta descriptions often cut off or lack compelling CTAs</li><li>Current homepage title "Your Digital Partner | Hoppinger" is only 32 characters (well below recommended 50-60 characters)</li></ul><br><ol><li><strong>iodigital.com</strong>:</li></ol><ul><li>Titles are specific and directly address keywords</li><li>Example: "Wat zijn de kenmerken van een succesvol klantportaal?"</li><li>Meta descriptions clearly explain what the page offers</li></ul><br><ol><li><strong>skrepr.com</strong>:</li></ol><ul><li>Uses keyword-rich titles (e.g., "Klantenportaal - Klantportaal")</li><li>Meta descriptions highlight key benefits (e.g., integration with CRM/ERP)</li></ul><br><h4 id="effective-patterns-in-competitor-serp-elements-">Effective Patterns in Competitor SERP Elements:</h4><ul><li><strong>Specificity</strong>: Competitors use titles and meta descriptions that directly address search queries</li><li><strong>Value Proposition</strong>: Competitors highlight key benefits in meta descriptions</li><li><strong>Question-Based Titles</strong>: iodigital.com uses question-based titles for informational queries</li><li><strong>Content Types</strong>: Blog posts for informational queries, dedicated service pages for transactional queries</li></ul><br><h3 id="competitors-content-strategies">Competitors' Content Strategies</h3><br><ol><li><strong>IO Digital</strong>:</li></ol><ul><li>Creates informational blog content addressing common questions about customer portals</li><li>Maintains dedicated service pages for transactional queries</li><li>Uses case studies to demonstrate expertise</li><li>Focuses on Drupal as a technical solution</li></ul><br><ol><li><strong>Skrepr</strong>:</li></ol><ul><li>Emphasizes integration capabilities with existing systems (CRM/ERP)</li><li>Highlights technical specifications and benefits</li><li>Uses dedicated service pages with clear CTAs</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li><strong>Total Backlinks</strong>: 927</li><li><strong>Referring Domains</strong>: 221</li><li><strong>Referring Main Domains</strong>: 198</li><li><strong>Domain Rank</strong>: 252</li><li><strong>Backlink Spam Score</strong>: 11% (relatively clean profile)</li><li><strong>Broken Backlinks</strong>: 31</li><li><strong>Broken Pages</strong>: 116</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prepare a prioritized list of broken links to request fixes or redirections from webmasters within 2 weeks.</li><li>Document each outreach with status tracking in a link-building dashboard.</li></ul><br><h3 id="backlink-geography">Backlink Geography</h3><ul><li><strong>Netherlands (.nl)</strong>: 306 backlinks (32.9%)</li><li><strong>.com domains</strong>: 227 backlinks (24.5%)</li><li><strong>.org domains</strong>: 68 backlinks (7.3%)</li><li>Other TLDs: 35.3%</li></ul><br><p>This distribution shows a strong presence in the Dutch market, which is positive for local SEO performance.</p><br><h3 id="high-quality-referring-domains">High-Quality Referring Domains</h3><p>Several authoritative Dutch websites link to Hoppinger, including:</p><br><ol><li><strong>evofenedex.nl</strong> (0% spam score)</li></ol><ul><li>Industry association for logistics and international trade</li><li>Multiple links with relevant anchor text like "brandstofclausule" and "dieselprijzen"</li></ul><br><ol><li><strong>boonedam.com</strong> (0% spam score)</li></ol><ul><li>International entrance solutions company</li><li>Multiple links with various language versions</li></ul><br><ol><li><strong>emerce.nl</strong> (0% spam score)</li></ol><ul><li>Leading Dutch digital business publication</li><li>Valuable for industry authority</li></ul><br><ol><li><strong>nierstichting.nl</strong> (2% spam score)</li></ol><ul><li>Dutch Kidney Foundation</li><li>High-trust healthcare sector link</li></ul><br><ol><li><strong>corporatiegids.nl</strong> (0% spam score)</li></ol><ul><li>Housing corporation guide</li><li>Relevant to Hoppinger's housing sector work</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Engage with existing high-authority referrers by offering updated insights or guest articles to strengthen relationships.</li><li>Leverage co-marketing opportunities with industry associations (e.g., emerce.nl) for content collaboration.</li></ul><br><h3 id="backlink-competitors">Backlink Competitors</h3><p>Several high-authority domains link to Hoppinger's competitors but not to Hoppinger directly, presenting link-building opportunities:</p><br><ol><li><strong>ycombinator.com</strong> (rank: 18, 1,418 intersections)</li><li><strong>crunchbase.com</strong> (rank: 61, 63 intersections)</li><li><strong>archive.org</strong> (rank: 16, 56 intersections)</li><li><strong>hartstichting.nl</strong> (rank: 22, 22 intersections)</li><li><strong>stackoverflow.com</strong> (rank: 50, 18 intersections)</li><li><strong>fok.nl</strong> (rank: 33, 17 intersections)</li><li><strong>google.nl</strong> (rank: 1, 10 intersections)</li></ol><br><h3 id="toxic-backlinks">Toxic Backlinks</h3><p>Several potentially harmful backlinks with high spam scores were identified:</p><br><ol><li><strong>funspot.nl</strong> (90% spam score)</li><li><strong>belonnanotservice.ga</strong> (85% spam score)</li><li><strong>what-happens-next.xyz</strong> (85% spam score)</li><li><strong>bestdirectorysite.com</strong> (75% spam score)</li><li><strong>dotiqo.com</strong> (70% spam score)</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Compile the toxic domains into a formal disavow file and submit to Google Search Console.</li><li>Schedule quarterly backlink audits to track new toxic linking activity.</li></ul><br><h3 id="backlink-types-and-attributes">Backlink Types and Attributes</h3><ul><li><strong>Anchor Links</strong>: 669 (72.2%)</li><li><strong>Image Links</strong>: 42 (4.5%)</li><li><strong>Canonical Links</strong>: 19 (2.0%)</li><li><strong>Redirect Links</strong>: 12 (1.3%)</li></ul><br><ul><li><strong>Nofollow Links</strong>: 108 (11.7%)</li><li><strong>Noopener Links</strong>: 259 (27.9%)</li><li><strong>Noreferrer Links</strong>: 219 (23.6%)</li></ul><br><p>The relatively low percentage of nofollow links (11.7%) indicates most backlinks pass link equity, which is positive for SEO.</p><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our comprehensive SEO analysis, we recommend:</p><br><h3 id="1-optimize-for-klantportaal-keywords">1. Optimize for "Klantportaal" Keywords</h3><ul><li><strong>Quick Win</strong>: Rewrite the title and meta description of the existing "Platformen & Portalen" page to specifically target "klantportaal ontwikkeling" and "klantenportaal ontwikkelen"</li><li><strong>Suggested Title</strong>: "Klantportaal Ontwikkelen | Schaalbare Portalen voor uw Bedrijf | Hoppinger"</li><li><strong>Suggested Meta Description</strong>: "Laat Hoppinger.com uw klantportaal ontwikkelen. Gebruiksvriendelijke en schaalbare portalen die meegroeien met uw organisatie. Vraag een offerte aan!"</li><li><strong>Long-term</strong>: Create a dedicated "Klantportaal" page targeting all relevant keywords:</li><li>Highlight benefits of a customer portal</li><li>Showcase Hoppinger's expertise in portal development</li><li>Include clear calls to action</li><li>Feature case studies of successful portal implementations</li></ul><br><h3 id="2-develop-a-klantportaal-content-marketing-strategy">2. Develop a "Klantportaal" Content Marketing Strategy</h3><p>Create blog content addressing common questions about customer portals:</p><ul><li>"Wat zijn de voordelen van een klantportaal?"</li><li>"Hoe kies je de juiste klantportaal software?"</li><li>"Klantportaal integratie met CRM: Een stapsgewijze handleiding"</li></ul><br><h3 id="3-optimize-drupal-related-content">3. Optimize Drupal-Related Content</h3><ul><li>Review and optimize existing "Drupal website ontwikkeling" page for the "drupal website" keyword</li><li>Create more in-depth content about Drupal development to showcase expertise</li></ul><br><h3 id="4-prioritize-high-volume-lower-ranking-keywords">4. Prioritize High-Volume, Lower-Ranking Keywords</h3><p>Focus SEO efforts on improving rankings for keywords like "room" (22,200 searches), "gastronomix" (5,400), "evofenedex" (3,600), and "mycoa" (3,600) where Hoppinger already ranks on page 2-3.</p><br><h3 id="5-address-the-digital-transformation-content-gap">5. Address the Digital Transformation Content Gap</h3><p>Create comprehensive content targeting broader digital transformation keywords:</p><ul><li>Develop thought leadership content on digital transformation trends</li><li>Create service pages specifically optimized for terms like "digitale transformatie partner"</li><li>Publish case studies highlighting successful digital transformation projects</li><li>Create content modeled after high-ranking examples from Harvard Business School and Cambridge Judge Business School that focus on "digital innovation and transformation"</li></ul><br><h3 id="6-optimize-and-expand-case-study-content">6. Optimize and Expand Case Study Content</h3><p>Case studies are clearly driving rankings for Hoppinger. To capitalize on this:</p><ul><li>Ensure all case studies follow SEO best practices (keyword in title, meta description, throughout content)</li><li>Add relevant internal links to and from case studies</li><li>Include high-quality images and videos</li><li>Create more case studies in successful sectors (particularly student housing)</li></ul><br><h3 id="7-leverage-seasonal-keyword-opportunities">7. Leverage Seasonal Keyword Opportunities</h3><ul><li>Create content around the Emerce 100 in the months leading up to its release</li><li>Develop student housing-related content timed with the academic calendar</li></ul><br><h3 id="8-fix-technical-issues">8. Fix Technical Issues</h3><ul><li><strong>Title Tag Optimization</strong>: Expand the current homepage title from 32 characters to at least 50-60 characters, incorporating key service offerings and value proposition</li><li><strong>Suggested Title</strong>: "Digital Innovation & Transformation Partner | UX Design & Data Solutions | Hoppinger"</li><li><strong>Image Optimization</strong>: Add alt text to the 1 image missing it for improved accessibility and SEO</li><li><strong>Performance Optimization</strong>:</li><li>Minify the 1 CSS file and 3 JS files identified in the technical audit</li><li>Address render-blocking resources to improve page speed</li><li>Further optimize page load time (currently 0.372 seconds)</li><li><strong>Other Technical Fixes</strong>:</li><li>Address the loading issue on library pages ("De Bibliotheek FlevoMeer wordt geladen")</li><li>Implement noindex tags on production environment pages</li><li>Fix duplicate title tags</li></ul><br><h3 id="9-implement-competitor-serp-strategies">9. Implement Competitor SERP Strategies</h3><ul><li>Adopt more specific, keyword-rich titles and meta descriptions</li><li>Use question-based titles for informational content</li><li>Highlight clear value propositions in meta descriptions</li><li>Create dedicated service pages for transactional queries</li></ul><br><h3 id="10-develop-sector-specific-content-strategies">10. Develop Sector-Specific Content Strategies</h3><p>Based on our keyword analysis, we recommend creating specialized content for key sectors:</p><br><ul><li><strong>Healthcare</strong>: Create content around "AI and technology solutions for healthcare" to capitalize on growing search interest in this area</li><li>Develop case studies showcasing healthcare digital transformation projects</li><li>Create thought leadership content on healthcare innovation</li></ul><br><ul><li><strong>Education</strong>: Develop content targeting "AI and technology solutions for education" keywords</li><li>Leverage existing success with student housing projects</li><li>Create guides on digital transformation in educational institutions</li></ul><br><ul><li><strong>Data-Driven UX Design</strong>: Create content highlighting the intersection of UX design and data performance</li><li>Showcase how Hoppinger uses data to inform design decisions</li><li>Create case studies demonstrating measurable UX improvements</li></ul><br><h3 id="11-backlink-building-strategy">11. Backlink Building Strategy</h3><p>Based on our backlink analysis, we recommend:</p><br><ul><li><strong>Fix Broken Links</strong>: Address the 31 broken backlinks and 116 broken pages to reclaim lost link equity</li><li><strong>Target High-Authority Domains</strong>: Pursue backlink opportunities from domains that link to competitors but not to Hoppinger:</li><li>ycombinator.com</li><li>crunchbase.com</li><li>stackoverflow.com</li><li>hartstichting.nl</li><li>fok.nl</li><li><strong>Industry-Specific Outreach</strong>: Focus on Dutch websites in relevant sectors:</li><li>Healthcare organizations (building on existing links from nierstichting.nl)</li><li>Housing corporations (expanding from corporatiegids.nl)</li><li>Educational institutions (leveraging student housing expertise)</li><li><strong>Disavow Toxic Links</strong>: Submit a disavow file for the identified high-spam-score domains to prevent potential penalties</li><li><strong>Leverage Existing Relationships</strong>: Create more linkable content for current referring domains like evofenedex.nl and boonedam.com</li><li><strong>Content Partnerships</strong>: Explore guest posting opportunities with authoritative Dutch digital publications like emerce.nl</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Track performance metrics (rankings, traffic, conversions) for each content pillar monthly to ensure goals are met.</li></ul><br></div></section>
+                <section id="summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Summary</h2>
+                    </div>
+                    <div class="section-content"><p>Hoppinger is experiencing a significant decline in organic visibility in the Netherlands, with an 83% decrease in estimated traffic volume over the past year. Their keyword portfolio has shrunk by 70%, with most keywords ranking outside the top 10 positions.</p><br><p>Our technical analysis revealed several issues that need immediate attention, including a too-short page title (32 characters vs. recommended 50+), unminified CSS and JS files, and one image missing alt text. While the page load time is relatively good at 0.372 seconds, further optimization could improve performance.</p><br><p>The competitive analysis reveals that direct competitors like IO Digital and Skrepr are outperforming Hoppinger for high-value, low-competition keywords related to customer portals ("klantportaal"). These competitors use more specific, keyword-rich titles and meta descriptions, and maintain dedicated service pages for key offerings.</p><br><p>The backlink analysis shows a relatively healthy profile with 927 backlinks from 221 referring domains, primarily from Dutch websites. However, there are 31 broken backlinks and 116 broken pages that need attention. Several high-authority domains like ycombinator.com and stackoverflow.com link to competitors but not to Hoppinger, presenting valuable link-building opportunities.</p><br><p>With a strategic approach focusing on optimizing for "klantportaal" keywords, addressing content gaps, implementing competitor SERP strategies, fixing technical issues, and executing a targeted backlink strategy, Hoppinger can reverse their negative organic visibility trend and significantly improve their search performance in the Dutch market.</p><br><p>The most immediate opportunities include:</p><ol><li>Expanding the homepage title from 32 characters to at least 50-60 characters</li><li>Optimizing the existing "Platformen & Portalen" page for "klantportaal" keywords</li><li>Creating a dedicated customer portal page</li><li>Developing content around "digital innovation and transformation," "UX design and data performance," and "AI solutions for healthcare and education"</li><li>Fixing broken backlinks and pages</li><li>Disavowing toxic backlinks</li><li>Pursuing high-authority backlink opportunities from domains that link to competitors</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Assign clear owners and deadlines for each immediate action to maintain momentum.</li><li>Use a project management tool to visualize progress and dependencies across teams.</li></ul><br><p>These actions, combined with technical fixes and a comprehensive backlink building strategy, will help Hoppinger regain lost ground and establish stronger visibility in the Dutch digital services market.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Hoppinger',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

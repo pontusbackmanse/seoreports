@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - PTI</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">PTI • www.pti.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 4, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th><th>Notes</th></tr></thead><tbody><tr><td class="">Organic Traffic Growth (12m)</td><td class="positive">+38.73%</td><td class="">From Aug 2024 to Jul 2025 in the Netherlands</td></tr><tr><td class="">Total Estimated Traffic Volume</td><td class="">2,370.13</td><td class="">Current ETV (July 2025)</td></tr><tr><td class="">Total Ranking Keywords</td><td class="">154</td><td class="">Keywords ranked in Dutch Google</td></tr><tr><td class="">Keyword Position Distribution</td><td class="">Position 1: 0<br>Positions 2-3: 17<br>Positions 4-10: 14<br>Positions 11-20: 36<br>Positions 21-30: 26<br>Positions 31+: 61</td><td class="">Homepage ranks low (21-30)</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The homepage’s concentration in positions 21–30 indicates a priority to optimize title tags, H1s, and above-the-fold content to push key business terms into the top 10.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Keywords They Rank Well For (PTI Ranks Poorly)</th><th>Competitor Ranking</th><th>PTI Ranking</th></tr></thead><tbody><tr><td class="">Appwiki.nl</td><td class="">digitale werkbon (210 SV)</td><td class="">5</td><td class="">92</td></tr><tr><td class=""></td><td class="">digitaal werkbonnen (90 SV)</td><td class="">2</td><td class="">76</td></tr><tr><td class=""></td><td class="">digitale werkbonnen (70 SV)</td><td class="">6</td><td class="">60</td></tr><tr><td class=""></td><td class="">werkbonnen digitaal (70 SV)</td><td class="">2</td><td class="">71</td></tr><tr><td class="">nl.planningpme.com</td><td class="">verwarmings bedrijven (170 SV)</td><td class="">86</td><td class="">93</td></tr><tr><td class="">planning.nl</td><td class="">Various planning & scheduling keywords</td><td class="">High</td><td class="">Lower</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit competitor pages to identify content gaps on “digitale werkbon” and implement comparison lists or FAQs to bridge the gap.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume (NL)</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">slimme meter uitlezen enexis</td><td class="">210-260</td><td class="">Low</td><td class="">Growing interest in smart meter reading; low competition; aligns with utility portals</td></tr><tr><td class="">enexis slimme meter uitlezen</td><td class="">210-260</td><td class="">Low</td><td class="">Same as above</td></tr><tr><td class="">slimme meter essent uitlezen</td><td class="">140-210</td><td class="">Low</td><td class="">Energy provider-specific, niche opportunity</td></tr><tr><td class="">digitale werkbon</td><td class="">210</td><td class="">Medium</td><td class="">Core business keyword; currently poorly ranked; competitor content ranks well</td></tr><tr><td class="">meterstanden bijhouden app</td><td class="">30-90</td><td class="">Low</td><td class="">App-related keywords with user intent; opportunity to expand app-focused content</td></tr><tr><td class="">verwarmings bedrijven</td><td class="">170</td><td class="">High</td><td class="">Industry-specific keyword; opportunity to create targeted landing pages</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize “slimme meter uitlezen” and “digitale werkbon” in the next content sprint—low competition + high relevance = quick ranking wins.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>PTI’s organic traffic grew +38.73% over the last 12 months, driven mainly by utility meter reading portals on subdomains.</li><li>The homepage and core business pages rank poorly (positions 21-30 and below) for important field service management keywords.</li><li>Strong keyword rankings exist for utility meter reading terms, but PTI underperforms on core business keywords like "digitale werkbon" and "field service management."</li><li>Competitors like Appwiki.nl dominate key business-related keywords with listicle and comparison content strategies.</li><li>Backlink profile is moderate but overly focused on utility portals; toxic backlinks exist and should be disavowed.</li><li>Significant keyword opportunities exist in smart meter reading (provider-specific), digital work orders, and industry-specific terms.</li><li>Technical SEO is generally good but needs fixes on page speed, HTML errors, and image alt attributes.</li><li>Content strategy should focus on homepage optimization, new landing pages for smart meters and digital work orders, and revitalizing blog/knowledge base.</li><li>Backlink strategy should diversify anchor text, target high-authority Dutch domains, and clean toxic links.</li></ul><br><hr><br><hr><br></div></section>
+                <section id="seo-research-report-pti-www-pti-nl-" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: PTI (www.pti.nl)</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for PTI, a company specializing in field service management solutions in the Netherlands. Our analysis reveals a 38.73% increase in organic traffic over the past year, though with significant opportunities for improvement, particularly for the company's homepage and content sections. We've identified key competitors and specific keyword gaps that present immediate optimization opportunities. The backlink analysis reveals a medium-quality link profile with opportunities for improvement through strategic link building. This report outlines PTI's current SEO performance, keyword opportunities, competitive landscape, backlink profile, and actionable recommendations to improve their search visibility and organic traffic in the Dutch market.</p><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>PTI is a specialized provider of field service management solutions based in the Netherlands. Their core offerings include:</p><br><ol><li><strong>PTI Planning Suite</strong>: A software suite designed to improve the efficiency and simplicity of planning and executing field service operations. (www.pti.nl)</li><li><strong>Consultancy Services</strong>: Advisory services ranging from software onboarding to work process optimization. (www.pti.nl)</li><li><strong>Industry-Specific Solutions</strong>: Tailored solutions for sectors including energy, heating, and water. (www.pti.nl)</li></ol><br><p>Their business focus is on making field service planning easier and more predictable for planners, technicians, and customers. (www.pti.nl)</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-traffic-growth">Organic Traffic Growth</h3><p>PTI has experienced a 38.73% increase in Estimated Traffic Volume from August 2024 to July 2025, indicating positive growth in organic visibility.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Leverage growth on utility subdomains by adding contextual CTAs and internal links pointing to core service pages.</li></ul><br><h3 id="current-organic-visibility-july-2025-">Current Organic Visibility (July 2025)</h3><ul><li><strong>Total Estimated Traffic Volume</strong>: 2,370.13</li><li><strong>Total Ranking Keywords</strong>: 154</li><li><strong>Estimated Paid Traffic Cost</strong>: $798.54</li><li><strong>Position Distribution</strong>:</li><li>Position 1: 0 keywords</li><li>Positions 2-3: 17 keywords</li><li>Positions 4-10: 14 keywords</li><li>Positions 11-20: 36 keywords</li><li>Positions 21-30: 26 keywords</li><li>Positions 31+: 61 keywords</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Target the 36 keywords in positions 11–20 with on-page improvements to push them into the top 10.</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ul><li><strong>Meter Reading Portals</strong>: The subdomain <code>dunea-meterstanden.pti.nl</code> is the highest-performing page with an ETV of 2,016.29, accounting for a significant portion of the site's organic traffic.</li><li><strong>Other Utility Portals</strong>: <code>vattenfall-meterstanden.pti.nl</code> also performs well with an ETV of 171.95.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Model new landing pages for “digital work orders” on the success factors of these high-traffic portals (clear forms, concise copy, trust signals).</li></ul><br><h3 id="underperforming-pages">Underperforming Pages</h3><ul><li><strong>Homepage</strong>: The main homepage (pti.nl) is ranking in positions 21-30, which is unusually low for a homepage and indicates significant optimization opportunities.</li><li><strong>News/Blog Content</strong>: Pages under <code>/over-pti/nieuws/</code> have low ETV and rank in lower positions (31-100).</li><li><strong>Knowledge Base</strong>: Content under <code>/kennisbank/</code> shows poor visibility and traffic performance.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a content audit of <code>/over-pti/nieuws/</code> and <code>/kennisbank/</code> to consolidate outdated posts and identify topics for refresh with keyword focus.</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><ul><li><strong>Overall Score</strong>: 97.07 (Good)</li><li><strong>Strengths</strong>:</li><li>HTTPS implementation</li><li>Proper canonical URLs</li><li>Mobile-friendly design</li><li>No duplicate content issues</li><li><strong>Areas for Improvement</strong>:</li><li>Resource errors in HTML code (lines 732-873)</li><li>Render-blocking scripts and stylesheets affecting page speed</li><li>Missing image alt and title attributes</li><li>Low content-to-code ratio</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize fixing render-blocking resources and adding alt text to images on high-traffic pages first, then roll out across the site.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-keyword-performance">Current Keyword Performance</h3><p>PTI's keyword portfolio shows a mixed performance with:</p><br><h4 id="top-performing-keywords-rank-1-10-">Top Performing Keywords (Rank 1-10)</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">delta meterstanden doorgeven</td><td class="">50</td><td class="">2</td></tr><tr><td class="">dunea meterstand</td><td class="">1000</td><td class="">2</td></tr><tr><td class="">dunea meterstand doorgeven</td><td class="">210</td><td class="">2</td></tr><tr><td class="">dunea meterstanden</td><td class="">1000</td><td class="">2</td></tr><tr><td class="">dunea meterstanden doorgeven</td><td class="">170</td><td class="">2</td></tr><tr><td class="">dunea nl</td><td class="">140</td><td class="">2</td></tr><tr><td class="">vattenfall meterstanden</td><td class="">260</td><td class="">3</td></tr><tr><td class="">vattenfall meterstanden doorgeven</td><td class="">480</td><td class="">3</td></tr><tr><td class="">onderhoudswerkzaamheden</td><td class="">170</td><td class="">4</td></tr><tr><td class="">field service app</td><td class="">90</td><td class="">9</td></tr><tr><td class="">buitendienst medewerker</td><td class="">170</td><td class="">10</td></tr></tbody></table></div><h4 id="underperforming-high-value-keywords-rank-11-30-">Underperforming High-Value Keywords (Rank 11-30)</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">mijn dunea</td><td class="">2900</td><td class="">13</td></tr><tr><td class="">field management service</td><td class="">170</td><td class="">13</td></tr><tr><td class="">watermeterstand doorgeven</td><td class="">1300</td><td class="">14</td></tr><tr><td class="">watermeterstanden doorgeven</td><td class="">1300</td><td class="">14</td></tr><tr><td class="">meterstand doorgeven water</td><td class="">1300</td><td class="">15</td></tr><tr><td class="">field service apps</td><td class="">90</td><td class="">16</td></tr><tr><td class="">slimme technologie</td><td class="">70</td><td class="">17</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Focus on “mijn dunea” and “watermeterstanden doorgeven” with dedicated FAQs and improved internal linking to boost positions into the top 10.</li></ul><br><h3 id="keyword-opportunities">Keyword Opportunities</h3><p>Based on the current performance, PTI should focus on:</p><br><ol><li><strong>Smart Meter Keywords</strong>:</li></ol><ul><li>slimme meter uitlezen enexis: 210-260 monthly searches | LOW competition</li><li>enexis slimme meter uitlezen: 210-260 monthly searches | LOW competition</li><li>slimme meter essent uitlezen: 140-210 monthly searches | LOW competition</li><li>uitlezen slimme meter essent: 140-210 monthly searches | LOW competition</li></ul><br><ol><li><strong>App-Related Keywords</strong>:</li></ol><ul><li>meterstanden bijhouden app: 30-90 monthly searches | LOW competition</li><li>app meterstanden bijhouden: 30-90 monthly searches | LOW competition</li><li>app uitlezen slimme meter: 110-210 monthly searches | MEDIUM competition</li></ul><br><ol><li><strong>Energy Provider-Specific Terms</strong>:</li></ol><ul><li>budget energie meterstanden doorgeven: 90-170 monthly searches | LOW competition</li><li>mijn innova energie nl meterstanden: 30-140 monthly searches | LOW competition</li></ul><br><ol><li><strong>Core Business Keywords</strong>:</li></ol><ul><li>Terms related to “field service management,” “planning software,” and “technician scheduling.”</li></ul><br><ol><li><strong>Digital Work Order Keywords</strong>:</li></ol><ul><li>“digitale werkbon” terms where PTI is currently ranking poorly (positions 60-92).</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Build a 3-month content calendar assigning each opportunity keyword to a new landing page or blog post, with clear deadlines and owners.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><p>Our analysis has identified three primary competitors in the Dutch market:</p><br><ol><li><strong>Appwiki.nl</strong></li></ol><ul><li><strong>Strengths</strong>: High keyword rankings, significant estimated traffic volume</li><li><strong>Content Strategy</strong>: Focuses on listicle-style content (e.g., “7 gratis werkbon apps”)</li><li><strong>Type</strong>: Direct competitor offering a platform for comparing business software solutions</li><li><strong>Key Differentiator</strong>: Excels at comparison content that helps users evaluate options</li></ul><br><ol><li><strong>nl.planningpme.com</strong></li></ol><ul><li><strong>Strengths</strong>: High keyword rankings, substantial estimated traffic volume</li><li><strong>Content Strategy</strong>: Informational articles focused on planning and scheduling software</li><li><strong>Type</strong>: Direct competitor offering planning and scheduling solutions</li></ul><br><ol><li><strong>planning.nl</strong></li></ol><ul><li><strong>Strengths</strong>: High keyword rankings, substantial estimated traffic volume</li><li><strong>Type</strong>: Direct competitor offering planning and scheduling solutions</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Mirror Appwiki’s format by creating “Top X” comparison articles for core PTI services (e.g., top field service apps).</li></ul><br><h3 id="keyword-gap-analysis">Keyword Gap Analysis</h3><p>PTI is significantly underperforming compared to competitors for several high-value keywords:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th><th>PTI Ranking</th><th>Top Competitor Ranking</th></tr></thead><tbody><tr><td class="">digitale werkbon</td><td class="">210</td><td class="">Medium</td><td class="">92</td><td class="">Appwiki.nl (5)</td></tr><tr><td class="">digitaal werkbonnen</td><td class="">90</td><td class="">Low</td><td class="">76</td><td class="">Appwiki.nl (2)</td></tr><tr><td class="">digitale werkbonnen</td><td class="">70</td><td class="">Low</td><td class="">60</td><td class="">Appwiki.nl (6)</td></tr><tr><td class="">werkbonnen digitaal</td><td class="">70</td><td class="">Medium</td><td class="">71</td><td class="">Appwiki.nl (2)</td></tr><tr><td class="">verwarmings bedrijven</td><td class="">170</td><td class="">High</td><td class="">93</td><td class="">nl.planningpme.com (86)</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct on-page SEO audits for each of these pages, update headings, content depth, and internal links to address these gaps directly.</li></ul><br><h3 id="competitor-content-strategies">Competitor Content Strategies</h3><p>Appwiki.nl's successful content strategy includes:</p><ul><li><strong>Listicle Format</strong>: Articles titled “7 gratis werkbon apps” that directly address user intent to find and compare options</li><li><strong>Specific Titles</strong>: Highly specific titles that include numbers and clear value propositions</li><li><strong>Comprehensive Comparisons</strong>: Content that allows users to evaluate multiple solutions at once</li><li><strong>Clear Call to Action</strong>: Snippets with direct instructions for users</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Integrate clear CTAs and comparison tables into core service pages to replicate competitor success in engagement and dwell time.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><p>PTI's backlink profile shows moderate strength with room for improvement:</p><ul><li><strong>Total Backlinks</strong>: 286</li><li><strong>Referring Domains</strong>: 136</li><li><strong>Referring Main Domains</strong>: 126</li><li><strong>Domain Rank</strong>: 171</li><li><strong>Backlink Spam Score</strong>: 26% (Medium-Low)</li><li><strong>Broken Backlinks</strong>: 4</li><li><strong>Broken Pages</strong>: 14</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Increase referring domains by 20% in the next 3 months, focusing on core business verticals.</li></ul><br><h3 id="geographic-distribution">Geographic Distribution</h3><ul><li><strong>Netherlands (.nl)</strong>: 146 links (55.7%)</li><li><strong>International (.com)</strong>: 49 links (18.7%)</li><li><strong>India (.in)</strong>: 11 links (4.2%)</li><li><strong>Other TLDs</strong>: 21.4%</li></ul><br><h3 id="link-quality-analysis">Link Quality Analysis</h3><ul><li><strong>Low Spam Score Links (0-30%)</strong>: ~65% of backlinks (vattenfall.nl, dunea.nl, engie.nl, enexis.nl)</li><li><strong>Medium Spam Score Links (31-60%)</strong>: ~30% of backlinks (quero.party, fashioment.com)</li><li><strong>High Spam Score Links (61-100%)</strong>: ~5% of backlinks (99bestsite.com, ranksdirectory.com)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prepare a disavow file for high-spam domains and proactively outreach to existing partners for context-rich anchor text swaps.</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><ul><li><strong>Primary Anchor Text</strong>: “Meterstand doorgeven”</li><li><strong>Brand Anchors</strong>: “PTI”, “pti.nl”, “www.pti.nl”</li><li><strong>Generic Anchors</strong>: “Naar de website”</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Diversify anchor text by 30% over the next quarter to include “field service management” and “planning software.”</li></ul><br><h3 id="backlink-opportunities">Backlink Opportunities</h3><p>Analysis of competitors' backlink profiles reveals several high-authority domains that link to competitors but not to PTI:</p><ul><li><strong>High-Priority Targets</strong>: google.nl (rank 21), avrotros.nl (rank 32), hr.nl (rank 17), staatsbosbeheer.nl (rank 59), billetto.com (rank 12)</li><li><strong>Industry-Specific Targets</strong>: svpbv.nl, stadsverwarmingpurmerend.nl, dunea.nl</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop tailored outreach pitches for each target, emphasizing relevant case studies or co-created resources.</li></ul><br><h3 id="toxic-backlink-assessment">Toxic Backlink Assessment</h3><p>Approximately 5% of PTI's backlinks come from high-spam-score domains (61-100%), which may negatively impact their search rankings:</p><ul><li><strong>Highest Risk Links</strong>: 99bestsite.com (80%), heavenarticle.com (80%), linkingdirectory.com (75%)</li><li><strong>Recommendation</strong>: Consider disavowing these toxic links to improve overall link profile quality</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Finalize disavow list and submit within two weeks, then monitor impact on link profile.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our comprehensive analysis, we recommend the following content strategy improvements:</p><br><h3 id="homepage-optimization">Homepage Optimization</h3><p>The homepage's poor ranking (positions 21-30) indicates an urgent need for optimization:</p><ul><li>Revise meta title and description with primary keywords</li><li>Enhance above-the-fold content with clear value propositions</li><li>Improve internal linking structure to distribute authority</li><li>Add customer testimonials and trust signals</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>A/B test two versions of the homepage hero section to measure engagement lift within 30 days.</li></ul><br><h3 id="smart-meter-content-strategy">Smart Meter Content Strategy</h3><p>To capitalize on the identified “slimme meter” keyword opportunities:</p><ul><li><strong>Create Dedicated Landing Pages</strong>: Develop specific pages for each energy provider (Enexis, Essent) focused on smart meter reading</li><li><strong>Develop App-Focused Content</strong>: Create content highlighting how PTI's solutions integrate with or enhance smart meter reading apps</li><li><strong>Optimize Existing Content</strong>: Ensure current meter reading pages include “slimme meter” terminology and address common user questions</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft outlines for two provider-specific smart meter pages and align with design team for quick launch.</li></ul><br><h3 id="digital-work-order-content-strategy">Digital Work Order Content Strategy</h3><p>To address the significant keyword gaps around “digitale werkbon” terms:</p><ul><li><strong>Create a “Best of” Listicle</strong>: Develop content titled “Top 5 Digital Work Order Solutions for Field Service in 2024” to directly compete with Appwiki.nl's successful format</li><li><strong>Optimize Existing Content</strong>: Revamp the existing “Digitale werkbonnen” page with:</li><li>More compelling title: “Digitale Werkbonnen: Reduce Costs & Improve Efficiency”</li><li>Enhanced meta description with clear call-to-action</li><li>Comprehensive content addressing common user questions</li><li>Comparison table of different solutions (subtly favoring PTI)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Incorporate user reviews or mini-case studies to build credibility and increase dwell time.</li></ul><br><h3 id="industry-specific-content">Industry-Specific Content</h3><ul><li><strong>Target “verwarmings bedrijven”</strong>: Create a dedicated landing page showcasing how PTI's software benefits heating companies, addressing specific pain points</li><li><strong>Develop Case Studies</strong>: Create industry-specific case studies highlighting successful implementations in the energy, heating, and water sectors</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Identify three recent customer successes to feature as case studies within six weeks.</li></ul><br><h3 id="content-section-revitalization">Content Section Revitalization</h3><p>The underperforming news/blog and knowledge base sections need:</p><ul><li>Keyword-focused content calendar addressing industry pain points</li><li>Comprehensive guides on field service management best practices</li><li>Regular publishing schedule to improve freshness signals</li><li>Video content embedded on key pages to increase engagement</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Launch a monthly webinar series on field service trends and repurpose recordings into blog posts.</li></ul><br><h3 id="utility-portal-integration">Utility Portal Integration</h3><p>While the meter reading portals perform well, they appear disconnected from the main business:</p><ul><li>Create content bridges between these high-performing pages and core service pages</li><li>Develop related content that can attract similar audiences to the main business offerings</li><li>Leverage the strong performance of Dunea and Vattenfall branded keywords by creating case studies about these partnerships</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Add contextual CTAs on each portal subdomain linking back to core product demos.</li></ul><br><h3 id="snippet-optimization">Snippet Optimization</h3><p>Based on our analysis of top-performing snippets:</p><ul><li>Include clear calls to action in meta descriptions (e.g., “Uw watermeterstand doorgeven”)</li><li>Mention specific input fields needed (e.g., “opnamenummer,” postcode, house number)</li><li>Include branded descriptions where relevant (e.g., Dunea's customer reach information)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Test variation of meta descriptions for top 10 pages to capture rich snippet real estate.</li></ul><br><h3 id="backlink-strategy">Backlink Strategy</h3><p>Based on our backlink analysis, we recommend:</p><br><ol><li><strong>Diversify Anchor Text</strong>: Work with existing link partners to vary anchor text beyond “Meterstand doorgeven” to include core business terms like “field service management” and “planning software”</li><li><strong>Target High-Authority Domains</strong>: Develop outreach campaigns for the identified high-authority domains that link to competitors but not to PTI</li><li><strong>Industry Publication Outreach</strong>: Create guest content for industry publications in the energy, heating, and water sectors to build relevant, authoritative backlinks</li><li><strong>Toxic Link Cleanup</strong>: Implement a disavow strategy for the identified high-spam-score backlinks to improve overall link profile quality</li><li><strong>Local Business Partnerships</strong>: Develop partnerships with complementary Dutch businesses to create mutual linking opportunities that strengthen local relevance</li><li><strong>Leverage Existing Relationships</strong>: The strong links from utility companies (vattenfall.nl, dunea.nl, engie.nl) suggest existing business relationships that could be leveraged for additional content partnerships and links</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Schedule a quarterly backlink acquisition review to track progress and refine tactics.</li></ul><br><h3 id="technical-content-improvements">Technical Content Improvements</h3><ul><li>Add proper alt text to all images</li><li>Optimize page load speed by addressing render-blocking resources</li><li>Fix HTML resource errors identified in the technical audit</li><li>Improve content-to-code ratio across key pages</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Assign a technical resource for a two-week sprint focusing on the top 5 speed-impact issues.</li></ul><br></div></section>
+                <section id="quick-wins-implementation-timeline" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Quick Wins & Implementation Timeline</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="immediate-actions-1-2-weeks-">Immediate Actions (1-2 Weeks)</h3><ul><li>Optimize title and meta description of the existing "Digitale werkbonnen" page</li><li>Fix technical SEO issues (image alt text, HTML errors)</li><li>Implement internal linking improvements from high-performing pages</li><li>Begin disavow process for toxic backlinks</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Use a project tracker to assign owners and due dates for each immediate action.</li></ul><br><h3 id="short-term-actions-1-2-months-">Short-Term Actions (1-2 Months)</h3><ul><li>Create the "Top 5 Digital Work Order Solutions" listicle</li><li>Develop dedicated landing pages for "slimme meter uitlezen enexis" and "slimme meter essent uitlezen"</li><li>Develop the dedicated landing page for "verwarmings bedrijven"</li><li>Revamp homepage content and structure</li><li>Initiate outreach to 5 high-priority backlink targets</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Monitor weekly ranking movements for new content and adjust as needed.</li></ul><br><h3 id="medium-term-actions-3-6-months-">Medium-Term Actions (3-6 Months)</h3><ul><li>Develop a series of blog posts and resources related to digital work orders and smart meters</li><li>Create industry-specific case studies</li><li>Build relationships with industry influencers and publications</li><li>Implement a comprehensive anchor text diversification strategy with existing link partners</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Set quarterly KPIs around traffic growth, keyword improvements, and backlink acquisition.</li></ul><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><p>PTI has experienced positive organic traffic growth but is significantly underperforming for key business-related keywords compared to competitors. Their backlink profile shows moderate strength but is overly focused on utility meter reading services rather than their core field service management solutions.</p><br><p>By implementing the recommendations in this report, particularly those focused on smart meter content, digital work order content, industry-specific solutions, and strategic backlink acquisition, PTI can improve their search visibility, outrank competitors, and capture untapped opportunities in the Netherlands.</p><br><p>The most urgent priorities are addressing the keyword gaps around "slimme meter" and "digitale werkbon" terms, optimizing the homepage, and beginning the process of diversifying their backlink profile to better support their core business offerings.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Kick off the smart meter and digital work order initiatives first to secure quick ranking wins and justify further investment.</li></ul></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - PTI',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

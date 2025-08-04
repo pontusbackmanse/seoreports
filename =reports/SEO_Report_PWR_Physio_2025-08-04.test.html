@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - PWR Physio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">PWR Physio • pwrphysio.be</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Belgium Market</span>
+                        <span><i class="fas fa-calendar"></i> August 4, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th></tr></thead><tbody><tr><td class="">Organic Visibility Growth</td><td class="positive">+82.17% (Sept 2024 – July 2025)</td></tr><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">9.60 (July 2025)</td></tr><tr><td class="">Total Ranking Keywords</td><td class="">7</td></tr><tr><td class="">Keywords in Top 10 Positions</td><td class="">2</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="">3</td></tr><tr><td class="">Keywords in Positions 21-30</td><td class="">1</td></tr><tr><td class="">Keywords in Positions 31-40</td><td class="">1</td></tr></tbody></table></div><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Keywords They Rank Well For (PWR Physio Ranks Poorly)</th></tr></thead><tbody><tr><td class="">kineherk.be</td><td class="">"kinesist herk-de-stad" (#1 vs #15), "kine herk-de-stad" (#1 vs #24), "osteopaat herk de stad" (#1 vs #41)</td></tr><tr><td class="">movealot.be</td><td class="">"kinesisten herk-de-stad" (#2 vs #14), "kinesisten herk de stad" (#2 vs not ranking)</td></tr><tr><td class="">vind-een-kinesist.be</td><td class="">"kinesist voor kinesitherapie in Herk-de-Stad" (#2 vs #15)</td></tr></tbody></table></div><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume (Belgium)</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">fysiotherapie opleiding belgië</td><td class="">30-40</td><td class="">Low</td><td class="">Relevant to physiotherapy education; low competition; potential to attract trainees/patients</td></tr><tr><td class="">hoe lang duurt dry needling behandeling</td><td class="">10</td><td class="">Low</td><td class="">Addresses common user question; low competition; supports service-specific content</td></tr><tr><td class="">wat kost dry needling behandeling</td><td class="">10</td><td class="">Low</td><td class="">Pricing transparency query; low competition; builds trust and conversion potential</td></tr><tr><td class="">opleiding fysiotherapie belgië</td><td class="">10-20</td><td class="">Medium</td><td class="">Related to training; medium competition; expands content scope</td></tr><tr><td class="">spierpijn na dry needling behandeling</td><td class="">0-10</td><td class="">Low</td><td class="">Long-tail, low competition; addresses post-treatment concerns</td></tr><tr><td class="">manuele therapie belgië</td><td class="">0-10</td><td class="">Low</td><td class="">Service-specific keyword; low competition; opportunity to rank for specialized therapy</td></tr></tbody></table></div><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>PWR Physio’s organic visibility increased by 82.17% over the past year but still lacks top 10 keyword rankings in Belgium.</li><li>The company ranks for 7 keywords, mostly location-based, but none in positions 1-3.</li><li>Competitors like kineherk.be and movealot.be dominate local keywords with strong SEO strategies including keyword-rich titles, meta descriptions, and structured data.</li><li>Technical SEO is generally strong but needs improvements in meta descriptions, image alt text, render-blocking resources, and DOM size.</li><li>Content gaps exist in specialized service pages and local SEO targeting long-tail and seasonal keywords.</li><li>Backlink profile is mixed: good local relevance but includes medium-risk spammy links that should be monitored or disavowed.</li><li>Immediate priorities: optimize homepage and team page, create dedicated service/location pages, implement structured data, and pursue high-quality local backlinks.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Despite strong percentage growth, the absolute ETV remains low. Focusing on low-competition, high-intent keywords can yield faster traffic gains.</li><li>Seasonal demand peaks in March–April indicate a window for targeted campaigns (e.g., spring injury prevention content).</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft optimized meta descriptions and title tags for the homepage and top service pages this week.</li><li>Develop a mini content calendar for seasonal content to capture March–April search volume spikes.</li></ul><br><hr><br><hr><br></div></section>
+                <section id="seo-analysis-report-pwr-physio-belgium-" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-analytics"></i></div>
+                        <h1 class="section-title">SEO Analysis Report: PWR Physio (Belgium)</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for PWR Physio, a physiotherapy clinic in Belgium offering specialized services including Functional exercise therapy, Manual therapy, Performance training, and Dry needling. The analysis reveals an 82.17% increase in organic visibility over the past year, but identifies significant opportunities for improvement in keyword targeting, technical SEO elements, content strategy, and backlink profile to enhance their online presence in the Belgian market. Our competitive analysis shows that PWR Physio is currently outranked by several local competitors for high-value location-based keywords, presenting clear opportunities for strategic improvement.</p><br></div></section>
+                <section id="1-company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">1. Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>PWR Physio is a physiotherapy clinic located in Herk-de-Stad, Belgium that specializes in helping patients regain strength and vitality, improve mobility, and achieve their optimal potential. They offer personalized programs and advanced therapies focused on improving functional capacity and guiding patients toward a pain-free, active life. Their team includes Bram Schelkens, a physiotherapist specializing in neck/back rehabilitation, sports physiotherapy, and post-operative rehabilitation. (<a href="https://pwrphysio.be" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</p><br></div></section>
+                <section id="2-overall-seo-performance" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">2. Overall SEO Performance</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-growth">Organic Visibility Growth</h3><ul><li>PWR Physio has experienced an impressive 82.17% increase in Estimated Traffic Volume (ETV) from September 2024 to July 2025 in the Belgian market.</li><li>Latest ETV: 9.60 (July 2025)</li><li>The site currently has 7 keywords ranking in Google search results.</li></ul><br><h3 id="ranking-position-distribution-july-2025-">Ranking Position Distribution (July 2025)</h3><ul><li>Positions 1: 0 keywords</li><li>Positions 2-3: 0 keywords</li><li>Positions 4-10: 2 keywords</li><li>Positions 11-20: 3 keywords</li><li>Positions 21-30: 0 keywords</li><li>Positions 31-40: 1 keyword</li><li>Positions 41-50: 0 keywords</li><li>Positions 51-60: 1 keyword</li></ul><br><h3 id="page-performance">Page Performance</h3><ul><li><strong>Homepage (https://pwrphysio.be/)</strong>: Performing relatively well with an estimated traffic volume of 9.245, ranking in the top 10 for 2 keywords and top 20 for 3 keywords. The estimated paid traffic cost equivalent is €30.02, suggesting the keywords it ranks for are valuable.</li><li><strong>Team Page (https://pwrphysio.be/team/)</strong>: Significantly underperforming with a very low ETV of 0.357 and only ranking in positions 51-60 for one keyword. The estimated paid traffic cost equivalent is only €0.79.</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><p>The website received an on-page score of 93.41, indicating generally good technical SEO fundamentals. However, several critical issues need addressing:</p><br><h4 id="strengths-">Strengths:</h4><ul><li>Fast loading time (71ms)</li><li>HTTPS implementation</li><li>SEO-friendly URL structure</li><li>Canonical URL implementation</li><li>Appropriate title tag length</li></ul><br><h4 id="areas-for-improvement-">Areas for Improvement:</h4><ul><li><strong>Missing Meta Description</strong>: The website lacks meta descriptions, which are crucial for improving click-through rates from search results.</li><li><strong>Missing Image Alt Text and Title Text</strong>: Images are missing accessibility attributes, impacting both SEO and user experience.</li><li><strong>Render-Blocking Resources</strong>: The site has render-blocking scripts affecting page load performance.</li><li><strong>Duplicate Meta Tags</strong>: There are duplicate meta tags (specifically, the generator tag).</li><li><strong>Low Content Rate</strong>: The ratio of plain text to HTML code is low, suggesting potential for more valuable content.</li><li><strong>Large DOM Size</strong>: The DOM size is relatively large (93358), which can impact performance.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Addressing meta descriptions and alt text can boost CTR by 10–15% without major development work.</li><li>Reducing render-blocking resources and DOM size can further improve user engagement metrics.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create a task to write and deploy meta descriptions and alt text for all existing pages within the next sprint.</li><li>Audit CSS/JS loading and implement deferred or asynchronous loading to remove render-blocking issues.</li></ul><br></div></section>
+                <section id="3-keyword-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">3. Keyword Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-keyword-performance">Current Keyword Performance</h3><p>PWR Physio is not currently ranking in the top 10 positions for any keywords in the Belgian market, which represents a significant opportunity for improvement. Their most valuable keyword rankings are:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Current Position</th></tr></thead><tbody><tr><td class="">kinesisten herk-de-stad</td><td class="">170</td><td class="">14</td></tr><tr><td class="">kinesist herk-de-stad</td><td class="">170</td><td class="">15</td></tr><tr><td class="">kine herk-de-stad</td><td class="">140</td><td class="">24</td></tr><tr><td class="">kinesist herk de stad</td><td class="">170</td><td class="">26</td></tr><tr><td class="">kine herk de stad</td><td class="">140</td><td class="">27</td></tr><tr><td class="">osteopaat herk de stad</td><td class="">70</td><td class="">41</td></tr></tbody></table></div><h3 id="keyword-opportunities">Keyword Opportunities</h3><p>The keyword analysis reveals several important insights:</p><br><ol><li><strong>Location-Focused Keywords</strong>: All ranking keywords are location-based ("herk-de-stad"), highlighting the importance of local SEO for this business.</li></ol><br><ol><li><strong>Keyword Variations</strong>: The site ranks for both hyphenated and space-separated versions of location terms, as well as different terms for physiotherapy services ("kinesist," "kinesisten," "kine").</li></ol><br><ol><li><strong>Seasonal Trends</strong>: Search volume for key terms like "kinesisten herk-de-stad" and "kinesist herk-de-stad" shows fluctuation throughout the year, with higher volumes in March and April. This suggests potential seasonal demand related to post-winter recovery or preparation for summer activities.</li></ol><br><ol><li><strong>Low Keyword Difficulty</strong>: The keyword difficulty is reported as 0 for all ranking keywords, suggesting that targeted SEO efforts could yield relatively quick improvements in rankings.</li></ol><br><h3 id="recommended-target-keywords">Recommended Target Keywords</h3><br><p><strong>Top Priority Keywords:</strong></p><ul><li><strong>fysiotherapie opleiding belgië</strong> (30-40 monthly searches, Low competition)</li><li><strong>hoe lang duurt dry needling behandeling</strong> (10 monthly searches, Low competition)</li><li><strong>wat kost dry needling behandeling</strong> (10 monthly searches, Low competition)</li></ul><br><p><strong>Secondary Keywords:</strong></p><ul><li><strong>opleiding fysiotherapie belgië</strong> (10-20 monthly searches, Medium competition)</li><li><strong>spierpijn na dry needling behandeling</strong> (0-10 monthly searches)</li><li><strong>manuele therapie belgië</strong> (0-10 monthly searches)</li></ul><br><p><strong>Long-term Opportunities:</strong></p><ul><li><strong>fysiotherapie belgië</strong> (Currently 0 search volume, but a broad term with potential)</li><li><strong>dry needling behandeling</strong> (Currently 0 search volume, but relevant to services offered)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Map each Top Priority keyword to existing or new page templates. Assign content owners to draft and approve within two weeks.</li><li>Schedule editorial calendar items for blog topics targeting Secondary and Long-term Opportunities.</li></ul><br><h3 id="content-gaps">Content Gaps</h3><p>The current content doesn't effectively target specific physiotherapy specializations (Functional exercise therapy, Manual therapy, Performance training, Dry needling) in relation to the location. This represents a significant content gap that could be addressed through dedicated service pages and targeted blog content.</p><br></div></section>
+                <section id="4-competitive-landscape" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">4. Competitive Landscape</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-competitors-overview">Top Competitors Overview</h3><p>Our analysis has identified three key competitors in the Belgian market, specifically in the Herk-de-Stad area:</p><br><ol><li><strong>kineherk.be</strong> (Direct competitor)</li></ol><ul><li><strong>Key Strengths</strong>: Exceptional average keyword position (1.0) for target keywords</li><li><strong>Notable Features</strong>: Dedicated page for osteopathy services</li><li><strong>SERP Strategy</strong>: Keyword-rich titles including "Kinesitherapie Lemmens-Vendrix Herk de Stad"</li><li><strong>Technical Advantage</strong>: Uses structured data to display opening hours and contact information directly in search results</li></ul><br><ol><li><strong>movealot.be</strong> (Direct competitor)</li></ol><ul><li><strong>Key Strengths</strong>: Strong average keyword position (2.2)</li><li><strong>SERP Strategy</strong>: Well-optimized meta descriptions clearly stating location, specialization, and experience of their kinesiologists</li><li><strong>Title Optimization</strong>: Includes "MOVE A LOT | Kinesitherapie Groepspraktijk te Herk-de-Stad"</li></ul><br><ol><li><strong>vind-een-kinesist.be</strong> (Indirect competitor - directory)</li></ol><ul><li><strong>Key Strengths</strong>: High average keyword position (2.66)</li><li><strong>Business Model</strong>: Functions as a directory, benefiting from domain authority and broad keyword focus</li><li><strong>SERP Strategy</strong>: Includes "Kinesist voor kinesitherapie in Herk-de-Stad" in title tags</li></ul><br><h3 id="keyword-performance-comparison">Keyword Performance Comparison</h3><p>All three competitors are significantly outperforming PWR Physio for high-value local keywords:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>PWR Physio Position</th><th>Top Competitor Position</th></tr></thead><tbody><tr><td class="">kinesist herk-de-stad</td><td class="">170</td><td class="">15</td><td class="">1 (kineherk.be)</td></tr><tr><td class="">kinesist herk de stad</td><td class="">170</td><td class="">26</td><td class="">1 (kineherk.be)</td></tr><tr><td class="">kinesisten herk-de-stad</td><td class="">170</td><td class="">14</td><td class="">2 (movealot.be)</td></tr><tr><td class="">kinesisten herk de stad</td><td class="">170</td><td class="">Not ranking</td><td class="">2 (movealot.be)</td></tr><tr><td class="">kine herk-de-stad</td><td class="">140</td><td class="">24</td><td class="">1 (kineherk.be)</td></tr><tr><td class="">kine herk de stad</td><td class="">140</td><td class="">27</td><td class="">1 (kineherk.be)</td></tr><tr><td class="">osteopaat herk de stad</td><td class="">70</td><td class="">41</td><td class="">1 (kineherk.be)</td></tr></tbody></table></div><h3 id="competitor-content-strategy-analysis">Competitor Content Strategy Analysis</h3><p>Our analysis reveals several effective patterns in competitor content strategies:</p><br><ol><li><strong>Dedicated Location Pages</strong>: All top competitors have created pages specifically optimized for "kinesist Herk-de-Stad" queries, with clear location information and service details.</li></ol><br><ol><li><strong>Specialized Service Pages</strong>: kineherk.be has a dedicated page for osteopathy, which is helping them rank #1 for "osteopaat herk de stad" (70 monthly searches).</li></ol><br><ol><li><strong>Keyword-Rich Title Tags</strong>: Competitors consistently include target keywords (kinesist, Herk-de-Stad) directly in their page titles.</li></ol><br><ol><li><strong>Optimized Meta Descriptions</strong>: Competitors use meta descriptions to highlight their location, specializations, and unique selling points (e.g., experienced kinesiologists).</li></ol><br><ol><li><strong>Structured Data Implementation</strong>: kineherk.be leverages structured data to enhance their SERP listings with opening hours and contact information.</li></ol><br><h3 id="competitive-gaps-and-opportunities">Competitive Gaps and Opportunities</h3><p>Based on competitor analysis, we've identified several key opportunities for PWR Physio:</p><br><ol><li><strong>Local SEO Focus</strong>: None of the competitors appear to be actively targeting specialized physiotherapy terms combined with location (e.g., "sportkinesitherapie herk de stad," "manuele therapie herk de stad").</li></ol><br><ol><li><strong>Long-Tail Keywords</strong>: There's minimal competition for longer, more specific queries related to pain points or conditions treated (e.g., "kinesist herk de stad nekpijn," "kinesitherapie na operatie herk de stad").</li></ol><br><ol><li><strong>Title and Meta Description Optimization</strong>: PWR Physio's current titles are generic ("PWR Physio – REGAIN YOUR POWER") compared to competitors' keyword-rich titles, representing a quick-win opportunity.</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>By creating pages for under-served service-location combos, PWR Physio can capture incremental local traffic with minimal competition.</li><li>Quick wins: swap generic titles for targeted ones on top 5 landing pages.</li></ul><br></div></section>
+                <section id="5-backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">5. Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><p>PWR Physio's backlink profile shows several areas for improvement:</p><br><ul><li><strong>Domain Rank</strong>: 216 (relatively low)</li><li><strong>Total Backlinks</strong>: 43</li><li><strong>Referring Domains</strong>: 14 (13 main domains)</li><li><strong>Backlink Spam Score</strong>: 8% (medium risk)</li><li><strong>Referring TLDs</strong>: Primarily .be domains (30 backlinks), with some from .com (4), .in (2), and others</li></ul><br><h3 id="backlink-quality-assessment">Backlink Quality Assessment</h3><p>The quality of PWR Physio's backlink profile is mixed:</p><br><ol><li><strong>Positive Aspects</strong>:</li></ol><ul><li>Strong local relevance with 30 backlinks from Belgian (.be) domains</li><li>No high spam score referring domains</li><li>Natural anchor text distribution with a mix of branded and URL-based anchors</li><li>Presence of image-based backlinks (11) suggesting visual content engagement</li></ul><br><ol><li><strong>Concerning Aspects</strong>:</li></ol><ul><li>Several medium spam score referring domains (8 domains with scores between 35-50%)</li><li>Backlinks from suspicious SEO services (seobacklinks.agency, rankgrow.agency, prolinkbox.com)</li><li>High proportion of footer links (27 out of 43), which typically carry less SEO value</li><li>13 nofollow links, reducing the SEO benefit of those backlinks</li></ul><br><h3 id="competitor-backlink-comparison">Competitor Backlink Comparison</h3><p>Our analysis identified sandboxservices.be as a backlink competitor with a similar domain rank (211). This presents an opportunity to analyze their backlink strategy for potential insights and opportunities.</p><br><h3 id="backlink-opportunities">Backlink Opportunities</h3><p>Based on our analysis, we've identified several opportunities to improve PWR Physio's backlink profile:</p><br><ol><li><strong>Local Business Directories</strong>: Increase listings in reputable Belgian business directories focused on healthcare and physiotherapy.</li></ol><br><ol><li><strong>Healthcare Partnerships</strong>: Pursue backlinks from local healthcare providers, hospitals, sports clubs, and wellness centers in Herk-de-Stad and surrounding areas.</li></ol><br><ol><li><strong>Educational Content</strong>: Create valuable educational content about physiotherapy topics that can attract natural backlinks from health and wellness websites.</li></ol><br><ol><li><strong>Local News and Media</strong>: Engage with local Belgian news outlets and health publications for feature opportunities.</li></ol><br><ol><li><strong>Professional Associations</strong>: Secure backlinks from Belgian physiotherapy associations and professional bodies.</li></ol><br><h3 id="toxic-backlink-assessment">Toxic Backlink Assessment</h3><p>While no high spam score domains were identified, several medium spam score domains warrant monitoring:</p><br><ul><li>seobacklinks.agency (45% spam score)</li><li>rankgrow.agency (45% spam score)</li><li>prolinkbox.com (50% spam score)</li><li>backlink.wiki (40% spam score)</li><li>vickys.design (40% spam score)</li></ul><br><p>These backlinks appear to be from artificial link building services and may potentially harm PWR Physio's search rankings if Google identifies them as manipulative. We recommend monitoring these links and considering disavowal if rankings are negatively impacted.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Begin outreach for high-authority local directories and associations this month.</li><li>Prepare a disavow file for review, focusing on links with spam scores above 40%.</li></ul><br></div></section>
+                <section id="6-content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">6. Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our technical SEO findings, page performance analysis, keyword research, competitive landscape analysis, and backlink profile assessment, we recommend:</p><br><h3 id="on-page-optimization">On-Page Optimization</h3><ol><li><strong>Optimize Homepage for Primary Keywords</strong>: Ensure "kinesist herk-de-stad" and "kinesisten herk-de-stad" are prominently featured in the page title, headings, body text, image alt text, and meta description.</li><li><strong>Develop Comprehensive Meta Descriptions</strong>: Create compelling meta descriptions for all pages to improve click-through rates from search results. For the homepage, we recommend: "PWR Physio: Your trusted kinesitherapy practice in Herk-de-Stad. Experienced kinesiologists specializing in neck/back rehabilitation, sports physiotherapy, and post-operative rehabilitation. Book your appointment today!"</li><li><strong>Image Optimization</strong>: Add descriptive alt text and title attributes to all images, focusing on relevant keywords related to physiotherapy services.</li><li><strong>Title Tag Optimization</strong>: Update the homepage title tag to include "Kinesitherapie Herk-de-Stad" or "Kinesist Herk-de-Stad" to better compete with top-ranking competitors.</li></ol><br><h3 id="content-development">Content Development</h3><ol><li><strong>Create Dedicated Location Pages</strong>: Develop a specific page targeting "kinesist Herk-de-Stad" with detailed information about the practice, services, a map showing the location, testimonials from local patients, and clear calls to action.</li><li><strong>Develop Specialized Service Pages</strong>: Create individual pages for each core service (Functional exercise therapy, Manual therapy, Performance training, and Dry needling), optimized for long-tail keywords like "functional exercise therapy herk-de-stad."</li><li><strong>Create a Dedicated Osteopathy Page</strong>: Following kineherk.be's successful strategy, develop a page specifically targeting "osteopaat herk de stad" (70 monthly searches).</li><li><strong>Enhance Team Page</strong>: Significantly improve the underperforming team page with more detailed information about the physiotherapists, their specializations, and patient testimonials. Ensure each kinesiologist's profile includes their name, specialization, and a brief bio mentioning "kinesist Herk-de-Stad."</li><li><strong>Seasonal Content Strategy</strong>: Develop content that aligns with the seasonal trends identified (higher search volumes in March and April), such as "Spring Fitness Tips" or "Preparing Your Body for Summer Activities."</li><li><strong>Blog Content Development</strong>: Create informative blog posts addressing common physiotherapy questions and concerns in Herk-de-Stad, such as:</li></ol><ul><li>"5 Exercises to Relieve Back Pain in Herk-de-Stad"</li><li>"What to Expect During Your First Physiotherapy Appointment at PWR Physio"</li><li>"The Benefits of Dry Needling for Athletes in Herk-de-Stad"</li><li>"How Long Does a Dry Needling Treatment Take?" (targeting "hoe lang duurt dry needling behandeling")</li><li>"Pricing Guide: What Does Dry Needling Treatment Cost?" (targeting "wat kost dry needling behandeling")</li></ul><br><h3 id="technical-improvements">Technical Improvements</h3><ol><li><strong>Eliminate Render-Blocking Resources</strong>: Optimize JavaScript and CSS loading to improve page speed.</li><li><strong>Address Large DOM Size</strong>: Streamline the HTML structure to improve performance.</li><li><strong>Remove Duplicate Meta Tags</strong>: Clean up the HTML head section to eliminate duplicate tags.</li><li><strong>Implement Structured Data</strong>: Add schema markup to provide search engines with more information about the business, services, and location, following kineherk.be's successful implementation of structured data for opening hours and contact information.</li></ol><br><h3 id="local-seo-enhancement">Local SEO Enhancement</h3><ol><li><strong>Google Business Profile Optimization</strong>: Ensure the GBP listing is fully optimized with accurate information, photos, and regular updates. Encourage patients to leave reviews.</li><li><strong>Local Citations</strong>: List the business in relevant online directories with consistent NAP (Name, Address, Phone number) information.</li><li><strong>NAP Consistency</strong>: Ensure business name, address, and phone number are prominently displayed on the homepage and consistent with Google My Business information.</li></ol><br><h3 id="backlink-strategy">Backlink Strategy</h3><ol><li><strong>Quality Over Quantity</strong>: Focus on acquiring high-quality backlinks from relevant Belgian healthcare, sports, and wellness websites rather than pursuing a high volume of lower-quality links.</li><li><strong>Local Link Building</strong>: Prioritize backlinks from local Herk-de-Stad businesses, community organizations, and sports clubs to strengthen local relevance.</li><li><strong>Toxic Link Monitoring</strong>: Monitor the medium spam score backlinks and consider disavowing them if they appear to negatively impact rankings.</li><li><strong>Content-Driven Link Building</strong>: Create valuable, shareable content (infographics, guides, research) about physiotherapy topics that naturally attracts backlinks.</li><li><strong>Competitor Backlink Analysis</strong>: Analyze sandboxservices.be's backlink profile to identify potential link opportunities that PWR Physio could also pursue.</li><li><strong>Professional Association Links</strong>: Secure backlinks from Belgian physiotherapy associations and healthcare organizations to build authority in the field.</li><li><strong>Guest Posting</strong>: Contribute guest articles to reputable Belgian health and wellness websites to earn quality backlinks while demonstrating expertise.</li></ol><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>The content recommendations above should be prioritized based on effort and impact score. Starting with location pages and meta descriptions will deliver immediate visibility gains.</li></ul><br></div></section>
+                <section id="7-conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">7. Conclusion</h2>
+                    </div>
+                    <div class="section-content"><p>PWR Physio has shown impressive organic visibility growth (82.17%) over the past year in the Belgian market, demonstrating potential for further SEO success. However, they are currently being outperformed by local competitors for high-value keywords, with none of their keywords ranking in the top 10 positions.</p><br><p>Our competitive analysis reveals that competitors like kineherk.be and movealot.be are successfully implementing location-focused SEO strategies with keyword-rich titles, optimized meta descriptions, and dedicated service pages. By adopting similar strategies while targeting underserved niches and long-tail keywords, PWR Physio can significantly improve their search visibility and compete more effectively in the local market.</p><br><p>The backlink analysis reveals a mixed profile with some quality local Belgian links but also several potentially problematic links from medium spam score domains. A focused strategy to acquire more relevant, high-quality backlinks from local and industry-specific sources will help improve domain authority and rankings.</p><br><p>The most immediate priorities should be:</p><ol><li>Optimizing the homepage title tag and meta description for primary location-based keywords</li><li>Creating dedicated location and service pages</li><li>Enhancing the underperforming team page</li><li>Implementing structured data to improve SERP appearance</li><li>Developing a comprehensive local SEO strategy</li><li>Pursuing high-quality backlinks from relevant local sources</li><li>Monitoring and potentially disavowing suspicious backlinks</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign owners and deadlines for each priority item above in the next team meeting to ensure accountability and progress tracking.</li></ul><br><p>With these improvements and a more strategic approach to content development and link building, PWR Physio can capitalize on their existing momentum, close the gap with competitors, and significantly increase their visibility in the Belgian physiotherapy market.</p><br><p>This analysis provides a data-driven roadmap for improving PWR Physio's SEO performance, with specific, actionable recommendations that can be implemented immediately to drive results.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - PWR Physio',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

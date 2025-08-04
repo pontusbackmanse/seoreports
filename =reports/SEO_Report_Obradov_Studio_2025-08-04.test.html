@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Obradov Studio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Obradov Studio • www.obradovstudio.com</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 4, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th></tr></thead><tbody><tr><td class="">Organic Visibility Change</td><td class="negative">-40.58% Estimated Traffic Volume (ETV) over last 12 months (Aug 2024 - Jul 2025)</td></tr><tr><td class="">Current Estimated Traffic Volume (ETV)</td><td class="">1.72 (July 2025)</td></tr><tr><td class="">Total Ranking Keywords</td><td class="">4 keywords (all ranked between positions 31-100)</td></tr><tr><td class="">Top Ranking Positions</td><td class="">None in top 30; best keyword at position 39 ("home made by haarlem")</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>A 40.58% drop in ETV signals urgent attention on both technical and content fronts. Prioritize quick wins like fixing HTML errors and optimizing key landing pages.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Competitor Strengths & Keywords They Rank Well For (Obradov Studio Ranks Poorly)</th></tr></thead><tbody><tr><td class=""><strong>pietboon.com</strong></td><td class="">Ranks #7 for "interior studios" (Obradov at #63)</td></tr><tr><td class=""><strong>stockdutchdesign.com</strong></td><td class="">Strong Dutch language targeting, ranks well for "interior studios"</td></tr><tr><td class=""><strong>designbyhumble.com</strong></td><td class="">Highest traffic volume, broad keyword targeting</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a competitor gap analysis for “interior studios” to pinpoint content and backlink differences with pietboon.com and stockdutchdesign.com.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords to Target in the Netherlands</th><th>Search Volume (Monthly)</th><th>Competition</th><th>Reason for Targeting</th></tr></thead><tbody><tr><td class="">interieurontwerp studio</td><td class="">70-110</td><td class="">Medium</td><td class="">High relevance, medium competition, no current ranking</td></tr><tr><td class="">interieurontwerp haarlem</td><td class="">10-50</td><td class="">Low</td><td class="">Localized, low competition, relevant to location</td></tr><tr><td class="">interieurontwerp op maat</td><td class="">10-50</td><td class="">Low</td><td class="">Highlights bespoke services, low competition</td></tr><tr><td class="">interior studios</td><td class="">70</td><td class="">Low</td><td class="">Currently ranking poorly (#63), competitor ranks #7</td></tr><tr><td class="">interieurontwerpers nederland</td><td class="">10-30</td><td class="">Low</td><td class="">Broader national targeting, low competition</td></tr><tr><td class="">interieuradvies renovatie</td><td class="">10-20</td><td class="">Low</td><td class="">Service-related, low competition</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Targeting low-competition, high-intent Dutch keywords (like “interieurontwerp op maat”) can yield measurable ranking improvements within 3–6 months.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Obradov Studio’s organic visibility in the Netherlands has dropped by 40.58% over the past year, with only 4 keywords ranked outside the top 30.</li><li>The company’s homepage and contact page are underperforming despite strong on-page SEO scores.</li><li>Technical SEO issues (HTML errors, render-blocking resources, missing alt tags) are negatively impacting site speed and indexing.</li><li>Obradov Studio lacks Dutch-language content and does not target high-value Dutch interior design keywords.</li><li>Competitors pietboon.com and stockdutchdesign.com outrank Obradov Studio on key keywords like "interior studios" with stronger local relevance and content strategies.</li><li>Backlink profile is moderate but geographically imbalanced, with only 7.6% backlinks from Dutch domains and some toxic links needing disavowal.</li><li>Significant keyword gaps exist for Dutch interior design terms with low competition and clear commercial intent.</li><li>Recommended actions include technical SEO fixes, Dutch content creation, targeted keyword optimization, backlink cleanup, and local SEO enhancements.</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Estimated Traffic Volume (ETV) is a relative index combining ranking positions and search volumes, not raw session counts.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-obradov-studio" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Obradov Studio</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for Obradov Studio, a full-service interior design studio operating in the Netherlands. Our analysis reveals a concerning 40.58% decrease in organic search visibility over the past year, with key pages ranking in low positions (31-100). Despite a strong on-page optimization score of 97.07, technical issues, content gaps, and an underdeveloped backlink profile are limiting the studio's search performance. The keyword analysis shows no rankings in top 10 positions, indicating significant room for improvement. The competitive analysis reveals strong Dutch competitors with more effective keyword targeting, content strategies, and backlink profiles. This report outlines actionable recommendations to reverse the downward trend and improve organic visibility in the competitive Dutch interior design market.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Align high-impact recommendations (technical, content, backlinks) to a quarterly roadmap to drive consistent visibility gains.</li></ul><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Obradov Studio is a full-service interior design studio that specializes in creating personalized spaces that blend heirlooms with modern elements. Their service offerings include:</p><ul><li>Full-service interior design (concept development, floorplans, custom furniture design, material selection)</li><li>Bespoke furniture design</li><li>Art and unique object sourcing</li><li>Design consultation sessions</li><li>Project management and contractor coordination</li></ul><p><a href="https://www.obradovstudio.com" class="link-reference" target="_blank" rel="noopener">Source: Company Website</a></p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Review homepage and service page messaging to ensure it aligns with target Dutch search intent and keywords.</li></ul><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-trend">Organic Visibility Trend</h3><ul><li><strong>Significant Decline</strong>: 40.58% decrease in Estimated Traffic Volume (ETV) from August 2024 to July 2025</li><li><strong>Current ETV</strong>: 1.72 (as of July 2025)</li><li><strong>Keyword Count</strong>: Currently ranking for only 4 keywords in total</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Benchmark against industry averages (interior design sector) for ETV drop-off to prioritize mitigation actions.</li></ul><br><h3 id="current-ranking-positions-july-2025-">Current Ranking Positions (July 2025)</h3><ul><li>Position 31-40: 1 keyword ("home made by haarlem" - position 39)</li><li>Position 51-60: 1 keyword ("voorhelmstraat haarlem" - position 53)</li><li>Position 61-70: 1 keyword ("interior studios" - position 63)</li><li>Position 91-100: 1 keyword ("voorhelmstraat" - position 97)</li><li>No keywords ranking in top 30 positions</li></ul><br><h3 id="page-performance-analysis">Page Performance Analysis</h3><ul><li><strong>Dutch Homepage (obradovstudio.com/nl)</strong>:</li><li>ETV: 0.336</li><li>Ranking for: "home made by haarlem" (position 39), "interior studios" (position 63)</li><li>Snippet focuses on "Interior Stories" and mentions "bright and airy interiors haarlem obradov studio"</li><li>Underperforming despite being a critical landing page</li></ul><br><ul><li><strong>Contact Page (obradovstudio.com/contact)</strong>:</li><li>ETV: 1.386</li><li>Ranking for: "voorhelmstraat haarlem" (position 53), "voorhelmstraat" (position 97)</li><li>Snippet includes the address "Voorhelmstraat 25-111 2012 ZM Haarlem"</li><li>Higher traffic potential than homepage but still ranking poorly</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The contact page’s higher ETV suggests local intent; add tailored content (reviews, map embed) to boost relevance and dwell time.</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><ul><li><strong>On-Page Score</strong>: 97.07 (strong overall optimization)</li><li><strong>Positive Aspects</strong>:</li><li>HTTPS enabled</li><li>Mobile-friendly design</li><li>Canonical URLs implemented</li><li>SEO-friendly URL structure</li><li>Social media tags present</li></ul><br><ul><li><strong>Critical Issues</strong>:</li><li>Multiple HTML errors (bogus comments, unclosed tags)</li><li>Render-blocking resources affecting page speed</li><li>Missing image alt attributes</li><li>Low content-to-code ratio</li><li>Large DOM size impacting performance</li><li>Resource errors (status code 501)</li><li>Suboptimal cache control settings</li><li>Limited technology stack visibility (unable to access tech stack data through standard tools)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Schedule a deep technical audit with the development team to resolve errors and optimize load times within the next two sprints.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-keyword-performance">Current Keyword Performance</h3><p>Obradov Studio is currently ranking for only 4 keywords, all in low positions (39-97):</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th><th>Page</th></tr></thead><tbody><tr><td class="">home made by haarlem</td><td class="">90</td><td class="">39</td><td class="">Homepage</td></tr><tr><td class="">voorhelmstraat haarlem</td><td class="">70</td><td class="">53</td><td class="">Contact page</td></tr><tr><td class="">interior studios</td><td class="">70</td><td class="">63</td><td class="">Homepage</td></tr><tr><td class="">voorhelmstraat</td><td class="">590</td><td class="">97</td><td class="">Contact page</td></tr></tbody></table></div><p>This represents a significant missed opportunity in the Dutch interior design market, especially considering the high search volume (590) for "voorhelmstraat" where the site ranks very poorly.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>“voorhelmstraat” is a location-specific keyword with high search volume; consider a dedicated landing page or FAQ section to capture this traffic.</li></ul><br><h3 id="recommended-keywords-to-target">Recommended Keywords to Target</h3><br><p><strong>Top Priority Keywords:</strong></p><ul><li><strong>interieurontwerp studio:</strong> 70-110 monthly searches | MEDIUM competition</li><li><strong>interieurontwerp haarlem:</strong> 10-50 monthly searches | LOW competition</li><li><strong>interieurontwerp op maat:</strong> 10-50 monthly searches | LOW competition</li><li><strong>interior studios:</strong> 70 monthly searches | LOW competition (currently ranking 63rd)</li></ul><br><p><strong>Secondary Keywords:</strong></p><ul><li><strong>interieurontwerpers nederland:</strong> 10-30 monthly searches | LOW competition</li><li><strong>bekende interieurontwerpers nederland:</strong> 10-30 monthly searches | LOW competition</li><li><strong>studio jasper interieurontwerp en meubelmakerij:</strong> 10-70 monthly searches | LOW competition</li><li><strong>studio lef interieurontwerp:</strong> 10-20 monthly searches | LOW competition</li></ul><br><p><strong>Long-term Opportunities:</strong></p><ul><li><strong>studio jasper interieurontwerp en meubelmakerij 3439 ld nieuwegein:</strong> 0-40 monthly searches</li><li><strong>gaivota interieur & styling haarlem:</strong> 0-10 monthly searches</li><li><strong>modern interieurontwerp Amsterdam:</strong> 10-30 monthly searches | LOW competition</li><li><strong>interieuradvies renovatie:</strong> 10-20 monthly searches | LOW competition</li><li><strong>interieurontwerp voor kleine appartementen:</strong> 10-30 monthly searches | LOW competition</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Map each keyword to existing or new content pieces and schedule publication dates for the next quarter.</li></ul><br><h3 id="keyword-gaps-and-opportunities">Keyword Gaps and Opportunities</h3><p>The analysis reveals significant gaps in keyword targeting, particularly for Dutch-language interior design terms. The site is currently not ranking for any high-commercial-intent keywords related to interior design services in Haarlem or the Netherlands.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Build content clusters around primary Dutch keywords to create thematic relevance and strengthen internal linking.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-competitors-overview">Top Competitors Overview</h3><br><h4 id="1-stockdutchdesign-com">1. stockdutchdesign.com</h4><ul><li><strong>Strengths</strong>:</li><li>Strong Dutch market focus with Dutch meta descriptions</li><li>Ranks higher for shared keyword "interior studios"</li><li>Clear service offering in meta description ("interieur ontwerpbureau, interieuradvies")</li><li>Effective transition messaging from store to interior design agency</li><li><strong>Content Strategy</strong>:</li><li>Emphasizes tailored advice in meta descriptions</li><li>Uses Dutch language throughout site, strengthening local relevance</li></ul><br><h4 id="2-pietboon-com">2. pietboon.com</h4><ul><li><strong>Strengths</strong>:</li><li>High estimated traffic volume</li><li>Strong ranking (position 7) for "interior studios" (vs. Obradov's position 63)</li><li>Strong brand authority and SEO implementation</li><li>Global presence highlighted in meta descriptions</li><li><strong>Content Strategy</strong>:</li><li>Brand-focused titles and descriptions</li><li>Emphasizes multi-disciplinary design services</li><li>Leverages global reputation in content</li></ul><br><h4 id="3-designbyhumble-com">3. designbyhumble.com</h4><ul><li><strong>Strengths</strong>:</li><li>Highest estimated traffic volume among competitors</li><li>Broader keyword targeting strategy</li><li>Strong domain authority</li><li><strong>Content Strategy</strong>:</li><li>Likely targeting a wider range of keywords</li><li>May have more diverse content types</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Adopting stockdutchdesign.com’s Dutch-language approach and pietboon.com’s brand emphasis can enhance local relevance and authority.</li></ul><br><h3 id="competitor-keyword-performance-analysis">Competitor Keyword Performance Analysis</h3><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Obradov Studio</th><th>pietboon.com</th><th>stockdutchdesign.com</th></tr></thead><tbody><tr><td class="">interior studios</td><td class="">Position 63</td><td class="">Position 7</td><td class="">Top ranking</td></tr></tbody></table></div><p>This significant gap in ranking for "interior studios" (70 monthly searches, LOW competition) represents a key opportunity for improvement.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit competitor on-page elements (titles, headers, CTAs) for “interior studios” and iterate on your own page optimization.</li></ul><br><h3 id="serp-strategy-comparison">SERP Strategy Comparison</h3><br><h4 id="title-tag-comparison-">Title Tag Comparison:</h4><ul><li><strong>obradovstudio.com</strong>: "Interior Stories • Interieurontwerp en realisatie."</li><li><strong>pietboon.com</strong>: "Home - Studio Piet Boon."</li><li><strong>stockdutchdesign.com</strong>: "Stock Dutch Design"</li></ul><br><h4 id="meta-description-comparison-">Meta Description Comparison:</h4><ul><li><strong>obradovstudio.com</strong>: Focuses on media mentions and specific projects</li><li><strong>pietboon.com</strong>: Highlights global presence and multi-disciplinary design services</li><li><strong>stockdutchdesign.com</strong>: Emphasizes transition from store to interior design agency and offers tailored advice</li></ul><br><h4 id="effective-patterns-in-competitor-serp-elements-">Effective Patterns in Competitor SERP Elements:</h4><ul><li><strong>Brand Focus</strong>: pietboon.com emphasizes brand name in title and description</li><li><strong>Service Clarity</strong>: stockdutchdesign.com clearly states service offering</li><li><strong>Local Relevance</strong>: stockdutchdesign.com uses Dutch language throughout</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile-overview">Current Backlink Profile Overview</h3><ul><li><strong>Total Backlinks</strong>: 78 backlinks</li><li><strong>Referring Domains</strong>: 28 domains (12 with nofollow attributes)</li><li><strong>Backlink Spam Score</strong>: 13 (relatively low, indicating moderate quality)</li><li><strong>Domain Rank</strong>: 94</li><li><strong>First Seen</strong>: November 13, 2019</li></ul><br><h3 id="geographic-distribution-of-backlinks">Geographic Distribution of Backlinks</h3><ul><li><strong>United States</strong>: 34 backlinks (51.5%)</li><li><strong>Netherlands</strong>: 5 backlinks (7.6%)</li><li><strong>United Kingdom</strong>: 3 backlinks (4.5%)</li><li><strong>Poland</strong>: 1 backlink (1.5%)</li><li><strong>Worldwide/Unspecified</strong>: 23 backlinks (34.8%)</li></ul><br><h3 id="quality-assessment-of-referring-domains">Quality Assessment of Referring Domains</h3><ul><li><strong>Low Spam Score (Quality Backlinks)</strong>: 13 domains</li><li>Notable quality sources:</li><li>rebelwalls.com (0% spam score)</li><li>livingetc.com (0% spam score)</li><li>homify.co.uk (0% spam score)</li><li>thesethreerooms.com (0% spam score)</li><li>belliny.nl (0% spam score)</li><li>victorvenderbosch.nl (0% spam score)</li><li>hoog.design (0% spam score)</li></ul><br><ul><li><strong>Medium Spam Score</strong>: 10 domains</li><li>Including: alenews.pl (55%), seobacklinks.agency (45%), rankgrow.agency (45%)</li></ul><br><ul><li><strong>High Spam Score (Potentially Toxic)</strong>: 5 domains</li><li>Including: thebestbacklinksavailable.click (65%), australianwebdirectory.shop (65%), what-happens-next.xyz (85%)</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><ul><li><strong>Brand Anchors</strong>: "Obradov Studio", "Jelena Obradov"</li><li><strong>URL Anchors</strong>: "obradovstudio.com", "https://obradovstudio.com/"</li><li><strong>Generic Anchors</strong>: "Bezoek website", "Contact"</li><li><strong>Foreign Language Anchors</strong>: "오브라도프 스튜디오" (Korean)</li></ul><br><h3 id="competitor-backlink-comparison">Competitor Backlink Comparison</h3><ul><li><strong>Identified Competitor</strong>: amberinteriordesign.com</li><li>Rank: 14</li><li>Shared backlinks: 2</li><li>This competitor has significantly stronger backlink profile</li></ul><br><h3 id="backlink-opportunities">Backlink Opportunities</h3><ol><li><strong>High-Quality Editorial Links</strong>:</li></ol><ul><li>livingetc.com already links to Obradov Studio with anchor text "Jelena Obradov" in an article about tiled bathtub ideas</li><li>thesethreerooms.com links in an article about bathroom tile styles</li><li>These demonstrate potential for more design publication features</li></ul><br><ol><li><strong>Industry Directory Opportunities</strong>:</li></ol><ul><li>realiseerjedroomhuis.nl (Dutch home design directory)</li><li>hoog.design (Dutch design platform)</li><li>These Dutch platforms already link to Obradov Studio and could be leveraged for additional exposure</li></ul><br><ol><li><strong>Competitor Backlink Gaps</strong>:</li></ol><ul><li>amberinteriordesign.com has stronger backlink profile with only 2 shared backlinks</li><li>Opportunity to target similar referring domains</li></ul><br><h3 id="backlink-issues-to-address">Backlink Issues to Address</h3><ol><li><strong>Toxic Backlinks</strong>: 5 domains with high spam scores (65-85%) should be disavowed:</li></ol><ul><li>thebestbacklinksavailable.click (65%)</li><li>australianwebdirectory.shop (65%)</li><li>what-happens-next.xyz (85%)</li><li>browseallexpireddomains.us (65%)</li><li>mundotecnologia.info (65%)</li></ul><br><ol><li><strong>Nofollow Links</strong>: 12 of 28 referring domains use nofollow attributes, reducing SEO value</li></ol><br><ol><li><strong>Geographic Imbalance</strong>: Only 5 backlinks from Netherlands domains despite targeting Dutch market</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prepare and submit a disavow file for the toxic domains, then initiate targeted outreach to secure at least 10 new .nl quality backlinks within 3 months.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="immediate-technical-recommendations">Immediate Technical Recommendations</h3><ol><li><strong>Technical SEO Fixes</strong>:</li></ol><ul><li>Resolve HTML errors and warnings</li><li>Optimize render-blocking resources</li><li>Add descriptive alt text to all images</li><li>Improve content-to-code ratio</li><li>Fix resource errors (status code 501)</li><li>Implement proper cache control</li><li>Conduct comprehensive technology stack audit (current tools unable to access this data)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign a development resource to fix critical issues in the next two weeks and track improvements in page speed metrics.</li></ul><br><h3 id="keyword-content-optimization">Keyword & Content Optimization</h3><ol><li><strong>Homepage Optimization</strong>:</li></ol><ul><li>Enhance Dutch-language content on the /nl page</li><li>Improve keyword targeting for interior design terms, especially "interieurontwerp studio" and "interieurontwerp haarlem"</li><li>Add location-specific content for Dutch market</li><li>Optimize title tags and meta descriptions to improve CTR</li><li>Revise title tag to include relevant keywords (e.g., "Interieurontwerp Amsterdam | Obradov Studio")</li></ul><br><ol><li><strong>"Interior Studios" Ranking Improvement</strong>:</li></ol><ul><li>Create a dedicated page specifically targeting "interior studios" (and Dutch equivalent)</li><li>Include the keyword naturally in title, headings, body text, and image alt text</li><li>Implement internal linking to this page using "interior studios" as anchor text</li><li>Add in-depth content about studio expertise, design styles, and client testimonials</li></ul><br><ol><li><strong>Dutch Keyword Targeting</strong>:</li></ol><ul><li>Translate existing content into Dutch</li><li>Create new Dutch-language content targeting identified keywords</li><li>Ensure all pages have compelling, keyword-rich meta descriptions in Dutch</li><li>Develop content clusters around key Dutch interior design terms</li></ul><br><ol><li><strong>Content Development Strategy</strong>:</li></ol><ul><li>Create dedicated service pages for each design service</li><li>Develop portfolio case studies with rich content</li><li>Implement a blog with Dutch interior design trends and insights</li><li>Create content targeting "interieurontwerp op maat" to highlight bespoke services</li></ul><br><ol><li><strong>Visual Content Enhancement</strong>:</li></ol><ul><li>Showcase high-quality images of completed projects</li><li>Create videos showcasing the design process, client testimonials, or virtual tours</li><li>Optimize all visual content with proper alt text and schema markup</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Integrating video and interactive visuals can reduce bounce rates and improve time-on-page, directly supporting rankings for competitive keywords.</li></ul><br><h3 id="local-seo-enhancement">Local SEO Enhancement</h3><ol><li><strong>Local Optimization</strong>:</li></ol><ul><li>Optimize Google My Business listing</li><li>Build local citations with consistent NAP (Name, Address, Phone)</li><li>Create location-specific landing pages</li><li>Target "voorhelmstraat haarlem" more effectively on the contact page</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Complete GMB optimization and local citation audit within 4 weeks to boost local pack visibility.</li></ul><br><h3 id="backlink-strategy">Backlink Strategy</h3><ol><li><strong>Toxic Backlink Cleanup</strong>:</li></ol><ul><li>Submit disavow file for the 5 identified high-spam domains</li><li>Monitor backlink profile regularly for new toxic links</li></ul><br><ol><li><strong>Dutch Backlink Acquisition</strong>:</li></ol><ul><li>Develop outreach strategy targeting Dutch interior design blogs and publications</li><li>Focus on acquiring more links from .nl domains to improve local relevance</li><li>Leverage existing relationships with hoog.design and realiseerjedroomhuis.nl for additional exposure</li></ul><br><ol><li><strong>Editorial Link Building</strong>:</li></ol><ul><li>Create shareable design content (case studies, trends, guides)</li><li>Pitch unique interior design stories to publications like livingetc.com where links already exist</li><li>Develop relationships with Dutch design journalists and bloggers</li></ul><br><ol><li><strong>Competitor Backlink Analysis</strong>:</li></ol><ul><li>Target websites linking to amberinteriordesign.com but not to Obradov Studio</li><li>Analyze anchor text strategies of competitors for optimization opportunities</li></ul><br><ol><li><strong>Diversify Anchor Text Profile</strong>:</li></ol><ul><li>Increase branded anchor text usage</li><li>Target keyword-rich anchors for service-specific backlinks</li><li>Ensure natural anchor text distribution</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>A balanced anchor text profile with a higher proportion of branded and geo-modified anchors will reinforce local relevance and mitigate over-optimization risks.</li></ul><br><h3 id="competitive-strategy">Competitive Strategy</h3><ol><li><strong>Competitor Differentiation</strong>:</li></ol><ul><li>Analyze successful elements from pietboon.com and stockdutchdesign.com</li><li>Implement clear service descriptions like stockdutchdesign.com</li><li>Emphasize unique selling points in meta descriptions</li><li>Consider brand-focused approach similar to pietboon.com</li></ul><br><ol><li><strong>Content Gap Filling</strong>:</li></ol><ul><li>Create content for keywords where competitors rank but Obradov Studio doesn't</li><li>Develop more comprehensive service descriptions</li><li>Add client testimonials and case studies</li><li>Implement Dutch-language blog content on interior design trends</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft a competitive content and SERP feature matrix to track adoption of best practices and measure impact over time.</li></ul><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><p>Obradov Studio is experiencing a concerning decline in organic search visibility in the Netherlands. Despite strong on-page optimization, technical issues, limited keyword targeting, and an underdeveloped backlink profile are restricting their performance. The keyword analysis reveals significant opportunities, particularly for Dutch-language interior design terms with low competition.</p><br><p>The competitive analysis shows that stockdutchdesign.com and pietboon.com are outperforming Obradov Studio, particularly for the valuable "interior studios" keyword. The backlink analysis reveals a moderate quality profile with 78 backlinks from 28 referring domains, but with geographic imbalance (only 5 Dutch backlinks) and some toxic links that need addressing.</p><br><p>By implementing the recommended technical fixes, content optimizations, backlink strategies, and competitive approaches, Obradov Studio can reverse the negative trend and improve their visibility in the Dutch interior design market.</p><br><p>Key priorities should be:</p><ol><li>Optimizing for "interior studios" to compete with pietboon.com's position 7 ranking</li><li>Implementing Dutch-language content and meta descriptions similar to stockdutchdesign.com</li><li>Creating dedicated service pages with clear value propositions</li><li>Resolving technical SEO issues affecting site performance</li><li>Developing a visual content strategy showcasing the studio's work</li><li>Disavowing toxic backlinks and acquiring more high-quality Dutch backlinks</li><li>Leveraging existing relationships with design publications for additional editorial coverage</li><li>Conducting a comprehensive technology stack audit to identify additional optimization opportunities</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Establish a cross-functional task force (SEO, content, development, outreach) with clear milestones over the next 6 months to execute this plan and track performance improvements.</li></ul></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Obradov Studio',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

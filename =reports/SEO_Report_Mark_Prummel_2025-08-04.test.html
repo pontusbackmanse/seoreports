@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Mark Prummel</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Mark Prummel • https://markprummel.nl/</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Nederland Market</span>
+                        <span><i class="fas fa-calendar"></i> August 4, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Metric</strong></th><th><strong>Value / Change</strong></th></tr></thead><tbody><tr><td class="">Organic Visibility Growth</td><td class="positive">+81.39% over last 12 months (Netherlands)</td></tr><tr><td class="">Current Estimated Traffic Value</td><td class="">395.82 visits/month (NL organic search)</td></tr><tr><td class="">Keywords in Position 1</td><td class="">4 (e.g., "tewaterlating hoogezand agenda 2024")</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">5 (e.g., "tewaterlating", "boomsma shipping")</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">13 (e.g., "amasus ship", "van dam shipping")</td></tr><tr><td class="">Homepage Ranking</td><td class="">Positions 21-30 (needs improvement)</td></tr><tr><td class="">Broken Pages</td><td class="">50 (technical issue to fix)</td></tr><tr><td class="">Toxic Backlinks</td><td class="">Identified (e.g., jouwstarter.nl, picaro.fr)</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>While visibility is growing strongly, the homepage’s low ranking (21-30) limits broader traffic potential.</li><li>Prioritize homepage optimization and broken page fixes to capitalize on this visibility boost.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Top Competitors</strong></th><th><strong>Strong Keywords They Rank For (Mark Prummel Ranks Poorly)</strong></th><th><strong>Notes</strong></th></tr></thead><tbody><tr><td class="">Flying Focus (flyingfocus.nl)</td><td class="">"luchtfotografie schepen" (240, #1), "maritieme fotografie" (350, #2)</td><td class="">Focus on aerial maritime photography</td></tr><tr><td class="">Foto Menno Mulder (fotomennemulder.nl)</td><td class="">"scheepsfotografie" (210, #3), "binnenvaart foto's" (180, #2)</td><td class="">Strong local presence, technical SEO</td></tr><tr><td class="">Shipspotting.com</td><td class="">"schepen spotten nederland" (320, #1), "scheepsfoto's" (290, #1)</td><td class="">User-generated content, dynamic titles</td></tr><tr><td class="">Danny Cornelissen (dannycornelissen.nl)</td><td class="">"havenfotografie rotterdam" (110, #1), "maritieme fotograaf" (170, #3)</td><td class="">Focus on Rotterdam port photography</td></tr><tr><td class="">Wagenborg.com</td><td class="">"wagenborg delfzijl" (320, #1), "wagenborg shipping" (210, #1)</td><td class="">High authority, strong branding</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Map out a content calendar targeting competitor-strong keywords (e.g., “luchtfotografie schepen”) with tailored blog posts or gallery pages.</li><li>Analyze their on-page structures to replicate successful patterns (titles, CTAs).</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Opportunity Keywords</strong></th><th><strong>Monthly Search Volume (NL)</strong></th><th><strong>Current Position</strong></th><th><strong>Competition</strong></th><th><strong>Why Target?</strong></th></tr></thead><tbody><tr><td class="">terschelling veerboot</td><td class="">1900-4400</td><td class="">Not ranking</td><td class="">Low</td><td class="">High volume ferry-related keyword with no current ranking; strong seasonal interest in summer</td></tr><tr><td class="">veerboot vlieland</td><td class="">720-2400</td><td class="">Not ranking</td><td class="">Low</td><td class="">High volume, low competition ferry keyword; aligns with business focus</td></tr><tr><td class="">fähre schiermonnikoog</td><td class="">720</td><td class="">17</td><td class="">Low</td><td class="">Growing interest in Wadden ferry photography; seasonal peak in summer</td></tr><tr><td class="">bodewes shipyard</td><td class="">590</td><td class="">17</td><td class="">Medium</td><td class="">Relevant shipyard keyword with moderate volume; content gap present</td></tr><tr><td class="">jr shipping</td><td class="">480</td><td class="">17</td><td class="">Medium</td><td class="">Shipping company keyword with moderate volume; no dedicated content</td></tr><tr><td class="">marietje nora</td><td class="">70</td><td class="">14</td><td class="">Low</td><td class="">Long-tail keyword with low competition; opportunity to improve ranking</td></tr><tr><td class="">webcam veerboot harlingen terschelling</td><td class="">40-210</td><td class="">Not ranking</td><td class="">Low</td><td class="">Niche keyword combining webcams and ferry routes; untapped content opportunity</td></tr><tr><td class="">historische nederlandse schepen</td><td class="">80</td><td class="">Not ranking</td><td class="">Low</td><td class="">Cultural heritage topic; potential to attract niche audience</td></tr></tbody></table></div><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Mark Prummel’s website has grown organic traffic by 81.39% in the Netherlands over the past year, currently receiving ~396 monthly visits from organic search.</li><li>Strong rankings for niche maritime keywords like "tewaterlating hoogezand agenda 2024" but homepage and many ship-specific pages underperform.</li><li>Technical SEO issues include multiple H1 tags, render-blocking scripts, broken pages (50), and many broken backlinks (6,639).</li><li>Major competitors (Flying Focus, Foto Menno Mulder, Shipspotting.com) outrank Mark Prummel on broader maritime photography and location-based keywords.</li><li>Significant keyword opportunities exist in ferry-related terms (e.g., "terschelling veerboot") with high search volume and low competition.</li><li>Backlink profile is weak in Dutch authoritative sites; toxic backlinks identified that should be disavowed.</li><li>Content gaps include lack of Dutch-language ferry content, port-specific galleries, and educational maritime photography topics.</li><li>Recommended immediate actions: fix technical SEO, optimize homepage, create ferry-focused content, disavow toxic backlinks, and start targeted Dutch backlink outreach.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize execution by tackling the homepage and technical fixes in the first sprint, then launch ferry-focused content aligned with peak season (May-August).</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-mark-prummel" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Mark Prummel</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><br><p>This report provides a comprehensive SEO analysis for Mark Prummel, a maritime photographer specializing in coastal and river shipping photography in Dutch, German, and Danish waters, as well as Wadden Ferries. The analysis focuses specifically on the Dutch market, examining current SEO performance, keyword opportunities, competitive landscape, and backlink profile to provide actionable recommendations for improving search visibility and organic traffic.</p><br></div></section>
+                <section id="1-company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">1. Company Overview</h2>
+                    </div>
+                    <div class="section-content"><br><p>Mark Prummel operates a photography business focused on maritime subjects, particularly coastal and river shipping in the Netherlands, Germany, and Denmark, as well as Wadden Ferries. The business is based in the Netherlands and targets clients interested in maritime photography. (<a href="https://markprummel.nl/" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</p><br></div></section>
+                <section id="2-overall-seo-performance" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">2. Overall SEO Performance</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-organic-visibility">Current Organic Visibility</h3><br><p>The website markprummel.nl shows moderate organic visibility in the Netherlands, with the following distribution of rankings:</p><ul><li>Position 1: 4 keywords (including "tewaterlating agenda 2024 groningen", "tewaterlating hoogezand")</li><li>Positions 2-3: 5 keywords (including "tewaterlating", "boomsma shipping", "holwerda shipping")</li><li>Positions 4-10: 13 keywords (including "amasus ship", "van dam shipping", "pot scheepvaart")</li><li>Positions 11-20: 32 keywords</li><li>Positions 21-30: 16 keywords</li><li>Positions 31-100: 44 keywords</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Keywords ranked in positions 11-30 represent quick-win opportunities. Focus on improving on-page optimization (titles, meta descriptions) and adding related internal links to push these into top 10.</li></ul><br><h3 id="organic-traffic-trends">Organic Traffic Trends</h3><br><p>Over the past 12 months, the website has experienced significant growth in organic traffic with an overall increase of 81.39%. The current estimated monthly traffic value (ETV) is 395.82 visits per month from organic search in the Netherlands, up from 218.21 a year ago.</p><br><h3 id="top-performing-pages">Top Performing Pages</h3><br><ol><li><strong>Tewaterlatingen page</strong> (markprummel.nl/tewaterlatingen/) - Highest performing page with an ETV of 189.37, ranking in the top positions for "tewaterlating" related keywords. This page consistently ranks #1 for "tewaterlating hoogezand agenda" keywords.</li><li><strong>Amasus Shipping gallery</strong> (markprummel.nl/photos/general-cargo/company/amasus-shipping/) - Strong performer with an ETV of 56.21, ranking in positions 5-9 for "amasus ship", "amasus shipping", and "amasus shipping delfzijl" keywords.</li><li><strong>Holwerda gallery</strong> (markprummel.nl/photos/general-cargo/company/holwerda/) - Notable performer with an ETV of 22.46, ranking in position 3 for "holwerda shipping" keyword.</li><li><strong>Company/Shipyard Photo Pages</strong> - Pages under <code>/photos/general-cargo/company/</code> and <code>/photos/general-cargo/shipyard/</code> rank well for company and shipyard names.</li><li><strong>Ship-Specific Pages</strong> - Pages under <code>/ship/</code> rank for specific ship names (e.g., "BERMUDA ISLANDER", "MOLENGAT").</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Leverage the strong performance of top pages by adding contextual internal links to underperforming pages, particularly ferry and port-specific content.</li></ul><br><h3 id="underperforming-pages">Underperforming Pages</h3><br><ol><li>Homepage (markprummel.nl/) - Only ranks in positions 21-30, suggesting significant room for improvement</li><li>Most ship-specific pages (/ship/ directory) - Ranking in positions 31-100 with minimal traffic</li><li>Many photo gallery subcategories - Low visibility despite content potential</li><li>Pages targeting ferry-related keywords - Despite relevance to the site's focus, many ferry-related terms have rankings outside the top 10</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit and consolidate thin subcategory pages into richer, comprehensive guides.</li><li>Prioritize homepage enhancements (clear value proposition, featured galleries) to boost ranking.</li></ul><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><br><ol><li>Multiple H1 tags on pages (best practice is to have only one)</li><li>Render-blocking scripts (8 identified) affecting page load speed</li><li>Low content-to-HTML ratio indicating potential thin content issues</li><li>Missing image title attributes across the site</li><li>HTML errors including unexpected tag closures and paragraph scope issues</li><li>High number of broken pages (50) affecting user experience and crawl efficiency</li><li>High overall on-page score (98.9) indicating strong technical foundation despite these issues</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Fix H1 tag structure, remove/render-blocking scripts, and correct HTML errors in priority order.</li><li>Resolve broken pages and set up 301 redirects to preserve link equity.</li></ul><br></div></section>
+                <section id="3-keyword-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">3. Keyword Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Monthly Search Volume (NL)</th><th>Current Position</th><th>Competition Level</th></tr></thead><tbody><tr><td class="">tewaterlating hoogezand agenda 2024</td><td class="">170</td><td class="">1</td><td class="">Low</td></tr><tr><td class="">tewaterlating hoogezand</td><td class="">110</td><td class="">1</td><td class="">Low</td></tr><tr><td class="">tewaterlating</td><td class="">210</td><td class="">2</td><td class="">Medium</td></tr><tr><td class="">boomsma shipping</td><td class="">210</td><td class="">3</td><td class="">Medium</td></tr><tr><td class="">holwerda shipping</td><td class="">210</td><td class="">3</td><td class="">Medium</td></tr><tr><td class="">amasus ship</td><td class="">480</td><td class="">5</td><td class="">Medium</td></tr><tr><td class="">schip te water laten</td><td class="">70</td><td class="">5</td><td class="">Low</td></tr><tr><td class="">van dam shipping</td><td class="">140</td><td class="">5</td><td class="">Medium</td></tr><tr><td class="">pot scheepvaart</td><td class="">170</td><td class="">7</td><td class="">Medium</td></tr><tr><td class="">fanølinjen</td><td class="">140</td><td class="">8</td><td class="">Low</td></tr><tr><td class="">amasus shipping delfzijl</td><td class="">480</td><td class="">8</td><td class="">Medium</td></tr><tr><td class="">amasus shipping</td><td class="">480</td><td class="">9</td><td class="">Medium</td></tr><tr><td class="">wilson shipping</td><td class="">50</td><td class="">9</td><td class="">Medium</td></tr><tr><td class="">southern rock vessel</td><td class="">90</td><td class="">10</td><td class="">Low</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The #5-#10 positions (e.g., “amasus ship”) can be boosted with targeted backlink outreach and content enrichment (case studies, detailed specs).</li></ul><br><h3 id="high-value-target-keywords">High-Value Target Keywords</h3><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Monthly Search Volume (NL)</th><th>Current Position</th><th>Competition Level</th></tr></thead><tbody><tr><td class="">fähre schiermonnikoog</td><td class="">720</td><td class="">17</td><td class="">Low</td></tr><tr><td class="">koopvaardij blogspot</td><td class="">720</td><td class="">11</td><td class="">Medium</td></tr><tr><td class="">bodewes shipyard</td><td class="">590</td><td class="">17</td><td class="">Medium</td></tr><tr><td class="">jr shipping</td><td class="">480</td><td class="">17</td><td class="">Medium</td></tr><tr><td class="">ems ag / ag ems</td><td class="">480</td><td class="">13-15</td><td class="">Medium</td></tr><tr><td class="">ameland ferry</td><td class="">390</td><td class="">22</td><td class="">Medium</td></tr><tr><td class="">longship</td><td class="">390</td><td class="">15</td><td class="">Medium</td></tr><tr><td class="">ferus smit</td><td class="">390</td><td class="">17</td><td class="">Medium</td></tr><tr><td class="">bodewes hoogezand</td><td class="">320</td><td class="">14</td><td class="">Medium</td></tr><tr><td class="">forestwave</td><td class="">320</td><td class="">11</td><td class="">Medium</td></tr><tr><td class="">fahre borkum</td><td class="">260</td><td class="">12</td><td class="">Low</td></tr><tr><td class="">kielerkanaal</td><td class="">260</td><td class="">15</td><td class="">Low</td></tr><tr><td class="">molengat</td><td class="">260</td><td class="">18</td><td class="">Low</td></tr><tr><td class="">terschelling veerboot</td><td class="">1900-4400</td><td class="">Not ranking</td><td class="">Low</td></tr><tr><td class="">veerboot naar terschelling</td><td class="">1900-4400</td><td class="">Not ranking</td><td class="">Low</td></tr><tr><td class="">veerboot terschelling</td><td class="">1900-4400</td><td class="">Not ranking</td><td class="">Low</td></tr><tr><td class="">veerboot vlieland</td><td class="">720-2400</td><td class="">Not ranking</td><td class="">Low</td></tr><tr><td class="">veerboot naar vlieland</td><td class="">720-2400</td><td class="">Not ranking</td><td class="">Low</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create dedicated landing pages for “terschelling veerboot” and “veerboot vlieland” incorporating high-quality images and webcam feeds to capture seasonal search traffic.</li></ul><br><h3 id="long-tail-opportunities">Long-Tail Opportunities</h3><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Monthly Search Volume (NL)</th><th>Current Position</th><th>Competition Level</th></tr></thead><tbody><tr><td class="">marietje nora</td><td class="">70</td><td class="">14</td><td class="">Low</td></tr><tr><td class="">marietje deborah</td><td class="">70</td><td class="">11</td><td class="">Low</td></tr><tr><td class="">terschellinger bank</td><td class="">70</td><td class="">12</td><td class="">Low</td></tr><tr><td class="">longship bv</td><td class="">70</td><td class="">19</td><td class="">Low</td></tr><tr><td class="">scheepsbouw hoogezand</td><td class="">70</td><td class="">22</td><td class="">Low</td></tr><tr><td class="">egbert wagenborg</td><td class="">110</td><td class="">20</td><td class="">Low</td></tr><tr><td class="">webcam veerboot harlingen terschelling</td><td class="">40-210</td><td class="">Not ranking</td><td class="">Low</td></tr><tr><td class="">webcam harlingen veerboot vlieland</td><td class="">40-170</td><td class="">Not ranking</td><td class="">Low</td></tr><tr><td class="">vertom joy</td><td class="">140</td><td class="">16</td><td class="">Low</td></tr><tr><td class="">hartman urk</td><td class="">170</td><td class="">16</td><td class="">Low</td></tr><tr><td class="">baltic shipping</td><td class="">90</td><td class="">17</td><td class="">Low</td></tr><tr><td class="">fähre langeoog</td><td class="">90</td><td class="">21</td><td class="">Low</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Group related long-tail keywords into content clusters (e.g., shipyard profiles + photo galleries) to maximize internal linking and topical authority.</li></ul><br><h3 id="seasonal-trends">Seasonal Trends</h3><br><p>Analysis shows increased search interest in:</p><ul><li>Wadden Ferry photography during summer months (May-August), with keywords like "fähre schiermonnikoog", "fähre ameland holwerd", "ameland ferry", "fähre langeoog", and "fahre borkum" peaking in July-August</li><li>River shipping photography during spring and fall (March-May, September-October)</li><li>General maritime photography searches remain relatively consistent year-round</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Align content publication schedule with peak seasonal trends: publish ferry content in late Q1 to capture June–July traffic surge.</li></ul><br><h3 id="content-gaps">Content Gaps</h3><br><ol><li>Limited Dutch-language content targeting specific vessel types</li><li>No dedicated content for popular Dutch maritime events and locations</li><li>Missing educational content about maritime photography techniques</li><li>No location-specific galleries for popular Dutch ports and waterways</li><li>Limited use of local Dutch maritime terminology in content</li><li>No dedicated pages for major shipping companies like Wagenborg</li><li>Insufficient content about specific ship names that generate search volume</li><li>Missing content targeting high-volume ferry-related keywords (e.g., "terschelling veerboot", "veerboot vlieland")</li><li>No content leveraging webcam-related keywords for ferries</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop a content roadmap that fills these nine gaps, prioritizing high-volume ferry and port profiles first.</li></ul><br></div></section>
+                <section id="4-competitive-landscape" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">4. Competitive Landscape</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><br><ol><li><strong>Flying Focus (flyingfocus.nl)</strong></li></ol><ul><li>Strengths: Strong domain authority, comprehensive galleries, clear service offerings</li><li>Weaknesses: Slower site speed, limited blog content</li><li>Top keywords: luchtfotografie schepen (240 searches, position 1), maritieme fotografie (350 searches, position 2)</li><li>Strategy: Heavy focus on aerial maritime photography with clear service packages</li></ul><br><ol><li><strong>Foto Menno Mulder (fotomennemulder.nl)</strong></li></ol><ul><li>Strengths: Excellent technical SEO, strong local presence</li><li>Weaknesses: Less comprehensive content, fewer backlinks</li><li>Top keywords: scheepsfotografie (210 searches, position 3), binnenvaart foto's (180 searches, position 2)</li><li>Strategy: Uses location-based landing pages for different Dutch ports and waterways</li></ul><br><ol><li><strong>Shipspotting.com</strong></li></ol><ul><li>Strengths: Large image database, strong community engagement, dynamic titles based on search queries</li><li>Weaknesses: Less professional focus, weaker conversion optimization</li><li>Top keywords: schepen spotten nederland (320 searches, position 1), scheepsfoto's (290 searches, position 1), nescos (170 searches, position 1), general cargo vessel (90 searches, position 3)</li><li>Strategy: Community-driven content with user submissions and search result pages optimized for specific queries</li></ul><br><ol><li><strong>Danny Cornelissen (dannycornelissen.nl)</strong></li></ol><ul><li>Strengths: Strong personal brand, excellent portfolio presentation</li><li>Weaknesses: Limited keyword targeting, fewer indexed pages</li><li>Top keywords: havenfotografie rotterdam (110 searches, position 1), maritieme fotograaf (170 searches, position 3)</li><li>Strategy: Focuses heavily on Rotterdam port photography with specialized gallery categories</li></ul><br><ol><li><strong>Wagenborg.com</strong></li></ol><ul><li>Strengths: Official company website with high authority for Wagenborg-related searches</li><li>Weaknesses: Not a direct competitor for photography services</li><li>Top keywords: wagenborg delfzijl (320 searches, position 1), wagenborg shipping (210 searches, position 1), wagenborg schip (140 searches, position 1)</li><li>Strategy: Strong branding and clear value proposition in both title and description, concise information about their services and ships</li></ul><br><ol><li><strong>Startkabel.nl</strong></li></ol><ul><li>Strengths: Broad directory with links across various maritime topics</li><li>Weaknesses: Generic content, not specialized in maritime photography</li><li>Top keywords: instalho scheepsbouw bv (170 searches, position 1)</li><li>Strategy: Uses broad, generic titles and descriptions for directory pages</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Location-based content is a common thread among top competitors—mirror this by creating focused Rotterdam, Groningen, and Wadden Sea galleries.</li></ul><br><h3 id="competitive-content-analysis">Competitive Content Analysis</h3><br><ol><li>All competitors maintain dedicated location-based galleries (e.g., "Rotterdam Harbor," "Amsterdam Port")</li><li>Top competitors publish regular blog posts featuring recent photoshoots with keyword-rich descriptions</li><li>Flying Focus and Danny Cornelissen offer clear service packages with pricing information</li><li>Shipspotting.com leverages user-generated content to maintain freshness and volume and uses dynamic titles that directly address user search queries</li><li>Wagenborg.com ranks highly for ship-specific searches by providing concise overviews of ship specifications and purposes</li><li>Competitors are using structured data markup for images to enhance SERP visibility</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Implement image structured data for gallery pages and adopt dynamic page titles for category archives.</li></ul><br><h3 id="competitor-serp-strategies">Competitor SERP Strategies</h3><br><ol><li><strong>Shipspotting.com</strong> uses dynamic titles based on search queries (e.g., "Search Results for Owner: NESCOS SHIPPING")</li><li><strong>Wagenborg.com</strong> uses consistent branding in titles ("Royal Wagenborg") and concise descriptions of their services</li><li><strong>Startkabel.nl</strong> uses broad, generic titles and descriptions (e.g., "links over scheepsbouw")</li><li><strong>Mark Prummel</strong> currently uses titles that often include the ship name, year, and IMO number, with descriptions that are often excerpts from page content</li><li><strong>Bodewes Shipyard</strong> uses titles that follow a format of "[Company/Shipyard Name] - Photos & shipdata" with descriptions emphasizing "photos, ship particulars and detailed biography"</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Refine title templates to follow “[Subject] – Photos & Details” format and test variations to improve click-through rates.</li></ul><br></div></section>
+                <section id="5-backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">5. Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><br><ul><li>Total backlinks: 6,735</li><li>Referring domains: 99</li><li>Referring main domains: 76</li><li>Domain rank: 261</li><li>Broken backlinks: 6,639 (98.6% of total backlinks)</li><li>Broken pages: 50</li><li>First seen in backlink indexes: January 16, 2019</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The high volume of broken backlinks indicates lost equity—prioritize redirect recovery and targeted outreach to high-value referring domains.</li></ul><br><h3 id="backlink-quality-distribution">Backlink Quality Distribution</h3><br><p>The backlink profile shows a mix of quality levels:</p><ul><li>Low spam score domains (0-30%): 25 identified domains including riverseainternational.co.uk, ship-db.de, koopvaardij.blogspot.com</li><li>Medium spam score domains (31-60%): 25 identified domains including 123.is, pontjes.nl, shipspotters.nl</li><li>High spam score domains (61-100%): 5 identified domains including jouwstarter.nl, scheepvaarthoek.blogspot.com</li></ul><br><h3 id="geographic-distribution-of-backlinks">Geographic Distribution of Backlinks</h3><br><ul><li>Iceland (IS): 6,332 backlinks</li><li>Netherlands (NL): 116 backlinks</li><li>Germany (DE): 47 backlinks</li><li>United Kingdom (GB): 12 backlinks</li><li>Denmark (DK): 3 backlinks</li><li>Other countries: 38 backlinks</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><br><p>The backlink profile shows a diverse range of anchor texts, including:</p><ul><li>Brand terms: "Mark Prummel", "Wadden Ferries Mark Prummel"</li><li>Ship names: "Arklow Glen", "Marie Lehmann", "Dollard", "Inselexpress 2"</li><li>Generic terms: "Website", "agenda met tewaterlatingen"</li><li>URLs: Direct links to specific ship pages</li></ul><br><h3 id="backlink-opportunities">Backlink Opportunities</h3><br><div style="overflow-x: auto;"><table><thead><tr><th>Website</th><th>Domain Authority</th><th>Links to Competitors</th><th>Relevance</th></tr></thead><tbody><tr><td class="">maritiemnederland.com</td><td class="">52</td><td class="">Yes (3 competitors)</td><td class="">High</td></tr><tr><td class="">scheepvaartwest.be</td><td class="">41</td><td class="">Yes (2 competitors)</td><td class="">High</td></tr><tr><td class="">binnenvaartkrant.nl</td><td class="">46</td><td class="">Yes (3 competitors)</td><td class="">High</td></tr><tr><td class="">zeehavens.nl</td><td class="">38</td><td class="">Yes (2 competitors)</td><td class="">Medium</td></tr><tr><td class="">maritimeholland.nl</td><td class="">44</td><td class="">Yes (2 competitors)</td><td class="">High</td></tr><tr><td class="">vlootschouw.nl</td><td class="">36</td><td class="">Yes (1 competitor)</td><td class="">High</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop a targeted outreach list for these six high-relevance sites, crafting personalized email pitches showcasing your best ferry and port galleries.</li></ul><br><h3 id="toxic-backlinks">Toxic Backlinks</h3><br><p>The analysis identified several potentially harmful backlinks that should be disavowed:</p><ul><li>jouwstarter.nl (100% spam score)</li><li>scheepvaarthoek.blogspot.com (66% spam score)</li><li>picaro.fr and picaro.nl (75% spam score)</li><li>vaart.nl (75% spam score)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create and submit a disavow file for these toxic domains to Google Search Console within 30 days.</li></ul><br></div></section>
+                <section id="6-content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">6. Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="new-content-topics">New Content Topics</h3><br><ol><li><strong>Wadden Ferry Photography Series</strong></li></ol><ul><li>Create comprehensive content targeting high-volume ferry keywords</li><li>Target keywords: "terschelling veerboot" (1900-4400 searches), "veerboot naar terschelling" (1900-4400 searches), "veerboot terschelling" (1900-4400 searches), "veerboot vlieland" (720-2400 searches), "veerboot naar vlieland" (720-2400 searches)</li></ul><br><ol><li><strong>Dutch Maritime Heritage Series</strong></li></ol><ul><li>Focus on historical Dutch vessels with high cultural significance</li><li>Target keywords: "historische nederlandse schepen" (80 searches), "nederlands maritiem erfgoed" (110 searches)</li></ul><br><ol><li><strong>Dutch Port Profiles</strong></li></ol><ul><li>Create dedicated galleries and information for major Dutch ports</li><li>Target keywords: "rotterdam haven schepen" (190 searches), "amsterdam havengebied fotografie" (70 searches)</li></ul><br><ol><li><strong>Ship Launch Documentation Series</strong></li></ol><ul><li>Expand on the already successful "tewaterlatingen" content</li><li>Target keywords: "nieuwe schepen nederland" (70 searches), "scheepswerf tewaterlating" (60 searches)</li></ul><br><ol><li><strong>Shipping Company Profiles</strong></li></ol><ul><li>Create dedicated pages for major shipping companies</li><li>Target keywords: "wagenborg delfzijl" (320 searches), "wagenborg schip" (140 searches), "jr shipping" (480 searches), "ferus smit" (390 searches)</li></ul><br><ol><li><strong>Ship-Specific Galleries</strong></li></ol><ul><li>Enhance existing ship pages with more comprehensive information</li><li>Target keywords: "marietje nora" (70 searches), "marietje deborah" (70 searches), "egbert wagenborg" (110 searches), "molengat" (260 searches)</li></ul><br><ol><li><strong>Ferry Webcam Content</strong></li></ol><ul><li>Create pages that combine photography with webcam feeds of popular ferry routes</li><li>Target keywords: "webcam veerboot harlingen terschelling" (40-210 searches), "webcam harlingen veerboot vlieland" (40-170 searches)</li></ul><br><ol><li><strong>Shipyard Documentation</strong></li></ol><ul><li>Create content focused on Dutch shipyards and their vessels</li><li>Target keywords: "bodewes shipyard" (590 searches), "bodewes hoogezand" (320 searches), "ferus smit" (390 searches)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign each topic to a content owner and establish publication dates, starting with ferry photography series in Q1.</li></ul><br><h3 id="content-optimization-opportunities">Content Optimization Opportunities</h3><br><ol><li>Enhance the homepage with more descriptive text and featured galleries to improve its ranking position</li><li>Add Dutch-language alt text to all images following best practices</li><li>Create dedicated landing pages for each major vessel type photographed</li><li>Develop a maritime photography blog with regular updates on recent shoots</li><li>Implement FAQ schema for common maritime photography questions</li><li>Consolidate thin content pages in the /ship/ directory to create more comprehensive resources</li><li>Optimize meta descriptions to be more compelling and directly relevant to search queries</li><li>Implement dynamic title generation for search result pages or category pages</li><li>Capitalize on the strong performance of the "/tewaterlatingen/" page by expanding content and creating related pages</li><li>Optimize SERP snippets following successful patterns from competitors, such as using consistent title formats like "[Company/Shipyard Name] - Photos & shipdata"</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct an optimization sprint: update meta tags, add alt text, and restructure thin pages within 4 weeks.</li></ul><br></div></section>
+                <section id="7-conclusion-action-plan" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tasks"></i></div>
+                        <h2 class="section-title">7. Conclusion & Action Plan</h2>
+                    </div>
+                    <div class="section-content"><br><p>Mark Prummel's website shows strong growth potential with an 81.39% increase in organic traffic over the past year. The site currently has moderate visibility but faces strong competition from established maritime photography websites and official shipping company sites. By implementing the following action plan, Mark Prummel can improve search visibility and capture untapped opportunities:</p><br><h3 id="immediate-actions-1-2-months-">Immediate Actions (1-2 months)</h3><br><ol><li>Fix technical SEO issues, particularly the multiple H1 tags and render-blocking scripts</li><li>Address the high number of broken pages (50) to improve user experience and crawl efficiency</li><li>Implement a strategy to recover or redirect the 6,639 broken backlinks to reclaim lost link equity</li><li>Implement structured data for images and gallery content</li><li>Create Dutch-language content targeting identified keyword gaps, particularly the high-volume ferry keywords</li><li>Begin outreach to maritime websites for quality backlink acquisition</li><li>Optimize the homepage to improve its ranking from positions 21-30 to top 10</li><li>Disavow toxic backlinks from domains with high spam scores (jouwstarter.nl, picaro.fr, etc.)</li><li>Capitalize on the successful "tewaterlatingen" content model by expanding and optimizing related pages</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Launch a cross-functional sprint combining dev (technical fixes), content (ferry pages), and outreach (backlink building) to hit all nine immediate tasks within two months.</li></ul><br><h3 id="medium-term-actions-3-6-months-">Medium-Term Actions (3-6 months)</h3><br><ol><li>Develop location-based content for major Dutch ports and waterways</li><li>Launch a maritime photography blog with regular updates</li><li>Create service-specific landing pages with clear CTAs</li><li>Continue quality link building with focus on Dutch maritime websites</li><li>Expand content targeting seasonal ferry-related keywords, timing publication to align with peak search periods (April-August)</li><li>Enhance ship-specific pages with more detailed information beyond basic ship data</li><li>Implement dynamic titles for search result pages similar to Shipspotting.com</li><li>Reduce the excessive number of internal links (72,519) to create a more focused internal linking structure</li><li>Create content targeting trending keywords like "vertom joy" and "marietje deborah"</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Medium-term focus on content diversification (blog, service pages) will build topical authority and support long-tail growth.</li></ul><br><h3 id="long-term-strategy-6-12-months-">Long-Term Strategy (6-12 months)</h3><br><ol><li>Develop comprehensive content clusters around key maritime photography topics</li><li>Create seasonal content calendars aligned with Dutch maritime events</li><li>Build authority through guest posting on industry websites</li><li>Expand content to target neighboring markets (Belgium, Germany) while maintaining Dutch focus</li><li>Implement a structured internal linking strategy to distribute link equity to underperforming pages</li><li>Build a community aspect to the site, allowing users to contribute photos, information, and reviews</li><li>Develop comprehensive guides and resources related to specific shipping companies, ship types, and shipbuilding locations</li><li>Focus on acquiring backlinks from high-authority maritime websites that currently link to competitors but not to Mark Prummel</li><li>Create webcam-integrated content for ferry routes to capture niche but valuable search traffic</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Long-term success hinges on building a robust content ecosystem and community engagement, transforming the site into the go-to portal for Dutch maritime photography.</li></ul></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Mark Prummel',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

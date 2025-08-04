@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Dobber</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Dobber • www.dobber.life</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Belgium Market</span>
+                        <span><i class="fas fa-calendar"></i> August 4, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Growth</th></tr></thead><tbody><tr><td class="">Organic Visibility Growth</td><td class="positive">+436.15% over last 12 months (Belgium)</td></tr><tr><td class="">Position 1 Keywords</td><td class="positive">4 (300% increase)</td></tr><tr><td class="">Position 2-3 Keywords</td><td class="positive">11 (1000% increase)</td></tr><tr><td class="">Position 4-10 Keywords</td><td class="positive">52 (550% increase)</td></tr><tr><td class="">Total Ranking Keywords</td><td class="">186 (114 new)</td></tr><tr><td class="">Estimated Monthly Traffic (ETV)</td><td class="">2,260.76 visits</td></tr><tr><td class="">Estimated Paid Traffic Value</td><td class="">€1,027.92</td></tr><tr><td class="">On-Page SEO Score</td><td class="">95.24 (strong)</td></tr><tr><td class="">Domain Rank</td><td class="">217</td></tr><tr><td class="">Toxic Backlinks Identified</td><td class="">Several with spam score >65%</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Leverage the strong on-page SEO score to push underperforming keywords into top positions.</li><li>Focus internal linking toward high-growth areas to distribute authority.</li><li>Consider setting quarterly visibility targets to sustain the momentum.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Competitor Strengths & Keywords They Rank Well For (Dobber Ranks Poorly)</th></tr></thead><tbody><tr><td class="">wattedoen.be</td><td class="">Activity-based keywords, e.g., "wat te doen kajakken", pricing info in meta</td></tr><tr><td class="">routeyou.com</td><td class="">Route-specific keywords, e.g., "blaarmeersen gent route", user-generated content</td></tr><tr><td class="">quefaire.be</td><td class="">Local authority, broad activity listings, 41 intersecting referring domains</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a detailed content gap analysis for each competitor’s top 20 pages.</li><li>Align meta descriptions to match competitor calls-to-action, especially pricing details.</li><li>Identify 5 user-generated content formats to emulate routeyou.com’s engagement.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume</th><th>Current Position</th><th>Reason to Target</th></tr></thead><tbody><tr><td class="">blaarmeersen gent</td><td class="">8,100</td><td class="">12</td><td class="">High volume, under-optimized location page</td></tr><tr><td class="">kajaktocht gent</td><td class="">1,000</td><td class="">11</td><td class="">Route-related, competitor strength area</td></tr><tr><td class="">kajakken antwerpen</td><td class="">210</td><td class="">13</td><td class="">Regional expansion potential</td></tr><tr><td class="">waar mag je kajakken in belgië</td><td class="">45</td><td class="">Not ranked</td><td class="">Low competition, informational intent</td></tr><tr><td class="">kano huren gent</td><td class="">40</td><td class="">Not ranked</td><td class="">Medium competition, transactional intent</td></tr><tr><td class="">kajak huren leuven</td><td class="">8</td><td class="">Not ranked</td><td class="">Low competition, location-specific</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize updating the content for the top two keywords this month.</li><li>Build internal links from blog and homepage to these opportunity pages.</li><li>Schedule a backlink outreach campaign targeting local blogs that mention these terms.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Dobber’s organic visibility in Belgium has grown by 436.15% in 12 months, with strong gains in top 3 SERP positions.</li><li>The company ranks well for branded and some location-based keywords but underperforms on high-volume generic and route-related keywords.</li><li>Major keyword opportunity: "blaarmeersen gent" (8,100 monthly searches) currently ranking #12.</li><li>Competitors wattedoen.be and routeyou.com dominate “what to do” and route-specific keywords respectively.</li><li>Technical SEO is strong overall but needs improvements in page speed, title length, image alt text, and DOM complexity.</li><li>Backlink profile is solid with many quality Belgian domains but lacks keyword-rich anchors and has some toxic backlinks to disavow.</li><li>Content strategy should focus on optimizing location pages, developing route guides, and creating landing pages for generic rental keywords.</li><li>Backlink outreach should target authoritative Belgian city and tourism sites linking to competitors but not Dobber.</li><li>Seasonal trends show peak interest in summer; content updates should align accordingly.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Kick off a 90-day sprint to address top three priorities: “blaarmeersen gent” optimization, technical fixes, and targeted backlink outreach.</li><li>Use monthly dashboards to track keyword movement, site speed improvements, and backlink gains.</li><li>Align marketing calendar with seasonal trends, launching major content pieces before peak summer.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-dobber-www-dobber-life-" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Dobber (www.dobber.life)</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for Dobber, a company specializing in kayak and SUP (Stand-Up Paddleboard) rentals in Belgium. Based on detailed data analysis, Dobber has experienced remarkable organic growth of 436.15% over the past 12 months in the Belgian market. However, significant opportunities exist to optimize underperforming content, improve technical SEO elements, develop a more strategic keyword approach, and enhance their backlink profile to further strengthen their market position against identified competitors like wattedoen.be and routeyou.com.</p><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Dobber operates in the outdoor recreation industry, offering kayak and SUP rentals with convenient online booking capabilities. Their services include direct water access, group bookings, gift certificates, and frequent user passes (<a href="https://www.dobber.life" class="link-reference" target="_blank" rel="noopener">Company Website</a>). They target both individual customers and groups across multiple locations in Belgium, with particular strength in the Gent area.</p><br></div></section>
+                <section id="1-overall-seo-performance" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-organic-visibility">Current Organic Visibility</h3><ul><li>Dobber has achieved impressive organic visibility growth of 436.15% in Belgium over the past 12 months</li><li>Position 1 rankings have increased by 300%, while positions 2-3 have grown by 1000%</li><li>Positions 4-10 have seen a 550% increase, demonstrating strong improvement in high-value SERP positions</li><li>The site currently has 4 keywords ranking in position 1, 11 in positions 2-3, and 52 in positions 4-10</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Maintain pacing by setting bi-weekly check-ins on top 20 keyword movements.</li><li>Leverage high-performing pages to cross-link into underperforming sections.</li></ul><br><h3 id="search-engine-traffic">Search Engine Traffic</h3><ul><li>Current estimated traffic value (ETV): 2,260.76 monthly visits</li><li>Estimated paid traffic cost equivalent: €1,027.92, representing potential advertising value</li><li>186 total ranking keywords, with 114 newly ranking terms</li><li>No current paid search traffic, indicating reliance on organic visibility</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Consider a small paid search test for high-intent keywords to complement organic efforts.</li><li>Use ETV as a benchmark to measure content refresh impact on traffic value.</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><ul><li>Overall on-page SEO score: 95.24 (strong performance)</li><li>Areas for improvement:</li><li>Title length exceeds recommended 60 characters (currently 66)</li><li>2 render-blocking scripts and 1 render-blocking stylesheet affecting page load speed</li><li>Low content-to-HTML ratio, indicating potential for more substantive text content</li><li>Missing alt text on some images, impacting accessibility and SEO</li><li>Node with excessive children (>60) potentially affecting performance</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit and trim title tags to 60 characters max across top 20 pages.</li><li>Defer or async render-blocking resources within two sprints.</li><li>Add descriptive alt text to all images, starting with top 10 traffic-driving pages.</li><li>Simplify DOM nodes on homepage and high-traffic pages.</li></ul><br><h3 id="top-performing-pages">Top Performing Pages</h3><ul><li><strong>High performers:</strong></li><li>Location page for Gent-Blaarmeersen (ETV: 689.10) - strongest performing page</li><li>Homepage (ETV: 574.23) - strong general visibility</li><li><strong>Underperforming pages:</strong></li><li>Multiple location pages (Latem, Keizerpoort, Kortrijk) with 0 ETV</li><li>Paddle route pages consistently underperforming with ETVs below 5</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Implement a content migration plan to consolidate low-ETV pages into richer, hub-style pages.</li><li>Add contextual internal links from high-ETV pages to underperformers with clear anchor text.</li></ul><br></div></section>
+                <section id="2-keyword-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><ul><li><strong>Top Performing Keywords (Positions 1-10):</strong></li></ul><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Current Position</th></tr></thead><tbody><tr><td class="">dobber</td><td class="">720</td><td class="">1</td></tr><tr><td class="">dobber gent</td><td class="">170</td><td class="">1</td></tr><tr><td class="">dobber kortrijk</td><td class="">110</td><td class="">1</td></tr><tr><td class="">kajakken kortrijk</td><td class="">140</td><td class="">4</td></tr><tr><td class="">sup blaarmeersen</td><td class="">70</td><td class="">2</td></tr><tr><td class="">sup herentals</td><td class="">70</td><td class="">2</td></tr><tr><td class="">kajak mechelen</td><td class="">170</td><td class="">6</td></tr><tr><td class="">sup in gent</td><td class="">260</td><td class="">3</td></tr><tr><td class="">kajak</td><td class="">4400</td><td class="">5</td></tr><tr><td class="">kajak gent</td><td class="">1000</td><td class="">8</td></tr><tr><td class="">kajakken gent</td><td class="">1000</td><td class="">9</td></tr></tbody></table></div><ul><li>Strong performance for branded terms ("dobber", "dobber gent")</li><li>Good rankings for location-based keywords (e.g., "kajak gent", "sup blaarmeersen")</li><li>Homepage ranking well for generic keywords like "kajak huren", "sup huren"</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Adjust on-page content for “kajak” and “kajak gent” to push into top 5.</li><li>Monitor impact of internal linking and meta tweaks over next 30 days.</li></ul><br><h3 id="keyword-opportunities">Keyword Opportunities</h3><ul><li><strong>Major Opportunity:</strong> "blaarmeersen gent" has 8,100 monthly searches but only ranks at position 12</li><li><strong>High-Value Keywords in Positions 11-30:</strong></li></ul><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Current Position</th></tr></thead><tbody><tr><td class="">blaarmeersen gent</td><td class="">8100</td><td class="">12</td></tr><tr><td class="">kajak in gent</td><td class="">110</td><td class="">11</td></tr><tr><td class="">kajaktocht gent</td><td class="">1000</td><td class="">11</td></tr><tr><td class="">kajakken antwerpen</td><td class="">210</td><td class="">13</td></tr><tr><td class="">kajakken leuven</td><td class="">170</td><td class="">13</td></tr><tr><td class="">suppen antwerpen</td><td class="">90</td><td class="">8</td></tr></tbody></table></div><ul><li><strong>Prioritized Keyword Recommendations:</strong></li></ul><ol><li>"waar mag je kajakken in belgië" (Avg: 45, LOW competition)</li><li>"kano huren gent" (Avg: 40, MEDIUM competition)</li><li>"kajak huren leuven" (Avg: 8, LOW competition)</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft and publish two pieces of content per week targeting these gap keywords.</li><li>Ensure each page includes a clear call to action and optimized on-page elements.</li></ul><br><h3 id="seasonal-trends">Seasonal Trends</h3><ul><li>Clear seasonal pattern with peak search volume during summer months (June-August)</li><li>Search volume trends show positive growth for most kayaking and SUP keywords</li><li>Strategic content planning should account for these seasonal fluctuations</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop an editorial calendar with pre-season content published by April.</li><li>Schedule mid-season refreshes and post-season wrap-up pieces.</li></ul><br><h3 id="search-intent-analysis">Search Intent Analysis</h3><ul><li>Keywords can be grouped into distinct intent categories:</li><li><strong>Transactional:</strong> "kajak huren [location]", "sup huren [location]" - Users looking to rent equipment</li><li><strong>Informational:</strong> "[location] route", "kajakken in [region]" - Users seeking information about routes and activities</li><li><strong>Navigational:</strong> "[landmark] [location]", "[business name] [location]" - Users looking for specific locations</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Align landing page layouts to the dominant intent per keyword group.</li><li>Use schema markup (e.g., FAQ, HowTo) on informational pages to improve SERP real estate.</li></ul><br><h3 id="serp-snippet-patterns">SERP Snippet Patterns</h3><ul><li><strong>Location Pages:</strong> Snippets typically include:</li><li>The phrase "Suppen en kajakken in [Location]"</li><li>A call to action: "Reserveer online"</li><li>A description of the experience: "Verken de Leie en vaar langs de Broeltorens"</li><li><strong>Homepage:</strong> Snippets often include:</li><li>The question "Kajak of SUP huren?"</li><li>The value proposition: "Suppen en kajakken zonder gedoe"</li><li>The number of locations: "Huur een SUP of kajak op 10 locaties in België"</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Ensure meta descriptions for location pages follow the “CTA + Experience” structure.</li><li>Title tags should mirror successful snippet phrasing while staying under 60 characters.</li></ul><br></div></section>
+                <section id="3-competitive-landscape" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="primary-competitors-in-belgium">Primary Competitors in Belgium</h3><ul><li><strong>wattedoen.be:</strong> Direct competitor focusing on activities and events in Belgium</li><li>Strengths: Higher rankings for specific activity-based keywords related to kayaking and SUP</li><li>Strategy: Very specific keywords in titles and pricing information in meta descriptions</li><li>Focus: Activity listings with detailed location information</li></ul><br><ul><li><strong>routeyou.com:</strong> Strong indirect competitor providing route information</li><li>Strengths: Higher rankings for location-based keywords and route-specific searches</li><li>Strategy: Using keywords in URLs and including route types in titles</li><li>Focus: Route listings, maps, and points of interest with user-generated content</li></ul><br><ul><li><strong>quefaire.be:</strong> Significant backlink competitor with 41 intersecting referring domains</li><li>Strengths: Strong local authority and content focused on activities in Belgium</li><li>Strategy: Comprehensive activity listings with location-specific information</li></ul><br><h3 id="competitive-content-strategies">Competitive Content Strategies</h3><ul><li><strong>wattedoen.be's approach:</strong></li><li>Highly specific titles including exact activity and location</li><li>Meta descriptions with pricing information and clear calls to action</li><li>Comprehensive activity listings with location details</li></ul><br><ul><li><strong>routeyou.com's approach:</strong></li><li>Route-centric content with maps and navigation information</li><li>Strong focus on user-generated content and route planning</li><li>Detailed information about points of interest along routes</li><li>Effective use of keywords in URLs and descriptive titles</li></ul><br><h3 id="competitive-keyword-gaps">Competitive Keyword Gaps</h3><ul><li>Dobber is missing opportunities in:</li><li>Route-specific searches (dominated by routeyou.com)</li><li>"What to do" keywords (dominated by wattedoen.be)</li><li>Location-specific landmarks and points of interest</li><li>Regional kayaking terms (e.g., "kajakken west vlaanderen")</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create a mini-audit to identify top 10 “what to do” keywords per region.</li><li>Develop 5 route-centric pages optimized for long-tail, map-rich queries.</li><li>Add landmark sections to existing location pages for richer content.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li><strong>Overall metrics:</strong></li><li>363 total backlinks from 88 referring domains</li><li>Domain rank: 217</li><li>Backlink spam score: 4 (low risk)</li><li>First indexed: October 15, 2023</li></ul><br><ul><li><strong>Referring domain quality:</strong></li><li>Strong presence of Belgian (.be) domains (150 backlinks)</li><li>High-quality backlinks from reputable Belgian sites:</li><li>hln.be (news site with 5% spam score)</li><li>gent.be (official city website with 1% spam score)</li><li>demorgen.be (major news outlet with 0% spam score)</li><li>visitkortrijk.be (tourism site with 0% spam score)</li><li>Good distribution across different TLDs: .be (150), .com (149), .gent (4), .nl (3)</li></ul><br><ul><li><strong>Anchor text analysis:</strong></li><li>Predominantly branded or URL-based anchor text (e.g., "www.dobber.life")</li><li>Limited keyword-rich anchor text</li><li>Some action-oriented anchors like "Meer info en reservatie" and "Ga naar de webshop"</li><li>Location-specific anchors like "Peddelroute Dwars door Gent"</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Aim for a 20% increase in keyword-rich anchor texts over the next quarter.</li><li>Map existing high-authority links to strategic pages needing a boost.</li><li>Monitor anchor text distribution monthly to maintain a natural profile.</li></ul><br><h3 id="backlink-opportunities">Backlink Opportunities</h3><ul><li><strong>Key competitors with shared backlink sources:</strong></li><li>quefaire.be (41 intersecting referring domains)</li><li>wattedoen.be (35 intersecting referring domains)</li><li>nieuwsblad.be (15 intersecting referring domains)</li><li>routeyou.com (14 intersecting referring domains)</li></ul><br><ul><li><strong>High-authority sites linking to competitors but not to Dobber:</strong></li><li>Official city websites: mechelen.be (rank: 8), gemeentemol.be (rank: 13)</li><li>Tourism sites: turnhoutcityguide.be (rank: 2), vavabid.be (rank: 12)</li><li>Activity platforms: vakantieveilingen.be (rank: 20), houseoftickets.nl (rank: 12)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize outreach to the top 5 missing high-authority domains.</li><li>Craft personalized pitches highlighting mutual benefits and content relevance.</li><li>Use existing competitor mentions as leverage in outreach emails.</li></ul><br><h3 id="toxic-backlink-assessment">Toxic Backlink Assessment</h3><ul><li><strong>Identified toxic backlinks:</strong></li><li>australianwebdirectory.pro (70% spam score)</li><li>browseallexpireddomains.us (65% spam score)</li><li>what-happens-next.xyz (85% spam score)</li><li>dr70-links.co.uk (70% spam score)</li><li>you-found-the-hidden-link.xyz (85% spam score)</li><li>Several other domains with spam scores above 65%</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Compile a disavow list and submit to Google within the next sprint.</li><li>Monitor backlink profile weekly for new high-spam links.</li><li>Set up alerts for spikes in spam score or new toxic referrers.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="location-page-optimization">Location Page Optimization</h3><ul><li><strong>Prioritize "blaarmeersen gent" optimization:</strong></li><li>Focus on improving the ranking of the <code>/locaties/gent-blaarmeersen</code> page for this high-volume keyword (8,100 searches)</li><li>Ensure content prominently features "blaarmeersen gent" and related terms</li><li>Optimize title tag and meta description specifically for this keyword</li><li>Increase internal links to this page from other relevant pages</li><li>Seek backlinks from local websites and blogs that mention Blaarmeersen</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Add a dynamic FAQ section addressing common user questions about Blaarmeersen.</li><li>Embed an interactive map widget to increase user engagement and time on page.</li></ul><br><ul><li><strong>Create dedicated location pages</strong> for each rental location with:</li><li>Highly specific title tags and meta descriptions (e.g., "Kajakken op de Leie te Drongen (Gent) - Dobber")</li><li>Detailed information about the location, including nearby landmarks and points of interest</li><li>Embedded maps showing popular routes</li><li>Pricing information and booking options</li><li>Focus on underperforming locations: Latem, Keizerpoort, Kortrijk</li></ul><br><h3 id="route-content-development">Route Content Development</h3><ul><li><strong>Develop comprehensive route guides</strong> to compete with routeyou.com:</li><li>Detailed maps of popular kayaking and SUP routes</li><li>Step-by-step directions and navigation information</li><li>Information about points of interest along routes</li><li>High-quality photos and videos showcasing scenery</li><li>User reviews and ratings</li><li>Optimize for "route" queries like "blaarmeersen gent route" (140 searches)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft outlines for top 3 route guides and begin wireframing by next week.</li><li>Recruit contributors for user reviews to enrich content authenticity.</li></ul><br><h3 id="landing-page-development">Landing Page Development</h3><ul><li><strong>Create dedicated landing pages for high-volume generic keywords:</strong></li><li>Instead of relying on the homepage, develop specific pages for terms like "kajak huren" and "sup huren"</li><li>Include clear calls to action and showcase different rental locations</li><li>Optimize for seasonal trends with updated content during peak months</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Use promotional banners tied to seasonal offers (e.g., early bird summer discounts).</li><li>A/B test different page layouts to maximize lead conversions.</li></ul><br><h3 id="activity-based-content">Activity-Based Content</h3><ul><li><strong>Target "Wat te doen" keywords</strong> with blog posts or articles:</li><li>Lists of things to do in specific locations, featuring Dobber's services</li><li>Information about local attractions, restaurants, and events</li><li>High-quality visual content</li><li>Seasonal activity recommendations</li></ul><br><h3 id="backlink-strategy">Backlink Strategy</h3><ul><li><strong>Disavow toxic backlinks</strong> with spam scores above 65% to protect domain authority</li><li><strong>Pursue backlinks from high-authority Belgian websites:</strong></li><li>Target official city websites like mechelen.be and gemeentemol.be</li><li>Reach out to tourism boards and local activity platforms</li><li>Develop partnerships with local businesses for cross-promotion</li><li><strong>Diversify anchor text</strong> to include more keyword-rich phrases related to kayaking and SUP activities in Belgium</li></ul><br><h3 id="technical-seo-improvements">Technical SEO Improvements</h3><ul><li>Optimize render-blocking resources to improve page load speed</li><li>Implement proper image optimization with alt text and compressed file sizes</li><li>Address excessive DOM nodes to improve page performance</li><li>Optimize title length to stay within 60-character recommendation</li></ul><br><h3 id="long-term-strategic-opportunities">Long-Term Strategic Opportunities</h3><ul><li>Develop a user-generated content platform where users can share their own kayaking and SUP routes</li><li>Partner with local businesses and organizations to promote Dobber's services</li><li>Consider creating a mobile app providing route information, booking options, and other useful features</li><li>Expand to new locations based on keyword data (Leuven and Antwerpen show strong search interest)</li></ul><br></div></section>
+                <section id="quick-wins" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Quick Wins</h2>
+                    </div>
+                    <div class="section-content"><ol><li>Optimize the Blaarmeersen Gent page to target the high-volume "blaarmeersen gent" keyword (8,100 searches)</li><li>Create dedicated landing pages for "kajak huren" and "sup huren" with location-specific information</li><li>Optimize title tags and meta descriptions based on identified SERP snippet patterns</li><li>Add alt text to all images to improve accessibility and SEO</li><li>Optimize existing content for identified keyword gaps, particularly location-specific terms</li><li>Submit a disavow file for the identified toxic backlinks with spam scores above 65%</li><li>Reach out to high-quality Belgian websites already linking to competitors for potential backlink opportunities</li></ol><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><p>Dobber has demonstrated impressive organic growth in the Belgian market, with a 436.15% increase in visibility over the past year. Their location-based content strategy has proven effective, particularly for the Gent area. The company has built a solid backlink profile with strong local relevance, evidenced by numerous quality backlinks from reputable Belgian domains.</p><br><p>However, significant opportunities exist to further enhance their SEO performance by:</p><ol><li>Optimizing for the high-volume "blaarmeersen gent" keyword (8,100 searches)</li><li>Creating dedicated landing pages for generic high-volume keywords</li><li>Developing comprehensive route content to compete with routeyou.com</li><li>Targeting identified keyword gaps, particularly "wat te doen" keywords</li><li>Disavowing toxic backlinks and pursuing high-quality backlink opportunities</li><li>Implementing technical SEO improvements</li><li>Leveraging seasonal trends with timely content updates</li></ol><br><p>By implementing these recommendations, Dobber can build on their strong foundation to further enhance their organic visibility and capture more of the kayak and SUP rental market in Belgium, ultimately outperforming competitors like wattedoen.be and routeyou.com.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Dobber',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

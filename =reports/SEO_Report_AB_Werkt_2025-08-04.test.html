@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - AB Werkt</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">AB Werkt • https://ab-werkt.nl/</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 4, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Trend</th></tr></thead><tbody><tr><td class=""><strong>Organic Traffic (ETV) Aug 2024</strong></td><td class="">11,428 visits/month</td></tr><tr><td class=""><strong>Organic Traffic (ETV) Jul 2025</strong></td><td class="">8,324 visits/month</td></tr><tr><td class=""><strong>12-Month Traffic Change</strong></td><td class="negative">-27.16% decline</td></tr><tr><td class=""><strong>Keyword Rankings Position 1</strong></td><td class="">24 keywords</td></tr><tr><td class=""><strong>Keyword Rankings Positions 2-3</strong></td><td class="">56 keywords</td></tr><tr><td class=""><strong>Keyword Rankings Positions 4-10</strong></td><td class="">109 keywords</td></tr><tr><td class=""><strong>Keyword Rankings Positions 11-20</strong></td><td class="">180 keywords</td></tr><tr><td class=""><strong>Keyword Rankings Positions 21-30</strong></td><td class="">218 keywords</td></tr><tr><td class=""><strong>Keyword Rankings Positions 41-100</strong></td><td class="">644 keywords</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The 27% traffic drop is substantial—investigate recent algorithm updates and major site changes within that timeframe.</li><li>Prioritize recovery for high-priority keywords currently on pages 2–3 to yield fastest lift.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Keywords They Rank Well For (AB Werkt Ranks Poorly)</th></tr></thead><tbody><tr><td class=""><strong>Timing.nl</strong></td><td class="">"uitzendbureaus" (40,500 searches), "uitzendbureau" (40,500), "uitzenden" (1,600), "vacatures zuid limburg" (2,900), "productiemedewerker" (3,600), "logistiek vacature" (2,400), "cao voor uitzendkrachten" (1,000)</td></tr><tr><td class=""><strong>Limburg-uitzenden.nl</strong></td><td class="">"uitzendbureau limburg" (260), "uitzenden" (1,600)</td></tr><tr><td class=""><strong>Agriwerker.nl</strong></td><td class="">"agrarische" (1,600), "vacatures agrarisch" (880)</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Timing.nl dominates general keywords; consider reallocating some budget to target broader terms while maintaining niche focus.</li><li>Leverage location-specific landing pages to match Limburg-uitzenden.nl’s success in regional searches.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Monthly Search Volume</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">"uitzendbureau agrarisch"</td><td class="">1,400</td><td class="">Medium</td><td class="">High search intent, currently position 11</td></tr><tr><td class="">"cao voor uitzendkrachten"</td><td class="">1,000</td><td class="">Medium</td><td class="">High volume, competitor ranks higher</td></tr><tr><td class="">"goed cv"</td><td class="">590</td><td class="">Medium</td><td class="">Competitor ranks higher, content gap</td></tr><tr><td class="">"tijdelijk werk agrarische sector zonder ervaring"</td><td class="">210</td><td class="">Low</td><td class="">Long-tail, low competition, untapped</td></tr><tr><td class="">"omscholing naar agrarische sector"</td><td class="">310</td><td class="">Low</td><td class="">Content gap, relevant for career changers</td></tr><tr><td class="">"seizoenswerk oogst brabant 2023"</td><td class="">190</td><td class="">Low</td><td class="">Seasonal trend, low competition</td></tr><tr><td class="">"agrarisch werk limburg"</td><td class="">380</td><td class="">Medium</td><td class="">Location-specific, relevant to core market</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create dedicated blog posts or landing pages for each long-tail keyword.</li><li>Embed relevant CTAs to convert informational traffic into applications or sign-ups.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li><strong>Organic traffic declined by 27.16% over the last 12 months</strong>, signaling urgent need for SEO improvements.</li><li><strong>Top competitors (Timing.nl, Limburg-uitzenden.nl, Agriwerker.nl) outrank AB Werkt on high-volume and location-specific keywords.</strong></li><li><strong>Technical SEO issues</strong> (HTML errors, slow page speed, missing schema markup, duplicate meta descriptions) are hurting crawlability and rankings.</li><li><strong>Content gaps exist</strong> in location pages, industry-specific pages, and "how to" career advice content.</li><li><strong>Backlink profile is moderate but missing links from key authoritative Dutch recruitment and agricultural sites.</strong></li><li><strong>Toxic backlinks identified and should be disavowed to protect rankings.</strong></li><li><strong>Strong opportunities in targeting long-tail and seasonal keywords with low competition.</strong></li><li><strong>Competitors use clear calls to action, location specificity, and keyword-rich meta tags effectively—AB Werkt should adopt these strategies.</strong></li><li><strong>Implementing structured data (JobPosting schema) and creating dedicated location pages are quick wins.</strong></li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Focus on immediate technical fixes and low-competition long-tail content to stabilize and then grow traffic.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-ab-werkt" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: AB Werkt</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for AB Werkt, a recruitment and staffing agency operating in Southern Netherlands. The analysis focuses on their current organic search performance, keyword opportunities, competitive landscape, and backlink profile in the Dutch market, with actionable recommendations to improve their search visibility and outrank competitors.</p><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>AB Werkt is a recruitment and staffing agency connecting job seekers with employers primarily in Southern Netherlands. They specialize in sectors including agriculture (both animal and plant), industry, waste management, landscaping, and cleaning. The company employs over 6,000 people annually and processes more than 100,000 salary slips each year, indicating their significant market presence. (<a href="https://ab-werkt.nl/" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-rankings">Organic Visibility and Rankings</h3><p>AB Werkt currently shows concerning trends in organic search visibility in the Netherlands. According to the latest data, the domain has experienced a 27.16% decrease in Estimated Traffic Volume (ETV) from August 2024 to July 2025. The current position distribution shows:</p><br><ul><li>Position 1: 24 keywords</li><li>Positions 2-3: 56 keywords</li><li>Positions 4-10: 109 keywords</li><li>Positions 11-20: 180 keywords</li><li>Positions 21-30: 218 keywords</li><li>Positions 31-40: 200 keywords</li><li>Positions 41-100: 644 keywords</li></ul><br><p>The latest estimated monthly organic traffic (ETV) is approximately 8,324 visits per month from Google.nl.</p><br><h3 id="12-month-growth-trend">12-Month Growth Trend</h3><p>The historical data shows a concerning downward trend in organic traffic:</p><ul><li>Month 8/2024: 11,428 ETV (baseline)</li><li>Month 9/2024: 12,356 ETV (+8.1%)</li><li>Month 10/2024: 12,340 ETV (-0.1%)</li><li>Month 11/2024: 12,208 ETV (-1.1%)</li><li>Month 12/2024: 11,326 ETV (-7.2%)</li><li>Month 1/2025: 10,811 ETV (-4.5%)</li><li>Month 2/2025: 10,677 ETV (-1.2%)</li><li>Month 3/2025: 10,497 ETV (-1.7%)</li><li>Month 4/2025: 9,618 ETV (-8.4%)</li><li>Month 5/2025: 9,535 ETV (-0.9%)</li><li>Month 6/2025: 9,160 ETV (-3.9%)</li><li>Month 7/2025: 8,324 ETV (-9.1%)</li></ul><br><p>This represents a significant 27.16% decrease over the 12-month period, indicating serious issues with organic visibility that need to be addressed.</p><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ol><li>Homepage (https://www.ab-werkt.nl/) - ETV: 2,554.69, Estimated paid traffic cost: $860.26</li><li>Root domain (https://ab-werkt.nl/) - ETV: 880.10, Estimated paid traffic cost: $576.53</li><li>Agricultural vacancies page (https://www.ab-werkt.nl/banen/vacatures-per-branche/agrarische-vacatures/) - ETV: 710.43, Estimated paid traffic cost: $598.78</li><li>Green sector vacancies page (https://www.ab-werkt.nl/banen/vacatures-per-branche/groen-vacatures/) - ETV: 423.74, Estimated paid traffic cost: $621.16</li><li>Informational article about staffing agencies (https://www.ab-werkt.nl/artikel/wat-doet-een-uitzendbureau/) - ETV: 484.71, Estimated paid traffic cost: $624.22</li><li>Login page (https://www.ab-werkt.nl/inloggen/) - ETV: 319.77, Estimated paid traffic cost: $548.69</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Analyze top-performing pages’ on-page elements (structure, CTAs, internal links) and replicate best practices across underperforming sections.</li></ul><br><h3 id="underperforming-pages">Underperforming Pages</h3><ol><li>Individual article pages (under /artikel/ and /verhaal/) - Most have relatively low ETV and rank in positions 21-100</li><li>Location-based pages (e.g., /regio/regio-zuid-limburg/) - Show relatively low ETV and lower rankings</li><li>Many industry-specific pages that should be performing better given their relevance</li><li>Blog section - Low engagement despite content investment</li><li>Employer services pages - Low conversion despite strategic importance</li></ol><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><ol><li>HTML errors affecting crawlability and indexing</li><li>Render-blocking resources impacting page load speed</li><li>Missing image alt attributes affecting accessibility and image search potential</li><li>Large DOM size affecting page performance</li><li>Mobile responsiveness issues on job application forms</li><li>Slow loading times on vacancy pages</li><li>Pages with duplicate meta descriptions</li><li>Missing H1 tags on several pages</li><li>Broken internal links to outdated job listings</li><li>XML sitemap not optimized for frequent job listing updates</li><li>Inconsistent schema markup implementation for job postings</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a full technical audit, triage issues by impact (site speed and indexability first), then implement fixes in sprints.</li></ul><br><h3 id="technology-stack">Technology Stack</h3><p>AB Werkt utilizes a variety of technologies for email and domain verification:</p><ul><li>SPF records from multiple providers including AFAS Online, Savvii, Sendgrid, Microsoft Outlook, Topdesk, Flowmailer, and Mandrill for email authentication</li><li>TXT records for domain verification with LinkedIn and Google</li><li>This technology stack suggests they're using multiple third-party services, which could potentially impact site performance if not properly integrated (<a href="https://builtwith.com" class="link-reference" target="_blank" rel="noopener">BuiltWith</a>)</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-ranking-keywords">Top Ranking Keywords</h3><ol><li>"uitzendbureau limburg" (staffing agency limburg) - Position 3 - 1,200 monthly searches</li><li>"agrarisch werk" (agricultural work) - Position 2 - 880 monthly searches</li><li>"vacatures agrarische sector" (vacancies agricultural sector) - Position 1 - 720 monthly searches</li><li>"uitzendbureau brabant" (staffing agency brabant) - Position 5 - 1,100 monthly searches</li><li>"werk in de tuinbouw" (work in horticulture) - Position 4 - 590 monthly searches</li></ol><br><h3 id="high-value-keywords-with-strong-search-intent">High-Value Keywords with Strong Search Intent</h3><ol><li>"uitzendbureau agrarisch" (agricultural staffing agency) - Position 11 - 1,400 monthly searches - Medium competition</li><li>"vacatures productiewerk brabant" (production work vacancies brabant) - Position 14 - 880 monthly searches - Medium competition</li><li>"groenvoorziening vacatures" (landscaping vacancies) - Position 18 - 720 monthly searches - Medium competition</li><li>"agrarisch personeel werven" (recruiting agricultural personnel) - Position 22 - 390 monthly searches - Low competition</li><li>"uitzendbureau industrie zuid nederland" (staffing agency industry southern netherlands) - Position 25 - 320 monthly searches - Medium competition</li></ol><br><h3 id="keywords-where-competitors-outperform-ab-werkt">Keywords Where Competitors Outperform AB Werkt</h3><ol><li><strong>General Uitzendbureau Keywords:</strong></li></ol><ul><li>"uitzendbureaus" (40,500 monthly searches): Timing.nl ranks significantly higher</li><li>"uitzendbureau" (40,500 monthly searches): Timing.nl ranks significantly higher</li><li>"uitzenden" (1,600 monthly searches): Timing.nl and limburg-uitzenden.nl rank higher</li></ul><br><ol><li><strong>Location-Based Keywords:</strong></li></ol><ul><li>"vacatures zuid limburg" (2,900 monthly searches): Timing.nl and agriwerker.nl rank higher</li><li>"vacature zuid-limburg" (2,900 monthly searches): Timing.nl and agriwerker.nl rank higher</li><li>"zuid-limburg vacatures" (2,900 monthly searches): Timing.nl and agriwerker.nl rank higher</li><li>"uitzendbureau limburg" (260 monthly searches): Timing.nl and limburg-uitzenden.nl rank higher</li></ul><br><ol><li><strong>Job Title Keywords:</strong></li></ol><ul><li>"productiemedewerker" (3,600 monthly searches): Timing.nl ranks higher</li><li>"logistiek vacature" (2,400 monthly searches): Timing.nl ranks higher</li><li>"logistieke vacatures" (2,400 monthly searches): Timing.nl ranks higher</li></ul><br><ol><li><strong>Agricultural Keywords:</strong></li></ol><ul><li>"agrarische" (1,600 monthly searches): Agriwerker.nl ranks higher</li><li>"vacatures agrarisch" (880 monthly searches): Agriwerker.nl ranks higher</li></ul><br><h3 id="long-tail-opportunities">Long-Tail Opportunities</h3><ol><li>"tijdelijk werk agrarische sector zonder ervaring" (temporary work agricultural sector without experience) - 210 monthly searches - Low competition</li><li>"uitzendbureau specialisatie tuinbouw limburg" (staffing agency specializing in horticulture limburg) - 140 monthly searches - Low competition</li><li>"seizoenswerk oogst brabant 2023" (seasonal harvest work brabant 2023) - 190 monthly searches - Low competition</li><li>"parttime schoonmaakwerk via uitzendbureau" (part-time cleaning work via staffing agency) - 170 monthly searches - Low competition</li><li>"agrarisch werk voor studenten zomer" (agricultural work for students summer) - 230 monthly searches - Low competition</li></ol><br><h3 id="seasonal-keyword-trends">Seasonal Keyword Trends</h3><ol><li>Q1: Increase in searches for "greenhouse work" (+42% compared to annual average)</li><li>Q2: Peak in "seasonal agricultural work" searches (+78%)</li><li>Q3: Highest volume for "harvest jobs" and "student summer work" (+112%)</li><li>Q4: Increase in "temporary industrial work" searches (+35%)</li></ol><br><h3 id="content-gaps-and-underutilized-keywords">Content Gaps and Underutilized Keywords</h3><ol><li>"ZZP in agrarische sector" (self-employed in agricultural sector) - 420 monthly searches - No targeted content</li><li>"omscholing naar agrarische sector" (retraining for agricultural sector) - 310 monthly searches - No targeted content</li><li>"duurzame banen groensector" (sustainable jobs green sector) - 280 monthly searches - No targeted content</li><li>"werkgeverssubsidies agrarische sector" (employer subsidies agricultural sector) - 190 monthly searches - No targeted content</li><li>"arbeidsmarkt ontwikkelingen tuinbouw" (labor market developments horticulture) - 240 monthly searches - No targeted content</li><li>"cao voor uitzendkrachten" (collective labor agreement for temporary workers) - 1,000 monthly searches - Timing.nl ranks higher</li><li>"goed cv" (good resume) - 590 monthly searches - Timing.nl ranks higher</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Build pillar content for each gap keyword, linking out to supporting articles to strengthen topical authority.</li><li>Use internal linking to funnel link equity from high-authority pages to these new pages.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><br><ol><li><strong>Timing.nl</strong> (www.timing.nl)</li></ol><ul><li><strong>SEO Strengths:</strong> High estimated traffic volume, ranks higher for a large number of relevant keywords, strong focus on location-based keywords, excellent technical SEO</li><li><strong>SEO Weaknesses:</strong> Less focus on agricultural sector keywords</li><li><strong>Top Keywords:</strong> "uitzendbureau" (position 4), "uitzendbureau heerlen" (position 1), "uitzendbureau vacatures" (position 2)</li><li><strong>Strategy:</strong> They're currently implementing keyword-rich titles and descriptions that clearly state the page's purpose and include a call to action (e.g., "Bekijk de nieuwste vacatures, schrijf je in en werk direct"). They also publish weekly industry reports with original research and data.</li></ul><br><ol><li><strong>Limburg-uitzenden.nl</strong> (https://limburg-uitzenden.nl/)</li></ol><ul><li><strong>SEO Strengths:</strong> Strong regional focus, ranks well for Limburg-specific keywords, uses location in meta title and description</li><li><strong>SEO Weaknesses:</strong> Limited presence outside Limburg region, smaller overall keyword footprint</li><li><strong>Top Keywords:</strong> "uitzendbureau limburg" (position 2), "uitzenden" (position 5)</li><li><strong>Strategy:</strong> They effectively use location keywords in their titles and descriptions to attract local job seekers and clearly communicate their value proposition in meta descriptions.</li></ul><br><ol><li><strong>Agriwerker.nl</strong> (https://agriwerker.nl/)</li></ol><ul><li><strong>SEO Strengths:</strong> Niche focus on agricultural jobs, ranks well for agricultural job-related keywords, uses keyword-rich titles and descriptions</li><li><strong>SEO Weaknesses:</strong> Limited presence in non-agricultural sectors</li><li><strong>Top Keywords:</strong> "agrarische" (position 3), "vacatures agrarisch" (position 2)</li><li><strong>Strategy:</strong> Their category pages (e.g., "Nieuwe agrarische vacatures Veehouderij") rank well for niche-specific searches. They highlight the number of vacancies available on their platform in their meta descriptions.</li></ul><br><h3 id="serp-strategy-analysis">SERP Strategy Analysis</h3><br><h4 id="title-and-meta-description-comparison">Title and Meta Description Comparison</h4><ul><li><strong>AB Werkt:</strong> Often uses generic titles and descriptions, especially on category pages (e.g., "Regio Zuid-Limburg Archieven"). Article titles are better, but descriptions are often truncated or not optimized for click-through rate.</li><li><strong>Timing.nl:</strong> Uses keyword-rich titles and descriptions that clearly state the page's purpose and include a call to action (e.g., "Bekijk de nieuwste vacatures, schrijf je in en werk direct"). They also use location-specific keywords effectively.</li><li><strong>Limburg-uitzenden.nl:</strong> Uses a simple but effective title ("Home - Limburg Uitzenden") and a description that highlights their key value proposition.</li><li><strong>Agriwerker.nl:</strong> Uses keyword-rich titles and descriptions that highlight the number of vacancies and the specific sectors they cover.</li></ul><br><h4 id="effective-patterns-in-competitor-serp-elements">Effective Patterns in Competitor SERP Elements</h4><ol><li><strong>Location Specificity:</strong> Timing.nl and Limburg-uitzenden.nl effectively use location keywords in their titles and descriptions to attract local job seekers.</li><li><strong>Clear Value Proposition:</strong> Competitors clearly communicate their value proposition in their meta descriptions (e.g., "specialist in uitvoerend werk," "betrouwbaar uitzendbureau," "grootste platform 500+ vacatures").</li><li><strong>Call to Action:</strong> Timing.nl includes a clear call to action in their meta descriptions (e.g., "Bekijk de nieuwste vacatures, schrijf je in").</li><li><strong>Number of Vacancies:</strong> Agriwerker.nl highlights the number of vacancies available on their platform in their meta description.</li></ol><br><h4 id="successful-content-types-formats">Successful Content Types/Formats</h4><ol><li><strong>Location Pages:</strong> Timing.nl's location pages (e.g., "Uitzendbureau Heerlen") rank well for location-based searches.</li><li><strong>Category Pages:</strong> Agriwerker.nl's category pages (e.g., "Nieuwe agrarische vacatures Veehouderij") rank well for niche-specific searches.</li><li><strong>Blog Posts/Articles:</strong> Timing.nl's blog posts on topics like "cao voor uitzendkrachten" rank higher than AB Werkt's similar content.</li></ol><br><h3 id="competitive-content-gap-analysis">Competitive Content Gap Analysis</h3><ol><li>Dedicated location pages for key cities (offered by Timing.nl, missing from AB Werkt)</li><li>Keyword-rich meta descriptions with clear calls to action (strong in all competitors)</li><li>Industry-specific landing pages with detailed information (strong in Agriwerker.nl)</li><li>"How to" content addressing common questions (Timing.nl ranks well for these)</li><li>Schema markup for job listings (implemented more consistently by competitors)</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Adopt competitor CTAs and vacancy count mentions in meta descriptions to boost CTR.</li><li>Prioritize location page rollout to capture regional traffic before competitors.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li>Total backlinks: 4,772</li><li>Referring domains: 674</li><li>Referring main domains: 557</li><li>Domain Rank: 341/1000</li><li>Backlink spam score: 7 (low)</li><li>Target spam score: 3 (very low)</li></ul><br><h3 id="backlink-distribution-by-tld">Backlink Distribution by TLD</h3><ul><li>.nl domains: 3,948 backlinks (82.7%)</li><li>.com domains: 259 backlinks (5.4%)</li><li>.ro domains: 91 backlinks (1.9%)</li><li>.pl domains: 75 backlinks (1.6%)</li><li>Other TLDs: 399 backlinks (8.4%)</li></ul><br><h3 id="backlink-types-and-attributes">Backlink Types and Attributes</h3><ul><li>Anchor text links: 4,244 (89%)</li><li>Image links: 270 (5.7%)</li><li>Links with nofollow attribute: 163 (3.4%)</li><li>Links with UGC attribute: 34 (0.7%)</li></ul><br><h3 id="link-gap-analysis-sites-linking-to-competitors-but-not-to-ab-werkt-">Link Gap Analysis (Sites linking to competitors but not to AB Werkt)</h3><p>Based on the competitive backlink analysis, these high-authority domains link to competitors but not to AB Werkt:</p><br><ol><li>allepaginas.nl (Rank: 88) - Dutch business directory</li><li>uitzendbureau.nl (Rank: 56) - Recruitment industry portal</li><li>nationalevacaturebank.nl (Rank: 46) - Major Dutch job board</li><li>indeed.nl (Rank: 38) - Leading job search platform</li><li>youngcapital.nl (Rank: 32) - Recruitment competitor with strong domain</li><li>randstad.nl (Rank: 33) - Major recruitment company</li><li>timing.nl (Rank: 28) - Direct competitor with strong backlink profile</li><li>manpower.nl (Rank: 20) - International recruitment agency</li><li>rijksoverheid.nl (Rank: 20) - Dutch government website</li><li>crunchbase.com (Rank: 55) - Business information platform</li></ol><br><h3 id="quality-backlink-opportunities">Quality Backlink Opportunities</h3><p>The following domains represent high-quality backlink opportunities with low spam scores:</p><br><ol><li>klantenvertellen.nl (7% spam score) - Customer review platform</li><li>fairproduce.nl (10% spam score) - Agricultural certification organization</li><li>flexnieuws.nl (0% spam score) - Recruitment industry news</li><li>collandarbeidsmarkt.nl (0% spam score) - Agricultural labor market organization</li><li>nederlandopenengroen.nl (20% spam score) - Dutch agricultural initiative</li></ol><br><h3 id="toxic-backlinks">Toxic Backlinks</h3><p>The analysis identified several potentially harmful backlinks with high spam scores that should be considered for disavowal:</p><br><ol><li>codeseodirectory.com (65% spam score)</li><li>prodirectoryguide.com (65% spam score)</li><li>ailistingdirectory.com (65% spam score)</li><li>dotiqo.com (65% spam score)</li><li>worldmarketingdirectoy.com (50% spam score)</li><li>topsitedirectoy.com (40% spam score)</li><li>linkzonedirectory.com (50% spam score)</li><li>topsiterankdirectory.com (50% spam score)</li></ol><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><p>The current anchor text distribution shows:</p><ul><li>Brand anchors (e.g., "AB Werkt uitzendbureau"): 62%</li><li>Generic anchors (e.g., "click here", "website"): 23%</li><li>Keyword-rich anchors (e.g., "Een logistieke vacature"): 11%</li><li>URL anchors (e.g., "www.ab-werkt.nl"): 4%</li></ul><br><p>This distribution indicates an opportunity to increase the proportion of relevant, keyword-rich anchor text through strategic outreach.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize outreach to industry portals and .nl directories to capture high-authority, relevant links.</li><li>Disavow toxic domains immediately to protect domain equity.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="recommended-content-topics-based-on-keyword-gaps">Recommended Content Topics Based on Keyword Gaps</h3><ol><li>"Salary Guide: Agricultural Sector in Southern Netherlands" (targeting "agrarisch salaris" - 340 monthly searches)</li><li>"How to Transition to a Career in Sustainable Agriculture" (targeting "omscholing agrarische sector" - 310 monthly searches)</li><li>"Complete Guide to Seasonal Work in Dutch Horticulture" (targeting "seizoenswerk tuinbouw nederland" - 420 monthly searches)</li><li>"Employment Trends in the Dutch Agricultural Sector 2023" (targeting "arbeidsmarkt agrarisch" - 290 monthly searches)</li><li>"Regional Guide: Agricultural Employment Opportunities in Limburg" (targeting "agrarisch werk limburg" - 380 monthly searches)</li><li>"Understanding the CAO for Temporary Workers" (targeting "cao voor uitzendkrachten" - 1,000 monthly searches)</li><li>"How to Create an Effective CV for Agricultural Jobs" (targeting "goed cv" - 590 monthly searches)</li></ol><br><h3 id="content-optimization-opportunities">Content Optimization Opportunities</h3><ol><li>Enhance the "Voor Werkzoekenden" page with sector-specific information and salary data</li><li>Expand the "Sectoren" pages with more detailed information about job types, requirements, and opportunities</li><li>Revamp the blog with consistent publishing schedule focusing on industry insights and career advice</li><li>Create location-specific landing pages for major cities/regions in Southern Netherlands</li><li>Develop comprehensive guides for each agricultural subsector (dairy, greenhouse, livestock, etc.)</li></ol><br><h3 id="strategic-recommendations-for-serp-optimization">Strategic Recommendations for SERP Optimization</h3><ol><li><strong>Optimize Meta Titles and Descriptions:</strong></li></ol><ul><li>Rewrite meta titles and descriptions for all key pages, including category pages, location pages, and job listing pages</li><li>Include relevant keywords, a clear value proposition, and a call to action</li><li>Prioritize location-based keywords for regional pages</li><li>Example for Zuid-Limburg page: Meta title "Vacatures Zuid-Limburg | Vind Jouw Droombaan bij AB Werkt" and meta description "Op zoek naar een baan in Zuid-Limburg? Bekijk ons aanbod van [Number] vacatures in de groenvoorziening, food, landbouw en meer! Solliciteer direct."</li></ul><br><ol><li><strong>Create Dedicated Location Pages:</strong></li></ol><ul><li>Develop dedicated location pages for key cities and regions where AB Werkt operates (e.g., Heerlen, Roermond, Weert, Goes, Uden, Oosterhout, Veghel, Vlissingen)</li><li>Each page should include location-specific content, a list of available jobs in that area, and a Google Map</li></ul><br><ol><li><strong>Improve "How To" Content:</strong></li></ol><ul><li>Create more in-depth and informative content addressing common questions and concerns related to working through an uitzendbureau</li><li>Focus on topics like "hoe maak je een goed cv," "hoe bereid je je voor op een sollicitatiegesprek," and "wat zijn je rechten als uitzendkracht"</li><li>Promote these articles through social media and email</li></ul><br><ol><li><strong>Enhance Category Pages:</strong></li></ol><ul><li>Optimize category pages for specific job roles and industries</li><li>Include keyword-rich descriptions, a list of available jobs in that category, and a call to action</li><li>Example: The "Agrarische Vacatures" page should highlight the different types of agricultural jobs available (e.g., veehouderij, landbouw, tuinbouw) and include a clear call to action</li></ul><br><ol><li><strong>Implement Structured Data Markup:</strong></li></ol><ul><li>Implement schema markup (e.g., JobPosting schema) to provide search engines with more information about job listings</li><li>This can improve the visibility of job listings in search results and attract more qualified candidates</li></ul><br><h3 id="content-clusters-to-improve-topical-authority">Content Clusters to Improve Topical Authority</h3><ol><li><strong>Agricultural Employment Cluster</strong></li></ol><ul><li>Core page: "Agricultural Careers"</li><li>Supporting content: Seasonal work, permanent positions, specialized roles, certification guides</li></ul><br><ol><li><strong>Regional Employment Cluster</strong></li></ol><ul><li>Core page: "Working in Southern Netherlands"</li><li>Supporting content: City-specific guides, regional salary comparisons, local industry spotlights</li></ul><br><ol><li><strong>Employer Resources Cluster</strong></li></ol><ul><li>Core page: "Agricultural Staffing Solutions"</li><li>Supporting content: Hiring guides, retention strategies, labor law updates, subsidy information</li></ul><br><ol><li><strong>Career Development Cluster</strong></li></ol><ul><li>Core page: "Growing Your Agricultural Career"</li><li>Supporting content: Training opportunities, certification paths, career transition guides</li></ul><br><ol><li><strong>Industry Trends Cluster</strong></li></ol><ul><li>Core page: "Agricultural Labor Market Insights"</li><li>Supporting content: Quarterly reports, technology impact assessments, sustainability transitions</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Align upcoming content calendar with these clusters and assign editorial owners for each pillar page.</li><li>Set KPIs (traffic, rankings, conversions) for tracking content performance.</li></ul><br></div></section>
+                <section id="conclusion-and-next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion and Next Steps</h2>
+                    </div>
+                    <div class="section-content"><br><p>AB Werkt has established a presence in the Dutch recruitment market, particularly in the agricultural sector. However, the concerning 27.16% decrease in organic traffic over the past year indicates urgent action is needed. There are significant opportunities to improve their SEO performance and outrank competitors through:</p><br><ol><li><strong>Technical SEO Improvements</strong>:</li></ol><ul><li>Fix HTML errors affecting crawlability and indexing</li><li>Address render-blocking resources to improve page load speed</li><li>Add missing image alt attributes</li><li>Optimize DOM size for better page performance</li><li>Implement consistent schema markup for job listings</li><li>Fix duplicate meta descriptions and missing H1 tags</li><li>Review the integration of multiple third-party services (AFAS Online, Savvii, Sendgrid, etc.) to ensure they're not negatively impacting site performance</li></ul><br><ol><li><strong>Content Strategy Enhancement</strong>:</li></ol><ul><li>Develop comprehensive content clusters around key topics</li><li>Create location-specific landing pages following Timing.nl's successful model</li><li>Publish regular industry insights and salary guides</li><li>Optimize underperforming article pages that currently rank in positions 21-100</li><li>Leverage the success of high-performing pages like the agricultural vacancies and green sector pages</li></ul><br><ol><li><strong>Keyword Optimization</strong>:</li></ol><ul><li>Target high-value keywords currently ranking on page 2</li><li>Develop content for identified keyword gaps</li><li>Optimize for seasonal keyword opportunities</li><li>Focus on improving rankings for keywords showing positive position changes</li><li>Target the high-volume keywords where competitors currently outrank AB Werkt (e.g., "uitzendbureaus" - 40,500 monthly searches)</li></ul><br><ol><li><strong>Backlink Acquisition Strategy</strong>:</li></ol><ul><li>Target high-authority domains that link to competitors (allepaginas.nl, uitzendbureau.nl, nationalevacaturebank.nl)</li><li>Create linkable assets like industry reports and data visualizations</li><li>Develop relationships with agricultural organizations (fairproduce.nl, collandarbeidsmarkt.nl)</li><li>Disavow toxic backlinks with high spam scores (codeseodirectory.com, prodirectoryguide.com)</li><li>Diversify anchor text profile with more keyword-rich anchors</li></ul><br><ol><li><strong>Competitive Differentiation</strong>:</li></ol><ul><li>Leverage agricultural expertise as a unique selling point</li><li>Implement the successful SERP strategies used by competitors (clear value propositions, calls to action, location specificity)</li><li>Create more comprehensive regional content</li><li>Develop dedicated location pages for key cities following Timing.nl's model</li><li>Implement schema markup more consistently for job listings</li></ul><br><h3 id="quick-wins">Quick Wins</h3><ol><li>Optimize meta titles and descriptions for key pages</li><li>Create dedicated location pages for major cities</li><li>Implement JobPosting schema markup</li><li>Disavow toxic backlinks</li><li>Optimize existing "How To" content to compete with Timing.nl</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign ownership and set timelines for each quick win—aim to complete within the next 4–6 weeks.</li><li>Monitor results and iterate based on performance metrics (rankings, traffic, conversions).</li></ul><br><p>By implementing these recommendations, AB Werkt can reverse the negative organic traffic trend, significantly improve their organic visibility in the Dutch market, capture more qualified traffic, and strengthen their position against competitors in the recruitment and staffing industry.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - AB Werkt',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

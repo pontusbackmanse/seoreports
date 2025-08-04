@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Rough Wheels</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Rough Wheels • roughwheels.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 4, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary-rough-wheels-seo-analysis-netherlands-market" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary: Rough Wheels SEO Analysis – Netherlands Market</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Overall SEO Performance (Last 12 Months)</strong></th><th><strong>Metric</strong></th><th><strong>Value</strong></th><th><strong>Trend</strong></th></tr></thead><tbody><tr><td class="">Total Ranking Keywords</td><td class="">94</td><td class="">↓</td></tr><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">137.20</td><td class="">↓ 47.3%</td></tr><tr><td class="">Keywords in Position 1</td><td class="">0</td><td class="">No growth</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">3</td><td class="">Stable</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">13</td><td class="">Slight decline</td></tr><tr><td class="">Estimated Paid Traffic Cost</td><td class="">€143.57</td><td class="">N/A</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>The 47.3% drop in ETV signals an urgent need to audit recent content and technical changes to identify root causes.</p><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Top Competitors & Keywords They Outrank Rough Wheels On</strong></th><th><strong>Search Volume (NL)</strong></th><th><strong>Competition</strong></th><th><strong>Competitor(s)</strong></th></tr></thead><tbody><tr><td class="">4x4 camper huren</td><td class="">1300</td><td class="">Low</td><td class="">Goboony.nl</td></tr><tr><td class="">daktent huren</td><td class="">880</td><td class="">High</td><td class="">Goboony.nl, Custommadeverhuur.nl</td></tr><tr><td class="">wildkamperen nederland</td><td class="">880</td><td class="">Low</td><td class="">Goboony.nl</td></tr><tr><td class="">off road camper</td><td class="">720</td><td class="">Medium</td><td class="">Goboony.nl</td></tr><tr><td class="">auto met daktent huren</td><td class="">210</td><td class="">Medium</td><td class="">Goboony.nl, Custommadeverhuur.nl</td></tr><tr><td class="">4x4 huren</td><td class="">110</td><td class="">Medium</td><td class="">Competitors rank higher</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Focus on capturing the "4x4 camper huren" keyword by optimizing existing pages to close the gap on Goboony.nl.</p><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Opportunity Keywords to Target & Rationale</strong></th><th><strong>Search Volume (NL)</strong></th><th><strong>Competition</strong></th><th><strong>Why Target?</strong></th></tr></thead><tbody><tr><td class="">4x4 camper huren</td><td class="">1300</td><td class="">Low</td><td class="">High volume, low competition, competitor gap</td></tr><tr><td class="">daktent huren</td><td class="">880</td><td class="">High</td><td class="">Unique USP, currently under-optimized</td></tr><tr><td class="">wildkamperen nederland</td><td class="">880</td><td class="">Low</td><td class="">Growing interest, content gap</td></tr><tr><td class="">green laning</td><td class="">260</td><td class="">Low</td><td class="">Good current position (#5), potential to improve</td></tr><tr><td class="">survival pakket (camping gear)</td><td class="">N/A (low volume)</td><td class="">Low</td><td class="">Unique product, currently not leveraged</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><p>Prioritize content creation for high-volume, low-competition keywords, starting with "4x4 camper huren" and "wildkamperen nederland".</p><br><hr><br><h3 id="tl-dr-key-findings">TL;DR – Key Findings</h3><br><ul><li><strong>Organic Visibility Decline:</strong> Rough Wheels’ estimated traffic volume dropped by 47.3% in the last 12 months in the Netherlands.</li><li><strong>Keyword Rankings:</strong> No keywords in position 1; only 3 in positions 2-3; strong competitors outrank on high-volume keywords.</li><li><strong>Top Competitors:</strong> Goboony.nl dominates high-value keywords like "4x4 camper huren" and "wildkamperen nederland"; Custommadeverhuur.nl strong on "daktent huren."</li><li><strong>Technical SEO Issues:</strong> Missing meta descriptions and H1 tags, render-blocking resources, and low content-to-code ratio are hurting performance.</li><li><strong>Content Gaps:</strong> Lack of optimized content for "wildkamperen," "survival pakket," and comprehensive route guides.</li><li><strong>Backlink Profile:</strong> Moderate quality with some toxic links; missing authoritative Dutch travel and automotive backlinks.</li><li><strong>Recommendations:</strong> Optimize titles/meta descriptions, fix technical SEO, create targeted content for high-value keywords, improve backlink quality, and emphasize rooftop tent USP.</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><p>Ensure the USP of the rooftop tent and "Survival Pakket" are consistently communicated in both content and meta elements.</p><br><hr><br></div></section>
+                <section id="seo-research-report-rough-wheels" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Rough Wheels</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Rough Wheels is a Dutch company specializing in renting 4x4 vehicles, primarily Mercedes G-Klasses equipped with rooftop tents, for adventurous travel experiences across Europe. They offer pre-planned routes in regions such as the Ardennes, Brabant, Catalonia, Champagne, Côte d'Azur to Tuscany, and Southern Italy. Additionally, they provide a "Survival Pakket" containing camping equipment to enhance the travel experience. (<a href="https://roughwheels.nl" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-traffic-trends">Organic Visibility and Traffic Trends</h3><ul><li><strong>Significant Decline</strong>: Rough Wheels has experienced a substantial 47.30% decrease in Estimated Traffic Volume (ETV) over the past 12 months in the Netherlands.</li><li><strong>Current Organic Visibility</strong>: As of the latest data (July 2025), the domain has:</li><li>Position 1: 0 keywords</li><li>Positions 2-3: 3 keywords</li><li>Positions 4-10: 13 keywords</li><li>Positions 11-20: 7 keywords</li><li>Positions 21-100: 71 keywords</li><li>Total ranking keywords: 94</li><li>Estimated Traffic Volume (ETV): 137.20</li><li>Estimated paid traffic cost: €143.57</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ul><li><strong><code>/routes/off-road-route-brabant/</code></strong>: Best performing page with highest ETV (36.98) and ranking for 21 keywords, primarily in positions 4-30.</li><li><strong>Homepage (<code>/</code>)</strong>: Second-best performer with ETV of 33.69, though showing more downward than upward ranking trends.</li></ul><br><h3 id="underperforming-pages">Underperforming Pages</h3><ul><li><strong>Route Pages</strong>: Several route pages have very low ETV and poor rankings (positions 31-100):</li><li><code>/routes/off-road-route-van-de-cote-dazur-naar-toscane/</code></li><li><code>/routes/off-road-route-champagne/</code></li><li><code>/routes/off-road-route-zuid-italie/</code></li><li><strong>Category Page</strong>: <code>/category/4x4-reizen/</code> shows poor performance with low ETV.</li><li><strong>Gear Page</strong>: <code>/gear/rough-wheels-italie%CC%88-toscane-camper-4x4-daktent/</code> also underperforming.</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><ul><li><strong>Positive Factors</strong>:</li><li>HTTPS implementation</li><li>SEO-friendly URLs</li><li>Appropriate title length (47 characters)</li><li>No duplicate meta tags or deprecated HTML</li><li>No broken links or resources</li><li>Overall on-page score: 96.34 (very good)</li></ul><br><ul><li><strong>Critical Issues</strong>:</li><li>Missing meta descriptions</li><li>Missing H1 tags</li><li>Render-blocking resources affecting page load speed</li><li>Low content-to-code ratio</li><li>Large DOM size (101,923) impacting performance</li><li>Node with excessive children (>60) affecting page rendering</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><p>Implement missing H1 tags and meta descriptions as a first priority, targeting pages with the highest traffic potential.</p><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-performing-keywords-positions-1-10-">Top Performing Keywords (Positions 1-10)</h3><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">jeep met daktent huren</td><td class="">90</td><td class="">2</td></tr><tr><td class="">off road rijden ardennen</td><td class="">70</td><td class="">3</td></tr><tr><td class="">offroad rijden ardennen</td><td class="">70</td><td class="">4</td></tr><tr><td class="">4x4 huren</td><td class="">110</td><td class="">4</td></tr><tr><td class="">green laning</td><td class="">260</td><td class="">5</td></tr><tr><td class="">off-road routes nederland</td><td class="">90</td><td class="">5</td></tr><tr><td class="">huren 4x4</td><td class="">140</td><td class="">6</td></tr><tr><td class="">mercedes land rover</td><td class="">70</td><td class="">7</td></tr><tr><td class="">offroad routes nederland</td><td class="">90</td><td class="">7</td></tr><tr><td class="">off road rijden brabant</td><td class="">90</td><td class="">8</td></tr><tr><td class="">off-road rijden brabant</td><td class="">90</td><td class="">8</td></tr><tr><td class="">jeep met daktent</td><td class="">70</td><td class="">10</td></tr><tr><td class="">off road routes nederland</td><td class="">90</td><td class="">10</td></tr></tbody></table></div><h3 id="keyword-performance-insights">Keyword Performance Insights</h3><ul><li><strong>Route-Related Keywords</strong>: Strong performance for location-specific routes (Ardennen, Brabant, Nederland)</li><li><strong>Vehicle Rental Keywords</strong>: Good rankings for "4x4 huren" (110 searches) and "huren 4x4" (140 searches)</li><li><strong>Rooftop Tent Keywords</strong>: Excellent position (#2) for "jeep met daktent huren" (90 searches)</li><li><strong>Activity Keywords</strong>: Good rankings for "green laning" (260 searches, position 5)</li></ul><br><h3 id="content-performance-analysis">Content Performance Analysis</h3><ul><li><strong>Route Content</strong>: The content strategy focusing on specific routes is effective, particularly for Ardennen and Brabant locations</li><li><strong>Rooftop Tent USP</strong>: The "daktent" (rooftop tent) is a key differentiator appearing in well-ranking keywords</li><li><strong>Underperforming Content</strong>: The "Avontuurlijk kamperen in de Ardennen" article ranks for multiple "wildkamperen" and "bivak" related keywords but only in positions 12-13</li></ul><br><h3 id="seasonal-trends">Seasonal Trends</h3><ul><li>Search volume data shows clear seasonal trends with higher volumes during spring and summer months (April-August)</li><li>Content and marketing efforts should be intensified during these peak periods</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Align editorial calendar to peak from April to August and schedule route and camping guides ahead of these months.</p><br><h3 id="content-gaps-and-opportunities">Content Gaps and Opportunities</h3><ul><li><strong>"Green Laning" Opportunity</strong>: With 260 monthly searches and current position 5, this represents a significant optimization opportunity</li><li><strong>"Survival Pakket" Content Gap</strong>: Despite being a unique offering, this isn't prominently featured in ranking snippets</li><li><strong>Wild Camping/Bivakking</strong>: Current content ranks but could be optimized further</li><li><strong>Specific Route Guides</strong>: Opportunity to create more in-depth guides for popular routes</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><p>Develop a content calendar to fill gaps around "Survival Pakket" and detailed route guides.</p><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-competitors-overview">Top Competitors Overview</h3><br><h4 id="goboony-nl">Goboony.nl</h4><ul><li><strong>Key Strengths</strong>: High estimated traffic volume, strong keyword performance across a broad range of relevant terms</li><li><strong>Business Model</strong>: Acts as a marketplace for camper rentals, including 4x4 options</li><li><strong>Competitive Advantage</strong>: Broader audience reach by not limiting to just 4x4 rentals</li><li><strong>Notable Rankings</strong>: Dominates for "wildkamperen" and "4x4 camper huren" related keywords</li></ul><br><h4 id="custommadeverhuur-nl">Custommadeverhuur.nl</h4><ul><li><strong>Key Strengths</strong>: Strong keyword performance for "daktent huren" and "4x4 huren"</li><li><strong>Business Model</strong>: Direct competitor specializing in 4x4 rentals with roof tents</li><li><strong>Competitive Advantage</strong>: Clear meta titles and descriptions optimized for target keywords</li></ul><br><h4 id="allroadevents-nl">Allroadevents.nl</h4><ul><li><strong>Key Strengths</strong>: High estimated traffic volume, ranking well for "green laning" related keywords</li><li><strong>Business Model</strong>: Indirect competitor focusing on off-road events and experiences rather than rentals</li><li><strong>Competitive Advantage</strong>: Dominates the experience/event segment of the market</li></ul><br><h3 id="keyword-competition-analysis">Keyword Competition Analysis</h3><br><h4 id="high-value-keywords-where-competitors-outrank-rough-wheels">High-Value Keywords Where Competitors Outrank Rough Wheels</h4><ul><li><strong>"4x4 camper huren"</strong> (1300 searches, LOW competition): Goboony ranks significantly higher</li><li><strong>"daktent huren"</strong> (880 searches, HIGH competition): Both Goboony and Custommadeverhuur rank higher</li><li><strong>"wildkamperen nederland"</strong> (880 searches, LOW competition): Goboony ranks significantly higher</li><li><strong>"off road camper"</strong> (720 searches, MEDIUM competition): Goboony ranks higher</li><li><strong>"auto met daktent huren"</strong> (210 searches, MEDIUM competition): Both Goboony and Custommadeverhuur rank higher</li><li><strong>"4x4 huren"</strong> (110 searches, MEDIUM competition): Rough Wheels ranks #4, but competitors have stronger positions</li></ul><br><h3 id="serp-strategy-analysis">SERP Strategy Analysis</h3><br><h4 id="title-and-meta-description-comparison">Title and Meta Description Comparison</h4><ul><li><strong>Rough Wheels</strong>: Titles often include brand name but lack keyword optimization. Meta descriptions are sometimes generic or missing entirely.</li><li><strong>Goboony</strong>: Titles are keyword-rich and include benefits (e.g., "4x4 camper huren"). Meta descriptions highlight unique selling points ("Grootste aanbod campers in Nederland," "40% goedkoper").</li><li><strong>Custommadeverhuur</strong>: Titles are very specific (e.g., "Huur jouw 4x4 Offroad Subaru Forester incl. daktent"). Meta descriptions emphasize core offerings and benefits.</li></ul><br><h4 id="effective-competitor-serp-strategies">Effective Competitor SERP Strategies</h4><ul><li><strong>Keyword-Rich Titles</strong>: Competitors effectively incorporate target keywords in their titles</li><li><strong>Benefit-Oriented Meta Descriptions</strong>: Focus on advantages (price, selection, unique features)</li><li><strong>Clear Call to Action</strong>: Some meta descriptions include direct CTAs (e.g., "Makkelijk online boeken")</li><li><strong>Schema Markup</strong>: Competitors likely use schema markup (Product, Offer) to enhance listings</li></ul><br><h4 id="successful-content-types">Successful Content Types</h4><ul><li><strong>Blog Posts</strong>: Goboony's blog posts on "wildkamperen" and travel destinations rank very well</li><li><strong>Category Pages</strong>: Goboony's category pages (e.g., "4x4 camper huren") are well-optimized</li><li><strong>Individual Rental Listings</strong>: Goboony's individual vehicle listings rank for specific keywords</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Adopt competitor strategies: incorporate call-to-action and benefit-oriented language in meta descriptions to improve click-through rates.</p><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li><strong>Overall Metrics</strong>: Rough Wheels has 60 backlinks from 18 referring domains with a domain rank of 45</li><li><strong>Backlink Quality</strong>: Medium spam score (30%), indicating a moderately healthy but improvable backlink profile</li><li><strong>Geographic Distribution</strong>:</li><li>43 backlinks from .nl domains (Netherlands)</li><li>11 backlinks from .com domains</li><li>Other TLDs include .be (Belgium), .pages.dev, and .agency</li><li><strong>Link Types</strong>: 58 anchor text links and 1 image link</li><li><strong>Link Attributes</strong>: 11 nofollow links, indicating most links (49) are dofollow and pass link equity</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Disavow toxic links from questionable SEO services to safeguard domain health.</p><br><h3 id="referring-domain-quality-analysis">Referring Domain Quality Analysis</h3><ul><li><strong>Low Spam Score Domains (11)</strong>:</li><li>marianydesign.com (22% spam score) - Web design company that developed Rough Wheels' website</li><li>4x4vakantie.nl (5% spam score) - Relevant travel site mentioning Rough Wheels as a rental option</li><li>reishonger.nl (0% spam score) - Travel blog with an article about 4x4 adventures with rooftop tents</li><li>waywaywest.com (0% spam score) - Travel-related website</li><li>rutgernoorlander.nl (30% spam score) - Personal/portfolio website</li></ul><br><ul><li><strong>Medium Spam Score Domains (7)</strong>:</li><li>seobacklinks.agency (45% spam score) - Appears to be a paid link service</li><li>rankgrow.agency (45% spam score) - Another likely paid link service</li><li>onderde.nl (34% spam score) - Directory-style website with multiple mentions</li><li>webwinkelstart.nl (50% spam score) - E-commerce related platform</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><p>Outreach to high-authority .nl travel and automotive blogs identified in competitor profiles for guest posting opportunities.</p><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><ul><li><strong>Brand Anchors</strong>: Most links use brand anchors like "Rough Wheels" or "roughwheels.nl"</li><li><strong>Generic Anchors</strong>: Several links use generic anchors like "site" or URLs</li><li><strong>Keyword Anchors</strong>: Few links use keyword-rich anchors like "Off-road route: Ardennen"</li><li><strong>Opportunity</strong>: Lack of keyword-rich anchors from authoritative domains represents a missed opportunity</li></ul><br><h3 id="competitor-backlink-comparison">Competitor Backlink Comparison</h3><ul><li><strong>Shared Backlink Sources</strong>: Several domains link to both Rough Wheels and competitors:</li><li>cheplaces.com (29 shared backlinks)</li><li>startplaneet.be (13 shared backlinks)</li><li>zoekidee.nl (13 shared backlinks)</li></ul><br><ul><li><strong>Missing Authoritative Links</strong>: Competitors likely have backlinks from:</li><li>Dutch travel blogs and magazines</li><li>Automotive websites and forums</li><li>Camping and outdoor adventure websites</li><li>Tourism boards and destination websites</li></ul><br><h3 id="toxic-backlink-assessment">Toxic Backlink Assessment</h3><ul><li><strong>Potentially Problematic Links</strong>: Several backlinks appear to be from SEO services (seobacklinks.agency, rankgrow.agency) with promotional anchor text</li><li><strong>Directory Links</strong>: Multiple links from onderde.nl appear to be from a low-quality directory</li><li><strong>Overall Risk</strong>: Low to moderate risk from these links, but worth monitoring</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our comprehensive analysis, we recommend the following content strategy improvements:</p><br><h3 id="priority-keyword-targeting">Priority Keyword Targeting</h3><ul><li><strong>"4x4 camper huren"</strong> (1300 searches, LOW competition): Create a dedicated landing page with comprehensive information about 4x4 camper rentals</li><li><strong>"daktent huren"</strong> (880 searches, HIGH competition): Develop content highlighting Rough Wheels' unique rooftop tent offerings</li><li><strong>"wildkamperen nederland"</strong> (880 searches, LOW competition): Create a definitive guide to wild camping in the Netherlands</li><li><strong>"green laning"</strong> (260 searches, LOW competition): Expand existing content to create the most comprehensive resource available</li></ul><br><h3 id="serp-optimization-strategy">SERP Optimization Strategy</h3><ul><li><strong>Title Tag Optimization</strong>: Rewrite titles to incorporate target keywords and highlight unique selling points</li><li>Example: Change "Rough Wheels - 4x4 Verhuur" to "4x4 Camper Huren Nederland | Rough Wheels - Avontuur begint hier!"</li><li><strong>Meta Description Enhancement</strong>: Create compelling meta descriptions with clear benefits and calls to action</li><li>Example: "Huur een stoere 4x4 camper met daktent voor jouw offroad avontuur. Ontdek de mooiste plekken in Europa. Bekijk ons aanbod!"</li><li><strong>Schema Markup Implementation</strong>: Add Product schema for rental listings, including details like price, availability, and features</li></ul><br><h3 id="content-development-plan">Content Development Plan</h3><ul><li><strong>Comprehensive Wild Camping Guides</strong>: Develop in-depth guides on wild camping in the Netherlands, Belgium (Ardennes), and Europe addressing legal aspects, recommended locations, and essential tips</li><li><strong>Route Content Enhancement</strong>: Expand and optimize existing route pages with detailed itineraries, maps, points of interest, and traveler tips</li><li><strong>Hyperlocal Content</strong>: Create content targeting specific cities and regions</li><li>Example: "4x4 Verhuur Amsterdam: Ontdek de omgeving in stijl!"</li><li><strong>Seasonal Content</strong>: Develop content addressing seasonal travel opportunities and challenges</li></ul><br><h3 id="technical-optimization-priorities">Technical Optimization Priorities</h3><ul><li><strong>Add Meta Descriptions</strong>: Implement unique, keyword-rich meta descriptions for all pages</li><li><strong>Implement H1 Tags</strong>: Add proper H1 tags to all pages</li><li><strong>Optimize Page Speed</strong>: Address render-blocking resources to improve loading times</li><li><strong>Increase Content-to-Code Ratio</strong>: Add more valuable text content to improve this metric</li></ul><br><h3 id="backlink-strategy">Backlink Strategy</h3><ul><li><strong>Quality Over Quantity</strong>: Focus on acquiring high-quality backlinks from relevant Dutch travel, automotive, and outdoor adventure websites</li><li><strong>Target Websites</strong>:</li><li>Dutch travel blogs (similar to reishonger.nl)</li><li>Automotive magazines and forums discussing 4x4 vehicles</li><li>Camping and outdoor adventure websites</li><li>Tourism boards for regions where Rough Wheels offers routes</li><li><strong>Content-Driven Approach</strong>: Create linkable assets such as comprehensive guides, infographics about off-road routes, or unique travel experiences</li><li><strong>Competitor Backlink Acquisition</strong>: Reach out to websites linking to competitors but not to Rough Wheels</li><li><strong>Anchor Text Optimization</strong>: Work with referring domains to improve anchor text diversity with relevant keywords</li><li><strong>Link Cleanup</strong>: Consider disavowing potentially harmful links from SEO services with suspicious anchor text</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><p>Ensure all new content includes internal links to route pages and gear pages to distribute link equity.</p><br><h3 id="usp-emphasis">USP Emphasis</h3><ul><li><strong>Rooftop Tent Focus</strong>: Emphasize the rooftop tent feature across all relevant content and meta descriptions, as this is a key differentiator in search results</li><li><strong>"Survival Pakket" Highlight</strong>: Create dedicated content showcasing this unique offering</li><li><strong>Vehicle Comparison Content</strong>: Develop content comparing the Mercedes G-Klasse to other 4x4 options</li></ul><br><h3 id="quick-wins-immediate-implementation-">Quick Wins (Immediate Implementation)</h3><ol><li>Optimize titles and meta descriptions for the "4x4 camper huren" and "daktent huren" pages</li><li>Create a basic guide on "Wildkamperen in Nederland" addressing the legal aspects</li><li>Fix critical technical issues (missing H1 tags, meta descriptions)</li><li>Implement schema markup on product pages</li><li>Reach out to high-quality referring domains (like reishonger.nl) for improved anchor text</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><p>Validate schema markup implementation with Google’s Rich Results Test and monitor for improvements.</p><br><h3 id="long-term-strategy-3-6-months-">Long-Term Strategy (3-6 Months)</h3><ol><li>Develop a comprehensive content strategy focused on "wildkamperen" and off-road travel</li><li>Build a strong backlink profile through outreach and content promotion</li><li>Expand into hyperlocal content targeting specific cities and regions</li><li>Create a content calendar aligned with seasonal search trends</li><li>Develop relationships with Dutch travel bloggers and automotive influencers for natural backlink acquisition</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Building relationships with local influencers can amplify content reach and link acquisition.</p><br><p>By implementing these recommendations, Rough Wheels can reverse their declining organic visibility, improve search rankings, outrank competitors, and capture untapped opportunities in the Netherlands market.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Rough Wheels',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

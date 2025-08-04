@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Tafelsmaak</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Tafelsmaak • www.tafelsmaak.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands, Belgium and Germany Market</span>
+                        <span><i class="fas fa-calendar"></i> August 4, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary-tafelsmaak-seo-research" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary: Tafelsmaak SEO Research</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th><th>Notes</th></tr></thead><tbody><tr><td class=""><strong>Organic Traffic (ETV)</strong></td><td class="">751.85 (July 2025)</td><td class="">↓ 35.12% over last 12 months (from 1158.84)</td></tr><tr><td class=""><strong>Keywords in Position 1</strong></td><td class="">4</td><td class="">Very limited top rankings</td></tr><tr><td class=""><strong>Keywords in Positions 2-3</strong></td><td class="">8</td><td class="">Moderate presence</td></tr><tr><td class=""><strong>Keywords in Positions 4-10</strong></td><td class="">25</td><td class="">Some visibility but room for growth</td></tr><tr><td class=""><strong>Keywords in Positions 11-20</strong></td><td class="">39</td><td class="">Potential for optimization</td></tr><tr><td class=""><strong>Keywords in Positions 21-30</strong></td><td class="">51</td><td class="">Low visibility, needs improvement</td></tr><tr><td class=""><strong>Keywords in Positions 31-100</strong></td><td class="">284</td><td class="">Large number of low-ranking keywords</td></tr><tr><td class=""><strong>Traffic Trend</strong></td><td class="">Declining</td><td class="">Significant drop in organic traffic</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong> The steep 35% drop in organic traffic indicates potential technical regressions or content deprioritization.</div><div class="highlight-box"><strong>Next Step:</strong> Audit recent site updates and content changes to identify and roll back any detrimental modifications.</div><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Strengths & Strategies</th><th>Keywords They Rank Well For (Tafelsmaak Ranks Poorly)</th></tr></thead><tbody><tr><td class="">kast-op-maat.nl</td><td class="">Location targeting (Apeldoorn), cost savings messaging</td><td class="">"opmaat kasten" (9,900), "kast op maat laten maken" (2,900)</td></tr><tr><td class="">kastenstudio.eu</td><td class="">Pricing page, strong meta optimization, warranties</td><td class="">"kasten laten maken op maat" (2,900), "tv meubel op maat" (1,600)</td></tr><tr><td class="">jouwmaatkast.nl</td><td class="">Online configurator, user-friendly design</td><td class="">"tafelblad op maat" (1,000), "maatkasten maken" (480)</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong> Competitors’ strong local SEO and configurator features highlight gaps in Tafelsmaak’s offering.</div><div class="highlight-box"><strong>Next Step:</strong> Develop location-specific landing pages and explore integrating a product configurator to match competitor capabilities.</div><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume (Monthly)</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">"opmaat kasten"</td><td class="">9,900</td><td class="">High</td><td class="">High volume, Tafelsmaak ranks poorly</td></tr><tr><td class="">"kast op maat laten maken"</td><td class="">2,900</td><td class="">High</td><td class="">Transactional intent, strong buyer interest</td></tr><tr><td class="">"kasten laten maken op maat"</td><td class="">2,900</td><td class="">High</td><td class="">Similar to above, strong commercial intent</td></tr><tr><td class="">"tv meubel op maat"</td><td class="">1,600</td><td class="">High</td><td class="">Product-specific, Tafelsmaak underperforms</td></tr><tr><td class="">"tafelblad op maat"</td><td class="">1,000</td><td class="">High</td><td class="">Product-focused, opportunity for content growth</td></tr><tr><td class="">"boekenkast op maat"</td><td class="">720</td><td class="">Medium</td><td class="">Medium volume, less competition</td></tr><tr><td class="">Belgian market keywords (e.g., "tafel op maat")</td><td class="">260-390</td><td class="">High</td><td class="">No current top 10 rankings, untapped market</td></tr><tr><td class="">German market keywords (e.g., "Maßgefertigte Tische")</td><td class="">TBD</td><td class="">TBD</td><td class="">Untapped market, requires detailed research</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong> High-volume, high-intent keywords are currently dominated by competitors.</div><div class="highlight-box"><strong>Next Step:</strong> Create targeted pillar pages optimized for each opportunity keyword, incorporating clear calls-to-action and pricing info.</div><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Tafelsmaak’s organic traffic has declined by over 35% in the past year, with very few keywords ranking in top positions.</li><li>Top-performing pages are limited to homepage, blog on table renovation, and a few location/product pages; many product pages underperform.</li><li>Technical SEO issues (large DOM, render-blocking resources, duplicate meta tags, mixed content) are hurting site performance and indexing.</li><li>No evidence of multilingual support or hreflang tags, critical for Belgian and German market expansion.</li><li>Belgian market presence is almost non-existent; no keywords rank in top 10.</li><li>German market keyword research is incomplete but shows strong potential for custom furniture terms.</li><li>Competitors leverage location targeting, pricing transparency, and online configurators to capture market share.</li><li>Tafelsmaak lacks a pricing page, location-specific content, and advanced product page optimization.</li><li>Backlink profile analysis is pending but likely an area for improvement.</li><li>Recommended immediate actions: optimize titles/meta, fix technical SEO, create pricing and location pages, and set up analytics.</li><li>Medium and long-term focus on Belgian and German market entry with dedicated content, technical infrastructure upgrades, and configurators.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong> The key findings span technical, content, and international market gaps.</div><div class="highlight-box"><strong>Next Step:</strong> Prioritize a cross-functional task force with clear KPIs for Technical SEO fixes, Content Optimization, and Market Expansion.</div><br><hr><br></div></section>
+                <section id="seo-research-report-tafelsmaak" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Tafelsmaak</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Tafelsmaak is a Dutch company specializing in custom-made furniture, with a particular focus on tables, cabinets, and other furniture pieces according to customer specifications (<a href="https://www.tafelsmaak.nl" class="link-reference" target="_blank" rel="noopener">Company Website</a>). Their product range includes dining tables, coffee tables, side tables, bar tables, benches, cabinets, and TV furniture for both indoor and outdoor use. Beyond furniture making, they offer steelwork services including construction work, metalworking, and powder coating, as well as table renovation services. The company emphasizes high quality, custom designs, and customer satisfaction, boasting an impressive average customer rating of 9.8.</p><br></div></section>
+                <section id="1-overall-seo-performance" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-traffic">Organic Visibility and Traffic</h3><p>Tafelsmaak's organic search performance has shown concerning trends over the past 12 months:</p><br><ul><li>Significant Traffic Decline: 35.12% decrease in Estimated Traffic Volume (ETV) from August 2024 to July 2025</li><li>Latest Organic Traffic: 751.85 ETV (July 2025), down from 1158.84 ETV (August 2024)</li><li>Position Distribution (July 2025):</li><li>Position 1: 4 keywords</li><li>Positions 2-3: 8 keywords</li><li>Positions 4-10: 25 keywords</li><li>Positions 11-20: 39 keywords</li><li>Positions 21-30: 51 keywords</li><li>Lower positions (31-100): 284 keywords</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong> The high number of keywords in positions 31-100 suggests quick gains possible with basic on-page optimization.</div><div class="highlight-box"><strong>Next Step:</strong> Segment low-hanging keywords and optimize the associated pages (add internal links, update on-page content, tweak meta tags).</div><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ol><li><strong>Homepage</strong> (<code>/</code>): Highest ETV (161.27), ranks in top positions (Position 1 for 2 keywords)</li><li><strong>Blog: Wooden Table Renovation</strong> (<code>/blog/houten-tafel-renoveren-hoe-werkt-dat/</code>): ETV 92.27, excellent rankings (Position 1 for 1 keyword, Positions 2-3 for 5 keywords)</li><li><strong>Location Page: Groningen</strong> (<code>/meubelmaker-groningen/</code>): ETV 117.95</li><li><strong>Oak Table Custom Page</strong> (<code>/eikenhouten-tafel-op-maat-laten-maken/</code>): ETV 63.57</li><li><strong>Table Renovation Page</strong> (<code>/tafel-laten-opknappen/</code>): ETV 50.46</li></ol><br><h3 id="underperforming-pages">Underperforming Pages</h3><p>Many product pages have very low ETV and poor rankings (positions 71-100), including:</p><ul><li><code>/product/tv-meubel-eroe/</code>: ETV 0.52</li><li><code>/product/buitentafel-fiducia/</code>: ETV 1.03</li><li>Multiple other product pages with minimal organic visibility</li></ul><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><p>Several technical issues were identified that may be impacting performance:</p><ul><li>Large DOM size (598,664 nodes)</li><li>Render-blocking resources affecting page load speed</li><li>Duplicate meta tags</li><li>HTTPS to HTTP links (mixed content issues)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong> Address render-blocking resources and duplicate meta tags immediately to improve crawl efficiency and page speed.</div><div class="highlight-box"><strong>Next Step:</strong> Use a performance audit tool (Lighthouse or GTmetrix) to prioritize fixes and retest after each change.</div><br><h3 id="technical-infrastructure-analysis">Technical Infrastructure Analysis</h3><p>Our technology stack analysis (<a href="https://builtwith.com" class="link-reference" target="_blank" rel="noopener">BuiltWith</a>) revealed limited information about Tafelsmaak's technical infrastructure, which itself presents concerns for international expansion:</p><br><ul><li><strong>Website Platform/CMS</strong>: Unable to determine the specific CMS, raising questions about multilingual capabilities and SEO-friendliness</li><li><strong>Server Location</strong>: No data available on server location, which is critical for German market performance</li><li><strong>SEO Tools Implementation</strong>: No evidence of proper analytics or search console setup</li><li><strong>Multilingual Support</strong>: No indication of hreflang tag implementation, essential for targeting German-speaking markets</li><li><strong>Mobile Optimization</strong>: Status unknown, a critical factor for SEO performance</li><li><strong>Security</strong>: HTTPS implementation status unclear</li></ul><br></div></section>
+                <section id="2-keyword-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="dutch-market-keywords">Dutch Market Keywords</h3><p>Tafelsmaak's keyword strategy in the Netherlands focuses heavily on "op maat laten maken" (custom-made) phrases combined with furniture types. Key ranking patterns include:</p><br><ol><li><strong>Custom Furniture Keywords</strong>:</li></ol><ul><li>"tafel op maat laten maken" (custom table)</li><li>"kast op maat laten maken" (custom cabinet)</li><li>"tv meubel op maat laten maken" (custom TV unit)</li></ul><br><ol><li><strong>Furniture Renovation Keywords</strong>:</li></ol><ul><li>"houten tafel renoveren" (renovate wooden table) - Strong performance</li><li>"tafel laten opknappen" (table refurbishment)</li></ul><br><ol><li><strong>Location-Based Keywords</strong>:</li></ol><ul><li>"meubelmaker groningen" (furniture maker Groningen)</li><li>"meubelmaker drenthe" (furniture maker Drenthe)</li></ul><br><ol><li><strong>Material-Specific Keywords</strong>:</li></ol><ul><li>"eikenhouten tafel op maat" (custom oak table)</li><li>"boomstamtafels op maat" (custom live edge tables)</li></ul><br><h3 id="belgian-market-keywords">Belgian Market Keywords</h3><p>Our analysis of the Belgian market reveals significant opportunities for improvement:</p><br><ol><li><strong>Current Performance</strong>:</li></ol><ul><li><strong>No keywords ranking in top 10 positions</strong> - This represents a critical gap in Tafelsmaak's Belgian market presence</li></ul><br><ol><li><strong>High-Priority Keywords</strong> (with search volumes):</li></ol><ul><li><strong>"tafel op maat"</strong>: 260-390 monthly searches | HIGH competition</li><li><strong>"houten tafelblad"</strong>: 320-590 monthly searches | HIGH competition</li><li><strong>"stalen tafelpoten"</strong>: 110-210 monthly searches | HIGH competition</li></ul><br><ol><li><strong>Secondary Keywords</strong>:</li></ol><ul><li><strong>"boomstam tafel op maat"</strong>: 10-110 monthly searches | MEDIUM competition</li><li><strong>"houten tafelblad buiten"</strong>: 10-110 monthly searches | HIGH competition</li><li><strong>"massief houten tafelblad"</strong>: 40-90 monthly searches | HIGH competition</li><li><strong>"stalen tafelpoten zwart"</strong>: 30-70 monthly searches | HIGH competition</li></ul><br><ol><li><strong>Long-term Opportunities</strong>:</li></ol><ul><li><strong>"tafel op maat belgië"</strong>: 20-40 monthly searches | HIGH competition</li><li><strong>"massief houten tafelblad op maat"</strong>: 0-10 monthly searches | MEDIUM competition</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong> Missing Belgian presence is a clear win opportunity, especially on high-volume generic terms.</div><div class="highlight-box"><strong>Next Step:</strong> Launch Belgian-focused landing pages with localized pricing, shipping details, and targeted content for "tafel op maat" and related terms.</div><br><h3 id="german-market-keywords">German Market Keywords</h3><p>Our preliminary research indicates that a comprehensive German market keyword analysis is needed to identify specific opportunities. While we don't have exact keyword data for the German market at this time, we recommend focusing on German equivalents of successful Dutch terms:</p><br><ul><li>"Maßgefertigte Tische" (custom-made tables)</li><li>"Esstisch nach Maß" (dining table to measure)</li><li>"Massivholztisch" (solid wood table)</li><li>"Tischplatte Eiche" (oak table top)</li><li>"Baumkantentisch" (live edge table)</li></ul><br><p>WP SEO AI's keyword analysis tools can help identify micro-keywords based on search volume, intent, and keyword difficulty specifically for the German custom furniture market (<a href="https://wpseoai.com" class="link-reference" target="_blank" rel="noopener">WPSEOAI Tools</a>). A detailed German market keyword analysis should be conducted as a priority next step.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong> Establishing German keyword foundations now will accelerate time-to-market once content and technical infrastructure are in place.</div><div class="highlight-box"><strong>Next Step:</strong> Commission a focused German keyword study and map findings to a content calendar for rapid execution.</div><br><h3 id="keyword-gaps-and-opportunities">Keyword Gaps and Opportunities</h3><p>Based on our competitive analysis, we've identified several high-value keywords where Tafelsmaak is being outperformed:</p><br><ol><li><strong>High-Volume Opportunities</strong>:</li></ol><ul><li>"opmaat kasten" (9,900 monthly searches)</li><li>"kast op maat laten maken" (2,900 monthly searches)</li><li>"kasten laten maken op maat" (2,900 monthly searches)</li><li>"tv meubel op maat" (1,600 monthly searches)</li><li>"tafelblad op maat" (1,000 monthly searches)</li></ul><br><ol><li><strong>Medium-Volume Opportunities</strong>:</li></ol><ul><li>"boekenkast op maat" (720 monthly searches)</li><li>"tv kast op maat" (590 monthly searches)</li><li>"maatkasten maken" (480 monthly searches)</li><li>"inloopkast op maat" (480 monthly searches)</li></ul><br><ol><li><strong>Search Intent Categories</strong>:</li></ol><ul><li><strong>Transactional</strong>: Users looking to buy custom-made furniture ("kast op maat laten maken")</li><li><strong>Informational</strong>: Users researching options and costs ("kast op maat kosten")</li><li><strong>DIY/Consideration</strong>: Users exploring self-build options ("maatkast zelf maken")</li></ul><br></div></section>
+                <section id="3-competitive-landscape" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-competitors-overview">Top Competitors Overview</h3><p>Our competitive analysis identified three main competitors in the custom furniture space:</p><br><ol><li><strong>www.kast-op-maat.nl</strong></li></ol><ul><li><strong>Key Strengths</strong>: High estimated traffic volume, strong rankings for many keywords</li><li><strong>Unique Strategy</strong>: Uses location targeting (Apeldoorn) in page titles</li><li><strong>Value Proposition</strong>: Emphasizes "Eigen productie - 30% Goedkoper" (Own production - 30% cheaper)</li></ul><br><ol><li><strong>kastenstudio.eu</strong></li></ol><ul><li><strong>Key Strengths</strong>: Strong meta title and description optimization</li><li><strong>Unique Strategy</strong>: Dedicated pricing page that ranks well for cost-related keywords</li><li><strong>Value Proposition</strong>: Highlights "Forse besparingen," "15 jaar garantie," and "30 jaar ervaring" (Significant savings, 15-year warranty, 30 years experience)</li></ul><br><ol><li><strong>www.jouwmaatkast.nl</strong></li></ol><ul><li><strong>Key Strengths</strong>: Excellent keyword rankings, user-friendly design</li><li><strong>Unique Strategy</strong>: Emphasizes "zelf configureren" (configure yourself) functionality</li><li><strong>Value Proposition</strong>: Online design tools that allow customers to create custom furniture</li></ul><br><h3 id="competitor-serp-strategy-analysis">Competitor SERP Strategy Analysis</h3><p>Analysis of competitor search results reveals several effective patterns:</p><br><ol><li><strong>Title Tag Strategies</strong>:</li></ol><ul><li><strong>Location Targeting</strong>: Including city names (e.g., "Kast Op Maat Apeldoorn")</li><li><strong>Value Proposition</strong>: Highlighting cost savings (e.g., "30% Goedkoper")</li><li><strong>Functionality</strong>: Emphasizing self-design features (e.g., "zelf configureren")</li></ul><br><ol><li><strong>Meta Description Patterns</strong>:</li></ol><ul><li><strong>Benefits-Focused</strong>: Highlighting guarantees, experience, and savings</li><li><strong>Call-to-Action</strong>: Encouraging users to get free quotes or design online</li><li><strong>Price Transparency</strong>: Mentioning price ranges or cost factors</li></ul><br><ol><li><strong>Successful Content Types</strong>:</li></ol><ul><li><strong>Price Guides</strong>: kastenstudio.eu's "Wat kost een kast op maat? - Prijsvoorbeelden" page</li><li><strong>Online Configurators</strong>: jouwmaatkast.nl's design tools</li><li><strong>Location-Specific Pages</strong>: kast-op-maat.nl's city-targeted landing pages</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><p>Further research is needed to analyze Tafelsmaak's backlink profile and identify opportunities for authority building in the custom furniture space.</p><br></div></section>
+                <section id="5-content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our comprehensive analysis, we recommend the following strategic actions:</p><br><h3 id="immediate-seo-improvements">Immediate SEO Improvements</h3><ol><li><strong>Title and Meta Description Optimization</strong>:</li></ol><ul><li>Rewrite titles to include location targeting (e.g., "Kast Op Maat Laten Maken Groningen | Tafelsmaak")</li><li>Enhance meta descriptions with clear value propositions and calls-to-action</li></ul><ol><li><strong>Create a Dedicated Pricing Page</strong>:</li></ol><ul><li>Develop content similar to kastenstudio.eu's successful pricing page</li><li>Include price ranges, cost factors, and examples of different furniture types with prices</li></ul><ol><li><strong>Location-Specific Content Strategy</strong>:</li></ol><ul><li>Expand existing location pages (currently only Groningen performs well)</li><li>Create new location pages targeting major cities in the Netherlands, Belgium, and border regions</li></ul><br><h3 id="belgian-market-entry-strategy">Belgian Market Entry Strategy</h3><ol><li><strong>Dedicated Belgian Landing Pages</strong>:</li></ol><ul><li>Create market-specific content targeting high-priority Belgian keywords</li><li>Include Belgian-specific pricing and shipping information</li><li>Consider dialect and language variations for Belgian Dutch</li></ul><ol><li><strong>Target High-Value Belgian Keywords</strong>:</li></ol><ul><li>Focus content on "tafel op maat," "houten tafelblad," and "stalen tafelpoten"</li><li>Create specific pages for "massief houten tafelblad" and "boomstam tafel op maat"</li></ul><br><h3 id="german-market-entry-strategy">German Market Entry Strategy</h3><ol><li><strong>Technical Infrastructure Upgrades</strong>:</li></ol><ul><li>Implement proper hreflang tags for language targeting</li><li>Consider hosting on German servers or using a CDN with German edge locations</li><li>Ensure the CMS fully supports multilingual content management</li></ul><ol><li><strong>German-Specific Content Development</strong>:</li></ol><ul><li>Create dedicated German-language landing pages with proper translations</li><li>Develop content that addresses German market preferences and regulations</li><li>Implement proper URL structure for German content (/de/ subdirectory)</li></ul><ol><li><strong>German Market Keyword Research</strong>:</li></ol><ul><li>Utilize WP SEO AI's micro-keyword analysis tools to identify high-value German furniture terms</li><li>Focus on search intent and keyword difficulty metrics to prioritize content development</li><li>Analyze seasonal trends specific to the German furniture market</li></ul><ol><li><strong>German Market Compliance</strong>:</li></ol><ul><li>Ensure all pages meet German legal requirements (Impressum, Datenschutz)</li><li>Implement German payment methods if e-commerce functionality exists</li></ul><br><h3 id="product-page-enhancement">Product Page Enhancement</h3><ol><li><strong>Revamp Underperforming Product Pages</strong>:</li></ol><ul><li>Completely restructure product pages with enhanced content and specifications</li><li>Add customer testimonials and project galleries</li><li>Implement schema markup for rich results</li></ul><ol><li><strong>Develop a "Design It Yourself" Feature</strong>:</li></ol><ul><li>Create an online configurator similar to jouwmaatkast.nl</li><li>Emphasize customization options in product descriptions</li></ul><br><h3 id="content-development-plan">Content Development Plan</h3><ol><li><strong>Expand Blog Content</strong>:</li></ol><ul><li>Create educational content around furniture care and renovation</li><li>Develop content targeting successful keywords like "boomstam tafel op maat"</li><li>Create seasonal content for outdoor furniture</li></ul><ol><li><strong>Create Content Clusters</strong>:</li></ol><ul><li>Build topic clusters around key furniture types and materials</li><li>Develop separate clusters for indoor and outdoor furniture</li><li>Create supporting content for high-value keywords</li></ul><ol><li><strong>Technical SEO Improvements</strong>:</li></ol><ul><li>Address identified technical issues to improve site performance</li><li>Implement proper analytics and search console tracking</li><li>Fix mixed content issues and optimize page speed</li><li>Consider upgrading the CMS if current platform lacks multilingual capabilities</li></ul><br></div></section>
+                <section id="quick-wins-and-priorities" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Quick Wins and Priorities</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="immediate-actions-1-2-months-">Immediate Actions (1-2 Months)</h3><ol><li>Optimize titles and meta descriptions for top 20 target keywords</li><li>Create a basic pricing page with estimated costs for different furniture types</li><li>Fix critical technical SEO issues affecting indexing and page speed</li><li>Implement proper analytics tracking and search console setup</li></ol><br><h3 id="medium-term-projects-3-6-months-">Medium-Term Projects (3-6 Months)</h3><ol><li>Develop location-specific landing pages for major cities</li><li>Revamp underperforming product pages</li><li>Create Belgian market entry content</li><li>Implement proper hreflang tags for multilingual targeting</li></ol><br><h3 id="long-term-initiatives-6-12-months-">Long-Term Initiatives (6-12 Months)</h3><ol><li>Develop a fully functional online configurator</li><li>Build comprehensive content clusters around furniture types</li><li>Implement advanced schema markup and structured data</li><li>Launch German-language version of the website with proper technical infrastructure</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong> Quick wins should be balanced between technical and content tasks to ensure lasting impact.</div><div class="highlight-box"><strong>Next Step:</strong> Schedule weekly checkpoints on each immediate action to maintain momentum and measure early results.</div><br></div></section>
+                <section id="next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-arrow-right"></i></div>
+                        <h2 class="section-title">Next Steps</h2>
+                    </div>
+                    <div class="section-content"><br><p>To complete this analysis and provide a comprehensive SEO roadmap for Tafelsmaak, we recommend:</p><br><ol><li><strong>Conduct detailed German market keyword research</strong> using WP SEO AI's keyword analysis tools to identify specific opportunities</li><li><strong>Perform a thorough backlink analysis</strong> to identify authority-building opportunities</li><li><strong>Develop a detailed content calendar</strong> based on all findings</li><li><strong>Schedule a live demo with WP SEO AI</strong> to explore how our AI-driven tools can help implement these recommendations efficiently</li></ol><br><p>This will enable us to create a data-driven SEO plan that addresses Tafelsmaak's declining organic visibility and helps them capture new opportunities in their target markets.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Tafelsmaak',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

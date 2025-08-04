@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Baas</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Baas • www.vergelijkcbd.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 4, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change (Last 12 Months)</th></tr></thead><tbody><tr><td class="">Total Ranked Keywords</td><td class="">241</td></tr><tr><td class="">Position 1 Rankings</td><td class="">0</td></tr><tr><td class="">Position 2-3 Rankings</td><td class="positive">+200% increase (currently 3 keywords)</td></tr><tr><td class="">Position 4-10 Rankings</td><td class="">17 keywords</td></tr><tr><td class="">Position 11-20 Rankings</td><td class="positive">+60% increase (currently 40 keywords)</td></tr><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="positive">2,194.71 visitors/month (+34.58% growth)</td></tr><tr><td class="">Estimated Paid Traffic Cost</td><td class="">$343.43</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Leverage the strong growth in positions 2-3 by creating content specifically structured to win the “position 1” slot (e.g., definitive guides, in-depth comparisons).</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Keywords They Rank Well For (VergelijkCBD.nl Ranks Poorly)</th></tr></thead><tbody><tr><td class=""><strong>cbdolie.nl</strong></td><td class="">"ervaringen" keywords, "cbd olie hond", "cbd olie kruidvat", "bijwerkingen"</td></tr><tr><td class=""><strong>cannabisolie.com</strong></td><td class="">Side effects, dosage, CBD vs THC, product-related keywords</td></tr><tr><td class=""><strong>hollandandbarrett.nl</strong></td><td class="">Brand + CBD keywords, broad product range but less specialized content</td></tr></tbody></table></div><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume</th><th>Competition</th><th>Reason to Target</th></tr></thead><tbody><tr><td class="">capsule cbd</td><td class="">5400</td><td class="">LOW</td><td class="">High volume, low competition, not ranking</td></tr><tr><td class="">cbd sport</td><td class="">1000</td><td class="">LOW</td><td class="">Untapped niche with strong intent</td></tr><tr><td class="">werking cbd olie</td><td class="">880</td><td class="">LOW</td><td class="">Informational, high intent</td></tr><tr><td class="">ervaringen met cbd olie</td><td class="">260</td><td class="">LOW</td><td class="">Competitors rank well, content gap</td></tr><tr><td class="">cbd vs thc</td><td class="">210</td><td class="">LOW</td><td class="">Educational, growing interest</td></tr><tr><td class="">cbd olie voordelen</td><td class="">210</td><td class="">LOW</td><td class="">Informational, currently underutilized</td></tr><tr><td class="">cbd olie hond</td><td class="">1900</td><td class="">HIGH</td><td class="">High volume, competitor strength</td></tr><tr><td class="">hhc gummies</td><td class="">1300</td><td class="">HIGH</td><td class="">Trending product, growing search interest</td></tr><tr><td class="">cbd olie kruidvat</td><td class="">2900</td><td class="">HIGH</td><td class="">High volume, competitor ranks better</td></tr><tr><td class="">ontstekingsremmers natuurlijk</td><td class="">1300</td><td class="">HIGH</td><td class="">Seasonal opportunity, health-related</td></tr></tbody></table></div><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>VergelijkCBD.nl has grown organic traffic by +34.58% in 12 months but has <strong>no position 1 rankings</strong> yet.</li><li>Strong performance on brand-related and review keywords but missing out on <strong>high-volume, low-competition keywords</strong> like "capsule cbd" and "cbd sport."</li><li>Critical backlink issue: <strong>95.8% of backlinks are broken (391 broken links)</strong>, urgently needing cleanup.</li><li>Competitors outperform on <strong>"ervaringen" (experiences), side effects, pet CBD, and retailer-specific keywords</strong>.</li><li>Technical SEO is generally good but needs fixes for <strong>deprecated tags, render-blocking scripts, and image optimization</strong>.</li><li>Content gaps include <strong>HHC gummies, CBD for pets, side effects, and retailer-specific product reviews</strong>.</li><li>Competitors use effective <strong>title/meta optimization, price mentions, and FAQ content</strong> to capture clicks.</li><li>Backlink opportunities exist with authoritative Dutch health and pet sites not yet linking to VergelijkCBD.nl.</li><li>Recommended to create content clusters around <strong>CBD for health, product types, retailers, and pets</strong>.</li><li>Prioritize fixing backlinks, disavowing toxic links, and targeting high-value keywords with tailored content.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Convene a cross-functional team (SEO, content, development) to map out a 90-day action plan prioritizing broken link repair and high-intent keyword content.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-vergelijkcbd-nl" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: VergelijkCBD.nl</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>VergelijkCBD.nl is a comparison platform that helps Dutch consumers make informed choices about CBD products by providing evidence-based information about CBD oils, capsules, and other supplements. The website generates revenue through affiliate partnerships while maintaining independent reviews of products and brands. The site also features a knowledge center with informative articles about CBD. (<a href="https://www.vergelijkcbd.nl" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Schedule a stakeholder workshop to align on core site objectives and affiliate priorities before executing content changes.</li></ul><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-organic-visibility">Current Organic Visibility</h3><p>Based on our analysis, VergelijkCBD.nl shows moderate organic visibility in the Dutch market with significant room for improvement. The website currently ranks for approximately 241 keywords in the Netherlands, with varying positions across search results pages.</p><br><h3 id="organic-visibility-growth-last-12-months-">Organic Visibility Growth (Last 12 Months)</h3><p>Over the past 12 months, VergelijkCBD.nl has experienced positive growth in organic visibility:</p><ul><li>Estimated Traffic Volume (ETV): +34.58% increase</li><li>Position 2-3 rankings: +200.00% increase</li><li>Position 11-20 rankings: +60.00% increase</li></ul><br><h3 id="current-organic-visibility-metrics-latest-month-">Current Organic Visibility Metrics (Latest Month)</h3><ul><li>Position 1 rankings: 0 keywords</li><li>Position 2-3 rankings: 3 keywords</li><li>Position 4-10 rankings: 17 keywords</li><li>Position 11-20 rankings: 40 keywords</li><li>Position 21-30 rankings: 36 keywords</li><li>Estimated monthly traffic value (ETV): 2,194.71 visitors</li><li>Estimated paid traffic cost: $343.43</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ol><li>https://www.vergelijkcbd.nl/product/cbd-olie-20-procent/ - CBD Oil 20% - ETV: 1,786.25</li><li>https://www.vergelijkcbd.nl/beste-cbd-olie/ - Best CBD Oil - ETV: 101.91</li><li>https://www.vergelijkcbd.nl/cbd-capsules-action/ - CBD Capsules Action - ETV: 63.41</li><li>https://www.vergelijkcbd.nl/kruidvat/ - Kruidvat CBD Products - ETV: 57.85</li><li>https://www.vergelijkcbd.nl/ontstekingsremmers/ - Anti-inflammatory CBD - ETV: 47.26</li></ol><br><h3 id="underperforming-pages">Underperforming Pages</h3><ol><li>https://www.vergelijkcbd.nl/bijwerkingen-van-cbd-olie/ - CBD Oil Side Effects - Currently ranking in positions 21-100</li><li>https://www.vergelijkcbd.nl/cbd-olie-voordelen/ - CBD Oil Benefits - Currently ranking in positions 21-100</li><li>https://www.vergelijkcbd.nl/cbd-olie/ - CBD Oil General Page - Currently ranking in positions 21-100</li></ol><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><ul><li>On-page score: 98.9 (generally good)</li><li>Deprecated HTML tags: Using outdated <code><s></code> tags</li><li>Render-blocking resources: Scripts affecting page load speed</li><li>Image optimization: Missing title attributes on images</li><li>Positives: HTTPS enabled, canonical tags present, mobile-friendly design</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Remediate deprecated tags and implement lazy loading for offscreen images to boost Core Web Vitals and overall user experience.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-top-ranking-keywords">Current Top-Ranking Keywords</h3><p>Our analysis reveals the following top-performing keywords (positions 1-10):</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">cbd olie action</td><td class="">390</td><td class="">3</td></tr><tr><td class="">cannabas</td><td class="">27100</td><td class="">4</td></tr><tr><td class="">beste cbd olie consumentenbond</td><td class="">390</td><td class="">4</td></tr><tr><td class="">cbd olie consumentenbond</td><td class="">260</td><td class="">5</td></tr><tr><td class="">cbd olie test kassa</td><td class="">170</td><td class="">6</td></tr><tr><td class="">melatonine cbd bijwerkingen</td><td class="">70</td><td class="">6</td></tr><tr><td class="">kruidvat cbd olie druppels</td><td class="">50</td><td class="">7</td></tr><tr><td class="">cbd pleisters ervaringen</td><td class="">170</td><td class="">9</td></tr><tr><td class="">keuringsdienst van waarde cbd olie</td><td class="">210</td><td class="">9</td></tr><tr><td class="">cbd olie kruidvat reviews</td><td class="">170</td><td class="">10</td></tr><tr><td class="">wietolie kruidvat</td><td class="">90</td><td class="">10</td></tr></tbody></table></div><p>The site is performing well for brand-related keywords and terms associated with trusted reviews (consumentenbond, kassa), but lacks position 1 rankings.</p><br><h3 id="high-value-keyword-opportunities">High-Value Keyword Opportunities</h3><p>We've identified several high-value keywords with strong search intent that present significant traffic opportunities:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th><th>Current Position</th></tr></thead><tbody><tr><td class="">capsule cbd</td><td class="">5400</td><td class="">LOW</td><td class="">Not ranking</td></tr><tr><td class="">cbd olie hond</td><td class="">1900</td><td class="">HIGH</td><td class="">Not ranking</td></tr><tr><td class="">hhc gummies</td><td class="">1300</td><td class="">HIGH</td><td class="">13</td></tr><tr><td class="">cbd sport</td><td class="">1000</td><td class="">LOW</td><td class="">Not ranking</td></tr><tr><td class="">hennepolie</td><td class="">1000</td><td class="">HIGH</td><td class="">Not ranking</td></tr><tr><td class="">werking cbd olie</td><td class="">880</td><td class="">LOW</td><td class="">Not ranking</td></tr><tr><td class="">cbn olie</td><td class="">880</td><td class="">HIGH</td><td class="">Not ranking</td></tr><tr><td class="">cbd zalf</td><td class="">480</td><td class="">HIGH</td><td class="">Not ranking</td></tr><tr><td class="">cbd olie slapen</td><td class="">390</td><td class="">HIGH</td><td class="">Not ranking</td></tr><tr><td class="">cbd olie kruidvat</td><td class="">2900</td><td class="">HIGH</td><td class="">12</td></tr><tr><td class="">ontstekingsremmers natuurlijk</td><td class="">1300</td><td class="">HIGH</td><td class="">18</td></tr><tr><td class="">cbd kruidvat</td><td class="">590</td><td class="">HIGH</td><td class="">13</td></tr></tbody></table></div><p>Moving these keywords into the top 10 would drive substantial traffic increases.</p><br><h3 id="long-tail-keyword-opportunities">Long-Tail Keyword Opportunities</h3><p>Based on our analysis, these long-tail keywords offer low-competition opportunities:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th></tr></thead><tbody><tr><td class="">cbd olie slapen ervaringen</td><td class="">89</td><td class="">LOW</td></tr><tr><td class="">cbd olie ervaringen forum</td><td class="">97</td><td class="">LOW</td></tr><tr><td class="">cbd olie etos ervaringen</td><td class="">38</td><td class="">LOW</td></tr><tr><td class="">cbd olie 5 kopen</td><td class="">13</td><td class="">LOW</td></tr><tr><td class="">ervaringen met cbd olie</td><td class="">260</td><td class="">LOW</td></tr><tr><td class="">cbd vs thc</td><td class="">210</td><td class="">LOW</td></tr><tr><td class="">cbd olie voordelen</td><td class="">210</td><td class="">LOW</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Develop targeted FAQs and micro-content for each long-tail topic to capture niche queries and enhance topical authority.</li></ul><br><h3 id="seasonal-keyword-trends">Seasonal Keyword Trends</h3><p>Our analysis shows that searches for "ontstekingsremmers" (anti-inflammatories) tend to be higher in the winter months (October - March), suggesting seasonal content opportunities. Additionally, "HHC gummies" is showing increasing search trends, indicating growing interest in alternative cannabinoid products.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Align content calendar to produce and promote anti-inflammatory guides ahead of winter, and a timely HHC gummies primer during peak interest months.</li></ul><br><h3 id="content-gaps">Content Gaps</h3><ol><li>"Consumentenbond" Focus: The site ranks for consumentenbond-related keywords but lacks dedicated content summarizing their findings</li><li>"HHC Gummies" Guide: Despite ranking #13 for this term, the content could be expanded</li><li>"Bijwerkingen" (Side Effects) Content: Needs expansion for common side effect concerns</li><li>Retailer-specific content: Opportunity to create more targeted pages for major retailers like Kruidvat and Etos</li><li>"Ervaringen" Keywords: Competitors are effectively targeting searches for "ervaringen" (experiences/reviews) while VergelijkCBD.nl is missing out</li><li>CBD for Pets: Competitors are outperforming on keywords related to CBD for dogs and cats</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit current "bijwerkingen" and "ervaringen" pages, then draft outlines to fill these gaps with user-generated reviews, expert quotes, and multimedia content.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><p>Our analysis of the SERP landscape reveals these top competitors:</p><br><ol><li><strong>cbdolie.nl</strong> - Major CBD information site</li></ol><ul><li><strong>Strengths:</strong> Highest estimated traffic volume and best average keyword position among competitors. Very strong in content related to specific CBD products and uses (CBD for pets, CBD for sleep, specific brands like Kruidvat).</li><li><strong>Weaknesses:</strong> Less specialized comparison functionality</li></ul><br><ol><li><strong>cannabisolie.com</strong> - CBD oil information portal</li></ol><ul><li><strong>Strengths:</strong> Strong focus on content marketing, particularly blog posts addressing specific questions and concerns related to CBD (side effects, dosage, comparisons with THC). Ranks well for product-related keywords.</li><li><strong>Weaknesses:</strong> Less focused on product comparisons</li></ul><br><ol><li><strong>hollandandbarrett.nl</strong> - Health retailer with CBD products</li></ol><ul><li><strong>Strengths:</strong> High brand authority and a broad product range, including CBD and related supplements. Benefits from being a well-known retailer.</li><li><strong>Weaknesses:</strong> Broader focus than just CBD, less specialized content</li></ul><br><h3 id="competitor-content-strategies">Competitor Content Strategies</h3><p>Our SERP analysis reveals these successful competitor strategies:</p><br><ol><li><strong>Title and Meta Description Optimization:</strong></li></ol><ul><li><strong>cbdolie.nl:</strong> Uses titles that directly address the keyword and promise information or solutions (e.g., "Koop geen CBD-olie van het Kruidvat voordat je dit ..."). Meta descriptions highlight key benefits or address user concerns.</li><li><strong>cannabisolie.com:</strong> Uses titles that include the keyword and a clear value proposition (e.g., "CBD Olie Slapen: Ontdek de Voordelen"). Meta descriptions summarize the article's main points and include a call to action.</li></ul><br><ol><li><strong>Successful Content Types:</strong></li></ol><ul><li>"Best of" Lists: Articles that list the best CBD oils or products for specific needs</li><li>Comparison Articles: Content that compares different CBD products or brands</li><li>FAQ Pages: Addressing common questions about CBD</li><li>Product Pages with Reviews: Featuring customer reviews and ratings</li><li>Blog Posts Addressing Specific Concerns: Articles that address specific user concerns</li></ul><br><ol><li><strong>SERP Element Patterns:</strong></li></ol><ul><li>Addressing User Concerns Directly: Titles and meta descriptions that directly address user questions</li><li>Highlighting Benefits: Emphasizing the benefits of CBD in titles and meta descriptions</li><li>Using Numbers and Lists: Titles like "7 voordelen van CBD olie"</li><li>Including a Call to Action: Encouraging users to click through</li></ul><br><ol><li><strong>Brand Mentions:</strong> Competitors frequently mention specific brands like "Naturecan," "Cibdol," "Kruidvat," "Etos," and "Jacob Hooy" in their meta descriptions.</li><li><strong>Price Mentions:</strong> Top-ranking competitors include price points (e.g., €18.99 for Kruidvat CBD oil) in their snippets, attracting price-conscious shoppers.</li></ol><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Integrating price mentions and brand highlights can increase click-through rates; ensure affiliate disclosure remains compliant when displaying prices.</li></ul><br><h3 id="competitive-keyword-gaps">Competitive Keyword Gaps</h3><p>Based on SERP analysis, competitors are outperforming VergelijkCBD.nl in these areas:</p><br><ol><li>"Ervaringen" Keywords: cbdolie.nl ranks well for keywords including "ervaringen" (experiences/reviews)</li><li>Brand + CBD Keywords: Competitors effectively target searches for "brand + cbd" (e.g., "cbd olie kruidvat," "cbd holland and barrett")</li><li>CBD for Pets: Both cbdolie.nl and cannabisolie.com outperform on keywords related to CBD for dogs and cats</li><li>Side Effects: Both cbdolie.nl and cannabisolie.com outperform on keywords related to side effects of CBD oil</li><li>Retailer-specific product reviews (Kruidvat, Etos, Holland & Barrett)</li><li>CBD for specific health conditions (anxiety, pain, sleep)</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Map content themes to these gaps and assign to writers with clear briefs (target keyword, intent, and competitor angle).</li></ul><br><h3 id="backlink-competitors">Backlink Competitors</h3><p>Our backlink analysis identified these key competitors with shared backlink sources:</p><br><ol><li>expertpagina.nl (43 shared backlinks)</li><li>prohemp.nl (41 shared backlinks)</li><li>thuisarts.nl (41 shared backlinks)</li><li>dokteronline.com (31 shared backlinks)</li><li>slaaphub.nl (19 shared backlinks)</li></ol><br><p>These competitors are successfully leveraging health and wellness websites for backlinks, particularly Dutch domains (.nl).</p><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><p>Our detailed backlink analysis reveals:</p><br><ul><li>Total backlinks: 408</li><li>Referring domains: 184</li><li>Domain rank: 203</li><li>Backlink spam score: 23% (moderate risk)</li><li><strong>Critical issue:</strong> 391 broken backlinks (95.8% of total backlinks)</li><li>Referring TLDs: Primarily .nl (367), followed by .com (10) and .be (9)</li><li>Link types: 295 anchor text links, 108 image links</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize outreach to webmasters of broken links to request updated URLs or 301 redirects, starting with your highest-value pages.</li></ul><br><h3 id="backlink-quality-analysis">Backlink Quality Analysis</h3><p>The backlink profile shows a mix of quality sources:</p><br><ul><li>Low spam score domains (0-30%): gezondbalans.nl, artsenbaan.nl, wietindex.nl, sustainableworld.nl</li><li>Medium spam score domains (31-60%): dinodierensuper.nl, seobacklinks.agency, rankgrow.agency</li><li>No high spam score domains (61-100%) were detected</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><p>The most common anchor texts in backlinks include:</p><ul><li>"CBD olie" and variations</li><li>"VergelijkCBD.nl"</li><li>"wietolie"</li><li>"CBD capsules"</li><li>"CBD gummies"</li><li>"CBD zalf"</li></ul><br><p>This indicates good topical relevance but limited brand-focused linking.</p><br><h3 id="backlink-opportunities">Backlink Opportunities</h3><p>Based on competitor backlink analysis:</p><br><ol><li>Health and wellness websites: gezondbalans.nl, artsenbaan.nl, health.nl</li><li>Natural remedy sites: tuinkruiden.net, gofornature.nl</li><li>Pet-focused websites: goldenretrieverclub.nl, vipbaits.nl</li><li>General health information: thuisarts.nl, zorgkrant.nl</li></ol><br><h3 id="toxic-backlinks">Toxic Backlinks</h3><p>Several potentially problematic backlinks were identified:</p><br><ol><li>Web directories with medium spam scores:</li></ol><ul><li>seobacklinks.agency (45% spam score)</li><li>rankgrow.agency (45% spam score)</li><li>gerelateerd.nl (60% spam score)</li><li>favorietje.nl (60% spam score)</li><li>startbewijs.nl (55% spam score)</li></ul><br><ol><li>These should be considered for disavowal to prevent potential Google penalties.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Compile a disavow file for the identified directories and submit to Google Search Console, then monitor backlink profile shifts.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="recommended-content-topics">Recommended Content Topics</h3><p>Based on our keyword and competitor analysis:</p><br><ol><li><strong>"Complete Guide to CBD Certification and Testing"</strong> - Addressing the content gap around product quality standards</li><li><strong>"HHC Gummies: Effects, Risks, and Legal Status in the Netherlands"</strong> - Capitalizing on the trending search term (1300 monthly searches)</li><li><strong>"Kruidvat CBD Oil: Complete Review and Price Comparison"</strong> - Targeting the high-volume keyword "cbd olie kruidvat" (2900 monthly searches)</li><li><strong>"Natural Anti-Inflammatories: CBD and Alternative Options"</strong> - Targeting "ontstekingsremmers natuurlijk" (1300 monthly searches)</li><li><strong>"CBD Oil According to Consumentenbond: What You Need to Know"</strong> - Leveraging the authority of Consumentenbond while targeting related keywords</li><li><strong>"CBD for Pets: Complete Guide for Dogs and Cats"</strong> - Targeting the high-volume keyword "cbd olie hond" (1900 monthly searches)</li><li><strong>"CBD Side Effects: What You Need to Know"</strong> - Addressing a key content gap where competitors are currently outperforming</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Assign topic owners for each pillar, set deadlines, and integrate with the editorial calendar to ensure consistent publishing cadence.</li></ul><br><h3 id="content-optimization-opportunities">Content Optimization Opportunities</h3><br><ol><li><strong>Title and Meta Description Optimization:</strong></li></ol><ul><li>Rewrite titles and meta descriptions for key pages, focusing on addressing user intent, highlighting benefits, and including a clear call to action</li><li>For example, for the "CBD capsules" page, consider a title like "CBD Capsules Kopen: Top 5 Beste Getest voor [Benefit]" and a meta description that highlights benefits and includes a call to action</li></ul><br><ol><li><strong>Create More "Ervaringen" Content:</strong></li></ol><ul><li>Develop dedicated pages or sections for customer reviews and testimonials</li><li>Actively solicit reviews from customers</li><li>Create case studies or success stories</li></ul><br><ol><li><strong>Expand Content on Brand + CBD Keywords:</strong></li></ol><ul><li>Create more in-depth content comparing CBD products sold at popular retailers like Kruidvat, Holland & Barrett, and Etos</li><li>Focus on providing unbiased information and helping users make informed decisions</li></ul><br><ol><li><strong>Content Consolidation & Targeting:</strong></li></ol><ul><li>Break down the <code>/kruidvat/</code> page into more specific pages targeting "kruidvat cbd olie druppels," "kruidvat melatonine cbd," etc.</li><li>Similarly, create more specific articles from the <code>/ontstekingsremmers/</code> page like "Natuurlijke ontstekingsremmers voor gewrichten," "Ontstekingsremmende kruiden," etc.</li></ul><br><ol><li><strong>Schema Markup:</strong></li></ol><ul><li>Implement appropriate schema markup (Product, FAQ, Review schema) to enhance search results and provide more information to users</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Perform a schema audit and implement markup on pilot pages (e.g., CBD capsules and Kruidvat review) to measure impact on CTR.</li></ul><br><h3 id="content-clusters-to-develop">Content Clusters to Develop</h3><br><ol><li><strong>CBD for Health Conditions</strong> - Central pillar: "CBD for Health" with supporting content on:</li></ol><ul><li>CBD for Sleep</li><li>CBD for Anxiety</li><li>CBD for Pain</li><li>CBD for Inflammation</li></ul><br><ol><li><strong>CBD Product Types</strong> - Central pillar: "CBD Product Guide" with supporting content on:</li></ol><ul><li>CBD Oils</li><li>CBD Capsules</li><li>CBD Topicals</li><li>CBD Edibles</li></ul><br><ol><li><strong>CBD Retailers in the Netherlands</strong> - Central pillar: "Where to Buy CBD" with supporting content on:</li></ol><ul><li>Kruidvat CBD Products</li><li>Etos CBD Products</li><li>Holland & Barrett CBD Products</li><li>Online CBD Retailers</li></ul><br><ol><li><strong>CBD for Pets</strong> - Central pillar: "CBD for Pets Guide" with supporting content on:</li></ol><ul><li>CBD for Dogs</li><li>CBD for Cats</li><li>CBD Dosage for Pets</li><li>Pet CBD Product Reviews</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Use internal linking from pillar pages to cluster pages to distribute link equity and signal topical depth to search engines.</li></ul><br></div></section>
+                <section id="prioritized-keyword-targets" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">Prioritized Keyword Targets</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our analysis, we recommend prioritizing these keywords:</p><br><h3 id="top-priority-keywords-high-volume-low-competition-">Top Priority Keywords (High Volume, Low Competition)</h3><ul><li><strong>capsule cbd:</strong> 5400 monthly searches | LOW competition</li><li><strong>cbd sport:</strong> 1000 monthly searches | LOW competition</li><li><strong>werking cbd olie:</strong> 880 monthly searches | LOW competition</li><li><strong>ervaringen met cbd olie:</strong> 260 monthly searches | LOW competition</li><li><strong>cbd vs thc:</strong> 210 monthly searches | LOW competition</li><li><strong>cbd olie voordelen:</strong> 210 monthly searches | LOW competition</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Focus initial content sprints on these low-competition, high-volume keywords to maximize ROI in the short term.</li></ul><br><h3 id="secondary-keywords-high-volume-high-competition-">Secondary Keywords (High Volume, High Competition)</h3><ul><li><strong>cbd olie hond:</strong> 1900 monthly searches | HIGH competition</li><li><strong>hhc gummies:</strong> 1300 monthly searches | HIGH competition</li><li><strong>cbd olie kruidvat:</strong> 2900 monthly searches | HIGH competition</li><li><strong>ontstekingsremmers natuurlijk:</strong> 1300 monthly searches | HIGH competition</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop advanced content tactics (rich media, expert interviews) for these competitive keywords to stand out.</li></ul><br><h3 id="long-tail-opportunities-lower-volume-low-competition-">Long-tail Opportunities (Lower Volume, Low Competition)</h3><ul><li><strong>cbd olie slapen ervaringen:</strong> 89 monthly searches | LOW competition</li><li><strong>cbd olie ervaringen forum:</strong> 97 monthly searches | LOW competition</li><li><strong>cbd olie etos ervaringen:</strong> 38 monthly searches | LOW competition</li><li><strong>cbd olie 5 kopen:</strong> 13 monthly searches | LOW competition</li><li><strong>keuringsdienst van waarde cbd olie:</strong> 210 monthly searches | MEDIUM competition</li></ul><br></div></section>
+                <section id="conclusion-and-next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion and Next Steps</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our comprehensive analysis, VergelijkCBD.nl has shown positive growth in organic visibility (+34.58% ETV) over the past year but has significant opportunities to improve its SEO performance in the Netherlands. The site has strong performance for specific product pages and brand-related keywords but needs to address content gaps, technical SEO issues, and critical backlink problems to capture high-volume search terms.</p><br><p>Key opportunities include:</p><br><ol><li><strong>Fixing broken backlinks:</strong> With 391 broken backlinks (95.8% of total), this represents an urgent opportunity to reclaim lost link equity</li><li><strong>Disavowing toxic backlinks:</strong> Removing associations with medium-spam score directories</li><li><strong>Optimizing for high-volume, low-competition keywords:</strong> Targeting terms like "capsule cbd" (5400 searches, LOW competition) and "cbd sport" (1000 searches, LOW competition)</li><li><strong>Creating more targeted content:</strong> Developing specific pages for retailers, product types, and "ervaringen" content</li><li><strong>Implementing technical SEO improvements:</strong> Enhancing page speed and user experience</li><li><strong>Learning from competitor strategies:</strong> Adopting successful title and meta description patterns from cbdolie.nl and cannabisolie.com</li></ol><br><p>WP SEO AI's comprehensive toolset can help VergelijkCBD.nl implement these recommendations efficiently through:</p><ol><li>AI-powered keyword analysis to identify additional opportunities</li><li>Content idea generation based on competitive gaps</li><li>Automated content creation for identified topics</li><li>Technical SEO audits to resolve existing issues</li><li>Competitor tracking to stay ahead of market trends</li><li>Backlink monitoring and toxic link identification</li></ol><br><p>We recommend scheduling a consultation to discuss how our AI-driven SEO solutions can be tailored to VergelijkCBD.nl's specific needs in the Dutch CBD market.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Baas',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

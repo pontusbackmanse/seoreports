@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - CC Experts</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">CC Experts • www.ccexperts.be</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Belgium Market</span>
+                        <span><i class="fas fa-calendar"></i> August 5, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary-cc-experts-seo-analysis-belgium-market" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary: CC Experts SEO Analysis – Belgium Market</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Metric</strong></th><th><strong>Value / Change</strong></th><th><strong>Notes</strong></th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="positive">548.16 (49.44% increase last 12 months)</td><td class="">Significant organic visibility growth</td></tr><tr><td class="">Keywords in Position 1</td><td class="">1</td><td class="">Slight decrease, opportunity to improve</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">6</td><td class="">Positive growth</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">35</td><td class="">Strong mid-range rankings</td></tr><tr><td class="">Keywords in Positions 11-30</td><td class="">46 (25 + 21)</td><td class="">Key area for growth opportunities</td></tr><tr><td class="">Estimated Paid Traffic Value</td><td class="">$992.97</td><td class="">Reflects high commercial value of organic traffic</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Leverage the 49.44% traffic growth to secure additional budget for conversion-focused content.</li><li>Prioritize improving those Position 1 and Position 11–30 keywords to maximize ROI from high-value terms.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Top Competitors</strong></th><th><strong>Strengths / Keywords They Rank Well For</strong></th><th><strong>CC Experts Ranking</strong></th></tr></thead><tbody><tr><td class="">www.schatter-expert.be</td><td class="">"vlabel erkend schatter," "beëdigd schatter-expert," "schatter vastgoed," "schatter huis"</td><td class="">Ranks lower or outside top 10</td></tr><tr><td class="">schattingsbureau.vlaanderen</td><td class="">Strong average keyword position (2.0), focused on valuation expertise</td><td class="">Moderate to low rankings</td></tr><tr><td class="">teccon.be</td><td class="">Ranks well for "vlabel," "verkaveling," and related keywords</td><td class="">Positions 4-10 or lower</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Map competitor meta descriptions and title tags to uncover missing keyword angles.</li><li>Adjust CC Experts’ service page titles to directly address competitor-lead keywords (e.g., “Vlabel erkend schatter in België”).</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Opportunity Keywords to Target</strong></th><th><strong>Search Volume (Belgium)</strong></th><th><strong>Current Position</strong></th><th><strong>Why Target?</strong></th></tr></thead><tbody><tr><td class="">vlabel</td><td class="">6600</td><td class="">11</td><td class="">Very high volume, strong commercial intent</td></tr><tr><td class="">vlabel schatter / schatters</td><td class="">140-320</td><td class="">11-13</td><td class="">Medium competition, high relevance</td></tr><tr><td class="">schatter vastgoed</td><td class="">140</td><td class="">11</td><td class="">High commercial intent, competitor focus</td></tr><tr><td class="">schatter huis / schatter huizen</td><td class="">170-590</td><td class="">10-14</td><td class="">High volume, specific intent</td></tr><tr><td class="">verkaveling</td><td class="">90</td><td class="">6</td><td class="">Low competition, good growth opportunity</td></tr><tr><td class="">beëdigde schatters</td><td class="">90-140</td><td class="">Not top ranked</td><td class="">Strong commercial intent, competitor focus</td></tr><tr><td class="">long-tail: "waarde vruchtgebruik bij verkoop"</td><td class="">260</td><td class="">14</td><td class="">Low competition, specific user intent</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Q3 Priority: Create/optimize landing page for <strong>vlabel</strong> keyword cluster.</li><li>Q4 Priority: Develop content for <strong>schatter vastgoed</strong> and <strong>schatter huis</strong> series.</li><li>Assign a content owner to track movement from positions 11–30 into top 10.</li></ul><br><hr><br><h3 id="tl-dr-key-findings-for-sales-team">TL;DR – Key Findings for Sales Team</h3><br><ul><li><strong>Strong organic growth:</strong> 49.44% increase in traffic volume over last 12 months, with 548.16 ETV.</li><li><strong>Top keywords:</strong> Excellent rankings for VLABEL-related terms and branded keywords; opportunity to improve on "vlabel" (6600 SV) and related terms.</li><li><strong>Service pages underperform:</strong> Core service pages rank poorly despite being business-critical; knowledge base pages drive most traffic.</li><li><strong>Competitors outrank on key commercial terms:</strong> schatter-expert.be leads on "vlabel erkend schatter" and "schatter vastgoed" keywords.</li><li><strong>Technical SEO issues:</strong> Multiple H1 tags, render-blocking resources, and low content rate need fixing.</li><li><strong>Backlink profile moderate but risky:</strong> 146 backlinks from 36 domains; 39% spam score with some toxic links needing disavowal.</li><li><strong>Content strategy:</strong> Focus on creating dedicated service pages, targeting high-value keywords, and expanding long-tail content.</li><li><strong>Backlink opportunities:</strong> Target high-authority Belgian domains and competitor backlink sources.</li><li><strong>Local SEO:</strong> Develop location-specific pages to capture geographic search intent.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Align sales collateral to highlight high-performing knowledge base topics (e.g., Vlabel schatting guides).</li><li>Schedule weekly sync with the content team to monitor keyword movement and adjust outreach.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-cc-experts" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: CC Experts</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>CC Experts (www.ccexperts.be) is a real estate services company based in Belgium. They specialize in property valuations ("Schattingen"), land surveying ("Landmeten"), and strategic advice & consultancy ("Advies & consultancy"). The company positions itself as providing expert, independent support for property transactions and management with neutral, objective, and high-quality advice. <a href="https://www.ccexperts.be" class="link-reference" target="_blank" rel="noopener">Company Website</a></p><br></div></section>
+                <section id="1-overall-seo-performance-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-rankings">Organic Visibility and Rankings</h3><p>CC Experts has demonstrated strong growth in organic visibility over the past year, with a significant <strong>49.44% increase in Estimated Traffic Volume (ETV)</strong> from August 2024 to July 2025. Their current ETV stands at <strong>548.16</strong>, representing substantial organic search visibility in Belgium.</p><br><p><strong>Current Position Distribution (July 2025):</strong></p><ul><li>Position 1: 1 keyword</li><li>Positions 2-3: 6 keywords</li><li>Positions 4-10: 35 keywords</li><li>Positions 11-20: 25 keywords</li><li>Positions 21-30: 21 keywords</li><li>Positions 31-40: 23 keywords</li><li>Positions 41-50: 7 keywords</li><li>Positions 51-100: 31 keywords</li></ul><br><p>The estimated paid traffic cost equivalent of their organic traffic is <strong>$992.97</strong>, indicating the significant value of their current organic visibility.</p><br><p>While the overall trend is positive, there are notable fluctuations in keyword rankings. The site has seen improvements in mid-range positions (2-3, 4-10, 11-20, 21-30) but has experienced decreases in top position keywords (position 1) and some lower positions (41-50, 51-60, etc.).</p><br><h3 id="top-performing-and-underperforming-pages">Top-Performing and Underperforming Pages</h3><br><p><strong>High-Performing Pages:</strong></p><ul><li><strong>Knowledge Base Articles:</strong> The <code>/kennisbank/</code> section drives significant organic traffic, particularly:</li><li><code>/kennisbank/bindende-vlabel-schatting/</code>: ETV of 153.4, estimated paid traffic value of $472.05</li><li><code>/kennisbank/waarderingvruchtgebruik/</code>: ETV of 85.34 with multiple top 10 rankings</li><li><code>/kennisbank/meet-nauwkeurig-de-vloeroppervlakte-van-een-gebouw-met-de-bacs-meetcode/</code>: ETV of 89.70</li><li><strong>Homepage:</strong> Ranks in position 1 for some keywords with estimated paid traffic value of $383.37</li></ul><br><p><strong>Underperforming Pages:</strong></p><ul><li><strong>Service Pages:</strong> Despite being core business offerings, these pages show poor performance:</li><li><code>/advies-consultancy/</code>: Very low ETV of 0.73, ranking in positions 51-60</li><li><code>/schattingen-van-residentieel-vastgoed-en-bedrijfsvastgoed/</code>: Low ETV of 0.29, ranking in positions 31-60</li><li><strong>Careers Page:</strong> <code>/werken-bij/</code>: ETV of only 0.15, ranking in positions 71-80</li><li><strong>Webshop:</strong> <code>/webshop/</code>: Low ETV of 0.82, ranking in positions 11-20</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Replicate formatting and depth of high-performing knowledge base articles on service pages.</li><li>Package each service page with an FAQ section and internal links to related knowledge base content to boost relevance.</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><p>The technical audit revealed several issues that could be impacting performance:</p><br><ul><li><strong>Multiple H1 Tags:</strong> The site has two H1 tags on some pages, with one containing line breaks</li><li><strong>Render-Blocking Resources:</strong> Scripts and stylesheets are blocking rendering, affecting page load speed</li><li><strong>Low Content Rate:</strong> Plain text content rate is only 2.8%, suggesting a high proportion of code to content</li><li><strong>Resource Errors:</strong> Some resource loading errors were detected</li></ul><br><p>Positively, the site is mobile-friendly, uses HTTPS, has proper canonical tags, and includes social media tags.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Consolidate H1 tags to a single, keyword-focused header per page.</li><li>Defer non-critical CSS/JS and implement lazy loading for below-the-fold resources.</li><li>Increase on-page text content to at least 10% of page weight to improve content depth.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-belgian-market" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Belgian Market</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><br><p>CC Experts currently ranks for several valuable keywords in the Belgian market, with particular strength in specialized real estate valuation terms:</p><br><p><strong>Top Performing Keywords (Positions 1-10):</strong></p><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">claeyssens en couckuyt</td><td class="">90</td><td class="">1</td></tr><tr><td class="">bindende schatting vlabel</td><td class="">90</td><td class="">3</td></tr><tr><td class="">quotiteiten</td><td class="">140</td><td class="">4</td></tr><tr><td class="">berekening vruchtgebruik vennootschap</td><td class="">90</td><td class="">3</td></tr><tr><td class="">vlabel schatting</td><td class="">320</td><td class="">4</td></tr><tr><td class="">vruchtgebruik berekenen vennootschap</td><td class="">90</td><td class="">4</td></tr><tr><td class="">vruchtgebruik vennootschap berekenen</td><td class="">90</td><td class="">3</td></tr><tr><td class="">3d scan gebouw</td><td class="">90</td><td class="">7</td></tr><tr><td class="">vlabel schatting onroerend goed</td><td class="">90</td><td class="">5</td></tr><tr><td class="">vruchtgebruik waardering</td><td class="">170</td><td class="">6</td></tr><tr><td class="">waardering vruchtgebruik</td><td class="">170</td><td class="">6</td></tr><tr><td class="">aanvraag bindende schatting</td><td class="">170</td><td class="">7</td></tr><tr><td class="">bacs</td><td class="">1900</td><td class="">10</td></tr><tr><td class="">prekadastratie</td><td class="">260</td><td class="">7</td></tr><tr><td class="">schattingen vastgoed</td><td class="">140</td><td class="">10</td></tr><tr><td class="">verkavelen</td><td class="">90</td><td class="">6</td></tr><tr><td class="">couckuyt</td><td class="">260</td><td class="">10</td></tr><tr><td class="">schatter</td><td class="">170</td><td class="">10</td></tr></tbody></table></div><p>Key Insights:</p><ul><li>Strong performance for branded terms ("claeyssens en couckuyt")</li><li>Excellent rankings for VLABEL-related keywords (Flemish Tax Service property valuations)</li><li>Good visibility for "vruchtgebruik" (usufruct) related terms</li><li>Notable ranking for "bacs" with high search volume (1900)</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Maintain branded term strength by including brand alongside service keywords in title tags (e.g., “CC Experts – Bindende Vlabel Schatting”).</li></ul><br><h3 id="high-value-keyword-opportunities">High-Value Keyword Opportunities</h3><br><p>Our analysis identified several high-potential keywords where CC Experts ranks in positions 11-30, representing immediate growth opportunities:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">schatter vastgoed</td><td class="">140</td><td class="">11</td></tr><tr><td class="">schatter expert</td><td class="">90</td><td class="">12</td></tr><tr><td class="">schatter-expert</td><td class="">90</td><td class="">11</td></tr><tr><td class="">basisakte</td><td class="">210</td><td class="">13</td></tr><tr><td class="">verkavelen betekenis</td><td class="">590</td><td class="">12</td></tr><tr><td class="">handelshuur wet</td><td class="">880</td><td class="">13</td></tr><tr><td class="">vruchtgebruik berekenen</td><td class="">390</td><td class="">12</td></tr><tr><td class="">berekening kadastraal inkomen</td><td class="">210</td><td class="">12</td></tr><tr><td class="">berekening waarde vruchtgebruik</td><td class="">140</td><td class="">13</td></tr><tr><td class="">vlabel</td><td class="">6600</td><td class="">11</td></tr><tr><td class="">vruchtgebruik waarde</td><td class="">210</td><td class="">10</td></tr><tr><td class="">vlabel aangifte nalatenschap</td><td class="">90</td><td class="">11</td></tr><tr><td class="">waarde vruchtgebruik bij verkoop</td><td class="">260</td><td class="">14</td></tr><tr><td class="">vlabel schatters</td><td class="">140</td><td class="">13</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Expedite optimization for <strong>vlabel</strong> by featuring it prominently in the hero section and H1 of the homepage.</li><li>Create dedicated FAQ snippets for <strong>handelshuur wet</strong> and <strong>verkavelen betekenis</strong> to capture rich snippets.</li></ul><br><h3 id="long-tail-and-low-competition-keywords">Long-Tail and Low-Competition Keywords</h3><br><p>We've identified valuable long-tail keywords with specific intent that present excellent targeting opportunities:</p><br><ul><li><strong>goedgevonden tongeren immo tongeren gratis schatting huis verkopen</strong> (40-140 search volume, LOW competition)</li><li><strong>schatting huis online gratis</strong> (260-590 search volume, HIGH competition)</li><li><strong>berekening waarde vruchtgebruik</strong> (140 search volume, position 13)</li><li><strong>waarde vruchtgebruik bij verkoop</strong> (260 search volume, position 14)</li><li><strong>verkavelingsvergunning betekenis</strong> (70 search volume, position 12)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Build a 6-month content calendar mapping each long-tail query to a blog or guide page.</li><li>Assign one piece of content per month to ensure steady momentum and internal linking opportunities.</li></ul><br><h3 id="seasonal-keyword-trends">Seasonal Keyword Trends</h3><br><p>While specific seasonal data wasn't available in the research, the property valuation and surveying industry typically follows real estate market seasonality. In Belgium, this often means higher search volumes in spring and early autumn, with dips during summer holidays and winter.</p><br></div></section>
+                <section id="3-competitive-landscape-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><br><p>Our competitive analysis identified three main competitors for CC Experts in the Belgian market:</p><br><ol><li><strong>www.schatter-expert.be</strong> (Primary Competitor)</li></ol><ul><li><strong>Strengths:</strong> High keyword match count (26), strong average keyword position (4.33)</li><li><strong>Focus:</strong> "Vlabel erkend" and "beëdigd schatter-expert" services</li><li><strong>Competitive Edge:</strong> More targeted meta descriptions with action-oriented language</li><li><strong>Type:</strong> Direct competitor offering similar valuation services</li></ul><br><ol><li><strong>schattingsbureau.vlaanderen</strong> (Secondary Competitor)</li></ol><ul><li><strong>Strengths:</strong> Excellent average keyword position (2.0), concise meta descriptions</li><li><strong>Focus:</strong> Expertise and adherence to high standards in property valuation</li><li><strong>Type:</strong> Direct competitor with more focused service offering</li></ul><br><ol><li><strong>teccon.be</strong> (Tertiary Competitor)</li></ol><ul><li><strong>Strengths:</strong> Ranks well for "Vlabel" and "verkaveling" related keywords</li><li><strong>Focus:</strong> Broader range of services including land surveying</li><li><strong>Type:</strong> Indirect competitor with overlapping services</li></ul><br><p>All three competitors are targeting similar keywords to CC Experts, with schatter-expert.be being the most aggressive and successful in this strategy.</p><br><h3 id="competitor-keyword-analysis">Competitor Keyword Analysis</h3><br><p>Our analysis revealed several keywords where competitors consistently outrank CC Experts:</p><br><p><strong>Key Competitor-Dominated Keywords:</strong></p><ul><li><strong>Valuation Terms:</strong> "schatter huis," "schattingen," "beëdigde schatters," "schatter vastgoed," "schattingen vastgoed"</li><li><strong>Vlabel-Related:</strong> "erkend schatter vlabel," "erkende schatters vlabel," "vlabel schatter," "vlabel schatters," "vlabel erkende schatter"</li><li><strong>Specialized Services:</strong> "aanvraag bindende schatting," "onafhankelijke schatting woning," "schattingsverslag"</li></ul><br><p><strong>Search Intent Patterns:</strong></p><ol><li><strong>Vlabel Schatting:</strong> Users seeking "Vlabel erkend/beëdigd" valuers for inheritance tax purposes (high volume, medium competition)</li><li><strong>General Real Estate Valuation:</strong> Terms like "schatter vastgoed" (high volume, high competition)</li><li><strong>Residential Property Valuation:</strong> "schatter huis," "schatter huizen" (high volume, high competition)</li><li><strong>Land Surveying:</strong> "verkaveling," "prekadastratie," "precad" (medium volume, low competition)</li></ol><br><p><strong>Keyword Gaps and Opportunities:</strong></p><ul><li><strong>Location-Specific Terms:</strong> "schatter appartement gent," "schatter handelspand antwerpen"</li><li><strong>Valuation Purpose Keywords:</strong> "schatter echtscheiding" (divorce), "schatter successie" (inheritance)</li><li><strong>Property Feature Keywords:</strong> "schatter energieprestatie," "schatter renovatie"</li></ul><br><h3 id="competitor-serp-strategy-analysis">Competitor SERP Strategy Analysis</h3><br><p><strong>Title and Meta Description Comparison:</strong></p><ul><li><strong>CC Experts:</strong> Uses generic titles (e.g., "Onafhankelijke schatter - Claeyssens & Couckuyt Experts") and broad meta descriptions that don't always directly address search queries</li><li><strong>schatter-expert.be:</strong> Employs keyword-rich titles (e.g., "U zoekt een vlabel erkend of beëdigd schatter-expert?") and highly targeted meta descriptions with clear calls to action</li><li><strong>teccon.be:</strong> Uses descriptive titles (e.g., "Teccon - Landmeters-experten") with concise service-listing meta descriptions</li><li><strong>schattingsbureau.vlaanderen:</strong> Features concise titles with brand name and meta descriptions highlighting expertise</li></ul><br><p><strong>Effective Competitor SERP Strategies:</strong></p><ol><li><strong>Keyword-rich titles:</strong> Direct incorporation of target keywords</li><li><strong>Clear value propositions:</strong> Highlighting specific services, certifications, and benefits</li><li><strong>Question-based titles:</strong> Directly addressing user queries</li><li><strong>Content diversity:</strong> Dedicated service pages, blog posts, and tariff pages</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Pilot question-based titles on 2–3 top-priority pages to measure CTR lift.</li><li>A/B test meta descriptions emphasizing service differentiation (e.g., “Laagste Tarieven,” “Erkend & Onafhankelijk”).</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="backlink-profile-overview">Backlink Profile Overview</h3><br><p>CC Experts has a moderate backlink profile with <strong>146 backlinks</strong> from <strong>36 referring domains</strong>. The site has a domain rank of <strong>113</strong> and a backlink spam score of <strong>39%</strong>, indicating a moderate risk level that could potentially impact SEO performance.</p><br><p><strong>Key Backlink Metrics:</strong></p><ul><li><strong>Total Backlinks:</strong> 146</li><li><strong>Referring Domains:</strong> 36 (17 with nofollow attributes)</li><li><strong>Referring Main Domains:</strong> 35</li><li><strong>Referring IPs:</strong> 34</li><li><strong>Referring Pages:</strong> 131 (24 with nofollow attributes)</li></ul><br><p><strong>Backlink Quality Distribution:</strong></p><ul><li><strong>Low Spam Score (0-30%):</strong> 24 domains (67%)</li><li><strong>Medium Spam Score (31-60%):</strong> 10 domains (28%)</li><li><strong>High Spam Score (61-100%):</strong> 1 domain (3%)</li></ul><br><p>The majority of backlinks come from Belgian domains (.be), with 107 links from this TLD, followed by pages.dev (6) and .com (5) domains.</p><br><h3 id="backlink-types-and-attributes">Backlink Types and Attributes</h3><br><p><strong>Link Types:</strong></p><ul><li>Anchor text links: 122 (83.6%)</li><li>Image links: 6 (4.1%)</li><li>Redirect links: 3 (2.1%)</li></ul><br><p><strong>Link Attributes:</strong></p><ul><li>Nofollow: 24 links (16.4%)</li><li>Noopener: 16 links (11%)</li><li>Noreferrer: 10 links (6.8%)</li><li>UGC: 3 links (2.1%)</li></ul><br><p>This distribution suggests a relatively natural backlink profile, though the presence of nofollow links reduces the SEO value of approximately 16% of the backlinks.</p><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><br><p>The anchor text analysis reveals several patterns:</p><ul><li><strong>Brand mentions:</strong> "CC Experts," "ccexperts.be," "Claeyssens & Couckuyt Experts"</li><li><strong>Generic anchors:</strong> "Website," "here," "link"</li><li><strong>Relevant keywords:</strong> "Square Metre," "Expertise immobilière," "Een grond splitsen of verkavelen?"</li></ul><br><p>While there is some keyword-rich anchor text, the profile could benefit from more strategic anchor text optimization focusing on target keywords like "vlabel schatter" or "vastgoed expertise."</p><br><h3 id="toxic-backlinks">Toxic Backlinks</h3><br><p>Our analysis identified potentially harmful backlinks that should be considered for disavowal:</p><ul><li><strong>developmentmi.com</strong> (65% spam score): Contains a spammy list of unrelated websites</li><li>Several medium-risk backlinks (45-55% spam score) from domains like:</li><li>seobacklinks.agency (45%)</li><li>rankgrow.agency (45%)</li><li>prolinkbox.com (50%)</li><li>bye.fyi (50%)</li><li>drjack.world (50%)</li></ul><br><p>These links appear to be from link schemes or low-quality directories and could potentially trigger Google penalties.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prepare and submit a disavow file targeting domains scoring 45% and above.</li><li>Reach out to webmasters of medium-risk sites to request removal before disavow.</li></ul><br><h3 id="competitor-backlink-comparison">Competitor Backlink Comparison</h3><br><p>Our analysis identified several competitors with overlapping backlinks:</p><ul><li><strong>bati-info.be:</strong> 19 intersecting backlinks, rank 28</li><li><strong>square-metre.be:</strong> 4 intersecting backlinks, rank 70</li><li><strong>vives.be:</strong> 2 intersecting backlinks, rank 18</li><li><strong>bdo.be:</strong> 2 intersecting backlinks, rank 18</li></ul><br><p>This suggests opportunities to acquire similar high-quality backlinks from these sources, particularly from bati-info.be which has a significant number of shared referring domains.</p><br><h3 id="backlink-opportunities">Backlink Opportunities</h3><br><p>Based on our analysis, we've identified several high-quality domains linking to competitors but not to CC Experts:</p><ul><li>Industry associations and professional bodies in the real estate and surveying sectors</li><li>Educational institutions offering real estate or surveying courses</li><li>Belgian business directories with high domain authority</li><li>Real estate news and information portals</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Develop tailored outreach proposals for real estate associations and directories featuring collaborative content (e.g., co-authored valuation guides).</li><li>Prioritize outreach to bati-info.be contacts to replicate shared backlinks.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our comprehensive analysis of CC Experts' SEO performance, keyword opportunities, competitive landscape, and backlink profile, we recommend the following content strategy:</p><br><h3 id="priority-keyword-targeting">Priority Keyword Targeting</h3><br><p><strong>Top Priority Keywords:</strong></p><ol><li><strong>"vlabel schatter" / "vlabel schatters" / "vlabel erkend schatter"</strong> (High relevance, medium competition, strong commercial intent)</li><li><strong>"schatter vastgoed" / "schattingen vastgoed"</strong> (High relevance, high competition, broad commercial intent)</li><li><strong>"schatter huis" / "schatter huizen"</strong> (High relevance, high competition, specific commercial intent)</li><li><strong>"verkaveling"</strong> (Medium relevance, low competition, good opportunity)</li><li><strong>"beëdigde schatters"</strong> (High relevance, high competition, strong commercial intent)</li></ol><br><h3 id="serp-optimization-strategy">SERP Optimization Strategy</h3><br><ol><li><strong>Improve Title and Meta Description Optimization:</strong></li></ol><ul><li><strong>Quick Win:</strong> Rewrite titles for main service pages to be more keyword-focused (e.g., "Vlabel Schatter Gent | Erkende Schatters voor Nalatenschap")</li><li><strong>Long-Term:</strong> Conduct keyword research for each service and create unique, keyword-rich titles with compelling meta descriptions</li></ul><br><ol><li><strong>Create Dedicated Service Pages:</strong></li></ol><ul><li><strong>Quick Win:</strong> Optimize the existing "Bindende VLABEL-schatting" page as a dedicated service page</li><li><strong>Long-Term:</strong> Create separate pages explaining the process of different valuation services with clear calls to action</li></ul><br><ol><li><strong>Develop Content for Long-Tail Keywords:</strong></li></ol><ul><li><strong>Quick Win:</strong> Write blog posts answering common questions about Vlabel schatting</li><li><strong>Long-Term:</strong> Create a content calendar addressing specific valuation scenarios and property types</li></ul><br><ol><li><strong>Consider a Tariff Page:</strong></li></ol><ul><li>Following competitor schatter-expert.be's successful strategy of having a dedicated pricing page</li></ul><br><ol><li><strong>Improve Internal Linking:</strong></li></ol><ul><li>Ensure all relevant pages link to each other using keyword-rich anchor text</li></ul><br><ol><li><strong>Target Location-Specific Keywords:</strong></li></ol><ul><li>Create location-specific landing pages (e.g., "Vastgoed Schatter Gent," "Schatting Appartement Antwerpen")</li></ul><br><h3 id="backlink-strategy-recommendations">Backlink Strategy Recommendations</h3><br><ol><li><strong>Disavow Toxic Backlinks:</strong></li></ol><ul><li>Submit a disavow file to Google for the identified high-risk backlinks, particularly developmentmi.com (65% spam score)</li></ul><br><ol><li><strong>Optimize Anchor Text Distribution:</strong></li></ol><ul><li>Work with referring domains to improve anchor text diversity with more keyword-rich anchors</li></ul><br><ol><li><strong>Target High-Quality Belgian Domains:</strong></li></ol><ul><li>Focus on acquiring backlinks from .be domains with low spam scores, particularly industry-related websites</li></ul><br><ol><li><strong>Pursue Competitor Backlinks:</strong></li></ol><ul><li>Develop a targeted outreach campaign to acquire backlinks from sites linking to bati-info.be and other competitors</li></ul><br><ol><li><strong>Create Linkable Assets:</strong></li></ol><ul><li>Develop comprehensive guides, tools, or resources that naturally attract backlinks from industry websites</li></ul><br><h3 id="content-format-recommendations">Content Format Recommendations</h3><br><p>Based on the success of existing content and competitor strategies:</p><br><ol><li><strong>Detailed Guides:</strong> Create comprehensive guides on topics like "How to Apply for a Verkavelingsvergunning," "Understanding the Handelshuur Wet," or "Calculating Your Kadastraal Inkomen"</li></ol><br><ol><li><strong>FAQ Sections:</strong> Add FAQ sections to existing articles to address common questions and improve user engagement</li></ol><br><ol><li><strong>Case Studies:</strong> Showcase successful projects and client testimonials to build trust and demonstrate expertise</li></ol><br><ol><li><strong>Interactive Tools:</strong> Develop interactive tools or calculators related to property valuation, vruchtgebruik calculation, or kadastraal inkomen</li></ol><br><ol><li><strong>Video Content:</strong> Create video content explaining complex topics or showcasing the 3D scanning process</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Define performance KPIs for each content type (e.g., organic visits for guides, click-through rate for FAQ-rich pages).</li><li>Schedule quarterly reviews to adjust formats based on engagement metrics.</li></ul><br></div></section>
+                <section id="conclusion-and-next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion and Next Steps</h2>
+                    </div>
+                    <div class="section-content"><br><p>CC Experts has achieved impressive organic visibility growth over the past year, primarily driven by strong knowledge base content. The company has established itself as an authority on VLABEL schattingen and vruchtgebruik calculations, with significant opportunities to expand this authority to other service areas.</p><br><p>Our analysis reveals several immediate opportunities:</p><br><ol><li><strong>Optimize for "vlabel":</strong> Create a dedicated landing page for this high-volume keyword (6600 searches) where the site currently ranks #11</li><li><strong>Improve Service Pages:</strong> Apply the successful content strategies from the knowledge base to core service pages</li><li><strong>Target Priority Keywords:</strong> Focus on the identified priority keywords, particularly "vlabel schatter" variations and long-tail opportunities</li><li><strong>Expand Knowledge Base:</strong> Continue developing the successful knowledge base with new topics based on keyword gaps</li><li><strong>Technical SEO Improvements:</strong> Address the identified technical issues to improve overall site performance</li><li><strong>Implement Competitor Strategies:</strong> Adopt successful SERP strategies from competitors, particularly schatter-expert.be's approach to titles and meta descriptions</li><li><strong>Clean Up Backlink Profile:</strong> Disavow toxic backlinks and implement a strategic backlink acquisition plan focusing on high-quality Belgian domains</li><li><strong>Create Location-Specific Content:</strong> Develop content targeting geographic-specific search terms to capture local market share</li></ol><br><p>This comprehensive SEO roadmap addresses all key aspects of CC Experts' digital presence and provides actionable steps to improve organic visibility, outrank competitors, and capture untapped opportunities in the Belgian market.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - CC Experts',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

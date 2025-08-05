@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Nestr</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Nestr • Nestr.be</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Belgium Market</span>
+                        <span><i class="fas fa-calendar"></i> August 5, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>SEO Performance Metric</strong></th><th><strong>Value / Change</strong></th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV) July 2025</td><td class="">470.90</td></tr><tr><td class="">ETV Growth (Aug 2024 - Jul 2025)</td><td class="positive">+14.98%</td></tr><tr><td class="">Total Ranking Keywords</td><td class="">103</td></tr><tr><td class="">Keywords in Position 1</td><td class="positive">1 (↓ 50% YoY)</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">1 (No change)</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="positive">15 (+36.36%)</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="positive">22 (+4.76%)</td></tr><tr><td class="">Keywords in Positions 21-30</td><td class="positive">18 (-5.26%)</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>While ETV is growing, the drop in Position 1 keywords signals missed opportunities. Prioritize on-page optimization for your highest-traffic pages to reclaim top spots.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Top Competitors</strong></th><th><strong>Keywords They Rank Well For (Nestr Ranks Poorly)</strong></th><th><strong>Search Volume</strong></th><th><strong>Competition</strong></th></tr></thead><tbody><tr><td class="">Zimmo.be</td><td class="">te koop huis kortrijk</td><td class="">4400</td><td class="">Medium</td></tr><tr><td class="">Immoweb.be</td><td class="">te koop huis harelbeke</td><td class="">2900</td><td class="">Medium</td></tr><tr><td class="">Zimmo.be & Immoweb.be</td><td class="">kuurne huis te koop</td><td class="">1900</td><td class="">Medium</td></tr><tr><td class="">Zimmo.be & Immoweb.be</td><td class="">immo kortrijk</td><td class="">1600</td><td class="">Medium</td></tr><tr><td class="">Zimmo.be & Immoweb.be</td><td class="">immobiliënkantoren kortrijk</td><td class="">880</td><td class="">Medium</td></tr><tr><td class="">Zimmo.be & Immoweb.be</td><td class="">immobilienkantoor kortrijk</td><td class="">880</td><td class="">Medium</td></tr><tr><td class="">Zimmo.be & Immoweb.be</td><td class="">immo kortrijk te koop</td><td class="">720</td><td class="">Medium</td></tr><tr><td class="">Zimmo.be & Immoweb.be</td><td class="">gratis schatting huis</td><td class="">720</td><td class="">High</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a focused content audit on competitor top-ranking pages. Identify common on-page elements (headings, CTAs, structure) and adapt best practices for Nestr.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Opportunity Keywords to Target</strong></th><th><strong>Search Volume</strong></th><th><strong>Competition</strong></th><th><strong>Reason / Notes</strong></th></tr></thead><tbody><tr><td class="">huis kopen kuurne</td><td class="">40-90</td><td class="">Medium</td><td class="">Medium volume, medium competition, location-specific buyer intent</td></tr><tr><td class="">woning te huur kuurne</td><td class="">10-30</td><td class="">Low</td><td class="">Low competition, rental market opportunity</td></tr><tr><td class="">appartement huren belgië</td><td class="">0-10</td><td class="">Medium</td><td class="">Emerging rental keyword, potential for growth</td></tr><tr><td class="">te koop huis kortrijk</td><td class="">4400</td><td class="">Medium</td><td class="">High volume, currently dominated by competitors, strong growth potential</td></tr><tr><td class="">te koop huis harelbeke</td><td class="">2900</td><td class="">Medium</td><td class="">High volume, local expansion opportunity</td></tr><tr><td class="">huis te koop met praktijkruimte</td><td class="">90</td><td class="">Medium</td><td class="">Long-tail, specialized property type, less competition</td></tr><tr><td class="">bungalow te koop kortrijk</td><td class="">140</td><td class="">Medium</td><td class="">Location + property type long-tail keyword</td></tr><tr><td class="">gratis schatting huis</td><td class="">720</td><td class="">High</td><td class="">High-value transactional keyword, underutilized on current "Gratis Schatting" page</td></tr><tr><td class="">appartement huren aan zee belgië</td><td class="">10-30</td><td class="">High</td><td class="">Seasonal keyword, opportunity for summer-focused content</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Start with mid-volume, mid-competition terms like “huis kopen kuurne” and “woning te huur kuurne” for quick visibility gains before tackling very competitive “te koop huis kortrijk.”</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li><strong>Organic Growth:</strong> Nestr Vastgoed’s organic traffic increased by +14.98% over the past year, with 103 ranking keywords but only 1 keyword in position 1 (down 50% YoY).</li><li><strong>Strong Local Presence:</strong> Excellent rankings for Kuurne-specific keywords, but weaker in Kortrijk and Harelbeke where competitors dominate.</li><li><strong>Top Competitors:</strong> Zimmo.be and Immoweb.be lead in high-volume keywords nationally and regionally; Vastgoed Norman competes locally in Kuurne.</li><li><strong>Content Gaps:</strong> Lack of hyperlocal landing pages, property type-specific pages, and optimized content for high-value keywords like "gratis schatting huis."</li><li><strong>Technical SEO:</strong> Good overall score (95.24) but needs fixes on title tag length, image alt attributes, and render-blocking resources.</li><li><strong>Backlinks:</strong> Healthy profile with 400 backlinks from 18 domains, mostly Belgian, but anchor text is generic and backlink diversity can improve.</li><li><strong>Recommendations:</strong> Create hyperlocal and property type pages, optimize underperforming pages, improve title/meta tags, build authoritative backlinks, and launch a blog targeting informational keywords.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft a 90-day roadmap aligning quick technical fixes with content initiatives (hyperlocal pages, backlink outreach) to turn insights into action.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-nestr-vastgoed-belgium-" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Nestr Vastgoed (Belgium)</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for Nestr Vastgoed, a Belgian real estate agency offering services in buying, selling, renting, property valuation, marketing, negotiation, and legal support (<a href="https://nestr.be" class="link-reference" target="_blank" rel="noopener">Company Website</a>). The analysis reveals a 14.98% increase in estimated traffic volume (ETV) over the past year, with significant opportunities to improve rankings for property detail pages and technical SEO elements. By implementing our recommendations, Nestr can capitalize on its positive growth trajectory and strengthen its position in the competitive Belgian real estate market, particularly in key locations like Kuurne and Kortrijk.</p><br></div></section>
+                <section id="1-company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">1. Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Nestr Vastgoed is a real estate agency operating in Belgium that emphasizes a personal and active approach to simplify the real estate process for clients. Their service offerings include:</p><ul><li>Property buying and selling assistance</li><li>Rental property services</li><li>Property valuation</li><li>Marketing of properties</li><li>Negotiation support</li><li>Legal assistance throughout transactions</li></ul><br></div></section>
+                <section id="2-overall-seo-performance-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">2. Overall SEO Performance in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility">Organic Visibility</h3><ul><li><strong>Growth Trend</strong>: +14.98% increase in estimated traffic volume (ETV) from August 2024 to July 2025</li><li><strong>Current ETV</strong>: 470.90 (as of July 2025)</li><li><strong>Ranking Distribution</strong>:</li><li>Position 1: 1 keyword (-50.00% decrease year-over-year)</li><li>Positions 2-3: 1 keyword (no change)</li><li>Positions 4-10: 15 keywords (+36.36% increase)</li><li>Positions 11-20: 22 keywords (+4.76% increase)</li><li>Positions 21-30: 18 keywords (-5.26% decrease)</li><li>Positions 31-100: 46 keywords (significant decrease in lower positions)</li><li><strong>Total Ranking Keywords</strong>: 103 keywords</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The bulk of keywords in positions 4–30 indicates pages are close to page one. Focus internal linking and on-page improvements to elevate these into top 3 spots.</li></ul><br><h3 id="top-performing-pages">Top Performing Pages</h3><ul><li><strong>Homepage</strong> (https://www.nestr.be/): Highest performer with ETV of 271.61 and ranking for 35 keywords</li><li><strong>"Te Koop" (For Sale)</strong> (https://www.nestr.be/te-koop): Second best performer with ETV of 124.85 and ranking for 23 keywords</li><li><strong>"Te Huur" (For Rent)</strong> page performs notably weaker than the "Te Koop" page</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Benchmark the "Te Koop" page structure against "Te Huur" and apply stronger calls to action, richer media, and keyword optimization to lift rental page performance.</li></ul><br><h3 id="underperforming-pages">Underperforming Pages</h3><ul><li><strong>Property Detail Pages</strong>: Numerous individual property listings have very low ETV and poor rankings (positions 31-100)</li><li><strong>"Gratis Schatting" (Free Estimate)</strong> (https://www.nestr.be/gratis-schatting): Despite ranking for 10 keywords, this page has low ETV (5.33) and ranks mostly in positions 71-100</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Consolidate low-performing detail pages into thematic landing pages by type or location to avoid thin-content penalties and improve aggregate authority.</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><ul><li><strong>Overall Score</strong>: 95.24 (good)</li><li><strong>Strengths</strong>:</li><li>HTTPS implementation</li><li>Mobile-friendly design</li><li>SEO-friendly URL structure</li><li>Fast loading time (time to interactive: 91ms)</li><li>Open Graph tags present</li><li><strong>Issues</strong>:</li><li>Title tag too long (78 characters)</li><li>Render-blocking resources affecting page load performance</li><li>Missing alt and title attributes for images</li><li>Low content-to-code ratio</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize correcting title tags and image attributes in the next sprint. Then tackle render-blocking scripts to maintain speed.</li></ul><br></div></section>
+                <section id="3-keyword-analysis-for-belgian-real-estate-market" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">3. Keyword Analysis for Belgian Real Estate Market</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><ul><li><strong>Top Performing Keywords (Positions 1-10)</strong>:</li></ul><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">nestr vastgoed</td><td class="">390</td><td class="">1</td></tr><tr><td class="">nest vastgoed</td><td class="">210</td><td class="">3</td></tr><tr><td class="">immo kuurne</td><td class="">390</td><td class="">8</td></tr><tr><td class="">huis te koop kuurne</td><td class="">1900</td><td class="">6</td></tr><tr><td class="">nest immo</td><td class="">880</td><td class="">8</td></tr><tr><td class="">nest-immo</td><td class="">880</td><td class="">8</td></tr><tr><td class="">appartement te huur kuurne</td><td class="">390</td><td class="">9</td></tr><tr><td class="">huis te huur in kuurne</td><td class="">720</td><td class="">8</td></tr><tr><td class="">te koop in kuurne</td><td class="">1300</td><td class="">9</td></tr><tr><td class="">appartement te huur in kuurne</td><td class="">390</td><td class="">9</td></tr><tr><td class="">appartementen te huur kuurne</td><td class="">390</td><td class="">10</td></tr><tr><td class="">te koop kuurne</td><td class="">1300</td><td class="">10</td></tr></tbody></table></div><h3 id="high-value-keyword-opportunities">High-Value Keyword Opportunities</h3><ul><li><strong>Keywords in Positions 11-30 with High Search Volume</strong>:</li></ul><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">kuurne huis te koop</td><td class="">1900</td><td class="">16</td></tr><tr><td class="">huis te huur kuurne</td><td class="">720</td><td class="">14</td></tr><tr><td class="">te huur in kuurne</td><td class="">720</td><td class="">15</td></tr><tr><td class="">vastgoed norman</td><td class="">720</td><td class="">17</td></tr><tr><td class="">coucke immo</td><td class="">720</td><td class="">16</td></tr><tr><td class="">sportpark kuurne</td><td class="">720</td><td class="">23</td></tr><tr><td class="">huizen te koop in kuurne</td><td class="">390</td><td class="">15</td></tr><tr><td class="">appartement te koop kuurne</td><td class="">320</td><td class="">23</td></tr></tbody></table></div><ul><li><strong>Priority Keywords to Target</strong>:</li><li>"huis kopen kuurne" (40-90 monthly searches, medium competition)</li><li>"woning te huur kuurne" (10-30 monthly searches, low competition)</li><li>"appartement huren belgië" (0-10 monthly searches, medium competition)</li><li>"te koop huis kortrijk" (4400 searches, medium competition)</li><li>"te koop huis harelbeke" (2900 searches, medium competition)</li></ul><br><h3 id="long-tail-keyword-opportunities">Long-Tail Keyword Opportunities</h3><ul><li><strong>Property Type Specific</strong>: Keywords like "huis te koop met praktijkruimte" (90 searches, position 17) show specific user intent that could be targeted with dedicated pages</li><li><strong>Location-Specific Long-Tail</strong>: Terms like "bungalow te koop kortrijk" (140 searches, position 23) offer opportunities for specialized content</li><li><strong>Neighborhood-Specific Terms</strong>: Keywords like "passionistenlaan" (590 searches, position 22) and "gullegemsesteenweg" (260 searches, position 23) indicate interest in specific areas</li></ul><br><h3 id="seasonal-trends">Seasonal Trends</h3><ul><li><strong>Seasonal Opportunity</strong>: "appartement huren aan zee belgië" (10-30 searches, high competition) shows potential for seasonal targeting during summer months</li></ul><br><h3 id="content-gaps">Content Gaps</h3><ul><li><strong>Property Type Pages</strong>: Lack of dedicated pages for specific property types (villas, bungalows, apartments) in each location</li><li><strong>Keyword Cannibalization</strong>: Homepage ranking for many keywords that could be better targeted by more specific pages</li><li><strong>Location Content</strong>: Insufficient content about specific neighborhoods and streets that are appearing in search queries</li><li><strong>Free Valuation Content</strong>: Underoptimized "Gratis Schatting" page missing opportunities for high-value keywords like "gratis schatting huis" (720 searches, high competition)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop a content calendar focusing on filling the top three gaps (hyperlocal landing pages, property-type pages, and “Gratis Schatting” optimization) over the next 60 days.</li></ul><br></div></section>
+                <section id="4-competitive-landscape-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">4. Competitive Landscape in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="primary-competitors">Primary Competitors</h3><ol><li><strong>Zimmo.be</strong> (Strongest competitor)</li></ol><ul><li><strong>Key Strengths</strong>: Highest estimated traffic volume, consistently ranks #1 for many high-volume keywords</li><li><strong>Strategy</strong>: Effective use of location-specific landing pages</li><li><strong>Target Market</strong>: National real estate aggregator</li></ul><br><ol><li><strong>Immoweb.be</strong> (Second strongest competitor)</li></ol><ul><li><strong>Key Strengths</strong>: High estimated traffic volume, strong rankings for high-volume keywords</li><li><strong>Strategy</strong>: Similar to Zimmo, uses location-specific landing pages effectively</li><li><strong>Target Market</strong>: National real estate aggregator</li></ul><br><ol><li><strong>Vastgoed Norman</strong> (Third strongest competitor)</li></ol><ul><li><strong>Key Strengths</strong>: Strong rankings for keywords related to Kuurne, likely due to local focus</li><li><strong>Strategy</strong>: Local specialization</li><li><strong>Target Market</strong>: Local real estate agency focused on Kuurne area</li></ul><br><h3 id="competitor-keyword-analysis">Competitor Keyword Analysis</h3><ul><li><strong>Keywords Where Competitors Outrank Nestr</strong>:</li></ul><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th><th>Top Ranking Competitor</th></tr></thead><tbody><tr><td class="">te koop huis kortrijk</td><td class="">4400</td><td class="">MEDIUM</td><td class="">Zimmo.be & Immoweb.be</td></tr><tr><td class="">te koop huis harelbeke</td><td class="">2900</td><td class="">MEDIUM</td><td class="">Zimmo.be & Immoweb.be</td></tr><tr><td class="">kuurne huis te koop</td><td class="">1900</td><td class="">MEDIUM</td><td class="">Zimmo.be & Immoweb.be</td></tr><tr><td class="">immo kortrijk</td><td class="">1600</td><td class="">MEDIUM</td><td class="">Zimmo.be & Immoweb.be</td></tr><tr><td class="">immobiliënkantoren kortrijk</td><td class="">880</td><td class="">MEDIUM</td><td class="">Zimmo.be & Immoweb.be</td></tr><tr><td class="">immobilienkantoor kortrijk</td><td class="">880</td><td class="">MEDIUM</td><td class="">Zimmo.be & Immoweb.be</td></tr><tr><td class="">immo kortrijk te koop</td><td class="">720</td><td class="">MEDIUM</td><td class="">Zimmo.be & Immoweb.be</td></tr><tr><td class="">gratis schatting huis</td><td class="">720</td><td class="">HIGH</td><td class="">Zimmo.be & Immoweb.be</td></tr></tbody></table></div><h3 id="content-strategy-comparison">Content Strategy Comparison</h3><ul><li><strong>Title Tag Strategy</strong>:</li><li><strong>Nestr.be</strong>: Often uses generic titles like "Ontdek ons aanbod te koop" or brand name "Nestr Vastgoed | Vastgoed met Advies - Oost west, thuis nest ..."</li><li><strong>Competitors</strong>: Use keyword-rich titles that include location and property type (e.g., "Huis te koop Kortrijk (+ deelgemeenten)," "Appartement te huur - Kuurne (8520)")</li></ul><br><ul><li><strong>Meta Description Strategy</strong>:</li><li><strong>Nestr.be</strong>: Descriptions often cut off or don't effectively summarize page content</li><li><strong>Competitors</strong>: Use descriptions with clear calls to action (e.g., "Ontdek alle huizen te koop...") and highlight breadth of listings</li></ul><br><ul><li><strong>Content Types & Formats</strong>:</li><li><strong>Location-Specific Landing Pages</strong>: Zimmo and Immoweb have dedicated pages for each city/town, significantly improving rankings for location-based searches</li><li><strong>Property Listing Pages</strong>: All competitors use property listing pages, but Nestr's may not be as detailed or user-friendly</li><li><strong>Blog Content</strong>: Zimmo has a blog with articles on property valuation, buying/selling tips, etc., helping them rank for informational keywords</li></ul><br><ul><li><strong>Effective Patterns</strong>:</li><li>Location + Property Type in Title: "Huis te koop [Location]" or "Appartement te huur [Location]"</li><li>Call to Action in Description: "Ontdek alle [property type] in [location]..."</li><li>Highlighting Listing Volume: "[Number] panden te koop in [Location]"</li></ul><br></div></section>
+                <section id="5-backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">5. Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li><strong>Overall Metrics</strong>:</li><li>Total backlinks: 400</li><li>Referring domains: 18</li><li>Backlink spam score: 27% (medium risk)</li><li>Domain rank: 142</li><li>First seen in index: July 9, 2022</li></ul><br><ul><li><strong>Geographic Distribution</strong>:</li><li>197 backlinks (94.7%) from Belgian domains (.be)</li><li>3 backlinks from .pages.dev domains</li><li>2 backlinks from .agency domains</li><li>2 backlinks from .com domains</li><li>Other TLDs (.fr, .world, .party, .click) with 1 backlink each</li></ul><br><ul><li><strong>Link Quality Assessment</strong>:</li><li>10 referring domains with low spam scores (0-30%)</li><li>8 referring domains with medium spam scores (31-60%)</li><li>No high spam score referring domains (61-100%)</li><li>Notable quality backlinks from zimmo.be (8% spam score), immoweb.be (0% spam score), and immoscoop.be (0% spam score)</li></ul><br><h3 id="link-building-opportunities">Link Building Opportunities</h3><ul><li><strong>Competitor Backlink Analysis</strong>:</li><li>housematch.be: 9 shared backlinks (rank: 17)</li><li>immoweb.be: 7 shared backlinks (rank: 12)</li><li>immoscoop.be: 1 shared backlink (rank: 23)</li></ul><br><ul><li><strong>Authoritative Websites to Target</strong>:</li><li>Belgian real estate associations and directories</li><li>Local chambers of commerce in Kuurne, Kortrijk, and Harelbeke</li><li>Regional news websites covering real estate topics</li><li>Property investment blogs and forums</li></ul><br><ul><li><strong>Anchor Text Optimization</strong>:</li><li>Current anchor text distribution heavily skewed toward generic terms:</li><li>"Website v/d verkoper" (most common from zimmo.be)</li><li>"nestr.be" or "www.nestr.be" (direct URL mentions)</li><li>Very few keyword-rich anchors related to real estate services</li></ul><br><h3 id="toxic-backlink-assessment">Toxic Backlink Assessment</h3><ul><li><strong>Risk Assessment</strong>: Low risk profile with no high-spam score referring domains</li><li><strong>Potential Issues</strong>:</li><li>8 referring domains with medium spam scores (31-60%) should be monitored</li><li>Some backlinks from generic web directories may provide limited SEO value</li></ul><br><h3 id="backlink-strategy-recommendations">Backlink Strategy Recommendations</h3><ul><li><strong>Quality Over Quantity</strong>: Focus on acquiring backlinks from authoritative Belgian real estate websites</li><li><strong>Local Citations</strong>: Ensure consistent NAP (Name, Address, Phone) information across local business directories</li><li><strong>Anchor Text Diversification</strong>: Work toward a more natural anchor text distribution with relevant keywords</li><li><strong>Content Marketing</strong>: Create shareable content that naturally attracts backlinks from industry websites</li><li><strong>Competitor Gap Analysis</strong>: Target websites linking to competitors housematch.be and immoweb.be but not to Nestr</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Shifting outreach to real estate news outlets and directories in Kortrijk/Harelbeke can balance geographic link distribution and boost local relevance.</li></ul><br></div></section>
+                <section id="6-content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">6. Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="content-gap-opportunities">Content Gap Opportunities</h3><ul><li><strong>Hyperlocal Landing Pages</strong>: Create dedicated pages for each city, town, and neighborhood where Nestr operates, targeting keywords like "huis te koop [location]" with:</li><li>Unique title tag and meta description optimized for target keywords</li><li>List of properties for sale/rent in that location</li><li>Local information (schools, amenities, transportation)</li><li>Testimonials from clients in that location</li><li>Internal links to other relevant pages</li></ul><br><ul><li><strong>Property Type Pages</strong>: Create dedicated pages for each property type (villas, bungalows, apartments) in each location to target keywords like "appartement te koop kuurne" (320 searches)</li></ul><br><ul><li><strong>Location-Specific Content</strong>: Develop comprehensive content about specific neighborhoods and streets (Passionistenlaan, Gullegemsesteenweg) to capture location-specific searches</li></ul><br><ul><li><strong>Specialized Property Features</strong>: Create content targeting specialized needs like "huis te koop met praktijkruimte" (90 searches)</li></ul><br><h3 id="existing-content-optimization">Existing Content Optimization</h3><ul><li><strong>"Gratis Schatting" Page Optimization</strong>: Revamp the underperforming page to target high-value keywords:</li><li>Conduct keyword research for terms like "gratis schatting woning," "online waardebepaling huis"</li><li>Create high-quality, informative content addressing user search intent</li><li>Include clear call to action (e.g., "Plan uw gratis schatting vandaag!")</li><li>Build backlinks to the page from relevant websites</li></ul><br><ul><li><strong>Title and Meta Description Strategy</strong>: Implement consistent optimization strategy:</li><li>Use location + property type in title tags</li><li>Include call to action in meta descriptions</li><li>Keep titles and descriptions within recommended length limits</li></ul><br><ul><li><strong>Property Listing Enhancement</strong>: Improve quality and user-friendliness:</li><li>Include high-quality photos and videos</li><li>Provide detailed property descriptions</li><li>Highlight key features and amenities</li><li>Make it easy for users to contact Nestr</li></ul><br><h3 id="content-cluster-strategy">Content Cluster Strategy</h3><ul><li><strong>Kuurne Real Estate Cluster</strong>: Create a comprehensive content hub around Kuurne real estate to capitalize on strong performance for Kuurne-related keywords</li><li><strong>Property Type Clusters</strong>: Develop content clusters around different property types (apartments, houses, villas) with specific pages for each location</li><li><strong>Rental Property Cluster</strong>: Strengthen content around rental properties to match the performance of sales-related content</li><li><strong>Blog Development</strong>: Create a blog to target informational keywords and attract potential clients:</li><li>Write articles about property valuation, buying/selling tips, local market trends</li><li>Promote blog content on social media and through email marketing</li></ul><br></div></section>
+                <section id="7-action-plan-prioritization" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tasks"></i></div>
+                        <h2 class="section-title">7. Action Plan & Prioritization</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="quick-wins-1-3-months-">Quick Wins (1-3 months)</h3><ol><li>Fix technical SEO issues:</li></ol><ul><li>Optimize title tag length</li><li>Add alt and title attributes to images</li><li>Address render-blocking resources</li></ul><ol><li>Optimize title tags and meta descriptions for existing landing pages following competitor patterns</li><li>Revamp the underperforming "Gratis Schatting" page to target high-value keywords</li><li>Create hyperlocal landing pages for Kuurne, Kortrijk, and Harelbeke</li><li>Diversify anchor text in existing backlinks where possible (e.g., through outreach to zimmo.be)</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Tackling these quick wins will deliver measurable gains in rankings and traffic within 8–12 weeks; monitor progress weekly.</li></ul><br><h3 id="medium-term-opportunities-3-6-months-">Medium-Term Opportunities (3-6 months)</h3><ol><li>Develop property type specific pages for each location</li><li>Create content addressing keyword cannibalization issues</li><li>Implement structured data for property listings</li><li>Enhance the "Te Huur" page to match "Te Koop" performance</li><li>Launch blog with initial articles on property valuation and local market trends</li><li>Begin targeted backlink acquisition from authoritative Belgian real estate websites</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign owners and set deadlines for each medium-term task; use project management tools to track execution and outcomes.</li></ul><br><h3 id="long-term-strategic-initiatives-6-12-months-">Long-Term Strategic Initiatives (6-12 months)</h3><ol><li>Build a comprehensive backlink acquisition strategy targeting sites linking to competitors</li><li>Develop an authoritative content hub for Belgian real estate information</li><li>Create seasonal content strategies for keywords like "appartement huren aan zee belgië"</li><li>Implement advanced personalization for returning visitors</li><li>Continuously monitor competitor activity and adapt strategy accordingly</li><li>Expand backlink profile with focus on quality over quantity</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>These initiatives will establish Nestr as a thought leader in Belgian real estate and generate sustainable, compounding organic growth.</li></ul><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><p>Nestr Vastgoed has shown positive organic growth (+14.98% in ETV) over the past year, with particularly strong performance for branded terms and Kuurne-related keywords. However, the competitive analysis reveals that major competitors like Zimmo.be and Immoweb.be are outperforming Nestr for high-volume keywords, particularly in Kortrijk and Harelbeke.</p><br><p>The analysis reveals significant opportunities to improve rankings by adopting competitor strategies such as hyperlocal landing pages, optimized title tags and meta descriptions, and enhanced property listings. By focusing on creating more specific landing pages to target high-value keywords, optimizing underperforming pages like "Gratis Schatting," and developing a more structured content approach that aligns with user search intent, Nestr can significantly enhance its organic visibility.</p><br><p>The backlink analysis shows a relatively healthy profile with 400 backlinks from 18 referring domains, primarily from Belgian websites. While the current backlink profile has a medium spam score (27%), there are no high-risk links requiring immediate attention. However, there are clear opportunities to diversify anchor text and acquire more authoritative backlinks, particularly from websites that link to competitors but not to Nestr.</p><br><p>With these improvements, Nestr can capitalize on its existing strengths in the Kuurne area while expanding its visibility in other locations, ultimately capturing more qualified traffic from potential real estate clients throughout Belgium.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Schedule a cross-functional kickoff meeting to align teams on priorities and establish KPIs for each recommendation.</li></ul></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Nestr',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

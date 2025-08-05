@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Uno</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Uno • Www.uno.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 5, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="seo-research-report-uno-www-uno-nl-" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Uno (www.uno.nl)</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th><th>Notes</th></tr></thead><tbody><tr><td class="">Total Keywords Ranked</td><td class="">101</td><td class="">Only 3 keywords in position 1; none in positions 2-3; 8 in positions 4-10</td></tr><tr><td class="">Organic Visibility Growth</td><td class="negative">-44.28% (last 12 months)</td><td class="">Significant decline in organic visibility in the Netherlands</td></tr><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">406.54</td><td class="">Decreased substantially over last year</td></tr><tr><td class="">Paid Traffic Cost Estimate</td><td class="">€735.94</td><td class="">Indicates some paid search investment</td></tr><tr><td class="">Top Performing Pages</td><td class="">Homepage, Security Awareness Training, Client Showcase</td><td class="">Homepage drives most traffic; training page shows recent rank gains</td></tr><tr><td class="">Underperforming Pages</td><td class="">Most service pages rank 21-80; Copilot page has no traffic</td><td class="">Indicates content and optimization gaps</td></tr><tr><td class="">Technical SEO Score</td><td class="">95.24</td><td class="">Good overall, but issues with duplicate meta tags, missing alt/title attributes, resource errors</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize quick wins on mid-ranking keywords (positions 11–30) to capitalize on existing keyword visibility.</li><li>Address underperforming service pages by optimizing meta tags and content depth to improve positions within the top 20.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Backlink Intersections</th><th>Keyword Overlap with Uno</th><th>Notes</th></tr></thead><tbody><tr><td class="">nbs-partner.ru</td><td class="">245</td><td class="">None identified</td><td class="">Strong backlink profile but different market segment/language</td></tr><tr><td class="">allepaginas.nl</td><td class="">166</td><td class="">None identified</td><td class="">Directory/link aggregator, not direct keyword competitor</td></tr><tr><td class="">unicomm.nl</td><td class="">45</td><td class="">None identified</td><td class="">ICT services, no direct keyword competition detected</td></tr><tr><td class="">unimecs.nl</td><td class="">45</td><td class="">None identified</td><td class="">Similar IT sector, backlink competitor</td></tr><tr><td class="">uniserver.nl</td><td class="">45</td><td class="">None identified</td><td class="">Similar IT sector, backlink competitor</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a deeper backlink audit to identify overlap opportunities and gaps versus each competitor.</li><li>Develop outreach campaigns to target shared and non-shared high-authority domains.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume (Est.)</th><th>Competition Level</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">IT support Netherlands (IT ondersteuning Nederland)</td><td class="">Medium (~500-1,000)</td><td class="">Medium</td><td class="">Core service, good volume, manageable competition</td></tr><tr><td class="">Microsoft 365 Netherlands (Microsoft 365 Nederland)</td><td class="">~650</td><td class="">Moderate</td><td class="">Aligns with Uno’s Microsoft Solutions Partner status, growing ecosystem</td></tr><tr><td class="">Azure consulting Netherlands (Azure consultancy Nederland)</td><td class="">Medium (~300-600)</td><td class="">Medium</td><td class="">Relevant to cloud services, growing demand</td></tr><tr><td class="">Power BI implementation Netherlands (Power BI implementatie Nederland)</td><td class="">Medium (~200-400)</td><td class="">Low-Medium</td><td class="">Fits AI & Data services, less competitive long-tail opportunity</td></tr><tr><td class="">Digital transformation consulting Netherlands (Digitale transformatie consultancy Nederland)</td><td class="">Low-Medium (~150-300)</td><td class="">Low</td><td class="">Emerging topic, strategic for business growth</td></tr><tr><td class="">Security awareness training (Beveiligingsbewustzijn training)</td><td class="">Low (~100-200)</td><td class="">Low</td><td class="">Existing strong page, opportunity to expand and cluster content</td></tr><tr><td class="">Microsoft Copilot implementation</td><td class="">Emerging</td><td class="">Low</td><td class="">New technology, early mover advantage</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Begin with the “Medium” volume, “Low-Medium” competition keywords (e.g., Power BI implementation) to balance effort and ROI.</li><li>Expand on security awareness training content by creating related subtopics (e.g., phishing simulations, compliance training).</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li><strong>Organic visibility and traffic have dropped sharply (-44.28%) over the past year in the Netherlands.</strong></li><li><strong>Only 3 keywords rank in position 1; no keywords in positions 2-3; majority rank beyond position 20.</strong></li><li><strong>Homepage and security awareness training page are top performers; many service pages underperform.</strong></li><li><strong>Technical SEO is generally strong but needs fixes for duplicate meta tags, image attributes, and resource errors.</strong></li><li><strong>No direct keyword competition identified among main backlink competitors, indicating backlink profile is the main SEO weakness.</strong></li><li><strong>Backlink profile has moderate spam risk (17%) and needs toxic link disavowal and new authoritative Dutch links.</strong></li><li><strong>Significant keyword opportunities exist in IT strategy, Microsoft Power Platform training, data analytics, and digital transformation.</strong></li><li><strong>Long-tail and niche keywords related to specific industries and Microsoft solutions offer low-competition growth potential.</strong></li><li><strong>Content gaps exist in Microsoft Copilot, Modern Workplace, IT Strategy, and AI & Data services.</strong></li><li><strong>Recommendations include technical fixes, content optimization, structured keyword targeting, backlink building, and anchor text improvements.</strong></li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create a prioritized action plan with timelines for technical fixes, content refreshes, and link building.</li><li>Assign clear ownership for each recommendation to ensure accountability and progress tracking.</li></ul><br><hr><br></div></section>
+                <section id="1-company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">1. Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Uno is an IT partner based in the Netherlands that helps organizations achieve their digital ambitions. They offer a comprehensive range of IT services including:</p><ul><li>IT Strategy development</li><li>Modern Workplace solutions (Microsoft 365, Azure)</li><li>Managed IT services</li><li>IT Security solutions</li><li>AI & Data services</li><li>Microsoft Power Platform development</li><li>Apps & Data Management</li><li>IT Training and Workshops</li><li>Business Telephony solutions</li></ul><br><p>As a Microsoft Solutions Partner, Uno emphasizes connecting business ambitions, people, and IT to drive digital growth. <a href="https://www.uno.nl" class="link-reference" target="_blank" rel="noopener">Company Website</a></p><br></div></section>
+                <section id="2-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">2. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="2-1-organic-visibility-and-rankings">2.1 Organic Visibility and Rankings</h3><p>Uno's organic visibility in the Netherlands has been declining over the past year. The website currently has 101 keywords ranking in Google search results, with only 3 keywords in position 1, none in positions 2-3, and 8 in positions 4-10. The majority of keywords (59) rank beyond position 20, indicating significant room for improvement in search visibility.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Focus on improving rankings for the 26 keywords currently in positions 11-30, optimizing on-page elements to push them into the top 10.</li></ul><br><h3 id="2-2-organic-traffic-growth">2.2 Organic Traffic Growth</h3><p>The data reveals a concerning trend: Uno has experienced a significant 44.28% decrease in Estimated Traffic Volume (ETV) from August 2024 to July 2025. This substantial decline in organic search traffic indicates underlying issues with the website's SEO strategy that need immediate attention.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit recent content updates and algorithm changes to identify the root cause of traffic loss.</li><li>Re-prioritize content refresh for pages that lost the most visibility.</li></ul><br><h3 id="2-3-current-organic-visibility-metrics">2.3 Current Organic Visibility Metrics</h3><p>Latest organic visibility metrics for uno.nl in the Netherlands:</p><ul><li>Position 1: 3 keywords</li><li>Position 2-3: 0 keywords</li><li>Position 4-10: 8 keywords</li><li>Position 11-20: 18 keywords</li><li>Position 21-30: 13 keywords</li><li>Position 31-40: 18 keywords</li><li>Position 41-50: 9 keywords</li><li>Position 51-100: 32 keywords</li><li>Total estimated traffic volume (ETV): 406.54</li><li>Estimated paid traffic cost: €735.94</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The large share of keywords beyond position 20 represents untapped potential; concentrate on boosting positions 11–20 first.</li></ul><br><h3 id="2-4-page-performance-analysis">2.4 Page Performance Analysis</h3><p><strong>Top-performing pages:</strong></p><ul><li><strong>Homepage (https://uno.nl/)</strong>: Has the highest ETV by far, indicating strong performance for core keywords. It also receives paid traffic.</li><li><strong>Security Awareness Training page (https://uno.nl/services/it-trainingen-en-workshops/security-awareness-training/)</strong>: Shows significant rank increases recently and has a relatively high estimated paid traffic cost, suggesting valuable keywords are driving traffic.</li><li><strong>Client showcase page (https://uno.nl/klanten/zakelijke-dienstverlening/hr-groep/)</strong>: Has a relatively high ETV and has seen numerous rank increases recently.</li></ul><br><p><strong>Underperforming pages:</strong></p><ul><li>Many service-specific pages under the <code>/services/</code> directory rank in positions 21-80, indicating a need for SEO improvement.</li><li><strong>www.uno.nl</strong>: This version of the homepage has no organic traffic and should be investigated for potential canonical issues.</li><li><strong>Copilot for Microsoft 365 page (https://uno.nl/services/copilot-voor-microsoft-365/)</strong>: Has no organic traffic despite being a potentially valuable service offering.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Consolidate URL versions (e.g., www vs non-www) to resolve canonical confusion.</li><li>Enhance the Copilot page with case studies and FAQs to capture early adopter interest.</li></ul><br><h3 id="2-5-technical-seo-assessment">2.5 Technical SEO Assessment</h3><p>The technical SEO audit reveals that uno.nl is in generally good technical health with an on-page score of 95.24. The site uses HTTPS, has canonical tags, and is mobile-friendly.</p><br><p><strong>Key strengths:</strong></p><ul><li>Basic SEO elements are in place (title, description, H1 tag, favicon)</li><li>SEO-friendly URL structure</li><li>Good Cumulative Layout Shift score (0)</li><li>Reasonable loading time</li></ul><br><p><strong>Areas for improvement:</strong></p><ul><li>Duplicate meta tags for "google-site-verification" and "generator"</li><li>Missing "alt" and "title" attributes for images</li><li>Resource errors related to attribute duplication</li><li>Warnings about the number of child nodes, total nodes, and HTML depth</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Fix duplicate meta tags and ensure unique verification tags are used only where needed.</li><li>Audit all images to add descriptive alt and title attributes.</li><li>Resolve resource errors and streamline DOM depth for faster rendering.</li></ul><br></div></section>
+                <section id="3-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">3. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="3-1-current-ranking-keywords">3.1 Current Ranking Keywords</h3><p>Our keyword analysis reveals a significant gap in Uno's search visibility. The most concerning finding is that Uno has no keywords ranking in the top 10 positions in Google search results for the Netherlands. This represents a major opportunity for improvement, as top 10 rankings are crucial for driving organic traffic.</p><br><p>The most promising keywords appear to be those ranking in positions 11-30, which include Dutch terms with higher search volumes. These mid-ranking keywords represent the "low-hanging fruit" that could be optimized to achieve page 1 rankings with targeted content improvements.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Use on-page optimization and internal linking to elevate these mid-ranking keywords into the top 10.</li></ul><br><h3 id="3-2-high-value-target-keywords">3.2 High-Value Target Keywords</h3><p>Based on our analysis, we recommend prioritizing keywords in the following categories:</p><br><p><strong>Top Priority Keywords:</strong></p><ul><li>IT Strategy Consulting: These keywords align with Uno's core services and typically have good search volume with lower competition in the Netherlands market.</li><li>Microsoft Power Platform Training: Directly aligns with Uno's training offerings and represents an opportunity to capitalize on Microsoft's growing ecosystem.</li><li>Data Analytics Services: Relevant to Uno's AI & Data services, with decent search volume and manageable competition.</li></ul><br><p><strong>Secondary Keywords:</strong></p><ul><li>IT Support Netherlands: While this has higher search volume, it also faces medium competition, requiring a more strategic approach to content development.</li></ul><br><p><strong>Long-term Opportunities:</strong></p><ul><li>Business Telephony Solutions: Rather than targeting generic terms like "Cheap VoIP Phone System" (which may not align with Uno's brand positioning), focus on more specific business telephony keywords that better match Uno's service offerings.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Map each priority keyword to an existing or new page; conduct gap analysis for content depth and intent alignment.</li><li>Define target metrics (rank, traffic lift) for each keyword over the next 3–6 months.</li></ul><br><h3 id="3-3-long-tail-keyword-opportunities">3.3 Long-Tail Keyword Opportunities</h3><p>The keyword analysis suggests that Uno should develop a more comprehensive long-tail keyword strategy targeting specific service offerings. For example, instead of broadly targeting "Microsoft 365," they could focus on more specific terms like "Microsoft 365 implementation for financial services" or "Power Platform training for healthcare organizations" that have lower competition but high relevance to their target audience.</p><br><h3 id="3-4-keyword-research-framework">3.4 Keyword Research Framework</h3><p>To systematically identify high-value keywords in the Dutch IT services market, we recommend implementing a structured keyword research approach focusing on three key service areas:</p><br><p><strong>IT Services Keywords:</strong></p><ul><li>"IT support Netherlands" ("IT ondersteuning Nederland")</li><li>"Managed IT services Amsterdam" ("Beheerde IT-diensten Amsterdam")</li><li>"IT outsourcing Netherlands" ("IT uitbesteding Nederland")</li><li>"Cybersecurity services Netherlands" ("Cybersecurity diensten Nederland")</li><li>"Cloud services Netherlands" ("Cloud diensten Nederland")</li></ul><br><p><strong>Microsoft Solutions Keywords:</strong></p><ul><li>"Microsoft 365 Netherlands" ("Microsoft 365 Nederland")</li><li>"Azure consulting Netherlands" ("Azure consultancy Nederland")</li><li>"Power BI implementation Netherlands" ("Power BI implementatie Nederland")</li><li>"SharePoint development Netherlands" ("SharePoint ontwikkeling Nederland")</li><li>"Dynamics 365 implementation Netherlands" ("Dynamics 365 implementatie Nederland")</li></ul><br><p><strong>Digital Transformation Keywords:</strong></p><ul><li>"Digital transformation consulting Netherlands" ("Digitale transformatie consultancy Nederland")</li><li>"Digital strategy Netherlands" ("Digitale strategie Nederland")</li><li>"Business process automation Netherlands" ("Bedrijfsprocessen automatisering Nederland")</li></ul><br><p>For each keyword category, we recommend using tools like Google Keyword Planner, SEMrush, Ahrefs, and Google Trends to gather data on search volumes, competition levels, and seasonal trends. This will help prioritize keywords based on a balance of search volume and competition.</p><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Ensure you update the keyword list quarterly to capture emerging trends and shifts in search intent.</li></ul><br><h3 id="3-5-seasonal-keyword-trends">3.5 Seasonal Keyword Trends</h3><p>Using Google Trends, Uno should analyze seasonal patterns in search interest for their key service areas. For example:</p><ul><li>Searches for "IT support" might increase after summer holidays when businesses are back in full operation</li><li>"Cybersecurity" searches might spike after major data breaches are reported</li><li>"Microsoft 365" searches might show steady interest throughout the year with slight dips during July/August (holiday season)</li></ul><br><h3 id="3-6-content-gap-analysis">3.6 Content Gap Analysis</h3><p>Based on the underperforming pages and keyword analysis, there appear to be content gaps in several key service areas:</p><ul><li>Microsoft Copilot services</li><li>Modern Workplace solutions</li><li>IT Strategy development</li><li>AI & Data services</li></ul><br><p>These service areas should be prioritized for content development, focusing on the mid-ranking keywords (positions 11-30) that could be moved to page 1 with targeted optimization.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Develop a content calendar that phases out general content in favor of deep-dive articles on these gap areas, leveraging case studies and local testimonials.</li></ul><br></div></section>
+                <section id="4-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">4. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="4-1-key-competitors">4.1 Key Competitors</h3><p>Our competitive analysis has identified several primary competitors for Uno in the Netherlands:</p><br><ol><li><strong>nbs-partner.ru</strong>:</li></ol><ul><li>Primarily a backlinks competitor with 245 backlink intersections</li><li>Not a direct keyword competitor, suggesting a different target audience or language</li><li>Strong backlink profile but appears to be targeting a different market segment</li></ul><br><ol><li><strong>allepaginas.nl</strong>:</li></ol><ul><li>Significant backlink profile with 166 backlink intersections</li><li>Not a direct keyword competitor</li><li>Appears to be a directory or link aggregator rather than a direct service competitor</li></ul><br><ol><li><strong>unicomm.nl</strong>:</li></ol><ul><li>45 backlink intersections</li><li>Offers ICT services, potentially more directly competitive in service offerings</li><li>Not currently competing for the same keywords as Uno</li></ul><br><ol><li><strong>unimecs.nl</strong> and <strong>uniserver.nl</strong>:</li></ol><ul><li>Both have 45 backlink intersections</li><li>Likely operating in similar IT service sectors</li></ul><br><p>Interestingly, all identified competitors are primarily backlink competitors rather than keyword competitors. This suggests that Uno's main SEO challenge might be building a stronger backlink profile rather than directly competing for the same keywords.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Expand competitor set to include Dutch-language IT consultancies with high rankings; re-run overlap analysis.</li><li>Benchmark Uno’s domain authority against 3–5 additional Dutch competitors.</li></ul><br><h3 id="4-2-competitor-keyword-analysis">4.2 Competitor Keyword Analysis</h3><p>The competitive analysis revealed a significant finding: there are no keywords where the identified competitors are outranking Uno. This could indicate one of several possibilities:</p><br><ol><li>Uno is already performing well for its target keywords</li><li>The analysis may be incomplete, and additional competitors need to be analyzed</li><li>The tool used may not be accurately identifying keyword overlaps</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Validate this finding by manually checking SERPs for key service queries; refine competitor list based on real-world rankings.</li></ul><br><h3 id="4-3-domain-authority-comparison">4.3 Domain Authority Comparison</h3><p>While specific domain authority metrics weren't provided in the competitive analysis, the backlink intersection data suggests that nbs-partner.ru and allepaginas.nl have stronger backlink profiles than Uno. This indicates an opportunity for Uno to strengthen its domain authority by building more high-quality backlinks from reputable Dutch websites.</p><br><h3 id="4-4-competitor-content-strategies">4.4 Competitor Content Strategies</h3><p>The competitive analysis provided limited information about the content strategies of Uno's competitors. However, we can observe from the meta titles and descriptions that:</p><br><ul><li><strong>nbs-partner.ru</strong>: Uses identical meta titles and descriptions ("Новости про консалтинг" - News about consulting), which is not optimized for search.</li><li><strong>allepaginas.nl</strong>: Uses a branded meta title ("Allepaginas.nl") and a simple value proposition in the description ("Een overzicht van de leukste pagina's" - An overview of the best pages).</li><li><strong>unicomm.nl</strong>: Uses a branded meta title ("Unicomm - Home") and a concise summary of their services in the description.</li></ul><br><p>These observations suggest an opportunity for Uno to differentiate through more strategic and optimized meta titles and descriptions that incorporate relevant keywords and compelling calls to action. A deeper analysis of competitor websites would be beneficial to identify successful content formats and topics.</p><br></div></section>
+                <section id="5-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">5. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="5-1-current-backlink-profile">5.1 Current Backlink Profile</h3><p>The backlink analysis reveals that Uno has 708 backlinks with a spam score of 17%, indicating a moderate risk level that needs attention. The site has 145 referring domains, with 136 being main domains. The backlink profile shows a strong presence in the Netherlands, with 434 referring links from .nl domains, followed by 76 from .com domains.</p><br><p>Key metrics from the backlink analysis:</p><ul><li>Total backlinks: 708</li><li>Referring domains: 145</li><li>Referring main domains: 136</li><li>Backlinks spam score: 17%</li><li>Broken backlinks: 2</li><li>Referring domains with nofollow: 34</li><li>Referring pages: 547</li></ul><br><p>The backlink profile shows a good distribution across different platform types, with 462 from unknown sources, 54 from blogs, 52 from CMS platforms, 38 from organization websites, and 1 from ecommerce sites. This diversity is generally positive for SEO.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Clean up broken backlinks and monitor for new broken links monthly.</li><li>Increase outreach to industry associations and local business groups in the Netherlands.</li></ul><br><h3 id="5-2-link-building-opportunities">5.2 Link Building Opportunities</h3><p>The backlink analysis identified several high-quality domains with low spam scores that link to Uno's competitors but not to Uno itself. These represent valuable link building opportunities:</p><br><p><strong>High-priority link targets (low spam score):</strong></p><ul><li>securitytalent.nl (0% spam score)</li><li>theorg.com (4% spam score)</li><li>securitydelta.nl (0% spam score)</li><li>stagemarkt.nl (0% spam score)</li><li>comparable-companies.com (0% spam score)</li><li>asklinux.net (0% spam score)</li><li>workwithdata.com (0% spam score)</li></ul><br><p><strong>Medium-priority link targets:</strong></p><ul><li>bedrijvenopdekaart.nl (35% spam score)</li><li>ictwaarborg.nl (60% spam score)</li><li>werkinautomotive.nl (35% spam score)</li></ul><br><p>The analysis also revealed that competitors like nbs-partner.ru (245 backlink intersections), allepaginas.nl (166 intersections), and unicomm.nl (45 intersections) share many backlink sources with Uno. These shared sources could be approached for additional link building opportunities.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize personalized outreach to high-priority domains with industry-relevant content offers (e.g., joint webinars, guest posts).</li><li>Leverage existing Dutch client relationships for local testimonial pages linking back to uno.nl.</li></ul><br><h3 id="5-3-toxic-backlink-assessment">5.3 Toxic Backlink Assessment</h3><p>The backlink analysis identified several high-risk backlinks with spam scores of 65-100% that should be considered for disavowal:</p><br><p><strong>High-risk backlinks to disavow:</strong></p><ul><li>101companies.com (100% spam score)</li><li>dotiqo.com (70% spam score)</li><li>backlinktime.com (70% spam score)</li><li>webranksdirectory.com (87% spam score)</li><li>webgoz.com (70% spam score)</li><li>yexhub.com (70% spam score)</li><li>zipzyx.com (70% spam score)</li><li>99bestsite.com (80% spam score)</li><li>ranksdirectory.com (65% spam score)</li><li>pirdu.com (65% spam score)</li><li>developmentmi.com (65% spam score)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Compile and submit a disavow file for these URLs within the next two weeks.</li><li>Review backlink profile quarterly to catch new toxic links early.</li></ul><br><h3 id="5-4-anchor-text-analysis">5.4 Anchor Text Analysis</h3><p>The backlink analysis revealed that Uno's anchor text distribution is not optimized for SEO. Many backlinks use generic anchor text like "Website," "Read more," or simply "www.uno.nl" rather than keyword-rich anchors that would help with rankings.</p><br><p>Examples of current anchor texts:</p><ul><li>"www.uno.nl"</li><li>"Website"</li><li>"Read more"</li><li>"More info"</li><li>"UNO Automatiseringdiensten B.V."</li><li>"https://uno.nl/"</li></ul><br><p>This represents an opportunity to work with referring sites to update anchor texts to include relevant keywords like "IT Partner," "Microsoft Solutions," or "IT Services Netherlands" where possible.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Develop a prioritized list of high-value pages and corresponding keyword-rich anchor text suggestions for outreach.</li></ul><br></div></section>
+                <section id="6-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">6. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="6-1-content-topic-suggestions">6.1 Content Topic Suggestions</h3><p>Based on our keyword analysis, competitive landscape assessment, and backlink analysis, we recommend developing content around:</p><br><ul><li><strong>IT Strategy Consulting</strong>: Create comprehensive guides and case studies targeting Dutch businesses looking to transform their IT strategy.</li><li><strong>Microsoft Power Platform Training</strong>: Develop detailed training resources and success stories that can rank for training-related keywords.</li><li><strong>Data Analytics Services</strong>: Create content showcasing Uno's expertise in data analytics with industry-specific applications.</li><li><strong>Security awareness training</strong>: Build on existing success of this page by expanding content depth and targeting related keywords.</li><li><strong>Microsoft Copilot implementation case studies</strong>: Develop content around this emerging technology to capture early search interest.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft an editorial calendar with topic owners and deadlines for the next two quarters.</li><li>Identify internal SMEs to contribute insights and validate technical content.</li></ul><br><h3 id="6-2-structured-keyword-based-content-approach">6.2 Structured Keyword-Based Content Approach</h3><p>We recommend implementing a structured approach to content development based on the keyword research framework outlined earlier:</p><br><ol><li><strong>Brainstorm service-specific keywords</strong> in three main categories:</li></ol><ul><li>IT Services (e.g., "IT support Netherlands," "Managed IT services Amsterdam")</li><li>Microsoft Solutions (e.g., "Microsoft 365 Netherlands," "Azure consulting Netherlands")</li><li>Digital Transformation (e.g., "Digital transformation consulting Netherlands")</li></ul><ol><li><strong>Analyze search volume and competition</strong> using tools like:</li></ol><ul><li>Google Keyword Planner: For initial search volume ranges and competition levels</li><li>SEMrush/Ahrefs: For more precise search volume estimates and keyword difficulty scores</li><li>Google Trends: For identifying seasonal patterns in search interest</li></ul><ol><li><strong>Prioritize keywords</strong> based on:</li></ol><ul><li>Relevance to Uno's services</li><li>Sufficient search volume</li><li>Manageable competition</li><li>Alignment with seasonal trends</li></ul><ol><li><strong>Create content clusters</strong> around high-priority keywords, with each cluster consisting of:</li></ol><ul><li>A comprehensive pillar page targeting the main keyword</li><li>Supporting content targeting related long-tail keywords</li><li>Internal linking structure to distribute page authority</li></ul><br><p>For example, for "Microsoft 365 Netherlands" (which might show 650 monthly searches with moderate competition), create a comprehensive pillar page about Microsoft 365 services, with supporting content on specific applications, implementation guides, and industry-specific use cases.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Use a template for pillar pages to ensure consistency in structure, CTA placement, and internal linking.</li></ul><br><h3 id="6-3-content-optimization-opportunities">6.3 Content Optimization Opportunities</h3><p>The service-specific pages under the <code>/services/</code> directory should be prioritized for optimization, as they currently rank in positions 21-80. These pages likely need:</p><br><ul><li>Enhanced keyword targeting based on the mid-ranking keywords identified in our analysis</li><li>Expanded content depth to cover topics more comprehensively</li><li>Improved internal linking to distribute page authority more effectively</li><li>Better user experience and conversion optimization</li><li>Optimization of title tags and meta descriptions to improve click-through rates</li></ul><br><p>Based on the competitive analysis, we also recommend reviewing and optimizing meta titles and descriptions across the site to be more keyword-rich, compelling, and relevant to search intent. Include clear calls to action where appropriate.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Perform an on-page audit for <code>/services/</code> pages, documenting current vs. target keyword usage.</li><li>Update four underperforming pages per month until all service pages meet updated SEO standards.</li></ul><br><h3 id="6-4-topical-authority-development">6.4 Topical Authority Development</h3><p>To improve topical authority in the Netherlands IT services market, Uno should develop content clusters around their core service offerings. For example:</p><br><ul><li><strong>Microsoft 365 cluster</strong>: Core service page linked to related content about specific applications, implementation guides, case studies, and training resources.</li><li><strong>IT Security cluster</strong>: Security services page connected to content about security awareness, compliance, threat protection, and industry-specific security challenges.</li><li><strong>Modern Workplace cluster</strong>: Content covering remote work solutions, collaboration tools, productivity enhancements, and digital transformation case studies.</li></ul><br><p>This approach will help establish Uno as an authority in these topic areas and improve rankings across related keywords.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Leverage internal linking from blog posts to pillar pages to build topical relevance and distribute link equity.</li></ul><br></div></section>
+                <section id="7-conclusion-and-next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">7. Conclusion and Next Steps</h2>
+                    </div>
+                    <div class="section-content"><p>The analysis reveals that Uno is facing significant challenges with their SEO performance, as evidenced by the 44.28% decrease in organic traffic over the past year and the lack of top 10 keyword rankings. However, there are clear opportunities for improvement:</p><br><ol><li><strong>Keyword research and targeting</strong>: Implement the structured keyword research framework to identify high-value keywords in IT Services, Microsoft Solutions, and Digital Transformation categories.</li><li><strong>Technical SEO fixes</strong>: Address duplicate meta tags, image optimization issues, and resource errors.</li><li><strong>Content development</strong>: Create comprehensive content around high-priority keywords and service areas with content gaps.</li><li><strong>Content optimization</strong>: Improve underperforming service pages, particularly those ranking in positions 21-80.</li><li><strong>Backlink building</strong>: Implement a consistent backlink building strategy targeting the identified high-quality domains with low spam scores (securitytalent.nl, theorg.com, securitydelta.nl, etc.).</li><li><strong>Toxic backlink removal</strong>: Disavow the 11 identified high-risk backlinks with spam scores of 65-100%.</li><li><strong>Anchor text optimization</strong>: Work with referring sites to improve anchor text diversity and keyword relevance.</li><li><strong>Meta title/description optimization</strong>: Review and optimize meta titles and descriptions to be more keyword-rich and compelling.</li><li><strong>Build on strengths</strong>: Leverage the success of the security awareness training page to develop similar high-performing content.</li><li><strong>Seasonal content planning</strong>: Use Google Trends data to time content releases and campaigns for maximum impact.</li></ol><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Review performance metrics monthly and adjust the strategy quarterly to stay aligned with market shifts and algorithm updates.</li></ul><br><p>We recommend implementing these recommendations in a phased approach, starting with the quick wins (technical SEO fixes, toxic backlink disavowal) and then moving on to the more resource-intensive tasks (content development, backlink building). Regular monitoring and adjustment of the strategy based on performance data will be essential for success.</p><br><br></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Uno',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

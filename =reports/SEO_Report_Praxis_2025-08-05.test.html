@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Praxis</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Praxis • Praxis.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Ne Market</span>
+                        <span><i class="fas fa-calendar"></i> August 5, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric / Position</th><th>Growth Last 12 Months (%)</th><th>Current Keyword Count</th><th>Notes</th></tr></thead><tbody><tr><td class="">Position 1</td><td class="positive">+62.65%</td><td class="">7,324</td><td class="">Strong increase in top rankings</td></tr><tr><td class="">Positions 2-3</td><td class="positive">+135.76%</td><td class="">5,703</td><td class="">Significant growth in high-value spots</td></tr><tr><td class="">Positions 4-10</td><td class="positive">+100.55%</td><td class="">27,235</td><td class="">Solid presence in first page results</td></tr><tr><td class="">Positions 11-20</td><td class="positive">+94.88%</td><td class="">32,233</td><td class="">Good mid-funnel visibility</td></tr><tr><td class="">Positions 21-30</td><td class="">-</td><td class="">30,654</td><td class="">Opportunity to push these higher</td></tr><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="positive">+25.41%</td><td class="">2,064,392 visits</td><td class="">Healthy organic traffic growth</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Focus on elevating keywords in positions 11-30 by refining content and internal linking to secure page 1 placements.</li><li>Capitalize on the surge in positions 2-3 by experimenting with enriched snippets and FAQ schema to stand out.</li><li>Maintain momentum on Position 1 keywords with regular content updates and performance monitoring.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Keywords They Rank Well For (High Volume / Strategic)</th><th>Praxis Ranking Status</th><th>Notes / Opportunity</th></tr></thead><tbody><tr><td class="">Hornbach.nl</td><td class="">"amsterdam ikea" (165k), "ikea delft" (165k), "vloerkleden" (90.5k)</td><td class="">Praxis ranks poorly</td><td class="">Competitors capture IKEA-related local searches; Praxis can target these with alternative positioning</td></tr><tr><td class="">Gamma.nl</td><td class="">"gordijnen" (49.5k), "badkamermeubels" (49.5k), location-based keywords</td><td class="">Praxis ranks lower</td><td class="">Strong category and local focus; Praxis can optimize category pages and local landing pages</td></tr><tr><td class="">Karwei.nl</td><td class="">"tuinmeubels" (33.1k), lifestyle-oriented home décor keywords</td><td class="">Praxis ranks lower</td><td class="">Emphasis on aesthetics and lifestyle; Praxis can develop content clusters around home décor</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop dedicated local landing pages to target “location + IKEA” keywords with clear comparisons and benefits.</li><li>Audit category pages for “gordijnen” and “badkamermeubels” to align with Gamma’s structure and internal linking patterns.</li><li>Create a home décor cluster linking to high-value Karwei-style keywords (e.g., “tuinmeubels inspiratie”).</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume Range</th><th>Competition Level</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">lab21 amsterdam pvc vloeren laminaat & parket</td><td class="">590-720</td><td class="">Low</td><td class="">Location-specific, low competition, high commercial intent</td></tr><tr><td class="">lab21 utrecht pvc vloeren laminaat & parket</td><td class="">480-720</td><td class="">Low</td><td class="">Local SEO opportunity in Utrecht</td></tr><tr><td class="">atlas vloeren pvc laminaat & tapijt</td><td class="">320-480</td><td class="">Low</td><td class="">Brand-specific, purchase intent</td></tr><tr><td class="">vloeren laminaat</td><td class="">6,600-9,900</td><td class="">High</td><td class="">High volume, requires comprehensive content strategy</td></tr><tr><td class="">laminaat vloeren</td><td class="">720-1,300</td><td class="">High</td><td class="">Important flooring keyword, worth targeting</td></tr><tr><td class="">online bouwmarkt gratis verzending</td><td class="">0-10</td><td class="">Medium</td><td class="">Purchase incentive keyword, moderate competition</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize building geo-targeted landing pages around the “lab21” keywords to quickly gain traction.</li><li>Develop a comprehensive guide for “vloeren laminaat” that addresses types, installation, and maintenance to compete on high-volume terms.</li><li>Integrate “gratis verzending” messaging site-wide to boost click-through rates on transactional pages.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Praxis.nl shows strong organic growth (+25.41% ETV) and improved rankings, especially in top 3 positions.</li><li>Top competitors Hornbach, Gamma, and Karwei outrank Praxis on high-volume IKEA-related local keywords and broad category terms.</li><li>Location-based keywords (e.g., "lab21 amsterdam pvc vloeren") represent low-competition, high-intent opportunities for Praxis.</li><li>Praxis’s backlink profile is solid but can be improved by recovering broken links and targeting competitor backlink sources.</li><li>Technical SEO issues (missing H1s, alt text, broken pages) need fixing to improve crawlability and user experience.</li><li>Content strategy should focus on location-specific flooring pages, enhanced category pages, and DIY informational content.</li><li>Competitor meta titles and descriptions use strong brand and value propositions; Praxis should adopt similar tactics.</li><li>Immediate priorities: optimize for location + competitor brand keywords, fix technical SEO issues, and recover broken backlinks.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Kick off location-based landing page creation this week.</li><li>Assign technical fixes to development sprints: missing H1s, alt text, and broken pages.</li><li>Start outreach to recover and replace broken backlinks within the next month.</li></ul><br><hr><br></div></section>
+                <section id="seo-analysis-research-report-praxis-nl" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-analytics"></i></div>
+                        <h1 class="section-title">SEO Analysis Research Report: Praxis.nl</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Praxis is a Dutch hardware store (bouwmarkt) that caters to DIY enthusiasts with their slogan "Voor de Makers" (For the Makers). They offer a comprehensive range of home improvement products including paint, lighting, flooring, bathroom fixtures, tools, building materials, and garden supplies. Beyond retail, Praxis provides value-added services such as tool rental, wood cutting ("houtzagerij"), paint mixing ("Verfmengservice"), and DIY advice through their "Klusadvies" section. <a href="https://www.praxis.nl" class="link-reference" target="_blank" rel="noopener">Company Website</a></p><br></div></section>
+                <section id="research-scope" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Research Scope</h2>
+                    </div>
+                    <div class="section-content"><p>This analysis focuses on Praxis.nl's SEO performance in the Netherlands within the home improvement/DIY niche. The report covers overall SEO performance, keyword analysis, competitive landscape, backlink profile, and content strategy recommendations.</p><br></div></section>
+                <section id="1-overall-seo-performance" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-traffic-growth">Organic Visibility and Traffic Growth</h3><p>Praxis.nl has demonstrated strong organic growth over the past 12 months with a <strong>25.41% increase in estimated traffic volume (ETV)</strong>. This positive trend is reflected across multiple ranking positions:</p><br><ul><li>Position 1: +62.65% increase</li><li>Positions 2-3: +135.76% increase</li><li>Positions 4-10: +100.55% increase</li><li>Positions 11-20: +94.88% increase</li></ul><br><h3 id="current-organic-visibility-latest-data-">Current Organic Visibility (Latest Data)</h3><p>The current organic visibility metrics show Praxis.nl's strong presence across various SERP positions:</p><br><ul><li>Position 1: 7,324 keywords</li><li>Positions 2-3: 5,703 keywords</li><li>Positions 4-10: 27,235 keywords</li><li>Positions 11-20: 32,233 keywords</li><li>Positions 21-30: 30,654 keywords</li><li>Total estimated traffic volume: 2,064,392 visits</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><p>Analysis of Praxis.nl's ranking pages reveals several high-performing assets:</p><br><ol><li><strong>Homepage</strong> (https://www.praxis.nl/): Highest estimated traffic volume (ETV: 319,124) and appears in 19,299 SERPs, indicating strong overall brand visibility.</li></ol><br><ol><li><strong>Store Finder</strong> (https://www.praxis.nl/store-finder): Ranks in position 1 for 139 SERPs with high ETV (62,600), effectively capturing local search traffic.</li></ol><br><ol><li><strong>Product Category Pages</strong>: Following a consistent URL structure (praxis.nl/[category]/[subcategory]/[product-type]/[product-code]), these pages perform well for specific product searches.</li></ol><br><ol><li><strong>Service Pages</strong>: Pages offering specific services like tool rental (praxis.nl/service/gereedschap-verhuur) and trailer rental (praxis.nl/service/aanhanger-huren) show strong performance.</li></ol><br><h3 id="underperforming-pages">Underperforming Pages</h3><p>Several pages show potential for optimization:</p><br><ol><li><strong>Assortment Page</strong> (https://www.praxis.nl/assortiment): Despite appearing in 1,592 SERPs, it has a relatively low ETV (1,100), suggesting ineffective keyword targeting or poor conversion.</li></ol><br><ol><li><strong>Some "Klusadvies" Pages</strong>: While ranking in decent positions, several DIY advice pages have lower ETV compared to their SERP presence, indicating optimization opportunities.</li></ol><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><p>Initial analysis identified several technical issues:</p><br><ul><li>Missing H1 tags on some pages</li><li>HTML validation errors</li><li>Missing alt text on product images</li><li>Inconsistent internal linking structure</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize fixing H1 tags and image alt text to quickly improve on-page relevance and accessibility.</li><li>Use an internal linking audit tool to identify and address weak link structures, boosting page authority for underperforming assets.</li></ul><br></div></section>
+                <section id="2-keyword-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><p>Our keyword analysis reveals significant opportunities for Praxis.nl to improve their organic visibility and traffic through strategic keyword targeting.</p><br><h3 id="top-performing-keywords">Top-Performing Keywords</h3><p>Praxis.nl already ranks well for numerous keywords related to home improvement and DIY products. However, our analysis shows opportunities to further optimize for these terms.</p><br><h3 id="high-value-keyword-opportunities">High-Value Keyword Opportunities</h3><p>We've identified several high-value keywords that Praxis should prioritize in their SEO strategy, categorized by priority level:</p><br><h4 id="top-priority-keywords-low-competition-">Top Priority Keywords (Low Competition)</h4><ul><li><strong>lab21 amsterdam pvc vloeren laminaat & parket</strong> (Search Volume: 590-720 | Competition: LOW)</li><li>Location-specific keyword with strong commercial intent</li><li>Targets customers looking for specific flooring products in Amsterdam</li></ul><br><ul><li><strong>lab21 utrecht pvc vloeren laminaat & parket</strong> (Search Volume: 480-720 | Competition: LOW)</li><li>Similar location-based keyword targeting Utrecht customers</li><li>Low competition makes this an easy win</li></ul><br><ul><li><strong>lab21 eindhoven pvc vloeren laminaat & parket</strong> (Search Volume: 320-480 | Competition: LOW)</li><li>Location-specific keyword for Eindhoven market</li><li>Excellent opportunity for local SEO optimization</li></ul><br><ul><li><strong>atlas vloeren pvc laminaat & tapijt</strong> (Search Volume: 320-480 | Competition: LOW)</li><li>Brand-specific flooring keyword with low competition</li><li>High purchase intent from customers familiar with this brand</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Design city-specific landing pages for Amsterdam, Utrecht, and Eindhoven with dedicated content blocks highlighting local store benefits and product availability.</li><li>Integrate location schema markup to boost relevancy signals.</li></ul><br><h4 id="secondary-keywords-medium-priority-">Secondary Keywords (Medium Priority)</h4><ul><li><strong>online bouwmarkt gratis verzending</strong> (Search Volume: 0-10 | Competition: MEDIUM)</li><li>Combines general term with purchase incentive ("free shipping")</li><li>Moderate competition with reasonable ranking potential</li></ul><br><ul><li><strong>bouwmarkt online werken met merken waardeel 2 8431 nd oosterwolde</strong> (Search Volume: 10-20 | Competition: LOW)</li><li>Very specific long-tail keyword with low competition</li><li>Targets customers familiar with specific location/brand</li></ul><br><ul><li><strong>lab21 breda pvc vloeren laminaat & parket</strong> (Search Volume: 320-390 | Competition: LOW)</li><li>Location-specific keyword for Breda market</li><li>Continues the pattern of targeting local customers</li></ul><br><h4 id="long-term-opportunities-high-competition-">Long-term Opportunities (High Competition)</h4><ul><li><strong>vloeren laminaat</strong> (Search Volume: 6600-9900 | Competition: HIGH)</li><li>Very high search volume with significant traffic potential</li><li>Requires comprehensive content strategy due to high competition</li></ul><br><ul><li><strong>laminaat vloeren</strong> (Search Volume: 720-1300 | Competition: HIGH)</li><li>Similar high-volume keyword with different word order</li><li>Worth targeting through in-depth content about laminate flooring types</li></ul><br><h3 id="keyword-strategy-insights">Keyword Strategy Insights</h3><p>Our analysis reveals several key insights for Praxis.nl's keyword strategy:</p><br><ol><li><strong>Location-Based Opportunity</strong>: The "lab21" keywords targeting specific Dutch cities represent an immediate opportunity to capture local search traffic with minimal competition.</li></ol><br><ol><li><strong>Flooring Focus</strong>: Many high-potential keywords relate to flooring products (laminaat, pvc vloeren), suggesting this category should be a content priority.</li></ol><br><ol><li><strong>Commercial Intent Keywords</strong>: Terms including "gratis verzending" (free shipping) and specific product searches indicate high purchase intent and should be prioritized.</li></ol><br><ol><li><strong>Paint Category Potential</strong>: While many "verf kopen" (buy paint) keywords face high competition, they offer significant search volume that could be targeted through specific paint type content (e.g., "muur verf kopen," "olie verf kopen").</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Group keywords by intent (informational vs. transactional) and design content funnels accordingly, using blog posts for guides and category pages for purchases.</li><li>Monitor SERP feature appearances (e.g., featured snippets) for high-value keywords and optimize content structure to win them.</li></ul><br></div></section>
+                <section id="3-competitive-landscape" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape</h2>
+                    </div>
+                    <div class="section-content"><br><p>Our competitive analysis reveals that Praxis.nl faces three major competitors in the Dutch home improvement market: Hornbach.nl, Gamma.nl, and Karwei.nl. Each competitor demonstrates distinct SEO strengths and strategies that Praxis should consider when refining their approach.</p><br><h3 id="top-competitors-overview">Top Competitors Overview</h3><br><h4 id="hornbach-nl">Hornbach.nl</h4><ul><li><strong>Strongest competitor</strong> based on estimated traffic volume and keyword rankings</li><li><strong>Key strength</strong>: Strong brand recognition and positioning as a "project bouwmarkt" (project-focused hardware store)</li><li><strong>Notable strategy</strong>: Effectively optimizing for location-based searches related to IKEA (e.g., "amsterdam ikea"), suggesting they're capturing customers who are considering home improvement projects while shopping at IKEA</li></ul><br><h4 id="gamma-nl">Gamma.nl</h4><ul><li><strong>Direct competitor</strong> with a similar business model to Praxis.nl</li><li><strong>Key strength</strong>: Strong focus on broad category keywords (e.g., "gordijnen," "badkamermeubels") and location-based searches</li><li><strong>Notable strategy</strong>: Effectively targeting customers searching for specific products or services in their area</li></ul><br><h4 id="karwei-nl">Karwei.nl</h4><ul><li><strong>Direct competitor</strong> with a more lifestyle-oriented approach ("making it more beautiful")</li><li><strong>Key strength</strong>: Similar to Gamma, focusing on broad category keywords and location-based searches</li><li><strong>Notable strategy</strong>: More emphasis on home décor and aesthetic aspects of home improvement</li></ul><br><h3 id="keyword-performance-analysis">Keyword Performance Analysis</h3><br><p>A significant pattern emerged across all three competitors: they consistently outrank Praxis.nl for keywords related to IKEA combined with specific cities. This suggests that consumers are searching for alternatives to IKEA for home improvement products, and these competitors are successfully targeting those searches.</p><br><h4 id="high-value-keywords-where-competitors-outperform-praxis">High-Value Keywords Where Competitors Outperform Praxis</h4><br><ol><li><strong>Location + Competitor Brand Keywords</strong>:</li></ol><ul><li>"amsterdam ikea" (165,000 searches)</li><li>"ikea delft" (165,000 searches)</li><li>"ikea utrecht" (135,000 searches)</li><li>"ikea eindhoven" (110,000 searches)</li><li>"ikea breda" (90,500 searches)</li></ul><br><ol><li><strong>Category Keywords</strong>:</li></ol><ul><li>"vloerkleden" (90,500 searches)</li><li>"gordijnen" (49,500 searches)</li><li>"badkamermeubels" (49,500 searches)</li><li>"laminaat" (40,500 searches)</li><li>"pvc vloeren" (40,500 searches)</li><li>"tuinmeubels" (33,100 searches)</li></ul><br><h3 id="serp-strategy-analysis">SERP Strategy Analysis</h3><br><p>Our analysis of competitors' SERP elements reveals several effective patterns that Praxis.nl could adopt:</p><br><h4 id="title-and-meta-description-comparison">Title and Meta Description Comparison</h4><br><ul><li><strong>Hornbach.nl</strong>: Consistently includes brand name and clear value propositions (e.g., "Laagste prijs online"). Meta descriptions highlight key benefits like "Eenvoudig online bestellen," "Thuisbezorgd," and "30 dagen Bedenktijd."</li></ul><br><ul><li><strong>Gamma.nl</strong>: Includes brand name and clear descriptions (e.g., "Gordijnen kopen?"). Meta descriptions emphasize benefits like "Altijd gratis retour!"</li></ul><br><ul><li><strong>Karwei.nl</strong>: Similar approach with brand name and clear descriptions. Meta descriptions highlight collection breadth (e.g., "Bekijk de Karwei collectie grote en wollen vloerkleden online of in de bouwmarkt!")</li></ul><br><ul><li><strong>Praxis.nl</strong>: Titles are often descriptive but may lack strong value propositions. Meta descriptions can be generic and don't effectively entice clicks.</li></ul><br><h4 id="effective-patterns-in-competitor-serp-elements">Effective Patterns in Competitor SERP Elements</h4><br><ol><li><strong>Brand Name in Title</strong>: Consistently including the brand name in the title</li><li><strong>Clear Value Proposition</strong>: Highlighting key benefits like "Laagste prijs," "Gratis verzending," "30 dagen bedenktijd"</li><li><strong>Action-Oriented Language</strong>: Using action verbs like "kopen," "bekijk," and "ontdek"</li><li><strong>Location Specificity</strong>: Including city names in titles and meta descriptions for location-based searches</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit and rewrite 10–15 priority category and service page titles and meta descriptions to match these successful patterns.</li><li>Implement A/B tests on meta descriptions to measure impact on click-through rates.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><p>Our comprehensive backlink analysis of Praxis.nl reveals a strong but improvable link profile with significant opportunities for strategic enhancement.</p><br><h3 id="backlink-profile-overview">Backlink Profile Overview</h3><br><p>Praxis.nl has established a substantial backlink foundation with <strong>135,387 backlinks</strong> from <strong>16,043 referring domains</strong>. The site has a domain rank of 404, indicating moderate to strong authority in its niche. Key metrics include:</p><br><ul><li><strong>Referring domains</strong>: 16,043 total (4,282 with nofollow attributes)</li><li><strong>Referring main domains</strong>: 3,088 (1,029 with nofollow attributes)</li><li><strong>Referring pages</strong>: 120,975 (11,547 with nofollow attributes)</li><li><strong>Backlink spam score</strong>: 16% (medium-low risk)</li></ul><br><h3 id="backlink-quality-assessment">Backlink Quality Assessment</h3><br><p>The quality of Praxis.nl's backlink profile is generally positive:</p><br><ul><li><strong>Low spam score domains</strong>: The majority of referring domains have low spam scores (0-30%), including reputable sites like thuiswinkel.org (0%), werkenbijpraxis.nl (9%), and stagemarkt.nl (0%)</li><li><strong>Medium spam score domains</strong>: A smaller portion of referring domains have medium spam scores (31-60%), such as bedrijvenopdekaart.nl (34%) and openingstijden-winkel.nl (39%)</li><li><strong>High spam score domains</strong>: No high spam score domains were identified in our sample analysis, which is a positive indicator of overall link health</li></ul><br><h3 id="geographic-distribution-of-backlinks">Geographic Distribution of Backlinks</h3><br><p>The backlink profile shows strong regional focus, which aligns well with Praxis's target market:</p><br><ul><li><strong>Netherlands (.nl)</strong>: 96,934 backlinks (80.1%)</li><li><strong>Belgium (.be)</strong>: 9,513 backlinks (7.9%)</li><li><strong>International (.com)</strong>: 6,124 backlinks (5.1%)</li><li><strong>Other TLDs</strong>: 8,404 backlinks (6.9%)</li></ul><br><p>This distribution confirms Praxis.nl's strong presence in its primary market (Netherlands) with appropriate representation in neighboring Belgium.</p><br><h3 id="competitor-backlink-analysis">Competitor Backlink Analysis</h3><br><p>Our analysis identified several key competitors with significant backlink overlap, presenting opportunities for targeted link acquisition:</p><br><ol><li><strong>bol.com</strong>: 19,564 overlapping backlinks (rank: 237)</li><li><strong>gamma.nl</strong>: 12,604 overlapping backlinks (rank: 220)</li><li><strong>beslist.nl</strong>: 11,839 overlapping backlinks (rank: 204)</li><li><strong>karwei.nl</strong>: 10,178 overlapping backlinks (rank: 212)</li><li><strong>marktplaats.nl</strong>: 9,242 overlapping backlinks (rank: 190)</li></ol><br><p>These competitors represent potential sources for new backlink opportunities, as sites linking to them may be receptive to linking to Praxis.nl as well.</p><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><br><p>The anchor text distribution reveals several patterns and opportunities:</p><br><ol><li><strong>Brand-focused anchors</strong>: Many backlinks use variations of "Praxis" or "www.praxis.nl" as anchor text, indicating strong brand recognition</li><li><strong>Product-specific anchors</strong>: Terms like "anti-inbraakstrip" (anti-burglary strip) and specific product references suggest content opportunities</li><li><strong>Generic anchors</strong>: Common anchors include "Bekijk website" (View website) and "Website," which provide limited SEO value beyond the link itself</li><li><strong>Location-specific anchors</strong>: Some anchors include store locations, supporting local SEO efforts</li></ol><br><h3 id="link-building-opportunities">Link Building Opportunities</h3><br><p>Based on our analysis, we've identified several high-potential link building opportunities:</p><br><ol><li><strong>Local business directories</strong>: While Praxis has good coverage in major directories, there are opportunities to expand presence in local and specialized directories</li><li><strong>Industry associations</strong>: Strengthen relationships with home improvement and DIY industry associations</li><li><strong>Competitor link acquisition</strong>: Target websites linking to competitors like bol.com, gamma.nl, and karwei.nl but not to Praxis.nl</li><li><strong>Content partnerships</strong>: Develop relationships with home improvement bloggers and influencers for authentic content-based links</li><li><strong>Educational resources</strong>: Create linkable assets focused on DIY education to attract links from educational and informational websites</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize competitor link acquisition by compiling a list of top 100 linking domains to bol.com and gamma.nl, then reach out with tailored content pitches.</li><li>Leverage educational resource creation (e.g., “DIY 101” guides) to attract .edu and .org backlinks with high authority.</li></ul><br><h3 id="backlink-issues-to-address">Backlink Issues to Address</h3><br><p>While the overall backlink profile is healthy, we identified several areas for improvement:</p><br><ol><li><strong>Broken backlinks</strong>: 1,403 broken backlinks were detected, representing missed traffic opportunities</li><li><strong>Broken pages</strong>: 1,938 broken pages on Praxis.nl are receiving backlinks, requiring redirection or restoration</li><li><strong>Medium spam score links</strong>: While not critical, monitoring and potentially disavowing some medium-risk backlinks could improve overall profile health</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Implement 301 redirects for all broken pages within two weeks.</li><li>Build a spreadsheet of broken backlinks and assign outreach tasks to correct URLs.</li><li>Schedule a quarterly review of medium-risk domains for potential disavowal.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our comprehensive analysis of Praxis.nl's SEO performance, keyword opportunities, competitive landscape, and backlink profile, we recommend the following content strategy:</p><br><h3 id="immediate-optimization-opportunities">Immediate Optimization Opportunities</h3><br><ol><li><strong>Improve Title and Meta Description Optimization</strong></li></ol><ul><li>Rewrite titles to include the Praxis brand name, clear value propositions, and action-oriented language</li><li>Example: Instead of "Toiletpotten & onderdelen," use "Toiletpot kopen? Ruim assortiment | Praxis"</li><li>Enhance meta descriptions to highlight unique benefits like expert advice, delivery options, or price guarantees</li></ul><br><ol><li><strong>Target Location-Based + Competitor Brand Keywords</strong></li></ol><ul><li>Create dedicated landing pages targeting keywords like "amsterdam ikea," "breda hornbach," etc.</li><li>These pages should highlight Praxis products and services similar to those offered by competitors</li><li>Emphasize unique benefits and convenient locations of Praxis stores as alternatives</li></ul><br><ol><li><strong>Enhance Category Page Optimization</strong></li></ol><ul><li>Optimize existing category pages with relevant keywords, high-quality images, and compelling product descriptions</li><li>Add customer reviews and ratings to build trust</li><li>Include more informative content such as buying guides, FAQs, and project ideas</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Rank optimization tasks by expected impact and assign to content and SEO teams in the next sprint.</li><li>Develop template updates for meta titles/descriptions to ensure consistency.</li></ul><br><h3 id="content-development-priorities">Content Development Priorities</h3><br><ol><li><strong>Location-Specific Flooring Pages</strong></li></ol><ul><li>Create dedicated landing pages for each major city (Amsterdam, Utrecht, Eindhoven, Breda) focusing on flooring products</li><li>Target the high-value, low-competition "lab21" keywords identified in our analysis</li></ul><br><ol><li><strong>Expanded Flooring Content</strong></li></ol><ul><li>Develop comprehensive guides about different flooring types to target high-volume keywords</li><li>Create comparison content (e.g., "PVC vs. Laminaat: Wat is beter voor jouw huis?")</li></ul><br><ol><li><strong>Informational Content Development</strong></li></ol><ul><li>Expand the "Klusadvies" section with more in-depth DIY guides</li><li>Create content addressing specific pain points and questions related to home improvement projects</li><li>Develop video tutorials for popular DIY projects</li></ul><br><ol><li><strong>Competitor Alternative Content</strong></li></ol><ul><li>Create content specifically positioning Praxis as an alternative to competitors</li><li>Example: "Waarom kiezen voor Praxis in plaats van IKEA voor je woonkamer renovatie"</li></ul><br><ol><li><strong>Link-Building Content Assets</strong></li></ol><ul><li>Develop comprehensive DIY guides that can attract backlinks from home improvement blogs and websites</li><li>Create visual assets like infographics about home improvement topics</li><li>Publish original research or surveys about Dutch home improvement trends</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Map out a 6-month editorial calendar focusing on flooring and DIY guides, aligning content launches with backlink outreach campaigns.</li><li>Use video tutorials to increase session duration and support social sharing for link-building.</li></ul><br><h3 id="technical-seo-improvements">Technical SEO Improvements</h3><br><ol><li><strong>Fix Missing H1 Tags</strong>: Ensure all pages have proper H1 headings that include target keywords</li><li><strong>Resolve HTML Validation Errors</strong>: Clean up code to improve page loading speed and crawlability</li><li><strong>Add Alt Text to Images</strong>: Improve accessibility and provide additional keyword opportunities</li><li><strong>Enhance Internal Linking</strong>: Create a more consistent internal linking structure to distribute page authority</li><li><strong>Fix Broken Pages Receiving Backlinks</strong>: Restore or redirect the 1,938 broken pages that are currently receiving backlinks</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Log all technical issues in the bug tracking system and assign to developers with clear priority levels.</li><li>Conduct a post-deployment QA to confirm issues are resolved.</li></ul><br><h3 id="backlink-strategy">Backlink Strategy</h3><br><ol><li><strong>Broken Link Recovery</strong></li></ol><ul><li>Implement 301 redirects for the 1,403 broken backlinks identified in our analysis</li><li>Contact webmasters of sites with broken links to update them to functioning URLs</li></ul><br><ol><li><strong>Competitor Backlink Acquisition</strong></li></ol><ul><li>Target the 19,564 sites linking to bol.com but not to Praxis.nl</li><li>Focus particularly on home improvement blogs, DIY websites, and local business directories</li></ul><br><ol><li><strong>Local Link Building</strong></li></ol><ul><li>Expand presence in Dutch and Belgian business directories</li><li>Partner with local community organizations and events for authentic local backlinks</li></ul><br><ol><li><strong>Content-Based Link Building</strong></li></ol><ul><li>Create shareable, linkable assets focused on DIY education and home improvement trends</li><li>Develop relationships with home improvement influencers and bloggers for content partnerships</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Use a phased approach: start with broken link recovery, then move to competitor acquisition, and finally local/community outreach.</li><li>Monitor backlink growth weekly to adjust outreach tactics in real time.</li></ul><br></div></section>
+                <section id="conclusion-and-next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion and Next Steps</h2>
+                    </div>
+                    <div class="section-content"><br><p>Praxis.nl has demonstrated strong organic growth over the past year and maintains a solid backlink profile, but significant opportunities exist to further improve their SEO performance and outrank competitors. By implementing the recommendations in this report, Praxis can:</p><br><ol><li>Capture valuable traffic from location-based searches</li><li>Improve visibility for high-volume category keywords</li><li>Better position themselves against key competitors like Hornbach, Gamma, and Karwei</li><li>Enhance their backlink profile through strategic link building</li><li>Improve user experience through enhanced content and technical optimizations</li></ol><br><p>With a focused approach to these recommendations, Praxis.nl can significantly improve their organic search visibility, drive more qualified traffic to their website, and increase their market share in the competitive Dutch home improvement sector.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Finalize project plan with clear milestones and responsibilities within two weeks.</li><li>Review progress bi-weekly and adjust strategy based on performance data over the next 3–6 months.</li></ul><br><br></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Praxis',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

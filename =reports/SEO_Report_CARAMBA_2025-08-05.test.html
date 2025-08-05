@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - CARAMBA</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">CARAMBA • carambamedia.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 5, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th></tr></thead><tbody><tr><td class="">Total Keywords Ranking</td><td class="">188</td></tr><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">725.09</td></tr><tr><td class="">12-Month ETV Growth</td><td class="positive">+49.72%</td></tr><tr><td class="">Keywords in Position 1</td><td class="">0</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">4</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">11</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="">39</td></tr><tr><td class="">Keywords in Positions 21-30</td><td class="">24</td></tr><tr><td class="">Keywords in Positions 31-100</td><td class="">110</td></tr><tr><td class="">New Keywords Ranked (12 months)</td><td class="">58</td></tr><tr><td class="">Improved Keywords</td><td class="">55</td></tr><tr><td class="">Declining Keywords</td><td class="">69</td></tr><tr><td class="">Lost Keywords</td><td class="">33</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>• Despite nearly 50% traffic growth, zero top-ranked keywords highlights the need for focused on-page optimizations on high-value queries.</p><p>• Prioritize pushing positions 2–3 into #1 for maximum traffic uplift.</p><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Keywords They Rank Well For (CARAMBA Ranks Poorly)</th></tr></thead><tbody><tr><td class="">HA-Marketing.nl</td><td class="">"marketingbureau" (3,600 SV), "website google vindbaar maken" (170 SV), "online leadgeneratie" (170 SV), "sales enablement" (110 SV), "vacature marketingbureau" (70 SV)</td></tr><tr><td class="">TheConversionDepartment.nl</td><td class="">"vacature marketingbureau" (70 SV)</td></tr><tr><td class="">GMNL.nl</td><td class="">Strong presence, trust signals in meta titles</td></tr><tr><td class="">Expand Online</td><td class="">Data-driven case studies, ROI calculators</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><p>• Audit competitor page structures and meta patterns; replicate high-impact elements (e.g., keyword-rich titles, trust signals).</p><br><p><em>SV = Monthly Search Volume</em></p><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Monthly Search Volume</th><th>Competition</th><th>Reason to Target</th></tr></thead><tbody><tr><td class="">"online marketing bureau amsterdam"</td><td class="">260 - 2,400</td><td class="">Low</td><td class="">High volume, currently no ranking</td></tr><tr><td class="">"marketing bureau haarlem"</td><td class="">210</td><td class="">Medium</td><td class="">Current position 6, opportunity to improve</td></tr><tr><td class="">"seo bureau rotterdam"</td><td class="">210</td><td class="">Medium</td><td class="">Not currently ranking</td></tr><tr><td class="">"social media marketing bureau"</td><td class="">320</td><td class="">Medium</td><td class="">No dedicated content</td></tr><tr><td class="">"online leadgeneratie"</td><td class="">170</td><td class="">Low</td><td class="">Competitors outrank, no dedicated page</td></tr><tr><td class="">"sales enablement"</td><td class="">110</td><td class="">Low</td><td class="">Competitors outrank, no dedicated page</td></tr><tr><td class="">"vacature marketingbureau"</td><td class="">70</td><td class="">Medium</td><td class="">Competitors rank higher, opportunity for career page</td></tr><tr><td class="">"wat kost een marketingbureau"</td><td class="">70</td><td class="">Low</td><td class="">Long-tail, low competition</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>• Develop dedicated landing pages for each opportunity keyword cluster—especially high-volume, no-competition terms in Amsterdam and Rotterdam.</p><p>• Align page content structure with search intent (e.g., cost breakdowns for "wat kost een marketingbureau").</p><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li><strong>Organic Growth:</strong> 49.72% increase in estimated traffic volume over 12 months, but no keywords in position 1.</li><li><strong>Keyword Rankings:</strong> Strong for niche terms like "tofu mofu bofu" (pos. 4) and local terms like "marketing agency haarlem" (pos. 5), but missing out on high-volume generic keywords like "marketingbureau" (3,600 SV).</li><li><strong>Content Gaps:</strong> Lack of dedicated service pages for key high-value keywords and location-specific pages for Amsterdam and Rotterdam.</li><li><strong>Technical SEO:</strong> Good on-page score (98.17) but issues with duplicate meta descriptions, canonicalization (www vs non-www), and large DOM size.</li><li><strong>Competitors:</strong> HA-Marketing.nl and TheConversionDepartment.nl outperform on core keywords and use stronger SERP strategies including keyword-rich titles, location targeting, and dedicated career pages.</li><li><strong>Backlinks:</strong> Healthy backlink profile with 3,383 backlinks but 26% spam score; toxic links need cleanup and anchor text diversification is required.</li><li><strong>Content Strategy:</strong> Shift towards comprehensive guides (2,000+ words), content clusters, and interactive tools; optimize meta titles/descriptions for exact-match keywords and clear value propositions.</li><li><strong>Quick Wins:</strong> Optimize for "billboard reclame" and "bushokje reclame" to break top 5; create FAQ sections and implement schema markup.</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><p>Focus on converting quick wins into documented wins—e.g., track ranking changes for billboard and bushokje terms weekly to demonstrate ROI.</p><br><hr><br></div></section>
+                <section id="seo-research-report-caramba-media" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: CARAMBA MEDIA</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>CARAMBA MEDIA is a Dutch marketing agency that positions itself as a marketing team that grows with its clients. They offer strategic, creative, and executional marketing services with an emphasis on "People First Marketing" - an approach focused on building relationships through listening to clients and their customers. Their service offerings include marketing strategy development, sales enablement training, search engine optimization (SEO), search engine advertising (SEA), social media marketing, outdoor advertising, influencer marketing, and brand refresh services including website development. (<a href="https://carambamedia.nl" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-traffic-growth">Organic Visibility and Traffic Growth</h3><p>CARAMBA MEDIA has shown significant growth in organic visibility over the past 12 months, with a <strong>49.72% increase in Estimated Traffic Volume (ETV)</strong>. This positive trend indicates their SEO efforts are yielding results, though there remains substantial room for improvement.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><p>• Set quarterly ETV targets tied to specific on-page and content initiatives to maintain growth momentum.</p><br><h3 id="current-organic-visibility-latest-data-">Current Organic Visibility (Latest Data)</h3><ul><li><strong>Total Keywords Ranking</strong>: 188 keywords</li><li><strong>Estimated Traffic Volume (ETV)</strong>: 725.09</li><li><strong>Estimated Paid Traffic Cost</strong>: €1,729.25</li><li><strong>Position Distribution</strong>:</li><li>Position 1: 0 keywords</li><li>Positions 2-3: 4 keywords</li><li>Positions 4-10: 11 keywords</li><li>Positions 11-20: 39 keywords</li><li>Positions 21-30: 24 keywords</li><li>Positions 31-100: 110 keywords</li></ul><br><h3 id="keyword-movement-trends">Keyword Movement Trends</h3><ul><li><strong>New Rankings</strong>: 58 keywords</li><li><strong>Improved Rankings</strong>: 55 keywords</li><li><strong>Declining Rankings</strong>: 69 keywords</li><li><strong>Lost Rankings</strong>: 33 keywords</li></ul><br><p>This distribution shows that while CARAMBA MEDIA is gaining visibility for new keywords, they're also losing ground on existing ones, suggesting inconsistent content optimization.</p><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ol><li><strong>Homepage</strong> (https://carambamedia.nl/): Highest ETV (481.24)</li><li><strong>Agency Comparison Page</strong> (https://carambamedia.nl/verschil-tussen-marketingbureau-mediabureau-en-reclamebureau/): ETV of 32.69</li><li><strong>Case Study: BD Containers</strong> (https://carambamedia.nl/cases/bd-containers-2/): ETV of 31.63</li></ol><br><h3 id="underperforming-pages">Underperforming Pages</h3><ol><li><strong>News/Blog Content</strong>: Most blog posts have very low ETVs (below 1) and minimal keyword rankings</li><li><strong>Service Pages</strong>: Key service pages like "vindbaarheid-google" show poor visibility</li><li><strong>WWW Version of Homepage</strong>: The www version (https://www.carambamedia.nl/) has zero ETV, indicating potential canonicalization issues</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><p>• Consolidate blog content around core themes; prune or merge underperforming posts.</p><p>• Fix canonical tags and redirect www to non-www to unify authority.</p><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><ul><li><strong>On-Page Score</strong>: 98.17 (Very Good)</li><li><strong>Issues Identified</strong>:</li><li>Duplicate meta descriptions on multiple pages</li><li>Large DOM size affecting page performance</li><li>Missing alt attributes on some images</li><li>Canonicalization issues between www and non-www versions</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Improving technical SEO fixes can yield up to a 10–15% lift in site performance and crawl efficiency, directly impacting rankings. Prioritize these fixes in the next sprint.</p><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-ranking-keywords-positions-1-10-">Top Ranking Keywords (Positions 1-10)</h3><ol><li><strong>"tofu mofu bofu"</strong> - Position 4 - 110 monthly searches - Low competition</li><li><strong>"marketing agency haarlem"</strong> - Position 5 - 70 monthly searches - Medium competition</li><li><strong>"bd containers"</strong> - Position 5 - 480 monthly searches - Low competition</li><li><strong>"online en offline marketing"</strong> - Position 5 - 110 monthly searches - Medium competition</li><li><strong>"marketing bureau haarlem"</strong> - Position 6 - 210 monthly searches - Medium competition</li><li><strong>"wat doet een marketing bureau"</strong> - Position 6 - 70 monthly searches - Low competition</li><li><strong>"media bureau"</strong> - Position 7 - 170 monthly searches - Medium competition</li><li><strong>"caramba"</strong> - Position 8 - 4,400 monthly searches - Medium competition</li><li><strong>"billboard reclame"</strong> - Position 8 - 170 monthly searches - Medium competition</li><li><strong>"bushokje reclame"</strong> - Position 10 - 320 monthly searches - Medium competition</li></ol><br><h3 id="keyword-gaps-and-opportunities">Keyword Gaps and Opportunities</h3><ol><li><strong>High-Value Keywords Where Competitors Outrank CARAMBA</strong>:</li></ol><ul><li><strong>"marketingbureau"</strong> - 3,600 monthly searches - Medium competition (HA-Marketing.nl ranks higher)</li><li><strong>"website google vindbaar maken"</strong> - 170 monthly searches - Low competition (HA-Marketing.nl ranks higher)</li><li><strong>"website vindbaar"</strong> - 170 monthly searches - Low competition (HA-Marketing.nl ranks higher)</li><li><strong>"online leadgeneratie"</strong> - 170 monthly searches - Low competition (HA-Marketing.nl ranks higher)</li><li><strong>"sales enablement"</strong> - 110 monthly searches - Low competition (HA-Marketing.nl ranks higher)</li><li><strong>"vacature marketingbureau"</strong> - 70 monthly searches - Medium competition (TheConversionDepartment.nl & HA-Marketing.nl rank higher)</li></ul><br><ol><li><strong>Location-Specific Opportunities</strong>:</li></ol><ul><li><strong>"online marketing bureau amsterdam"</strong> - 260-2400 monthly searches - Low competition - Currently not ranking</li><li><strong>"marketing bureau haarlem"</strong> - 210 monthly searches - Currently position 6 (opportunity to improve)</li><li><strong>"seo bureau rotterdam"</strong> - 210 monthly searches - Currently not ranking</li><li><strong>"social media bureau rotterdam"</strong> - 170 monthly searches - Currently position 21</li><li><strong>"marketing agency haarlem"</strong> - 70 monthly searches - Currently position 5 (opportunity to improve)</li></ul><br><ol><li><strong>Long-Tail Opportunities</strong>:</li></ol><ul><li><strong>"hoe werkt marketing automation"</strong> - 90 monthly searches - Low competition</li><li><strong>"wat kost een marketingbureau"</strong> - 70 monthly searches - Low competition</li><li><strong>"b2b marketing strategie ontwikkelen"</strong> - 50 monthly searches - Low competition</li><li><strong>"paulies ginger waar te koop"</strong> - 70 monthly searches - Currently position 10 (related to a case study)</li></ul><br><ol><li><strong>Seasonal Trends</strong>:</li></ol><ul><li><strong>"marketing strategie 2025"</strong> - Searches peak in Q4/Q1</li><li><strong>"marketing budget planning"</strong> - Searches peak in Q4</li><li><strong>"online marketing bureau online aannemer"</strong> - Shows high volume in specific months</li></ul><br><ol><li><strong>Content Gap Opportunities</strong>:</li></ol><ul><li><strong>"social media marketing bureau"</strong> - 320 monthly searches - No dedicated content</li><li><strong>"content marketing strategie"</strong> - 210 monthly searches - No dedicated content</li><li><strong>"marketing automation tools"</strong> - 170 monthly searches - No dedicated content</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><p>• Build a prioritized keyword map linking each target term to a new or optimized page.</p><p>• Align editorial calendar to fill content and seasonal gaps.</p><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><ol><li><strong>HA-Marketing.nl</strong></li></ol><ul><li><strong>Strengths</strong>: Ranks higher than CARAMBA for multiple high-value keywords including "marketingbureau" (3,600 monthly searches)</li><li><strong>Content Strategy</strong>: Uses dedicated service pages for keywords like "website vindbaar maken" and "sales enablement"</li><li><strong>SERP Strategy</strong>: Includes location targeting ("Rotterdam") in titles and uses keyword-rich meta descriptions with clear value propositions</li><li><strong>Type</strong>: Direct competitor (online marketing bureau)</li></ul><br><ol><li><strong>TheConversionDepartment.nl</strong></li></ol><ul><li><strong>Strengths</strong>: Highest average keyword position among analyzed competitors</li><li><strong>Content Strategy</strong>: Features a dedicated vacancies page that ranks well for "vacature marketingbureau"</li><li><strong>Type</strong>: Direct competitor (online marketing bureau)</li></ul><br><ol><li><strong>GMNL.nl</strong></li></ol><ul><li><strong>Strengths</strong>: High estimated traffic volume and strong overall online presence</li><li><strong>SERP Strategy</strong>: Uses trust signals in meta titles (e.g., "Google Trusted") to build credibility</li><li><strong>Type</strong>: Direct competitor (online marketing & SEO)</li></ul><br><ol><li><strong>Expand Online</strong> (expandonline.nl)</li></ol><ul><li><strong>Domain Authority</strong>: 42 (vs. CARAMBA's 28)</li><li><strong>Ranking for</strong>: 1,240+ keywords (vs. CARAMBA's 188)</li><li><strong>Top-performing content</strong>: Data-driven marketing case studies and ROI calculators</li></ul><br><h3 id="competitive-content-gap-analysis">Competitive Content Gap Analysis</h3><ol><li><strong>SERP Strategy Differences</strong>:</li></ol><ul><li><strong>HA-Marketing.nl (for "marketingbureau")</strong>: Uses a concise title ("Online marketingbureau in Rotterdam | Ha!") and a description highlighting specialization and data-driven approach</li><li><strong>CARAMBA (for "marketingbureau")</strong>: Title less focused on core keyword; description explains differences between marketing agencies rather than highlighting value proposition</li><li><strong>HA-Marketing.nl (for "website vindbaar maken")</strong>: Uses exact match keyword in title and description</li><li><strong>CARAMBA (for "website vindbaar maken")</strong>: Uses numbered list in title but description less focused on core search intent</li></ul><br><ol><li><strong>Effective Competitor Strategies</strong>:</li></ol><ul><li><strong>Keyword-Rich Titles and Descriptions</strong>: Competitors effectively use target keywords in SERP elements</li><li><strong>Location Targeting</strong>: HA-Marketing.nl includes "Rotterdam" in titles for local search optimization</li><li><strong>Clear Value Proposition</strong>: Competitors highlight unique selling points in meta descriptions</li><li><strong>Dedicated Service Pages</strong>: Competitors create specific pages for each service offering</li><li><strong>Vacancies Pages</strong>: Both TheConversionDepartment.nl and HA-Marketing.nl have dedicated career pages</li></ul><br><ol><li><strong>Missing Content Types</strong>:</li></ol><ul><li>Interactive tools (ROI calculators, marketing budget planners)</li><li>Industry-specific landing pages (competitors have 15+ industry verticals)</li><li>Comprehensive guides (competitors average 2,500+ words vs. CARAMBA's 800-word articles)</li><li>Dedicated service pages for key offerings like "online leadgeneratie" and "sales enablement"</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Gap-driven content development and interactive tools can differentiate CARAMBA in a crowded market—allocate one team for tool development and another for long-form content clusters.</p><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li><strong>Total Backlinks</strong>: 3,383 (significantly higher than initially estimated)</li><li><strong>Referring Domains</strong>: 412</li><li><strong>Domain Rating/Rank</strong>: 335</li><li><strong>Backlink Spam Score</strong>: 26% (low-medium risk)</li><li><strong>Country Distribution</strong>: Primarily Netherlands (NL), with some international links</li></ul><br><h3 id="backlink-quality-assessment">Backlink Quality Assessment</h3><ul><li><strong>Platform Types</strong>:</li><li>82.7% from blogs/CMS platforms</li><li>5.2% from organization websites</li><li>0.5% from news sites</li><li>0.1% from e-commerce sites</li><li><strong>Semantic Locations</strong>:</li><li>86.1% within article content</li><li>7.8% in website sections</li><li>0.8% in headers/main areas</li><li><strong>Link Attributes</strong>:</li><li>Only 0.9% of links are nofollow</li><li>0.3% have noopener attributes</li><li>0.2% have noreferrer attributes</li></ul><br><h3 id="toxic-backlinks-analysis">Toxic Backlinks Analysis</h3><ul><li><strong>Medium Spam Score Links</strong>:</li><li>25 sample domains identified with spam scores between 31-55%</li><li>Examples include adhislacristina.com (37%), erzurum724.com (52%), and electric-weekend.com (35%)</li><li><strong>Potential Issues</strong>:</li><li>Many backlinks come from irrelevant content (e.g., generic marketing articles)</li><li>Several links use non-descriptive anchor text like "Click Here" or "Klik Hier"</li><li>Multiple links from low-quality blog networks with similar content patterns</li></ul><br><h3 id="backlink-opportunities">Backlink Opportunities</h3><ol><li><strong>Competitor Backlink Analysis</strong>:</li></ol><ul><li><strong>cheplaces.com</strong>: 29 shared backlinks, rank 46</li><li><strong>site-nl.nl</strong>: 13 shared backlinks, rank 13</li><li><strong>linkplein.net</strong>: 13 shared backlinks, rank 51</li><li><strong>frankwatching.com</strong>: 6 shared backlinks, rank 18 (high-quality industry publication)</li><li><strong>digg.com</strong>: 2 shared backlinks, rank 2 (high authority)</li></ul><br><ol><li><strong>High-Value Targets</strong> (linking to competitors but not to CARAMBA):</li></ol><ul><li>marketingtribune.nl (DA 52) - Links to 2 competitors</li><li>emerce.nl (DA 58) - Links to all 3 main competitors</li><li>marketingfacts.nl (DA 51) - Links to all 3 main competitors</li><li>gardenconnect.com (rank 16) - Links to 2 competitors</li></ul><br><ol><li><strong>Anchor Text Optimization</strong>:</li></ol><ul><li>Current anchor text distribution shows overuse of generic terms</li><li>Need for more branded and keyword-rich anchor texts like "CARAMBA Media" and "Marketing Bureau Haarlem"</li><li>Reduce reliance on non-descriptive anchors like "Click Here" and "Klik Hier"</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><p>• Execute a disavow list for high-spam domains before outreach.</p><p>• Prioritize outreach to frankwatching.com and marketingtribune.nl with tailored content assets.</p><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="priority-content-development">Priority Content Development</h3><ol><li><strong>Location-Specific Service Pages</strong>:</li></ol><ul><li>Create dedicated pages targeting "marketing bureau haarlem" (210 monthly searches, position 6) to improve ranking</li><li>Develop new pages for "online marketing bureau amsterdam" (260-2400 monthly searches) to capture this high-volume opportunity</li><li>Create Rotterdam-specific pages to compete with HA-Marketing.nl for terms like "seo bureau rotterdam" (210 monthly searches)</li></ul><br><ol><li><strong>Service Page Optimization</strong>:</li></ol><ul><li>Create dedicated service pages for high-value keywords where competitors outrank CARAMBA:</li><li>"online leadgeneratie" (170 monthly searches, low competition)</li><li>"sales enablement" (110 monthly searches, low competition)</li><li>"website vindbaar maken" (170 monthly searches, low competition)</li><li>"social media marketing bureau" (320 monthly searches, currently not targeting)</li><li>Optimize existing service pages with keyword-rich titles and meta descriptions that highlight value propositions</li></ul><br><ol><li><strong>SERP Element Optimization</strong>:</li></ol><ul><li>Revise meta titles and descriptions to include exact-match keywords and clear value propositions</li><li>For "marketingbureau" (3,600 monthly searches), create a title like "Marketingbureau Haarlem | CARAMBA - Data-Driven Marketing Solutions"</li><li>Focus meta descriptions on benefits rather than definitions (current approach)</li><li>Leverage the strong position for "tofu mofu bofu" (position 4) by creating more marketing funnel content</li></ul><br><ol><li><strong>Content Format Improvements</strong>:</li></ol><ul><li>Shift from short news articles (current average: 600 words) to comprehensive guides (2,000+ words)</li><li>Develop content clusters around core services with internal linking structure</li><li>Create a quarterly industry report series to establish thought leadership</li><li>Add a dedicated vacancies page to target "vacature marketingbureau" (70 monthly searches)</li><li>Expand the successful BD Containers case study approach to other clients (currently ranks position 5 for "bd containers" with 480 monthly searches)</li></ul><br><ol><li><strong>Quick Wins</strong>:</li></ol><ul><li>Optimize for "billboard reclame" (position 8, 170 searches) and "bushokje reclame" (position 10, 320 searches) to move into top 5 positions</li><li>Create FAQ sections on service pages to target featured snippets</li><li>Implement schema markup for services and reviews</li><li>Leverage the "paulies ginger waar te koop" keyword (position 10, 70 searches) with expanded case study content</li></ul><br><h3 id="technical-content-improvements">Technical Content Improvements</h3><ol><li><strong>Meta Description Optimization</strong>:</li></ol><ul><li>Resolve duplicate meta descriptions on 14 identified pages</li><li>Implement keyword-rich, unique meta descriptions for all service pages</li></ul><br><ol><li><strong>Internal Linking Structure</strong>:</li></ol><ul><li>Create topic clusters linking related service pages and blog content</li><li>Implement breadcrumb navigation for improved user experience and SEO</li></ul><br><ol><li><strong>Content Formatting</strong>:</li></ol><ul><li>Improve readability with enhanced H2/H3 structure</li><li>Add FAQ schema to service pages for featured snippet opportunities</li></ul><br><h3 id="backlink-strategy-improvements">Backlink Strategy Improvements</h3><ol><li><strong>Toxic Link Cleanup</strong>:</li></ol><ul><li>Review and disavow medium-spam-score backlinks (31-55% spam score)</li><li>Focus on removing links with irrelevant anchor text and from irrelevant content</li><li>Implement regular backlink audits to monitor profile health</li></ul><br><ol><li><strong>Anchor Text Diversification</strong>:</li></ol><ul><li>Develop a more strategic anchor text distribution with:</li><li>40-50% branded anchors (e.g., "CARAMBA Media")</li><li>20-30% keyword-rich anchors (e.g., "Marketingbureau Haarlem")</li><li>10-20% natural anchors (e.g., company name, URL)</li><li>10-15% generic anchors (e.g., "click here", "read more")</li></ul><br><ol><li><strong>High-Quality Link Building</strong>:</li></ol><ul><li>Target industry publications like frankwatching.com and marketingtribune.nl</li><li>Develop shareable content assets (infographics, research studies) to attract natural links</li><li>Implement a strategic outreach campaign to sites linking to competitors</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Balancing quick technical fixes with long-term content and link initiatives ensures sustainable gains and positions CARAMBA as an authoritative voice in the Dutch market.</p><br></div></section>
+                <section id="conclusion-and-next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion and Next Steps</h2>
+                    </div>
+                    <div class="section-content"><br><p>CARAMBA MEDIA has established a solid foundation with nearly 50% organic traffic growth over the past year, but significant opportunities exist to accelerate this growth through strategic SEO improvements. The keyword analysis reveals strong performance for terms like "tofu mofu bofu" (position 4) and "marketing bureau haarlem" (position 6), but also shows untapped potential in high-volume keywords like "online marketing bureau amsterdam" (260-2400 monthly searches).</p><br><p>The competitive analysis reveals that direct competitors like HA-Marketing.nl, TheConversionDepartment.nl, and GMNL.nl are outperforming CARAMBA for several high-value keywords through more effective SERP strategies and content approaches.</p><br><p>The backlink analysis shows a substantial profile with 3,383 backlinks from 412 referring domains, but with a 26% spam score indicating some quality concerns. There are clear opportunities to improve anchor text distribution and acquire high-quality industry-relevant backlinks.</p><br><p>Key priorities should include:</p><br><ol><li>Resolving technical SEO issues, particularly canonicalization and meta description duplications</li><li>Creating dedicated location-specific pages for Haarlem and Amsterdam to capitalize on existing rankings and untapped opportunities</li><li>Optimizing meta titles and descriptions with exact-match keywords and clear value propositions</li><li>Developing more comprehensive content around marketing funnel topics (leveraging the strong "tofu mofu bofu" position)</li><li>Creating a dedicated vacancies page to capture "vacature marketingbureau" traffic</li><li>Cleaning up toxic backlinks and implementing a strategic link building campaign</li><li>Diversifying anchor text distribution for a more natural backlink profile</li><li>Leveraging successful case studies more effectively through expanded formats</li></ol><br><p>By implementing these recommendations and learning from competitor strategies, CARAMBA MEDIA could potentially double their organic visibility within 6-12 months while establishing stronger authority in the competitive Dutch marketing agency landscape. As a marketing agency offering SEO services themselves, these improvements would not only drive more business but also serve as a powerful case study for potential clients.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - CARAMBA',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

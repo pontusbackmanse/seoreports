@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Jonkers Sportprijzen</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Jonkers Sportprijzen • jonkerssportprijzen.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 5, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">3,077.74 (Latest)</td></tr><tr><td class="">ETV Growth (Last 12 Months)</td><td class="positive">+345.90%</td></tr><tr><td class="">Total Ranking Keywords</td><td class="">374</td></tr><tr><td class="">Keywords in Position 1</td><td class="">0</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">2</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">82</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="">75</td></tr><tr><td class="">Keywords in Positions 21-30</td><td class="">74</td></tr><tr><td class="">Keywords in Position 31+</td><td class="">141</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Focus on moving keywords from positions 4–10 into top 3 by optimizing on-page factors and building targeted backlinks.</li><li>The high volume of keywords in position 31+ suggests quick wins through minor page improvements.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Strong Keywords (High Volume & Jonkers Poor Ranking)</th><th>Notes on Competitor Strategy</th></tr></thead><tbody><tr><td class="">Boccale.nl</td><td class="">medaille (6,600), medailles (3,600), sportprijzen (1,900)</td><td class="">Fast delivery messaging, checkmarks (✓) in meta, clear value props</td></tr><tr><td class="">Detrofee.nl</td><td class="">trofeeen kaufen, trofee maken</td><td class="">Local presence (Hilversum), well-optimized category pages</td></tr><tr><td class="">Sportprijzennederland.nl</td><td class="">medaille, medailles, voetbal beker</td><td class="">Emphasizes fast delivery, free personalization, "Nr. 1 in Sportprijzen" branding</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Boccale.nl’s use of checkmarks in meta descriptions underscores the impact of visual cues; consider testing similar symbols for clarity.</li><li>Leverage locality signals similar to Detrofee.nl by mentioning city or region in category pages.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">goedkoopste medailles bestellen</td><td class="">90</td><td class="">High</td><td class="">High commercial intent, currently unranked top 3</td></tr><tr><td class="">medailles bestellen met tekst</td><td class="">90</td><td class="">High</td><td class="">Strong purchase intent, personalization focus</td></tr><tr><td class="">trofeeën kopen</td><td class="">835</td><td class="">High</td><td class="">High volume, core product category</td></tr><tr><td class="">medaille</td><td class="">6,600</td><td class="">High</td><td class="">Very high volume, brand awareness opportunity</td></tr><tr><td class="">sportprijzen</td><td class="">1,900</td><td class="">High</td><td class="">Core category keyword, currently position 11+</td></tr><tr><td class="">voetbal beker</td><td class="">1,000</td><td class="">High</td><td class="">Sport-specific product keyword</td></tr><tr><td class="">kampioensschaal</td><td class="">720</td><td class="">Medium</td><td class="">Niche but relevant trophy keyword</td></tr><tr><td class="">avond4daagse medailles bestellen</td><td class="">30</td><td class="">High</td><td class="">Seasonal spike, event-specific opportunity</td></tr><tr><td class="">graveren bekers</td><td class="">210</td><td class="">Medium</td><td class="">Personalization-related keyword</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize content and landing page creation for high-volume, high-intent keywords like "trofeeën kopen" and "goedkoopste medailles bestellen".</li><li>Map each identified keyword to a unique page or content asset to avoid cannibalization.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Jonkers Sportprijzen has grown organic traffic by 345.90% in 12 months but ranks <strong>no keywords in position 1</strong>, indicating room for improvement in top rankings.</li><li>The site’s strongest traffic driver is the football coloring pages section, which is not directly related to core product sales.</li><li>Commercial keywords like "medaille," "trofeeën kopen," and "sportprijzen" are dominated by competitors, especially Boccale.nl.</li><li>Competitors use strong SERP strategies: clear value propositions, fast delivery messaging, personalization emphasis, and checkmarks (✓) in meta descriptions.</li><li>Technical SEO is solid but minor issues like long title tags and render-blocking resources exist.</li><li>Backlink profile is healthy but could improve by acquiring links from authoritative Dutch sports sites and fixing 13 broken backlinks.</li><li>Content gaps include lack of sport-specific product pages, personalization emphasis, and seasonal event targeting (e.g., Avondvierdaagse).</li><li>Recommended focus: optimize meta tags, create dedicated category and seasonal pages, improve internal linking, and enhance backlink quality and diversity.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The gap in position 1 rankings represents low-hanging fruit: a targeted campaign on top commercial keywords can yield quick wins.</li><li>The success of non-core content indicates potential for repurposing the content framework into product-focused pages.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-jonkers-sportprijzen" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Jonkers Sportprijzen</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Jonkers Sportprijzen is a Dutch webshop specializing in sports awards and prizes. Their product range includes trophies, cups, medals, statues, glass awards, rosettes, pennants, and championship plates. They also offer personalization services through text labels and engraving. Their products are categorized by various sports including football, tennis, hockey, padel, golf, and more. (<a href="https://jonkerssportprijzen.nl" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-traffic">Organic Visibility and Traffic</h3><ul><li><strong>Impressive Growth</strong>: Jonkers Sportprijzen has experienced a remarkable <strong>345.90% increase</strong> in Estimated Traffic Volume (ETV) over the analyzed period, demonstrating strong growth potential in the Dutch market.</li><li><strong>Current Organic Traffic</strong>: Latest data shows an ETV of 3,077.74 with 374 ranking keywords across various positions.</li><li><strong>Position Distribution</strong>:</li><li>Position 1: 0 keywords (significant opportunity for improvement)</li><li>Position 2-3: 2 keywords</li><li>Position 4-10: 82 keywords</li><li>Position 11-20: 75 keywords</li><li>Position 21-30: 74 keywords</li><li>Position 31+: 141 keywords</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a title and meta audit for the top 82 pages ranking between 4–10 to refine click-through messaging.</li><li>Develop a quick-win list: pages with ETV >50 but ranking in positions 11–20 to push into the first page.</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ul><li>The highest-performing page is their football coloring pages section (<code>/28-gratis-voetbal-kleurplaten/</code>) with an estimated traffic volume of 1,719.72 from 83 ranking keywords.</li><li>Their Olympics medal standings article (<code>/nieuws/olympische-spelen-en-de-medaillespiegel/</code>) generates substantial traffic with an ETV of 807.07 from 32 keywords.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Leverage high-traffic pages by adding relevant internal links to product pages, especially from the coloring pages to medal purchase pages.</li></ul><br><h3 id="underperforming-pages">Underperforming Pages</h3><ul><li>Many sport-specific pages show poor performance, including:</li><li><code>/sport/paardrijden/</code> (ETV: 4.62, ranking for 10 keywords)</li><li><code>/sport/hockey/</code> (ETV: 0.63, ranking for 2 keywords in positions 71-100)</li><li>Various product-specific pages ranking beyond position 50</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct content and UX audit on sport-specific pages to identify reasons for low engagement (e.g., sparse content, poor imagery).</li><li>Add product showcases and review sections to these pages to increase relevancy.</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><ul><li>Overall technical health is strong with an on-page score of 96.34</li><li>Minor technical issues identified include:</li><li>Long title tag on some pages</li><li>Render-blocking JavaScript and CSS resources</li><li>Some pages with low text-to-HTML ratio</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Addressing render-blocking resources can improve load times; prioritize optimizing above-the-fold assets.</li><li>Shorten title tags to 50–60 characters to prevent truncation and improve CTR.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><br><h4 id="top-performing-keywords-positions-4-10-">Top Performing Keywords (Positions 4-10):</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">kleurplaat voetballer</td><td class="">5,400</td><td class="">5</td></tr><tr><td class="">kleurplaten voetballer</td><td class="">5,400</td><td class="">5</td></tr><tr><td class="">kleurplaat voetbal</td><td class="">5,400</td><td class="">8</td></tr><tr><td class="">kleurplaat voetballen</td><td class="">3,600</td><td class="">8</td></tr><tr><td class="">voetballen kleurplaat</td><td class="">3,600</td><td class="">8</td></tr><tr><td class="">feyenoord kleurplaat</td><td class="">1,000</td><td class="">5</td></tr><tr><td class="">kleurplaat feyenoord</td><td class="">1,000</td><td class="">5</td></tr><tr><td class="">medailles avondvierdaagse</td><td class="">880</td><td class="">9</td></tr><tr><td class="">kleurplaat psv</td><td class="">720</td><td class="">4</td></tr><tr><td class="">kleurplaat voetbal logo</td><td class="">720</td><td class="">6</td></tr><tr><td class="">kleurplaten voetbal logo</td><td class="">720</td><td class="">5</td></tr><tr><td class="">psv kleurplaten</td><td class="">720</td><td class="">7</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>These keywords already drive substantial traffic; consider A/B testing meta titles to boost click-through rates.</li></ul><br><h4 id="interesting-keyword-opportunities-positions-11-30-">Interesting Keyword Opportunities (Positions 11-30):</h4><ul><li><strong>sportprijzen winkel</strong> (90 searches/month) – Position 11</li><li><strong>sportprijzen leiden</strong> (140 searches/month) – Position 11</li><li><strong>voetbal beeldjes</strong> (90 searches/month) – Position 11</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create targeted subcategory pages or blog posts optimized for these keywords to move into positions 4–10.</li></ul><br><h4 id="seasonal-trending-keywords-">Seasonal/Trending Keywords:</h4><ul><li><strong>medailles avondvierdaagse</strong> (880 searches/month) – Shows strong seasonal spike in May and June</li><li><strong>knblo medailles</strong> (90 searches/month) – Seasonal spike in July</li><li><strong>coupe henri delaunay</strong> (50 searches/month) – Seasonal spike in July (UEFA European Championship)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Schedule content updates 2–3 months ahead of peak season for terms like "medailles avondvierdaagse" to capture rising interest.</li></ul><br><h3 id="keyword-opportunities">Keyword Opportunities</h3><br><h4 id="top-priority-keywords-">Top Priority Keywords:</h4><ul><li><strong>goedkoopste medailles bestellen</strong> (90 searches/month, high competition)</li><li><strong>medailles bestellen met tekst</strong> (90 searches/month, high competition)</li><li><strong>trofeeën kopen</strong> (835 searches/month, high competition)</li><li><strong>medaille</strong> (6,600 searches/month, high competition)</li><li><strong>medailles</strong> (3,600 searches/month, high competition)</li><li><strong>sportprijzen</strong> (1,900 searches/month, high competition)</li><li><strong>voetbal beker</strong> (1,000 searches/month, high competition)</li><li><strong>kampioensschaal</strong> (720 searches/month, medium competition)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop dedicated landing pages with strong calls-to-action and incorporate trust signals (reviews, guarantees).</li></ul><br><h4 id="secondary-keywords-">Secondary Keywords:</h4><ul><li><strong>sportprijzen online bestellen</strong> (10 searches/month, medium competition)</li><li><strong>avond4daagse medailles bestellen</strong> (30 searches/month, high competition)</li><li><strong>medailles voetbal bestellen</strong> (30 searches/month, high competition)</li><li><strong>graveren bekers</strong> (210 searches/month, medium competition)</li><li><strong>trofee maken</strong> (320 searches/month, medium competition)</li><li><strong>medaille maken</strong> (590 searches/month, medium competition)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Use these keywords in long-form blog content and FAQs to capture mid-funnel searchers.</li></ul><br><h3 id="content-gaps">Content Gaps</h3><ul><li>Limited visibility for high-value commercial keywords in positions 1-3</li><li>Overreliance on the "28 gratis voetbal kleurplaten" page for ranking across multiple keywords</li><li>Lack of dedicated pages for individual football players or specific teams</li><li>Insufficient content targeting seasonal events like "Avondvierdaagse" and "KNBLO" walking events</li><li>Missing sport-specific product pages (e.g., "voetbal medailles," "tennis medailles")</li><li>Limited emphasis on personalization services in content and metadata</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Initiate a content development plan, allocating resources to fill the top five content gaps within the next quarter.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><p>Our analysis identified three major competitors in the Dutch sports awards market:</p><br><h4 id="1-boccale-nl-primary-competitor-">1. Boccale.nl (Primary Competitor)</h4><ul><li><strong>Key Strengths</strong>:</li><li>Dominates high-volume keywords like "medaille," "medailles," and "sportprijzen"</li><li>Strong emphasis on fast delivery with "vandaag besteld, morgen in huis" messaging</li><li>Effective use of checkmarks (✓) in meta descriptions to highlight benefits</li><li>Clear value proposition in SERP listings</li><li><strong>Top Performing Pages</strong>: Product category pages for medals and trophies</li></ul><br><h4 id="2-detrofee-nl">2. Detrofee.nl</h4><ul><li><strong>Key Strengths</strong>:</li><li>Strong rankings for trophy-related keywords ("trofeeen kopen," "trofee maken")</li><li>Established local presence in Hilversum, contributing to regional rankings</li><li>Well-optimized category pages</li></ul><br><h4 id="3-sportprijzennederland-nl">3. Sportprijzennederland.nl</h4><ul><li><strong>Key Strengths</strong>:</li><li>High rankings for "medaille," "medailles," "voetbal beker"</li><li>Meta descriptions emphasize "snelle levering" (fast delivery) and "gratis personalisatie" (free personalization)</li><li>Positions itself as "De Nr. 1 in Sportprijzen" in title tags</li></ul><br><h3 id="competitive-serp-strategy-analysis">Competitive SERP Strategy Analysis</h3><p>All three competitors share common effective SERP strategies:</p><br><ol><li><strong>Clear Value Proposition</strong>: Competitors clearly state their value proposition in titles and meta descriptions</li><li><strong>Emphasis on Speed and Personalization</strong>: All highlight fast delivery and customization options</li><li><strong>Effective Use of Symbols</strong>: Use of checkmarks (✓) to highlight key benefits in meta descriptions</li><li><strong>Keyword Optimization</strong>: Strategic placement of target keywords in both title and meta description</li><li><strong>Category Page Optimization</strong>: Well-structured category pages that rank well for generic terms</li></ol><br><h3 id="competitor-content-strategy">Competitor Content Strategy</h3><p>Competitors are effectively using:</p><ul><li>Sport-specific category pages (e.g., /voetbal-medailles/, /tennis-bekers/)</li><li>Product pages optimized for long-tail keywords</li><li>Clear emphasis on personalization options throughout their content</li><li>Local SEO optimization (particularly Detrofee.nl in Hilversum)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Emulate competitor tactics by integrating both local SEO elements and personalization messaging within meta tags.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li><strong>Overall Profile</strong>: Jonkers Sportprijzen has 664 backlinks from 56 referring domains, with a domain rank of 230.</li><li><strong>Spam Score</strong>: The site has a relatively low backlink spam score of 13%, indicating a generally healthy profile.</li><li><strong>Geographic Distribution</strong>: The majority of backlinks (311) come from Dutch (.nl) domains, with minimal international presence (3 from .com, 2 from .be, 2 from .co.uk).</li><li><strong>Link Types</strong>: 275 links are anchor text links, while 50 are image links.</li><li><strong>Link Attributes</strong>: 13 links have the nofollow attribute, 19 have noopener, and 2 have noreferrer.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Reach out to webmasters of medium-spam domains for link reclamation or upgrades to dofollow links.</li></ul><br><h3 id="backlink-quality-analysis">Backlink Quality Analysis</h3><ul><li><strong>Low Spam Score Domains</strong>: The majority of referring domains have low spam scores (0–30%), including quality sites like:</li><li>webshopandgo.nl (7% spam score)</li><li>sportverkiezingennoordoostpolder.nl (0% spam score)</li><li>voetbalindebollenstreek.nl (0% spam score)</li><li>sportartikelengetest.nl (5% spam score)</li></ul><br><ul><li><strong>Medium Spam Score Domains</strong>: There are 22 referring domains with medium spam scores (31–60%), including:</li><li>bedrijvenopdekaart.nl (40% spam score)</li><li>seobacklinks.agency (45% spam score)</li><li>jouwlinkhier.nl (60% spam score)</li><li>allepaginas.nl (50% spam score)</li></ul><br><ul><li><strong>Broken Backlinks</strong>: 13 broken backlinks were identified across 8 pages, which should be addressed.</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><ul><li><strong>Branded Anchors</strong>: Most backlinks use branded anchor text like "Jonkers Sportprijzen" or "jonkerssportprijzen.nl"</li><li><strong>Generic Anchors</strong>: Many links use generic anchor text like "Sportprijzen Webshop"</li><li><strong>Keyword Anchors</strong>: Some valuable keyword-rich anchors include "zwemmen sportprijzen" and "Sportprijzen"</li><li><strong>Overreliance</strong>: There's an overreliance on repetitive anchor text from webshopandgo.nl</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Diversify anchor text by including more keyword-rich anchors in outreach campaigns.</li></ul><br><h3 id="competitor-backlink-comparison">Competitor Backlink Comparison</h3><p>Several competitors share backlinks with Jonkers Sportprijzen, presenting opportunities for link acquisition:</p><ul><li>jouwpagina.be (42 shared backlinks)</li><li>allepaginas.nl (28 shared backlinks)</li><li>machinaalborduurforum.nl (20 shared backlinks)</li><li>iwal.nl (19 shared backlinks)</li><li>aangevinkt.be (13 shared backlinks)</li></ul><br><h3 id="link-building-opportunities">Link Building Opportunities</h3><ul><li><strong>Quality Dutch Websites</strong>: Several authoritative Dutch websites link to competitors but not to the company, including:</li><li>Local sports clubs and associations</li><li>Dutch sports news websites</li><li>Regional business directories</li><li>Sports equipment review sites</li></ul><br><ul><li><strong>Content-Based Opportunities</strong>: The coloring pages content has attracted some links, indicating potential for more content-driven link building.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft outreach templates for shared competitor linking domains, highlighting mutual benefits.</li><li>Focus on high-authority Dutch sports and event sites for guest posts or resource pages.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our comprehensive analysis, we recommend the following content strategy:</p><br><h3 id="serp-optimization">SERP Optimization</h3><ul><li><strong>Improve Meta Descriptions</strong>: Rewrite meta descriptions for key pages to include:</li><li>Clear value proposition</li><li>Fast delivery messaging (if available)</li><li>Personalization options</li><li>Use of checkmarks (✓) to highlight benefits</li><li>Example: "Medailles bestellen? ✓ Groot assortiment ✓ Gratis gravering ✓ Snelle levering. Bestel vandaag nog!"</li><li><strong>Title Tag Optimization</strong>: Restructure title tags to include primary keywords and value proposition</li><li>Example: "Sportprijzen Bestellen | Snelle Levering | Jonkers Sportprijzen"</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Incorporate primary and secondary keywords within the first 100 characters of meta descriptions for improved relevancy.</li></ul><br><h3 id="content-diversification">Content Diversification</h3><ul><li>Create dedicated pages for individual football players (e.g., "Kleurplaat Messi," "Kleurplaat Ronaldo")</li><li>Develop team-specific pages (e.g., "Ajax Kleurplaten," "Feyenoord Kleurplaten")</li><li>Expand the range of "kleurplaten" beyond football to other sports</li><li>Create dedicated landing pages for seasonal events like "Avondvierdaagse medailles" and "KNBLO medailles"</li><li>Develop sport-specific category pages (e.g., /voetbal-medailles/, /tennis-bekers/) following competitor patterns</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign content owners and set deadlines for each planned page (e.g., Messi page by next month).</li></ul><br><h3 id="value-proposition-enhancement">Value Proposition Enhancement</h3><ul><li>If possible, emphasize fast delivery with "vandaag besteld, morgen in huis" messaging throughout the site</li><li>Highlight personalization options more prominently (engraving, custom logos)</li><li>Create content that showcases the quality and uniqueness of products</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Perform user testing on page messaging to validate the perceived value of personalization vs. delivery speed.</li></ul><br><h3 id="local-seo-optimization">Local SEO Optimization</h3><ul><li>Improve Google My Business profile</li><li>Build local citations</li><li>Create content targeting local sports clubs and organizations in Leiden and surrounding areas</li><li>Optimize for the "sportprijzen leiden" keyword (currently position 11)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Set up local schema markup and acquire 10 local citations per month.</li></ul><br><h3 id="core-keyword-optimization">Core Keyword Optimization</h3><ul><li>Strengthen product pages to target commercial keywords like "trofeeën kopen" and "medailles bestellen met tekst"</li><li>Highlight competitive pricing for "goedkoopste medailles bestellen"</li><li>Create content emphasizing fast delivery for "medailles bestellen snelle levering"</li><li>Optimize category pages for high-volume keywords (e.g., "medailles," "bekers," "trofeeën")</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Monitor SERP features (e.g., featured snippets) for target keywords and adjust content structure to capture them.</li></ul><br><h3 id="internal-linking-strategy">Internal Linking Strategy</h3><ul><li>Improve internal linking from high-performing pages (like the coloring pages) to commercial product pages</li><li>Create a more logical site structure that guides users from informational content to purchase pages</li><li>Link related products and categories to improve crawlability and user experience</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Use a site crawler to generate an internal linking report and implement at least 20 new relevant links per month.</li></ul><br><h3 id="content-calendar">Content Calendar</h3><ul><li>Plan seasonal content updates for key events:</li><li>Avondvierdaagse (April-May)</li><li>KNBLO walking events (June-July)</li><li>Major football tournaments and championships</li><li>School sports seasons</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Align content calendar with product launch cycles and seasonal promotions for maximum impact.</li></ul><br><h3 id="backlink-strategy">Backlink Strategy</h3><p>Based on our backlink analysis, we recommend:</p><br><ol><li><strong>Fix Broken Backlinks</strong>: Address the 13 broken backlinks by creating appropriate redirect pages or contacting site owners.</li><li><strong>Diversify Anchor Text</strong>: Work on acquiring backlinks with more diverse and keyword-rich anchor text, rather than just branded terms.</li><li><strong>Target Quality Dutch Websites</strong>: Focus on acquiring links from authoritative Dutch websites, particularly:</li></ol><ul><li>Sports clubs and associations</li><li>Local business directories with low spam scores</li><li>Sports equipment review sites</li><li>Educational institutions that organize sports events</li></ul><ol><li><strong>Competitor Backlink Acquisition</strong>: Target websites that link to competitors but not to Jonkers Sportprijzen, particularly from the 42 shared backlinks with jouwpagina.be.</li><li><strong>Content-Driven Link Building</strong>: Create more linkable assets similar to the successful coloring pages, such as:</li></ol><ul><li>Sports statistics and infographics</li><li>Guides for organizing sports events</li><li>Resources for sports clubs and schools</li><li>Educational content about different sports awards and their history</li></ul><ol><li><strong>Reduce Reliance on Medium-Spam Domains</strong>: Gradually work to replace backlinks from medium-spam score domains (40–60%) with higher-quality alternatives.</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>A content-driven approach like infographics can be amplified through social outreach to Dutch sports communities.</li></ul><br></div></section>
+                <section id="conclusion-and-next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion and Next Steps</h2>
+                    </div>
+                    <div class="section-content"><br><p>Jonkers Sportprijzen has shown impressive growth in organic traffic (345.90% increase) but has significant opportunities to improve their SEO performance in the Netherlands. Their current strategy has created strong performance in the "kleurplaat" niche, but they're missing opportunities in their core business of sports awards and prizes.</p><br><p>The backlink analysis reveals a relatively healthy profile with 664 backlinks from 56 referring domains, predominantly from Dutch websites. However, there are opportunities to improve the quality and diversity of these backlinks, particularly by targeting authoritative Dutch sports websites and addressing the 13 broken backlinks identified.</p><br><p>By implementing our recommendations, particularly those focused on:</p><ol><li>Improving SERP elements with competitor-inspired strategies</li><li>Creating sport-specific category pages</li><li>Emphasizing fast delivery and personalization</li><li>Optimizing for high-value commercial keywords</li><li>Enhancing the backlink profile with quality Dutch websites</li><li>Fixing broken backlinks and diversifying anchor text</li></ol><br><p>Jonkers Sportprijzen can significantly improve their search visibility, outrank competitors, and capture untapped opportunities in the Dutch market.</p><br><p>The data-driven SEO roadmap provided in this analysis offers a clear path to improved search visibility, higher rankings for commercial keywords, and ultimately increased sales for Jonkers Sportprijzen in the Netherlands.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Hold a workshop with the marketing team to prioritize the top 10 SEO actions over the next 30 days.</li><li>Set up biweekly check-ins to monitor progress on traffic, rankings, and backlink growth.</li></ul></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Jonkers Sportprijzen',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

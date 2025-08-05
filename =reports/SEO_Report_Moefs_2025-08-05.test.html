@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Moefs</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Moefs • www.moefs.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Nederland Market</span>
+                        <span><i class="fas fa-calendar"></i> August 5, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="seo-research-report-moefs" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Moefs</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">Current: 1.81</td></tr><tr><td class="">ETV Growth (Sep 2024 - Jul 2025)</td><td class="positive">+1626.67% projected increase</td></tr><tr><td class="">Paid Traffic Cost Equivalent</td><td class="">€1.09</td></tr><tr><td class="">Keyword Rankings</td><td class="">No keywords in Top 10; mostly positions 11-70</td></tr><tr><td class="">Recent Keyword Position Changes</td><td class="">3 keywords improved positions</td></tr><tr><td class="">On-Page SEO Score</td><td class="">95.24</td></tr><tr><td class="">Backlinks</td><td class="">100 backlinks from 18 referring domains</td></tr><tr><td class="">% Backlinks from Dutch Domains</td><td class="positive">77%</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>With a projected +1626.67% ETV increase, target quick-win keywords on pages already ranking in positions 11–20 to capture top 10 slots.</li><li>Allocate immediate resources to leverage low-cost paid traffic insights (€1.09 equivalent) into organic content tests.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Keywords They Rank Well For (Moefs Ranks Poorly)</th><th>Search Volume</th><th>Competition</th></tr></thead><tbody><tr><td class="">fokaglasinlood.nl</td><td class="">patronen glas in lood</td><td class="">210</td><td class="">High</td></tr><tr><td class="">glasenloes.nl</td><td class="">ontwerp glas in lood</td><td class="">140</td><td class="">High</td></tr><tr><td class="">glas-in-lood-online.nl</td><td class="">glas in lood ontwerpen</td><td class="">140</td><td class="">High</td></tr></tbody></table></div><p><strong>Next Step: Competitor Gap Analysis</strong></p><ul><li>Audit the content structure and depth on competitor pattern galleries.</li><li>Identify missing subtopics or visuals on Moefs’ site that competitors use effectively.</li><li>Create a mini roadmap to replicate and enhance competitor features within 4 weeks.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume</th><th>Competition</th><th>Reason for Targeting</th></tr></thead><tbody><tr><td class="">webdesign nederland</td><td class="">90</td><td class="">Medium</td><td class="">Relevant to Moefs’ web design services; medium competition</td></tr><tr><td class="">employer branding strategie</td><td class="">220</td><td class="">Low</td><td class="">High search volume, low competition, aligns with branding services</td></tr><tr><td class="">patronen glas in lood</td><td class="">210</td><td class="">High</td><td class="">High volume, competitor gap, opportunity for pattern gallery content</td></tr><tr><td class="">strategie employer branding</td><td class="">125</td><td class="">Low</td><td class="">Low competition, relevant to branding strategy offerings</td></tr><tr><td class="">restauratie glas in lood</td><td class="">135</td><td class="">Medium</td><td class="">Related to glass restoration, complements glass design services</td></tr><tr><td class="">glas in lood panelen</td><td class="">285</td><td class="">High</td><td class="">Long-term opportunity with high volume</td></tr></tbody></table></div><p><strong>Strategic Insight: Prioritize Low-Competition, High-Value Terms</strong></p><ul><li>Launch content pieces first for "employer branding strategie" and "strategie employer branding" to secure quick organic wins.</li><li>Parallelly begin pattern gallery development targeting "patronen glas in lood" for a high-volume long-term asset.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Moefs has strong organic growth potential with a projected +1626.67% increase in traffic but currently lacks top 10 keyword rankings.</li><li>The best performing page is the glass design page, ranking mostly between positions 11-70.</li><li>Technical SEO is strong overall but needs improvements in title tags, render-blocking resources, and image optimization.</li><li>Competitors fokaglasinlood.nl, glasenloes.nl, and glas-in-lood-online.nl outperform Moefs on key high-volume glass design keywords.</li><li>Seasonal trends show peak interest in glass design keywords during colder months, offering timing opportunities for content campaigns.</li><li>Backlink profile is moderate and mostly Dutch, with opportunities to diversify anchor text and acquire links from higher-authority domains.</li><li>Content strategy should focus on creating a pattern gallery, enhancing custom design showcases, and expanding escape room development content.</li><li>Implementing competitor-inspired SERP strategies and local partnerships will strengthen Moefs’ market position.</li><li>Aligning content with industry trends and customer satisfaction benchmarks can differentiate Moefs in a consolidating Dutch design market.</li></ul><br><p><strong>Next Step: Align Quarterly Content Calendar</strong></p><ul><li>Map identified seasonal peaks (Jan–May, Oct–Dec) to editorial themes and promotions.</li><li>Assign authors, deadlines, and target keywords per quarter to ensure on-time publication.</li><li>Review performance metrics monthly to adjust scope and focus.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-moefs" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">SEO Research Report: Moefs</h2>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for Moefs, a Dutch design agency specializing in design, branding, and strategy services. The analysis focuses on their performance in the Netherlands market, identifying opportunities to improve their search visibility and outrank competitors. Our findings reveal significant organic growth potential, with a 1626.67% increase in Estimated Traffic Volume (ETV) projected from September 2024 to July 2025, though technical improvements and keyword optimization are needed to capitalize on this momentum. The keyword analysis shows no current top 10 rankings but identifies several high-potential keywords that could be targeted with strategic content optimization. The competitive analysis reveals that Moefs is being outperformed by several competitors in the glass design niche, particularly for keywords related to "patronen glas in lood" and "ontwerp glas in lood." The backlink analysis indicates a moderate backlink profile with 100 backlinks from 18 referring domains, predominantly from Dutch websites, presenting opportunities for strategic backlink acquisition to strengthen domain authority.</p><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Moefs is a design agency based in the Netherlands that offers a range of design services spanning both digital and physical mediums. Their service offerings include:</p><ul><li>Website development</li><li>Branding and strategy</li><li>Print design</li><li>Glass art design</li><li>Sales documentation for building projects</li><li>Escape room development</li><li>Brand revitalization</li></ul><br><p>The company emphasizes collaboration and sustainability in their projects, focusing on creating designs that surprise and engage target audiences. (<a href="https://www.moefs.nl" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</p><br></div></section>
+                <section id="overall-seo-performance" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">Overall SEO Performance</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-traffic">Organic Visibility and Traffic</h3><ul><li><strong>Remarkable Growth Trajectory</strong>: Moefs.nl shows a projected ETV increase of +1626.67% from September 2024 to July 2025, indicating strong organic growth potential.</li><li><strong>Current Traffic Status</strong>: Latest ETV is 1.81, with an estimated paid traffic cost equivalent of €1.09.</li><li><strong>Keyword Position Distribution</strong>: Currently no keywords ranking in top 10 positions, with most rankings distributed across positions 11-70.</li><li><strong>Ranking Improvements</strong>: Recent data shows 3 keyword positions improving ("is_up": 3), demonstrating positive momentum.</li></ul><br><h3 id="top-performing-pages">Top Performing Pages</h3><ul><li><strong>Glass Design Page</strong>: The URL <code>https://www.moefs.nl/moefs/ontwerp-in-glas/</code> is the best performing page, ranking for 4 SERPs with positions between 11-70.</li><li><strong>Content Categories</strong>: The site structure suggests a focus on service-specific content, with <code>/moefs/</code> appearing to be the main content hub.</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><ul><li><strong>Overall Technical Health</strong>: The site has a strong on-page SEO score of 95.24.</li><li><strong>Key Technical Strengths</strong>:</li><li>Mobile-friendly design</li><li>HTTPS implementation</li><li>SEO-friendly URL structure</li><li>Fast page loading metrics</li><li>Effective resource caching</li><li>Proper implementation of social media tags</li></ul><br><ul><li><strong>Technical Improvement Areas</strong>:</li><li><strong>Title Tag Length</strong>: Current title tag is 83 characters (recommended: under 60)</li><li><strong>Render-Blocking Resources</strong>: Scripts and stylesheets affecting page load speed</li><li><strong>Image Optimization</strong>: Missing alt text and title attributes on images</li><li><strong>Content Structure</strong>: While H1 tags are present, overall content structure could be improved</li></ul><br><p><strong>Next Step: Technical SEO Sprint Plan</strong></p><ul><li>Week 1: Audit and shorten title tags across top 10 landing pages.</li><li>Week 2: Defer or inline critical CSS and JS to eliminate render-blocking.</li><li>Week 3: Implement descriptive alt text for top 20 images; schedule ongoing alt text audits.</li><li>Week 4: Refine heading structure (H2–H4) on priority pages; update templates accordingly.</li></ul><br></div></section>
+                <section id="keyword-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">Keyword Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-keyword-rankings">Current Keyword Rankings</h3><ul><li><strong>Top 10 Rankings</strong>: Moefs currently has no keywords ranking in the top 10 positions.</li><li><strong>Near-Top Rankings</strong>: The closest keyword to the top 10 is "glas in lood ontwerpen" (glass in lead designs) at position 15 with a search volume of 140.</li><li><strong>Other Notable Rankings</strong>:</li><li>"ontwerp glas in lood" - Position 32, Search Volume: 140</li><li>"ontwerp glas-in lood" - Position 33, Search Volume: 140</li></ul><br><h3 id="seasonal-keyword-trends">Seasonal Keyword Trends</h3><ul><li><strong>Glass Design Keywords</strong>: Keywords related to "glas in lood ontwerpen" show higher search volumes during colder months (January, March, April, May, October, November, and December).</li><li><strong>Pattern Keywords</strong>: "patronen glas in lood" shows similar seasonal trends with higher volumes in January, February, March, October, November, and December.</li><li><strong>Strategic Opportunity</strong>: This seasonal pattern suggests opportunities for targeted content campaigns during peak interest periods.</li></ul><br><h3 id="page-performance-analysis">Page Performance Analysis</h3><ul><li><strong>Single Ranking Page</strong>: The page <code>https://www.moefs.nl/moefs/ontwerp-in-glas/</code> is the only page ranking for all glass design keywords.</li><li><strong>SERP Snippet Consistency</strong>: Google consistently uses the same description for all related keywords: "Naast klassieke patronen zijn ook moderne of persoonlijke designs te ontwerpen. Een combinatie van 'klassieke' glastechnieken met bijvoorbeeld fusing, etsen of..."</li><li><strong>Image Rankings</strong>: Images from the site are ranking for all glass design keywords, highlighting the importance of image optimization.</li></ul><br><h3 id="recommended-target-keywords">Recommended Target Keywords</h3><p>Based on search volume, competition, and relevance to Moefs' services, we recommend prioritizing these keywords:</p><br><p><strong>Top Priority Keywords</strong>:</p><ul><li>"webdesign nederland" - Search Volume: 90, Competition: MEDIUM</li><li>"employer branding strategie" - Search Volume: 220, Competition: LOW</li><li>"branding strategie" - Search Volume: 210, Competition: MEDIUM</li><li>"patronen glas in lood" - Search Volume: 210, Competition: HIGH</li></ul><br><p><strong>Secondary Keywords</strong>:</p><ul><li>"strategie employer branding" - Search Volume: 125, Competition: LOW</li><li>"webdesign bureau nederland" - Search Volume: 23, Competition: LOW</li><li>"restauratie glas-in lood" - Search Volume: 135, Competition: MEDIUM</li><li>"restauratie glas in lood" - Search Volume: 135, Competition: MEDIUM</li><li>"ontwerp glas in lood" - Search Volume: 140, Competition: HIGH</li><li>"glas in lood ontwerpen" - Search Volume: 140, Competition: HIGH</li></ul><br><p><strong>Long-term Opportunities</strong>:</p><ul><li>"glas in lood panelen" - Search Volume: 285, Competition: HIGH</li><li>"flaim strategie & branding campagnes & content" - Search Volume: 57, Competition: LOW</li></ul><br><p><strong>Clarification: Keyword Prioritization Framework</strong></p><ul><li>Phase 1 (0–3 months): Focus on <strong>Low competition / Medium volume</strong> keywords to build fast wins.</li><li>Phase 2 (3–6 months): Target <strong>Medium competition / High volume</strong> terms with robust content assets.</li><li>Phase 3 (6+ months): Invest in <strong>High competition / High volume</strong> terms, backed by multi-format content and link-building.</li></ul><br></div></section>
+                <section id="industry-trends-and-market-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-analytics"></i></div>
+                        <h2 class="section-title">Industry Trends and Market Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="dutch-design-industry-landscape">Dutch Design Industry Landscape</h3><ul><li><strong>Customer Satisfaction Focus</strong>: Leading agencies in the Netherlands are being ranked based on customer satisfaction metrics, with agencies like TODAY earning recognition in trade magazine FONK's customer satisfaction survey. (<a href="https://www.today.nl/en/article/netherlands-top-2-design-agency-2022/" class="link-reference" target="_blank" rel="noopener">Industry News</a>)</li><li><strong>Innovation Hub</strong>: The Netherlands continues to be recognized as a hub for innovation and creativity in design, with numerous startups transforming the industry through innovative approaches. (<a href="https://eustartup.news/15-dutch-design-startups-you-need-to-know-about-in-2023/" class="link-reference" target="_blank" rel="noopener">EU Startup News</a>)</li><li><strong>Market Consolidation</strong>: The broader creative agency sector is experiencing market consolidation and layoffs, creating both challenges and opportunities for established agencies like Moefs. (<a href="https://brightbrightgreat.com/news/2025-design-agency-state-of-the-union/" class="link-reference" target="_blank" rel="noopener">Industry Report</a>)</li></ul><br><h3 id="emerging-players-and-potential-partners">Emerging Players and Potential Partners</h3><p>Several innovative Dutch startups could serve as potential collaboration partners or competitive benchmarks for Moefs:</p><ul><li><strong>DesignBro</strong>: An online design marketplace connecting clients with professional designers for services like packaging design and web design. (<a href="https://eustartup.news/15-dutch-design-startups-you-need-to-know-about-in-2023/" class="link-reference" target="_blank" rel="noopener">EU Startup News</a>)</li><li><strong>Expoze.io</strong>: An AI-powered eye-tracking platform helping businesses make data-driven decisions in advertising and product design, representing potential technology integration opportunities. (<a href="https://eustartup.news/15-dutch-design-startups-you-need-to-know-about-in-2023/" class="link-reference" target="_blank" rel="noopener">EU Startup News</a>)</li><li><strong>Zerotrillion</strong>: A creative agency providing brand strategy, identity, advertising, product design, and digital marketing services, operating in a similar space to Moefs. (<a href="https://eustartup.news/15-dutch-design-startups-you-need-to-know-about-in-2023/" class="link-reference" target="_blank" rel="noopener">EU Startup News</a>)</li></ul><br><h3 id="client-satisfaction-benchmarks">Client Satisfaction Benchmarks</h3><p>Agencies receiving positive feedback for creativity, responsiveness, and project management include Human Creative, Aanpoters, Duck. Design, and dops. agency partner. These agencies set industry benchmarks for client satisfaction that Moefs can measure against. (<a href="https://clutch.co/nl/agencies/design?page=1" class="link-reference" target="_blank" rel="noopener">Clutch</a>)</p><br></div></section>
+                <section id="competitive-landscape-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">Competitive Landscape Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-competitors-in-glass-design">Top Competitors in Glass Design</h3><ol><li><strong>www.fokaglasinlood.nl</strong></li></ol><ul><li><strong>Strengths</strong>: Strongest competitor based on average keyword position and estimated traffic volume</li><li><strong>Content Focus</strong>: Extensive pattern galleries, inspiration content, targeting both DIY enthusiasts and professional glazers</li><li><strong>Key Differentiator</strong>: Wide variety of patterns and inspiration resources</li></ul><br><ol><li><strong>www.glasenloes.nl</strong></li></ol><ul><li><strong>Strengths</strong>: Strong focus on custom design and creation of glass in lead</li><li><strong>Content Focus</strong>: Emphasizes personal taste and style in glass design</li><li><strong>Key Differentiator</strong>: Personalized approach to glass design services</li></ul><br><ol><li><strong>glas-in-lood-online.nl</strong></li></ol><ul><li><strong>Strengths</strong>: Focus on online ordering and custom designs</li><li><strong>Content Focus</strong>: Highlights speed and craftsmanship</li><li><strong>Key Differentiator</strong>: Convenience of online ordering process</li></ul><br><h3 id="competitor-keyword-performance">Competitor Keyword Performance</h3><p>All three competitors are outperforming Moefs for these high-value keywords:</p><ul><li>"patronen glas in lood" (patterns glass in lead) - Search Volume: 210, Competition: HIGH</li><li>"ontwerp glas-in lood" (design glass in lead) - Search Volume: 140, Competition: HIGH</li><li>"glas in lood ontwerpen" (glass in lead designs) - Search Volume: 140, Competition: HIGH</li><li>"ontwerp glas in lood" (design glass in lead) - Search Volume: 140, Competition: HIGH</li></ul><br><h3 id="competitor-serp-strategies">Competitor SERP Strategies</h3><ol><li><strong>Title Tag Optimization</strong>:</li></ol><ul><li><strong>fokaglasinlood.nl</strong>: Uses highly specific title tags like "FOKA patronen voor tiffany en glasinlood"</li><li><strong>glasenloes.nl</strong>: Uses targeted title tags like "Ontwerpen & Maken"</li><li><strong>glas-in-lood-online.nl</strong>: Uses clear, concise title tags that include target keywords (e.g., "Online glas in lood bestellen")</li></ul><br><ol><li><strong>Meta Description Strategies</strong>:</li></ol><ul><li>Competitors use benefit-driven meta descriptions highlighting key selling points like speed, craftsmanship, and affordability</li><li>Clear calls to action are included (e.g., "Bestel eenvoudig en snel")</li><li>Moefs' meta descriptions are less optimized for click-through rates</li></ul><br><ol><li><strong>Effective Content Types</strong>:</li></ol><ul><li>Visual content like pattern galleries and mood boards (fokaglasinlood.nl)</li><li>Pages showcasing custom design options and customer testimonials (glas-in-lood-online.nl)</li><li>Content highlighting the design process and craftsmanship</li></ul><br><h3 id="emerging-competitor-innovations">Emerging Competitor Innovations</h3><br><h4 id="escape-room-design-innovations">Escape Room Design Innovations</h4><p><strong>Blue Apple Launchpad</strong> has recently introduced specialized escape room design services with advanced technology integration that directly competes with Moefs' escape room development offerings. Their innovations include:</p><ul><li><strong>Adjustable difficulty settings</strong> including customizable clue frequency, puzzle complexity, and time limits</li><li><strong>Advanced technology integration</strong> featuring RFID sensors, motion-activated triggers, AI-powered hint systems, and immersive soundscapes/lighting</li><li><strong>Scalable designs</strong> for multi-location replication while allowing location-specific customizations</li></ul><br><p>(<a href="https://blueapplelaunchpad.com/services/escape-room-design/" class="link-reference" target="_blank" rel="noopener">Blue Apple Launchpad</a>)</p><br><h4 id="team-composition-strategy">Team Composition Strategy</h4><p><strong>Purdue Brand Studio</strong> emphasizes its multidisciplinary team with experience spanning top agencies, tech startups, and Fortune 500 companies as a key differentiator in branding and design services. This approach highlights the importance of diverse expertise in delivering innovative design solutions. (<a href="https://marcom.purdue.edu/about/our-team/" class="link-reference" target="_blank" rel="noopener">Purdue Brand Studio</a>)</p><br></div></section>
+                <section id="backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="backlink-profile-overview">Backlink Profile Overview</h3><ul><li><strong>Total Backlinks</strong>: 100 backlinks pointing to Moefs.nl</li><li><strong>Referring Domains</strong>: 18 unique domains linking to the site</li><li><strong>Domain Rank</strong>: 137, indicating moderate domain authority</li><li><strong>Backlink Spam Score</strong>: 23%, suggesting a relatively clean backlink profile</li><li><strong>Geographic Distribution</strong>: 77% of backlinks come from Dutch (.nl) domains, which is beneficial for local SEO in the Netherlands</li></ul><br><h3 id="backlink-quality-assessment">Backlink Quality Assessment</h3><ul><li><strong>Low Spam Score Domains (9)</strong>: High-quality referring domains include vinckeboom.nl (0% spam score), rikusindrenthe.nl (5%), dejufferenlunsingh.nl (1%), crunchbase.com (0%), and tomba.io (0%)</li><li><strong>Medium Spam Score Domains (8)</strong>: Some referring domains have moderate spam scores, including seobacklinks.agency (45%), rankgrow.agency (45%), and prolinkbox.com (50%)</li><li><strong>High Spam Score Domains</strong>: No high spam score referring domains were identified, indicating a clean backlink profile</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><ul><li><strong>Brand-Focused Anchors</strong>: The majority of backlinks use "Moefs" as anchor text, indicating a brand-focused backlink strategy</li><li><strong>Context Analysis</strong>: Most backlinks appear in website attribution contexts (e.g., "Website: Moefs") rather than contextual mentions within content</li><li><strong>Diversity Opportunity</strong>: Limited diversity in anchor text presents an opportunity for more keyword-rich anchor text acquisition</li></ul><br><h3 id="competitor-backlink-comparison">Competitor Backlink Comparison</h3><ul><li><strong>Strong Competitors</strong>: crunchbase.com (rank: 62) and tomba.io (rank: 32) have significantly stronger domain authority than Moefs</li><li><strong>Local Competitors</strong>: Several local Dutch websites like gault-millau.nl (rank: 87) and roomraccoon.nl (rank: 87) represent potential partnership opportunities</li><li><strong>Backlink Gap</strong>: The analysis reveals that competitors have more diverse and authoritative backlink profiles, presenting opportunities for strategic backlink acquisition</li></ul><br></div></section>
+                <section id="recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tasks"></i></div>
+                        <h2 class="section-title">Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="technical-seo-improvements">Technical SEO Improvements</h3><ol><li><strong>Optimize Title Tags</strong>: Reduce title tag length from 83 characters to under 60 characters while maintaining keyword relevance.</li><li><strong>Address Render-Blocking Resources</strong>: Optimize or defer render-blocking scripts and stylesheets to improve page load speed.</li><li><strong>Image Optimization</strong>: Add descriptive alt text and title attributes to all images, especially for glass design pages where images are already ranking in SERPs.</li></ol><br><h3 id="content-strategy">Content Strategy</h3><ol><li><strong>Glass Design Page Optimization</strong>: The <code>/moefs/ontwerp-in-glas/</code> page shows significant potential:</li></ol><ul><li>Enhance content with primary keyword "glas in lood ontwerpen" and variations in title, headings, and body text</li><li>Expand content depth to provide more comprehensive information about design processes and styles</li><li>Add internal links from other relevant pages to boost authority</li><li>Include clear calls to action</li></ul><br><ol><li><strong>Create Dedicated Content for "Patronen Glas in Lood"</strong>:</li></ol><ul><li><strong>Quick Win</strong>: Create a blog post or resource page showcasing different glass-in-lead patterns with high-quality images and descriptions</li><li><strong>Long-Term</strong>: Develop a comprehensive pattern gallery with filters and search functionality, allowing users to download or purchase patterns</li></ul><br><ol><li><strong>Showcase Custom Design Options</strong>:</li></ol><ul><li>Add a section to the existing glass design page showcasing examples of custom designs created by Moefs</li><li>Include customer testimonials to build credibility</li><li>Create a dedicated "Custom Design" page with a form for users to submit their design ideas</li></ul><br><ol><li><strong>Seasonal Content Planning</strong>: Develop content calendar aligned with seasonal trends for glass design keywords, with enhanced promotion during peak months (January, March, April, May, October, November, and December).</li></ol><br><ol><li><strong>Content Format Diversification</strong>:</li></ol><ul><li>Embed videos showcasing the design process or highlighting unique design techniques</li><li>Create a series of blog posts or videos featuring different design styles, pattern ideas, and customer projects</li></ul><br><ol><li><strong>Escape Room Development Content Enhancement</strong>:</li></ol><ul><li>Create dedicated content highlighting Moefs' escape room development capabilities to compete with Blue Apple Launchpad's recent innovations</li><li>Showcase any technology integration capabilities similar to RFID sensors, motion-activated triggers, or AI-powered systems</li><li>Emphasize unique selling points like customization options, theme development, or puzzle design expertise</li></ul><br><h3 id="serp-optimization">SERP Optimization</h3><ol><li><strong>Title Tag and Meta Description Improvements</strong>:</li></ol><ul><li>Revise title tags to be more specific and keyword-rich, following the pattern of successful competitors</li><li>Create benefit-driven meta descriptions with clear calls to action</li><li>Ensure all meta descriptions highlight Moefs' unique selling points</li></ul><br><ol><li><strong>Structured Data Implementation</strong>:</li></ol><ul><li>Add structured data markup for services, reviews, and FAQs to enhance SERP appearance</li><li>Implement breadcrumb markup to improve site navigation signals</li></ul><br><h3 id="backlink-building-strategy">Backlink Building Strategy</h3><ol><li><strong>Local Business Partnerships</strong>: Expand partnerships with local Dutch businesses similar to existing relationships with vinckeboom.nl and rikusindrenthe.nl</li></ol><ul><li>Target: 5-10 new local business partnerships within 6 months</li></ul><br><ol><li><strong>Industry Directory Submissions</strong>: Submit to relevant Dutch design and home improvement directories</li></ol><ul><li>Target: 10-15 high-quality directory submissions within 3 months</li></ul><br><ol><li><strong>Diversify Anchor Text</strong>: Work with existing and new referring domains to incorporate more keyword-rich anchor text beyond just the brand name "Moefs"</li></ol><ul><li>Target: 30% of new backlinks to include relevant keywords in anchor text</li></ul><br><ol><li><strong>Target High-Authority Domains</strong>: Pursue backlinks from domains with higher authority than current referring domains</li></ol><ul><li>Priority targets: Dutch design publications, industry associations, and educational institutions</li></ul><br><ol><li><strong>Content-Driven Link Building</strong>: Create linkable assets such as:</li></ol><ul><li>Comprehensive guides on glass design techniques</li><li>Visual galleries of completed projects</li><li>Industry reports or case studies that showcase expertise</li></ul><br><ol><li><strong>Monitor and Disavow</strong>: Regularly monitor the backlink profile and disavow any new toxic links that may appear</li></ol><ul><li>Schedule: Quarterly backlink audits and cleanup</li></ul><br><ol><li><strong>Innovative Startup Collaborations</strong>: Explore partnership opportunities with emerging Dutch design startups like DesignBro and Expoze.io to gain relevant industry backlinks and expand service offerings</li></ol><ul><li>Target: 2-3 strategic partnerships within 12 months</li></ul><br><h3 id="competitor-informed-strategies">Competitor-Informed Strategies</h3><ol><li><strong>Pattern Gallery Development</strong>: Create a comprehensive pattern gallery similar to fokaglasinlood.nl to target the high-volume keyword "patronen glas in lood"</li><li><strong>Design Process Transparency</strong>: Follow glasenloes.nl's approach by creating content that clearly explains the design and creation process</li><li><strong>Online Ordering Optimization</strong>: Consider implementing an online ordering or quote request system similar to glas-in-lood-online.nl to improve conversion rates</li><li><strong>Team Expertise Highlighting</strong>: Following Purdue Brand Studio's approach, create content that showcases the multidisciplinary expertise of Moefs' team members, highlighting diverse backgrounds and specialized skills</li><li><strong>Technology Integration</strong>: Emphasize any advanced technology integration capabilities in escape room development to compete with Blue Apple Launchpad's innovations</li></ol><br><h3 id="industry-positioning-strategy">Industry Positioning Strategy</h3><ol><li><strong>Customer Satisfaction Focus</strong>: Implement a systematic approach to gathering and showcasing client testimonials and case studies, following the example of highly-rated agencies like Human Creative and Aanpoters</li><li><strong>Market Consolidation Response</strong>: Position Moefs as a stable and reliable partner in a market experiencing consolidation and layoffs, emphasizing longevity and consistent service quality</li><li><strong>Innovation Showcase</strong>: Create content highlighting Moefs' innovative approaches to design challenges, particularly in specialized areas like glass art design and escape room development</li></ol><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><p>Moefs shows significant potential for organic growth in the Netherlands market, with projected traffic increases of over 1600% in the coming year. By focusing on optimizing their glass design content, targeting strategic keywords in web design and branding, and addressing technical SEO issues, they can capitalize on this momentum and improve their search visibility.</p><br><p>The competitive analysis reveals that Moefs is currently being outperformed by several competitors in the glass design niche, particularly for high-value keywords related to patterns and design. By implementing the recommended strategies—especially creating dedicated content for "patronen glas in lood" and optimizing their existing glass design page—Moefs can close this gap and improve their rankings for these valuable keywords.</p><br><p>The backlink analysis shows a moderate but relatively clean backlink profile with 100 backlinks from 18 referring domains, predominantly from Dutch websites. This provides a solid foundation, but there are clear opportunities to expand and diversify their backlink profile through strategic partnerships, content-driven link building, and targeting higher-authority domains.</p><br><p>The industry analysis reveals both challenges and opportunities in the Dutch design market. While the sector faces consolidation and competitive pressures, there are also emerging innovative startups and a continued focus on customer satisfaction that Moefs can leverage. By highlighting their specialized services in glass art design and escape room development—particularly in response to competitors like Blue Apple Launchpad—Moefs can differentiate themselves in the market.</p><br><p>The seasonal nature of their key glass design keywords also presents opportunities for timely content campaigns to maximize visibility during peak interest periods. By aligning their content calendar with these seasonal trends and implementing the technical, on-page, and off-page optimizations outlined in this report, Moefs can significantly improve their search visibility and organic traffic in the Dutch market.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Moefs',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

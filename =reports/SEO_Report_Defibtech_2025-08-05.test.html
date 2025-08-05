@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Defibtech</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Defibtech • https://defibtech.nl/</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 5, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change (Last 12 Months)</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="positive">865.78 (↓ 45.07%)</td></tr><tr><td class="">Total Ranking Keywords</td><td class="">179</td></tr><tr><td class="">Keywords in Position 1</td><td class="">8</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">7</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">26</td></tr><tr><td class="">Keywords in Positions 11-30</td><td class="">56 (27 + 29)</td></tr><tr><td class="">Estimated Paid Traffic Cost</td><td class="">€4,295.99</td></tr></tbody></table></div><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Keywords They Rank Well For (Where Defibtech Ranks Poorly)</th></tr></thead><tbody><tr><td class=""><strong>aed-webshop.nl</strong></td><td class="">aed (14,800 SV, High), aed kopen (2,900 SV, High), aed in de buurt (6,600 SV, Low), aed training (320 SV, High), aed kopen subsidie (210 SV, High)</td></tr><tr><td class=""><strong>aedcompany.nl</strong></td><td class="">aed (14,800 SV, High), aed kopen (2,900 SV, High), aed aanschaffen (390 SV, High), aed kast (320 SV, High)</td></tr><tr><td class=""><strong>bhvtotaal.nl</strong></td><td class="">aed kast (320 SV, High), reanimatie gerelateerde termen</td></tr></tbody></table></div><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume</th><th>Current Position</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">lifeline</td><td class="">1,900</td><td class="">17</td><td class="">High volume, underutilized brand keyword</td></tr><tr><td class="">wat kost aed</td><td class="">590</td><td class="">15</td><td class="">High commercial intent, pricing-related</td></tr><tr><td class="">aed kosten</td><td class="">390</td><td class="">13</td><td class="">High commercial intent, cost-related queries</td></tr><tr><td class="">training aeds</td><td class="">320</td><td class="">14</td><td class="">Relevant service, moderate competition</td></tr><tr><td class="">aed in de buurt</td><td class="">6,600</td><td class="">Poor</td><td class="">High volume, low competition, local intent</td></tr><tr><td class="">aed kopen</td><td class="">2,900</td><td class="">Poor</td><td class="">Core commercial keyword, high competition</td></tr><tr><td class="">aed subsidie</td><td class="">210</td><td class="">Not ranking</td><td class="">Niche, high-value subsidy-related queries</td></tr></tbody></table></div><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Defibtech’s organic traffic declined by 45.07% over the past year despite ranking for 179 keywords.</li><li>Only 8 keywords rank in position 1; many high-volume commercial keywords are ranked poorly or not at all.</li><li>Top competitors (aed-webshop.nl, aedcompany.nl, bhvtotaal.nl) dominate core keywords with strong SERP strategies emphasizing pricing, benefits, and calls to action.</li><li>Technical SEO issues (HTML errors, duplicate meta tags, slow mobile speed) are hurting crawlability and rankings.</li><li>Backlink profile is healthy but lacks diversity in commercial anchor texts and misses links from authoritative Dutch health and government sites.</li><li>Significant keyword gaps exist in high-volume, high-intent terms like "aed kopen," "aed in de buurt," and "wat kost aed."</li><li>Local SEO is underdeveloped; location pages rank poorly despite high local search volumes.</li><li>Content strategy should focus on dedicated landing pages, expanded informational hubs, and optimized product pages with schema markup.</li><li>Backlink strategy should target authoritative Dutch health portals and government domains, disavow toxic links, and diversify anchor texts.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize remediation of technical SEO issues in the next sprint to immediately regain crawl budget and improve indexation.</li><li>Simultaneously initiate a local SEO push by optimizing or creating city-specific pages targeting "aed in de buurt."</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-defibtech-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Defibtech Netherlands</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for Defibtech, a company specializing in Automated External Defibrillators (AEDs) in the Netherlands. Our analysis reveals a concerning 45.07% decrease in estimated organic traffic over the past year, with significant opportunities for improvement in technical SEO, content optimization, and keyword targeting. The competitive landscape analysis identifies key competitors who are outperforming Defibtech on high-value keywords, while the backlink analysis reveals both strengths and weaknesses in Defibtech's link profile. This report outlines specific, data-driven recommendations to reverse this negative trend and improve Defibtech's organic visibility in the Dutch market.</p><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Defibtech is a specialized provider of AED solutions in the Netherlands. Their product and service offerings include:</p><ul><li>Various AED models (Lifeline AED, Lifeline VIEW AED, and Lifeline AUTO AED)</li><li>AED rental services</li><li>AED maintenance contracts with remote monitoring via DefibCom technology</li><li>AED accessories (batteries, wall cabinets, mounting brackets)</li><li>AED training equipment</li></ul><p><a href="https://defibtech.nl/" class="link-reference" target="_blank" rel="noopener">Source: [Company Website</a>]</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-trends">Organic Visibility Trends</h3><ul><li><strong>Significant Traffic Decline</strong>: Defibtech has experienced a 45.07% decrease in Estimated Traffic Volume (ETV) from August 2024 to July 2025, indicating a concerning downward trend in organic visibility.</li><li><strong>Latest Organic Traffic Metrics</strong> (July 2025):</li><li>Total ETV: 865.78</li><li>Total ranking keywords: 179</li><li>Estimated paid traffic cost equivalent: €4,295.99</li></ul><br><h3 id="position-distribution-july-2025-">Position Distribution (July 2025)</h3><ul><li>Position 1: 8 keywords</li><li>Positions 2-3: 7 keywords</li><li>Positions 4-10: 26 keywords</li><li>Positions 11-20: 27 keywords</li><li>Positions 21-30: 29 keywords</li><li>Positions 31-100: 82 keywords</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ol><li><strong>Homepage</strong> (https://defibtech.nl/): Ranks in top 3 positions with highest ETV (133.76) and estimated paid traffic cost equivalent (€784.75)</li><li><strong>Lifeline AED Product Page</strong> (https://defibtech.nl/product/lifeline-aed-second-generation): Ranks in positions 1-3 with high ETV (141.93)</li><li><strong>Reanimation Device Page</strong> (https://defibtech.nl/reanimatie-apparaat): Ranks in positions 2-10 with strong ETV (119.79)</li><li><strong>AED Rental Page</strong> (https://defibtech.nl/aed-huren): Ranks in positions 1-10 with significant ETV (123.26)</li></ol><br><h3 id="underperforming-pages">Underperforming Pages</h3><ol><li><strong>Location-Based Pages</strong>: City-specific pages like "aed-amsterdam" and "aed-apparaat-groningen" rank poorly (positions 11-30 or lower) with minimal traffic</li><li><strong>Accessory Product Pages</strong>: Pages for accessories like wall cabinets and training electrodes have low visibility and minimal traffic</li></ol><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><p>Several technical issues were identified that may be contributing to the declining performance:</p><ul><li>HTML errors affecting crawlability</li><li>Duplicate meta tags on multiple pages</li><li>Missing image alt text</li><li>Slow page loading speeds on mobile devices</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a full crawl audit to prioritize and fix HTML errors and duplicate meta tags.</li><li>Implement lazy loading and image compression to improve mobile loading times.</li><li>Add descriptive alt text to all key images to enhance accessibility and SEO.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><p>Defibtech currently ranks for 179 keywords in the Netherlands. Our analysis shows the following top-performing keywords:</p><br><h4 id="top-performing-keywords-positions-1-10-">Top-Performing Keywords (Positions 1-10)</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">aed defibtech</td><td class="">90</td><td class="">1</td></tr><tr><td class="">aed huren</td><td class="">260</td><td class="">1</td></tr><tr><td class="">defibtech</td><td class="">260</td><td class="">1</td></tr><tr><td class="">defibtech aed</td><td class="">90</td><td class="">1</td></tr><tr><td class="">defibtech lifeline aed</td><td class="">210</td><td class="">1</td></tr><tr><td class="">lifeline aed</td><td class="">70</td><td class="">1</td></tr><tr><td class="">lifeline aed defibtech</td><td class="">210</td><td class="">1</td></tr><tr><td class="">aed knippert rood</td><td class="">90</td><td class="">3</td></tr><tr><td class="">aed huur</td><td class="">260</td><td class="">4</td></tr><tr><td class="">hartstilstand aed</td><td class="">110</td><td class="">4</td></tr><tr><td class="">reanimatieapparaat</td><td class="">720</td><td class="">4</td></tr><tr><td class="">onderhoudskosten aed</td><td class="">90</td><td class="">3</td></tr><tr><td class="">aed bij hartstilstand</td><td class="">110</td><td class="">5</td></tr><tr><td class="">aed trainer</td><td class="">110</td><td class="">5</td></tr><tr><td class="">aed onderhoud</td><td class="">140</td><td class="">8</td></tr><tr><td class="">wat doet aed</td><td class="">260</td><td class="">9</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Leverage these high-ranking pages by adding clear CTAs (“Bestel nu” or “Vraag een offerte aan”) and optimizing on-page conversions (lead forms or click-to-call).</li></ul><br><h3 id="keyword-opportunities">Keyword Opportunities</h3><p>Our analysis identified several high-potential keyword opportunities that Defibtech is currently underutilizing:</p><br><h4 id="high-potential-keywords-positions-11-30-">High-Potential Keywords (Positions 11-30)</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">lifeline</td><td class="">1900</td><td class="">17</td></tr><tr><td class="">wat kost aed</td><td class="">590</td><td class="">15</td></tr><tr><td class="">wat kost een aed</td><td class="">590</td><td class="">14</td></tr><tr><td class="">aed kosten</td><td class="">390</td><td class="">13</td></tr><tr><td class="">kosten aed</td><td class="">390</td><td class="">13</td></tr><tr><td class="">training aeds</td><td class="">320</td><td class="">14</td></tr><tr><td class="">reanimatie stappenplan</td><td class="">210</td><td class="">11</td></tr><tr><td class="">stappenplan reanimatie</td><td class="">210</td><td class="">11</td></tr><tr><td class="">defibrillator kopen</td><td class="">210</td><td class="">17</td></tr><tr><td class="">aed leasen</td><td class="">140</td><td class="">9</td></tr><tr><td class="">aed kopen via hartstichting</td><td class="">140</td><td class="">14</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop dedicated content assets (e.g., comparison tables, pricing guides) targeting these terms.</li><li>Use internal linking from high-authority pages to pass page authority to these opportunity pages.</li></ul><br><h3 id="critical-keyword-gaps">Critical Keyword Gaps</h3><p>Based on competitive analysis, Defibtech is significantly underperforming on these high-value keywords:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th><th>Competitor Rankings</th></tr></thead><tbody><tr><td class="">aed</td><td class="">14800</td><td class="">HIGH</td><td class="">aed-webshop.nl and aedcompany.nl rank significantly higher</td></tr><tr><td class="">aed kopen</td><td class="">2900</td><td class="">HIGH</td><td class="">aed-webshop.nl and aedcompany.nl rank significantly higher</td></tr><tr><td class="">aed in de buurt</td><td class="">6600</td><td class="">LOW</td><td class="">aed-webshop.nl ranks higher</td></tr><tr><td class="">aed apparaat</td><td class="">590</td><td class="">HIGH</td><td class="">All three main competitors rank higher</td></tr><tr><td class="">aed kast</td><td class="">320</td><td class="">HIGH</td><td class="">All three main competitors rank higher</td></tr><tr><td class="">aed training</td><td class="">320</td><td class="">HIGH</td><td class="">aed-webshop.nl and aedcompany.nl rank higher</td></tr><tr><td class="">aed aanschaffen</td><td class="">390</td><td class="">HIGH</td><td class="">aed-webshop.nl and aedcompany.nl rank higher</td></tr><tr><td class="">aed kopen subsidie</td><td class="">210</td><td class="">HIGH</td><td class="">aed-webshop.nl ranks higher</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Closing these gaps should be a top priority: create or optimize pages specifically for “aed kopen” and “aed in de buurt” with local schema and geo-targeted content.</li></ul><br><h3 id="seasonal-trends">Seasonal Trends</h3><p>AED-related searches show consistent patterns throughout the year with slight increases during:</p><ul><li>Heart health awareness months</li><li>After major public cardiac incident news stories</li><li>Before summer when organizations prepare for outdoor activities</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><ol><li><strong>AED-Webshop</strong> (aed-webshop.nl) - Primary competitor with highest estimated traffic</li><li><strong>AED Company</strong> (aedcompany.nl) - Strong competitor, particularly for broad "AED" and "AED kopen" keywords</li><li><strong>BHV Totaal</strong> (bhvtotaal.nl) - Specialized competitor focusing on reanimation procedures and accessories</li></ol><br><h3 id="competitor-strengths-analysis">Competitor Strengths Analysis</h3><br><h4 id="aed-webshop-nl">AED-Webshop.nl</h4><ul><li><strong>Key Strengths</strong>: High estimated traffic volume, ranks higher for a large number of relevant keywords</li><li><strong>SERP Strategy</strong>: Uses clear calls to action ("AED kopen?"), mentions top brands, highlights benefits (free shipping, expert advice), emphasizes speed ("Vandaag besteld = morgen in huis")</li><li><strong>Content Focus</strong>: Strong focus on "buying" keywords and informational content answering common AED questions</li></ul><br><h4 id="aedcompany-nl">AEDCompany.nl</h4><ul><li><strong>Key Strengths</strong>: High rankings for core keywords, clear pricing information in SERP elements</li><li><strong>SERP Strategy</strong>: Focuses on price ("Prijzen vanaf € 850,-"), mentions subsidies, emphasizes range of options</li><li><strong>Content Focus</strong>: Strong focus on "AED kopen" and related commercial intent keywords</li></ul><br><h4 id="bhvtotaal-nl">BHVTotaal.nl</h4><ul><li><strong>Key Strengths</strong>: Focus on reanimation procedures and accessories, strong rankings for "AED kast" and related terms</li><li><strong>Content Focus</strong>: Specialized content on accessories and training materials</li></ul><br><h3 id="competitor-content-strategies">Competitor Content Strategies</h3><p>Our analysis reveals these successful content approaches from competitors:</p><br><ol><li><strong>Clear Pricing Information</strong>: Competitors frequently include price ranges in titles or meta descriptions, attracting users searching for affordability.</li><li><strong>Benefit-Driven Language</strong>: Highlighting key benefits like fast shipping, expert advice, and warranty information in SERP elements.</li><li><strong>Strong Calls to Action</strong>: Using action-oriented phrases like "AED kopen?", "Bekijk alle topmerken," and "Bestel online."</li><li><strong>Successful Content Types</strong>:</li></ol><ul><li>Category pages optimized for "AED kopen" and related terms</li><li>Informational articles answering common questions about AEDs</li><li>Product pages optimized for accessories like batteries and electrodes</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Mirror competitor tactics by adding dynamic price snippets and benefit-focused language in title tags and meta descriptions to improve CTR.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li><strong>Overall Metrics</strong>: 1,019 backlinks from 413 referring domains with a relatively healthy spam score of 20%</li><li><strong>Geographic Distribution</strong>: Primarily from Dutch domains (.nl: 688 backlinks), with significant numbers from German (.de: 125) and international (.com: 57) domains</li><li><strong>Link Quality</strong>: Majority of backlinks (80%) have low spam scores, indicating a generally healthy profile</li><li><strong>Anchor Text Distribution</strong>: Heavy reliance on branded terms ("Defibtech", "Lifeline AED") and product-specific keywords, with limited diversity in commercial intent keywords</li></ul><br><h3 id="backlink-competitors">Backlink Competitors</h3><p>Our analysis identified several competitors with stronger backlink profiles:</p><ul><li><strong>hartstichting.nl</strong>: 886 intersecting backlinks, higher domain rank (124)</li><li><strong>rodekruis.nl</strong>: 326 intersecting backlinks, significantly higher domain rank (77)</li><li><strong>reanimatieraad.nl</strong>: 242 intersecting backlinks, higher domain rank (77)</li></ul><br><h3 id="backlink-opportunities">Backlink Opportunities</h3><p>Several high-authority Dutch websites link to competitors but not to Defibtech:</p><ul><li><strong>rijksoverheid.nl</strong> (government domain, rank 52): Links to competitors but not to Defibtech</li><li><strong>thuisarts.nl</strong> (medical information site, rank 22): 107 intersecting backlinks with competitors</li><li><strong>gezondheidsplein.nl</strong> (health information portal, rank 34): 112 intersecting backlinks</li><li><strong>medischcontact.nl</strong> (medical professional site, rank 26): 101 intersecting backlinks</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft targeted outreach emails and resource pages tailored for each authoritative domain.</li><li>Offer to contribute expert AED safety guides or case studies to secure backlinks.</li></ul><br><h3 id="toxic-backlinks">Toxic Backlinks</h3><p>We identified a small number of potentially harmful backlinks with high spam scores that should be considered for disavowal:</p><ul><li>webscountry.com (65% spam score)</li><li>Several medium-risk directories (40-60% spam scores) including backlinktimе.com, dotiqo.com, and startkey.nl</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="priority-content-initiatives">Priority Content Initiatives</h3><ol><li><strong>Optimize High-Volume, Low-Ranking Keywords</strong>: Focus optimization efforts on keywords like "lifeline" (1900 searches), "wat kost aed" (590 searches), "aed kosten" (390 searches), and "training aeds" (320 searches).</li><li><strong>Create Dedicated Landing Pages</strong>:</li></ol><ul><li><strong>"AED Kopen" Category Page</strong>: Revamp the existing <code>/aed-kopen</code> page to be a comprehensive category page showcasing different AED models, pricing, and benefits.</li><li><strong>"AED Subsidie" Page</strong>: Create a dedicated page explaining AED subsidies in the Netherlands, including eligibility requirements and application processes.</li><li><strong>"AED Huren" Page</strong>: Enhance the existing rental page with more comprehensive information.</li></ul><ol><li><strong>Expand Informational Content Hub</strong>:</li></ol><ul><li><strong>"Wat is een AED?"</strong>: Create a detailed article explaining what an AED is, how it works, and its benefits.</li><li><strong>"Waar Hangt een AED?"</strong>: Provide guidance on optimal AED placement, including height, visibility, and accessibility.</li><li><strong>"Werking AED"</strong>: Explain the AED's operation, including how it analyzes heart rhythms and delivers shocks.</li><li><strong>"AED Onderhoud"</strong>: Expand content on AED maintenance requirements and procedures.</li></ul><ol><li><strong>Improve SERP Elements</strong>:</li></ol><ul><li><strong>Actionable Titles</strong>: Rewrite titles to include strong calls to action (e.g., "AED Kopen? 8 Jaar Garantie | Defibtech").</li><li><strong>Benefit-Oriented Meta Descriptions</strong>: Focus on key benefits like warranty, free shipping, expert advice, and competitive pricing.</li><li><strong>Example</strong>: For the "aed kopen" page, change the title to "AED Kopen? Topmerken & Snelle Levering | Defibtech" and the meta description to "Koop uw AED bij Defibtech.nl! Snelle levering, 8 jaar garantie en deskundig advies. Bekijk ons assortiment en bestel vandaag!"</li></ul><ol><li><strong>Optimize Product Pages</strong>:</li></ol><ul><li><strong>"AED Batterij" and "AED Elektroden" Pages</strong>: Ensure these pages are well-optimized with relevant keywords, detailed product descriptions, and clear pricing information.</li><li><strong>Implement Schema Markup</strong>: Use product schema markup on product pages to display pricing, availability, and reviews in search results.</li></ul><ol><li><strong>Expand Location Targeting</strong>: Create location-specific pages for major cities in the Netherlands beyond Amsterdam (Rotterdam, The Hague, Utrecht) to improve local SEO and target the high-volume "aed in de buurt" keyword (6600 searches, LOW competition).</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Balance your content calendar between commercial pages (e.g., “AED kopen”, “AED huren”) and informational assets (e.g., “Wat is een AED”) to capture both transaction and awareness-stage traffic.</li></ul><br><h3 id="backlink-strategy-recommendations">Backlink Strategy Recommendations</h3><p>Based on our backlink analysis, we recommend:</p><br><ol><li><strong>Target High-Authority Health Websites</strong>:</li></ol><ul><li>Develop outreach campaigns targeting rijksoverheid.nl, thuisarts.nl, and gezondheidsplein.nl</li><li>Create high-quality, informative content specifically designed for these authoritative domains</li></ul><ol><li><strong>Diversify Anchor Text Profile</strong>:</li></ol><ul><li>Current anchor text is heavily focused on branded terms</li><li>Develop a strategy to acquire links with commercial intent anchors like "aed kopen" and "aed huren"</li></ul><ol><li><strong>Leverage Existing Relationships</strong>:</li></ol><ul><li>Several quality sites like instructie.org, ffin.nl, and health.nl already link to Defibtech</li><li>Develop expanded content partnerships with these sites to gain additional contextual links</li></ul><ol><li><strong>Disavow Toxic Backlinks</strong>:</li></ol><ul><li>Create a disavow file for the identified high-spam score domains</li><li>Regularly monitor backlink profile for new potentially harmful links</li></ul><ol><li><strong>Local Link Building</strong>:</li></ol><ul><li>Target Dutch business directories, chambers of commerce, and local business associations</li><li>Develop location-specific content to attract links from regional websites</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign team members to lead outreach for each high-authority domain and set monthly backlink acquisition targets.</li></ul><br><h3 id="quick-wins">Quick Wins</h3><ol><li><strong>Update Meta Descriptions</strong>: Immediately update meta descriptions for top-priority keywords to include stronger calls to action and benefit statements.</li><li><strong>Optimize "AED Kopen" Page</strong>: Revamp the <code>/aed-kopen</code> page to be a comprehensive category page with clear pricing, benefits, and product comparisons.</li><li><strong>Implement FAQ Schema</strong>: Add FAQ schema markup to informational articles to improve visibility in search results.</li><li><strong>Fix Technical SEO Issues</strong>: Address HTML errors, duplicate meta tags, and missing alt text to improve crawlability and indexing.</li><li><strong>Disavow Toxic Backlinks</strong>: Submit a disavow file for the identified high-spam score domains to Google Search Console.</li></ol><br><h3 id="longer-term-strategy">Longer-Term Strategy</h3><ol><li><strong>Content Marketing Plan</strong>: Develop a comprehensive content marketing strategy focused on creating high-quality, informative content about AEDs and related topics.</li><li><strong>Local SEO</strong>: Optimize for local search by creating location-specific landing pages and claiming/optimizing Google My Business listings.</li><li><strong>Backlink Building</strong>: Focus on acquiring high-quality backlinks from relevant websites in the healthcare and safety industries, particularly targeting the identified high-authority domains that currently link to competitors.</li></ol><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><p>Defibtech is facing significant challenges in the Dutch SEO landscape, as evidenced by the 45.07% decrease in organic traffic over the past year and strong competition from established competitors like aed-webshop.nl and aedcompany.nl. However, our analysis reveals substantial opportunities to improve organic visibility by targeting high-volume keywords where the site currently ranks in positions 11-30, adopting successful SERP strategies from competitors, and implementing a strategic backlink acquisition plan.</p><br><p>The most immediate opportunities include:</p><ol><li>Optimizing SERP elements with stronger calls to action and benefit-oriented language</li><li>Creating dedicated landing pages for high-value keywords like "aed kopen" (2900 searches) and "aed subsidie" (210 searches)</li><li>Expanding informational content to target keywords like "wat is een aed" (260 searches) and "werking aed" (140 searches)</li><li>Improving local SEO to target the high-volume "aed in de buurt" keyword (6600 searches)</li><li>Implementing a strategic backlink acquisition plan targeting high-authority health and government websites</li></ol><br><p>By implementing these recommendations, Defibtech can reverse the negative traffic trend and establish itself as a leading AED provider in the Dutch market, effectively competing with current market leaders.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Defibtech',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

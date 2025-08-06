@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - PIHR</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">PIHR • www.pihr.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Nederland Market</span>
+                        <span><i class="fas fa-calendar"></i> August 6, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV) Growth (Aug 2024 - Jul 2025)</td><td class="positive">+12009.09% (from near zero to 27.97)</td></tr><tr><td class="">Current Estimated Traffic Volume (ETV)</td><td class="">27.97</td></tr><tr><td class="">Paid Traffic Cost Equivalent</td><td class="">€44.92</td></tr><tr><td class="">Keyword Rankings Distribution</td><td class="">Mostly positions 41-100; 0 keywords in top 30</td></tr><tr><td class="">New Keywords Ranked (Last Month)</td><td class="">22 new keywords</td></tr><tr><td class="">Technical SEO Score</td><td class="">94.51 (Good, but with critical issues)</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>While the growth rate is outstanding, the absolute ETV remains low—focus on moving priority keywords into the top 30 to convert that growth into meaningful traffic.</li><li>The paid traffic cost equivalent is modest, indicating high ROI potential if organic rankings improve.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Strengths & Focus Areas</th><th>Keywords They Rank Well For (PIHR Ranks Poorly)</th></tr></thead><tbody><tr><td class="">rijksoverheid.nl</td><td class="">High domain authority, official regulatory info</td><td class="">"zzp 2025", "zzp-wetgeving 2025" (positions 1-10)</td></tr><tr><td class="">personio.nl</td><td class="">HR software, organizational development content</td><td class="">"organisatieontwikkelingen" (higher positions than PIHR)</td></tr><tr><td class="">juridischcentrum.com</td><td class="">Legal advice and employment law focus</td><td class="">"arbeidsrecht advies", "juridisch advies arbeidsrecht"</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Competitors leverage concise, authoritative content—PIHR should emulate the clear messaging and credibility signals (like data points or official citations) that rijksoverheid.nl uses.</li><li>Identify 2–3 quick-win keywords where PIHR can match competitor formats (e.g., “organisatieontwikkelingen”) to gain top-30 placements.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Avg. Monthly Searches</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">zzp 2025</td><td class="">8,100</td><td class="">Medium</td><td class="">High volume, strong intent, currently low rank</td></tr><tr><td class="">zzp-wetgeving 2025</td><td class="">985</td><td class="">Medium</td><td class="">Important legislative topic, content gap</td></tr><tr><td class="">modelovereenkomst zzp belastingdienst 2025</td><td class="">73</td><td class="">Medium</td><td class="">Long-tail, lower competition, lead magnet potential</td></tr><tr><td class="">organisatieontwikkelingen</td><td class="">390</td><td class="">Medium</td><td class="">Relevant to organizational advice, competitor strong</td></tr><tr><td class="">nieuwe regels zzp 2025 belastingdienst</td><td class="">84</td><td class="">Medium</td><td class="">Seasonal interest, content gap</td></tr><tr><td class="">arbeidsrecht advies</td><td class="">230</td><td class="">High</td><td class="">High intent, legal advice focus</td></tr><tr><td class="">juridisch advies arbeidsrecht gratis</td><td class="">180</td><td class="">High</td><td class="">High intent, opportunity for free advice content</td></tr><tr><td class="">handhaving belastingdienst zzp 2025</td><td class="">50</td><td class="">Medium</td><td class="">Niche, compliance-focused content opportunity</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Map each opportunity keyword to a dedicated content asset (e.g., guide, checklist, article).</li><li>Prioritize high-volume terms (“zzp 2025” and “zzp-wetgeving 2025”) in Q4 planning to align with peak interest.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>PIHR’s organic visibility has grown impressively (+12009.09% ETV growth), but rankings remain mostly outside top 30 positions.</li><li>The company’s strongest content focus is on ZZP 2025 regulations, but it is too broad and under-optimized compared to authoritative competitors like rijksoverheid.nl.</li><li>Technical SEO is generally strong (score 94.51) but critical issues like missing H1 tags and duplicate meta tags need fixing.</li><li>Competitors dominate key keywords with clearer, more focused titles and meta descriptions, plus diversified content formats.</li><li>Backlink profile is limited and relies heavily on a few domains and directories; needs diversification and higher-quality, natural links.</li><li>Seasonal trends in ZZP 2025 keywords peak in December-January, offering timing opportunities for content updates and campaigns.</li><li>Recommended strategy includes creating a comprehensive ZZP 2025 content hub, optimizing existing pages, targeting long-tail keywords, and improving backlink diversity.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assemble a cross-functional team (SEO, content, development) to address technical fixes immediately.</li><li>Draft a 6-month content calendar targeting peak season keywords, starting in November.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-pihr" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: PIHR</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>PIHR is a Dutch company specializing in HR solutions and advice tailored to organizations in the Netherlands. They primarily serve two market segments:</p><ul><li>Small and medium-sized businesses without dedicated HR departments</li><li>Larger organizations requiring specialized expertise during reorganizations and other complex situations</li></ul><br><p>Their service portfolio encompasses three main areas:</p><ol><li>HRM: Absenteeism management, strategic personnel planning, and talent development</li><li>Arbeidsrecht (Labor Law): Employment contracts, dismissals, and legal advice</li><li>Organisatieadvies (Organizational Advice): Reorganizations, business termination, and organizational development</li></ol><p>(<a href="https://www.pihr.nl" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</p><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Targeting both SMBs and large enterprises requires differentiated content pillars—ensure messaging resonates with each segment’s pain points (e.g., cost efficiency vs. risk mitigation).</li></ul><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-traffic-growth">Organic Visibility and Traffic Growth</h3><ul><li><strong>Remarkable Growth</strong>: PIHR has experienced a significant 12009.09% increase in Estimated Traffic Volume (ETV) from August 2024 to July 2025</li><li><strong>Current Traffic Volume</strong>: Latest ETV is 27.97, with an estimated paid traffic cost equivalent of €44.92</li><li><strong>Ranking Distribution</strong>: Most rankings are in lower positions (41-100), with no keywords currently ranking in top 30 positions</li><li><strong>New Rankings</strong>: 22 newly ranked keywords in the most recent month, indicating expanding visibility</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>A high growth rate with low starting baseline suggests capacity to scale—focus on pushing the top 5–10 opportunity keywords into positions 11–30, then 1–10.</li></ul><br><h3 id="top-and-underperforming-pages">Top and Underperforming Pages</h3><ul><li><strong>Top Performer</strong>: <code>https://pihr.nl/werken-met-zzpers-na-1-januari-2025-voorkom-schijnzelfstandigheid-maar-gooi-het-zzp-kind-niet-met-het-badwater-weg/</code></li><li>ETV: 27.15</li><li>Appears in 22 SERPs</li><li>Estimated paid traffic value: €38.16</li><li>Focus: ZZP/freelancer regulations for 2025</li></ul><br><ul><li><strong>Underperforming</strong>: <code>https://pihr.nl/personeelszaken-nijmegen/organisatieontwikkeling-en-change/</code></li><li>ETV: only 0.82</li><li>Appears in just 1 SERP</li><li>Estimated paid traffic value: €6.76</li><li>Focus: Organization development in Nijmegen region</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit underperforming pages for on-page SEO gaps (title, headings, internal links).</li><li>Implement quick wins (add H1, refine meta tags) and monitor SERP movement over 4 weeks.</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><ul><li><strong>Overall Score</strong>: 94.51 (good technical foundation)</li><li><strong>Critical Issues</strong>:</li><li>Missing H1 tag on homepage</li><li>Potentially irrelevant title tags</li><li>Duplicate "generator" meta tags</li><li>Low content-to-code ratio</li><li>No content encoding</li></ul><br><ul><li><strong>Positive Aspects</strong>:</li><li>HTTPS implementation</li><li>Mobile-friendly design</li><li>SEO-friendly URL structure</li><li>No broken links or resources</li><li>Fast loading time</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize H1 tag and duplicate meta tag fixes first—these can be resolved quickly by the development team.</li><li>Improving content-to-code ratio will also support rankings; plan to integrate more text snippets and FAQ schema.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><ul><li><strong>Significant Gap in Top Rankings</strong>: PIHR currently has no keywords ranking in positions 1-10 or even 11-30</li><li><strong>Primary Ranking Content</strong>: The blog post "Werken met zzp'ers na 1 januari 2025" ranks for multiple "zzp 2025" related keywords, but mostly in positions 40-80</li><li><strong>Organizational Development</strong>: The page "Organisatieontwikkeling en change" ranks at position 44 for "organisatieontwikkelingen" (search volume: 390, medium competition)</li><li><strong>Ranking Pattern</strong>: Most rankings are for ZZP-related keywords connected to 2025 regulatory changes, showing a clear content focus but insufficient optimization</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create a keyword mapping document linking each target term to an existing or new URL.</li><li>Set ranking improvement targets (e.g., move “organisatieontwikkelingen” from 44 to top 20 within 2 months).</li></ul><br><h3 id="high-value-keywords-with-strong-search-intent">High-Value Keywords with Strong Search Intent</h3><ul><li><strong>zzp 2025</strong>: 8100 average monthly searches, MEDIUM competition</li><li><strong>zzp-wetgeving 2025</strong>: 985 average monthly searches, MEDIUM competition</li><li><strong>juridische advies arbeidsrecht</strong>: 343 average monthly searches, HIGH competition</li><li><strong>arbeidsrecht advies</strong>: 230 average monthly searches, HIGH competition</li><li><strong>juridisch advies arbeidsrecht gratis</strong>: 180 average monthly searches, HIGH competition</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Focus on creating cornerstone content for “zzp 2025” and “zzp-wetgeving 2025” first, then expand to high-competition legal advice keywords with premium gated assets.</li></ul><br><h3 id="long-tail-and-low-competition-opportunities">Long-Tail and Low-Competition Opportunities</h3><ul><li><strong>modelovereenkomst zzp belastingdienst 2025</strong>: 73 average monthly searches, MEDIUM competition</li><li><strong>nieuwe regels zzp 2025 belastingdienst</strong>: 84 average monthly searches, MEDIUM competition</li><li><strong>handhaving belastingdienst zzp 2025</strong>: 50 average monthly searches, MEDIUM competition</li><li><strong>boswinkel arbeidsrecht advies</strong>: 10 average monthly searches, LOW competition</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop 3–4 long-tail articles or templates, embedding downloadable lead magnets to capture higher-intent traffic.</li></ul><br><h3 id="seasonal-trends">Seasonal Trends</h3><ul><li><strong>ZZP 2025 Keywords</strong>: Show clear seasonal pattern with peak interest in December and January</li><li><strong>Search Volume Decline</strong>: Interest in ZZP 2025 regulations decreases significantly throughout the year after January peak</li><li><strong>Planning Opportunity</strong>: Content updates and promotional activities should be timed to coincide with seasonal interest peaks</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Schedule major content launches (content hub, guides) in late Q3 to build authority before December–January peak.</li><li>Plan email and social campaigns to amplify new content during high-volume periods.</li></ul><br><h3 id="content-strategy-insights">Content Strategy Insights</h3><ul><li><strong>Content Saturation</strong>: One single page is ranking for all "zzp 2025" keywords, suggesting content is too broad and unfocused</li><li><strong>Significant Content Gaps</strong>: No rankings in top positions indicate major opportunities for targeted content development</li><li><strong>Improvement Trajectory</strong>: The "organisatieontwikkelingen" keyword improved from position 63 to 44, showing potential for further optimization</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Break out the broad ZZP 2025 page into a hub-and-spoke model with focused subpages.</li><li>Introduce interactive elements (e.g., compliance checklist) to increase dwell time and attract backlinks.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><br><ol><li><strong>www.rijksoverheid.nl</strong></li></ol><ul><li><strong>Key Strengths</strong>: High domain authority as a government website, providing official information and regulatory updates</li><li><strong>Content Focus</strong>: Official announcements and regulations, particularly regarding ZZP legislation changes</li><li><strong>Competitor Type</strong>: Indirect competitor dominating informational searches</li><li><strong>Performance</strong>: Consistently outranking PIHR for "zzp 2025" and related keywords</li></ul><br><ol><li><strong>www.personio.nl</strong></li></ol><ul><li><strong>Key Strengths</strong>: Strong focus on HR software and solutions</li><li><strong>Content Focus</strong>: HR management tools and organizational development resources</li><li><strong>Competitor Type</strong>: Indirect competitor offering HR software rather than consulting</li><li><strong>Performance</strong>: Outranking PIHR for "organisatieontwikkelingen" (position 44 vs. higher positions)</li></ul><br><ol><li><strong>www.juridischcentrum.com</strong></li></ol><ul><li><strong>Key Strengths</strong>: Focus on legal advice and information</li><li><strong>Competitor Type</strong>: Indirect competitor competing for legal aspects of HR and employment</li><li><strong>Performance</strong>: Competing for keywords related to legal aspects of HR and employment</li></ul><br><h3 id="competitor-serp-strategies">Competitor SERP Strategies</h3><br><ol><li><strong>Title and Meta Description Effectiveness</strong></li></ol><ul><li><strong>Rijksoverheid.nl</strong>: Uses concise, direct titles (e.g., "Vanaf 1 januari 2025 volledige handhaving op...") with clear meta descriptions stating key information about implementation dates and subjects</li><li><strong>Personio.nl</strong>: Employs focused titles like "Organisatieontwikkeling: uitleg en praktische tips - Personio"</li><li><strong>PIHR's Gap</strong>: PIHR's titles are longer and less focused (e.g., "Werken met zzp'ers na 1 januari 2025 - PIHR") with meta descriptions that get cut off and don't immediately convey the core message</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Adopt competitor-style titles with date-driven hooks and direct headlines to improve click-through rates.</li><li>Ensure meta descriptions highlight specific benefits (“voorkomt boetes,” “checklist beschikbaar”) within 155 characters.</li></ul><br><ol><li><strong>Effective Content Formats</strong></li></ol><ul><li><strong>Rijksoverheid.nl</strong>: Uses news article format for official announcements</li><li><strong>Personio.nl</strong>: Employs HR dictionary format for definitions and practical tips</li><li><strong>PIHR's Opportunity</strong>: Could diversify content formats beyond standard blog posts</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Pilot 1–2 alternative formats (e.g., an “HR dictionary” page or infographic) for high-priority keywords and track engagement metrics.</li></ul><br><ol><li><strong>Winning SERP Elements</strong></li></ol><ul><li><strong>Clarity and Directness</strong>: Competitors use clear, concise language directly addressing user queries</li><li><strong>Emphasis on Key Information</strong>: Highlighting important details (e.g., "1 januari 2025") to attract clicks</li><li><strong>Authority Signals</strong>: Government domain names and professional formatting lend credibility</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li><strong>Overall Backlink Health</strong>: Medium spam score of 32, indicating moderate risk level</li><li><strong>Backlink Quantity</strong>: 35 backlinks from 7 referring domains</li><li><strong>Geographic Distribution</strong>: 31 out of 35 backlinks come from Dutch (.nl) domains, enhancing local SEO relevance</li><li><strong>Referring Domain Types</strong>:</li><li>SEO service providers (seobacklinks.agency, rankgrow.agency)</li><li>Directory listings (onderde.nl)</li><li>Local business sites (nijmeegsondernemerscafe.nl)</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><ul><li><strong>Keyword-Rich Anchors</strong>: Many backlinks use relevant industry terms as anchor text:</li><li>HR-related: "hr," "hr-diensten," "hr-professional"</li><li>Employment law: "arbeidsrecht," "arbeidscontract," "arbeidsvoorwaarden"</li><li>Organizational terms: "reorganisatie," "directieniveau," "multidisciplinair"</li><li><strong>Potential Issues</strong>: Some backlinks from SEO services use generic promotional anchor texts that appear unnatural</li></ul><br><h3 id="backlink-quality-assessment">Backlink Quality Assessment</h3><ul><li><strong>Positive Factors</strong>:</li><li>No high spam score referring domains detected</li><li>Relevant industry-specific anchor texts</li><li>Strong local market presence with Dutch domain backlinks</li><li><strong>Concerning Factors</strong>:</li><li>Several backlinks appear to be from SEO service providers rather than earned naturally</li><li>Heavy reliance on directory listings from onderde.nl (24 of 35 backlinks)</li><li>Limited diversity in referring domains (only 7 unique domains)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>A more natural anchor text distribution will reduce risk—seek unbranded, descriptive anchors (e.g., “ZZP wetgeving gids”) from authoritative partners.</li><li>Diversify away from directories toward industry associations and media outlets.</li></ul><br><h3 id="link-building-opportunities">Link Building Opportunities</h3><ul><li><strong>Industry Associations</strong>: Dutch HR and employment law associations not currently linking to PIHR</li><li><strong>Local Business Organizations</strong>: Chambers of commerce and business networks in target regions</li><li><strong>Educational Institutions</strong>: Universities and vocational schools with HR programs</li><li><strong>News and Media</strong>: Dutch business publications covering employment law and HR topics</li><li><strong>Competitor Backlink Sources</strong>: Several authoritative sites linking to competitors but not to PIHR</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create a prioritized outreach list of 15 target domains (5 associations, 5 media, 5 educational).</li><li>Develop a tailored pitch highlighting PIHR’s unique content assets (e.g., whitepapers on ZZP 2025).</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands-can-be-derived-from-points-1-4-" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands (can be derived from points 1-4)</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="technical-seo-improvements">Technical SEO Improvements</h3><ol><li><strong>Add H1 Tags</strong>: Implement proper H1 tags on all pages, especially the homepage</li><li><strong>Optimize Title Tags</strong>: Review and revise title tags to ensure relevance to page content and target keywords</li><li><strong>Clean Up Meta Tags</strong>: Remove duplicate meta tags to improve code quality</li><li><strong>Increase Content Ratio</strong>: Add more relevant text content to improve the content-to-code ratio</li><li><strong>Implement Content Encoding</strong>: Add proper content encoding for improved performance</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Schedule these fixes in the next sprint; assign owners and set completion date within 2 weeks.</li></ul><br><h3 id="serp-element-optimization">SERP Element Optimization</h3><ol><li><strong>Title Tag Improvements</strong>:</li></ol><ul><li><strong>Current</strong>: "Werken met zzp'ers na 1 januari 2025 - PIHR"</li><li><strong>Recommended</strong>: "ZZP Wetgeving 2025: Wat verandert er? | PIHR"</li></ul><br><ol><li><strong>Meta Description Enhancements</strong>:</li></ol><ul><li><strong>Current</strong>: Cut-off description with informal phrasing ("zzp-kind")</li><li><strong>Recommended</strong>: "Nieuwe ZZP regels in 2025? PIHR helpt u met de implementatie en voorkomt boetes. Lees meer over de wijzigingen."</li></ul><br><ol><li><strong>Organizational Development Page</strong>:</li></ol><ul><li><strong>Current Title</strong>: [Current title not provided in research]</li><li><strong>Recommended</strong>: "Organisatieontwikkeling: Wat is het en hoe werkt het? | PIHR"</li><li><strong>Recommended Meta</strong>: "Wat is organisatieontwikkeling? PIHR helpt u met de implementatie en zorgt voor een succesvolle verandering. Lees meer over de mogelijkheden."</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Aim to keep titles ≤60 characters and descriptions ≤155 characters for optimal SERP display.</li></ul><br><h3 id="content-strategy-recommendations">Content Strategy Recommendations</h3><ol><li><strong>Create a Content Hub for ZZP 2025</strong>:</li></ol><ul><li>Replace single broad article with comprehensive hub containing:</li><li>Overview page summarizing key changes</li><li>Detailed pages on specific regulations</li><li>Compliance checklists for businesses</li><li>Case studies showing how PIHR has helped clients navigate similar changes</li><li>FAQ section with schema markup for featured snippets</li></ul><br><ol><li><strong>Optimize Existing ZZP Content</strong>:</li></ol><ul><li>Refine keyword targeting on the "Werken met zzp'ers na 1 januari 2025" page</li><li>Enhance on-page SEO elements following competitor best practices</li><li>Add visual elements like infographics or videos to increase engagement</li></ul><br><ol><li><strong>Create Targeted Long-Tail Content</strong>:</li></ol><ul><li>Develop separate articles for specific aspects of ZZP 2025 regulations:</li><li>"ZZP Contract 2025: What You Need to Know"</li><li>"ZZP Belastingdienst 2025: Changes and Implications"</li><li>"ZZP Wetgeving 2025: A Comprehensive Guide"</li></ul><br><ol><li><strong>Develop HR Dictionary Format Content</strong>:</li></ol><ul><li>Create a dedicated "Organisatieontwikkeling" dictionary page to compete with Personio.nl</li><li>Include practical tips and implementation guidance</li><li>Optimize for the keyword "organisatieontwikkelingen" (search volume: 390)</li></ul><br><ol><li><strong>Leverage Seasonal Trends</strong>:</li></ol><ul><li>Schedule content updates for November/December to capitalize on peak search interest</li><li>Plan promotional campaigns around seasonal keyword trends</li></ul><br><ol><li><strong>Content Format Diversification</strong>:</li></ol><ul><li>Experiment with different content formats beyond blog posts</li><li>Create infographics, videos, or interactive tools to engage users</li><li>Develop downloadable resources as lead magnets</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Finalize hub structure and outline content briefs by end of month; begin drafting priority pages in December.</li></ul><br><h3 id="keyword-targeting-recommendations">Keyword Targeting Recommendations</h3><p><strong>Top Priority Keywords</strong>:</p><ol><li><strong>zzp 2025</strong> (8100 avg. searches, MEDIUM competition)</li></ol><ul><li>Create comprehensive guide on the new legislation</li><li>Include expert commentary and practical implications</li></ul><br><ol><li><strong>zzp-wetgeving 2025</strong> (985 avg. searches, MEDIUM competition)</li></ol><ul><li>Develop detailed analysis of specific legislative changes</li><li>Include implementation timeline and compliance requirements</li></ul><br><ol><li><strong>modelovereenkomst zzp belastingdienst 2025</strong> (73 avg. searches, MEDIUM competition)</li></ol><ul><li>Develop downloadable templates as lead magnets</li><li>Create step-by-step guide for compliance</li></ul><br><ol><li><strong>organisatieontwikkelingen</strong> (390 avg. searches, MEDIUM competition)</li></ol><ul><li>Create HR dictionary-style content similar to Personio's approach</li><li>Include practical implementation guidance and case studies</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Sequence content production starting with high-volume, medium-competition keywords, then layer in specialized long-tail assets to build authority and linkability.</li></ul><br><p><strong>Secondary Keywords</strong>:</p><ol><li><strong>nieuwe regels zzp 2025 belastingdienst</strong> (84 avg. searches, MEDIUM competition)</li><li><strong>arbeidsrecht advies</strong> (230 avg. searches, HIGH competition)</li><li><strong>juridisch advies arbeidsrecht gratis</strong> (180 avg. searches, HIGH competition)</li><li><strong>handhaving belastingdienst zzp 2025</strong> (50 avg. searches, MEDIUM competition)</li></ol><br><h3 id="backlink-acquisition-strategy">Backlink Acquisition Strategy</h3><ol><li><strong>Diversify Referring Domains</strong>:</li></ol><ul><li><strong>Current Issue</strong>: Heavy reliance on a small number of referring domains (7 total)</li><li><strong>Recommendation</strong>: Develop relationships with 15-20 new authoritative Dutch websites in the HR, legal, and business sectors</li></ul><br><ol><li><strong>Improve Backlink Quality</strong>:</li></ol><ul><li><strong>Current Issue</strong>: Several backlinks appear to be from SEO service providers</li><li><strong>Recommendation</strong>: Focus on earning natural backlinks through high-quality content and industry relationships</li></ul><br><ol><li><strong>Target Specific Opportunities</strong>:</li></ol><ul><li><strong>HR Industry Associations</strong>: Pursue backlinks from Nederlandse Vereniging voor Personeelsmanagement & Organisatieontwikkeling (NVP)</li><li><strong>Legal Resources</strong>: Develop relationships with Dutch legal information portals and law firms</li><li><strong>Business Organizations</strong>: Connect with local chambers of commerce and business networks in target regions</li></ul><br><ol><li><strong>Content-Driven Link Building</strong>:</li></ol><ul><li>Create shareable resources on ZZP 2025 regulations that naturally attract links</li><li>Develop industry reports or surveys that generate media attention</li><li>Create infographics visualizing complex HR regulations that others will want to reference</li></ul><br><ol><li><strong>Local SEO Enhancement</strong>:</li></ol><ul><li>Strengthen presence in Dutch business directories beyond onderde.nl</li><li>Pursue backlinks from local business partners and clients (with permission)</li><li>Develop region-specific content for areas like Nijmegen to attract local links</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft outreach templates for each target segment; schedule initial outreach campaign in January.</li></ul><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><p>PIHR shows promising growth in organic visibility with a remarkable 12009.09% increase in estimated traffic volume over the past year. However, most rankings remain in lower positions (41-100), with no keywords in top 30 positions, indicating significant room for improvement.</p><br><p>Our keyword and competitor analysis reveals that PIHR has established a content focus on ZZP 2025 regulations, but the content is not optimized effectively to compete with authoritative sites like rijksoverheid.nl. The seasonal nature of these keywords presents both a challenge and an opportunity for strategic content planning.</p><br><p>The backlink analysis shows a moderate spam score of 32 and a limited number of referring domains, with heavy reliance on directory listings. While the anchor text distribution is relevant to PIHR's services, there's a clear need to diversify and strengthen the backlink profile with more authoritative industry sources.</p><br><p>By addressing the identified technical SEO issues, optimizing SERP elements following competitor best practices, implementing a comprehensive content hub strategy for key topics, and pursuing a more diverse and authoritative backlink profile, PIHR can substantially improve their organic visibility and traffic in the Dutch market.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Immediate wins: technical fixes and title/meta updates.</li><li>Mid-term wins: content hub launch and backlink diversification.</li><li>Long-term wins: consistent content cadence aligned with seasonal trends and authority-building campaigns.</li></ul><br><p>The competitive analysis shows clear patterns in successful SERP elements and content formats that PIHR can adopt, particularly around title tag optimization, meta description clarity, and content structuring. Implementing these changes would position PIHR to compete more effectively for their target keywords and establish stronger authority in the HR consulting space in the Netherlands.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - PIHR',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

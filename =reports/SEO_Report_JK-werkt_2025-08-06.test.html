@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - JK-werkt</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">JK-werkt • JK-werkt</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Nederland Market</span>
+                        <span><i class="fas fa-calendar"></i> August 6, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th><th>Notes</th></tr></thead><tbody><tr><td class="">Organic Traffic (ETV)</td><td class="negative">-98.41% over last 12 months</td><td class="">From ~10 ETV to 0.147 ETV currently</td></tr><tr><td class="">Keyword Rankings (Positions 1-10)</td><td class="">0 keywords currently</td><td class="">Previously had some keywords in positions 11-20 and 71-80</td></tr><tr><td class="">Keyword Rankings (Positions 61-70)</td><td class="">1 keyword ("website quickscan")</td><td class="">Minimal traffic contribution</td></tr><tr><td class="">Top Underperforming Page</td><td class="">Quickscan page (position ~70)</td><td class="">Needs optimization for Dutch market</td></tr><tr><td class="">Technical SEO Issues</td><td class="">Multiple critical errors identified</td><td class="">HTML errors, oversized DOM, render-blocking scripts, missing alt tags</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The Quickscan page is your strongest existing asset; prioritize on-page optimization to capitalize on low competition and seasonal interest.</li><li>Address technical errors swiftly to restore crawlability and regain lost traffic.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Keywords They Rank Well For</th><th>JK-werkt Ranking for These Keywords</th></tr></thead><tbody><tr><td class="">digitaaltoegankelijk.nl</td><td class="">"website quickscan" (position ~10)</td><td class="">Position 70 (very low)</td></tr><tr><td class="">accessibility.nl</td><td class="">"website quickscan" (top 10)</td><td class="">Position 70</td></tr><tr><td class="">digitoegankelijk.nl</td><td class="">Shared keywords (limited overlap)</td><td class="">Poor ranking</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Analyze competitors’ quickscan landing pages for messaging and structure, then implement benefit-focused titles and meta descriptions.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume (NL)</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">"digitale toegankelijkheid website"</td><td class="">~110 monthly</td><td class="">Medium</td><td class="">Core service alignment, medium competition</td></tr><tr><td class="">"website quickscan"</td><td class="">70 monthly</td><td class="">Low</td><td class="">Seasonal peak in spring, low competition</td></tr><tr><td class="">"toegankelijkheid website testen"</td><td class="">~40 monthly</td><td class="">High</td><td class="">Matches quickscan service, high intent</td></tr><tr><td class="">"website testen op toegankelijkheid"</td><td class="">~13 monthly</td><td class="">Medium</td><td class="">Long-tail, qualified leads</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Focus core landing page content around “digitale toegankelijkheid website” to capture higher-volume, medium-competition searches.</li><li>Develop a seasonal campaign calendar for “website quickscan” (March–May).</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>JK-werkt’s organic traffic has plummeted by 98.41% in the last year, with almost no keywords ranking in top positions.</li><li>The Quickscan page is the only page with minimal ranking but is severely underoptimized.</li><li>Critical technical SEO issues (HTML errors, large DOM, render-blocking scripts) are harming crawlability and user experience.</li><li>Competitors outrank JK-werkt on key terms like "website quickscan" by using benefit-focused meta descriptions and keyword-optimized titles.</li><li>JK-werkt’s backlink profile is weak: only 9 nofollow backlinks mostly from SEO sites, lacking authoritative Dutch industry links.</li><li>Seasonal spikes in search volume for "website quickscan" (March-May) present a timely opportunity for targeted campaigns.</li><li>Content gaps exist around WCAG guidelines and accessibility testing, with opportunities for educational blog posts and resource pages.</li><li>Recommended actions include fixing technical SEO, optimizing content for target keywords, improving meta tags, and building quality Dutch backlinks.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assemble a cross-functional team (SEO, content, dev) to tackle technical fixes immediately and draft new on-page content for Quickscan.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-jk-werkt" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: JK-werkt</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>JK-werkt is a Dutch company specializing in creating accessible websites and content for entrepreneurs, with additional services including accessibility quick scans, website maintenance, and social media support. This research report analyzes their current SEO performance in the Netherlands, revealing significant challenges including a 98.41% decrease in organic traffic over the past year, numerous technical SEO issues, and a weak backlink profile. We provide actionable recommendations to improve their search visibility and competitive positioning in the Dutch market, with specific keyword opportunities identified and competitor strategies analyzed.</p><br></div></section>
+                <section id="1-company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">1. Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>JK-werkt focuses on website accessibility services, helping businesses create and maintain websites that are accessible to everyone, including people with disabilities. Their core services include:</p><ul><li>Creating accessible websites</li><li>Making existing content (PDF, Word) accessible according to WCAG standards</li><li>Performing accessibility quick scans with detailed reports</li><li>Website maintenance and technical support</li><li>Social media strategy and support</li></ul><p><a href="https://jk-werkt.nl" class="link-reference" target="_blank" rel="noopener">Source: [Company Website</a>]</p><br></div></section>
+                <section id="2-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">2. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><p>Our analysis reveals concerning trends in JK-werkt's organic search performance:</p><br><h3 id="organic-visibility-and-traffic">Organic Visibility and Traffic</h3><ul><li><strong>Severe Traffic Decline</strong>: 98.41% decrease in Estimated Traffic Volume (ETV) from September 2024 to July 2025</li><li><strong>Current Organic Visibility</strong>: Extremely low with only 0.147 ETV in the most recent month</li><li><strong>Position Distribution</strong>: No keywords ranking in positions 1-60, with only one keyword ranking in positions 61-70</li><li><strong>Historical Performance</strong>: Previously had keywords ranking in positions 11-20 and 71-80, which have since been lost</li></ul><br><h3 id="top-underperforming-pages">Top Underperforming Pages</h3><ul><li><strong>Quickscan Page</strong> (https://jk-werkt.nl/quickscan/): Currently ranking in positions 61-70 for one keyword with minimal traffic (0.147 ETV)</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><p>The technical audit revealed several critical issues:</p><ul><li><strong>HTML Structure Problems</strong>: Multiple "The beginning of a new attribute has been expected" errors</li><li><strong>Oversized DOM</strong>: Total DOM size of 200,735, significantly impacting page load speed</li><li><strong>Render-Blocking Resources</strong>: Scripts blocking initial page rendering</li><li><strong>Accessibility Issues</strong>: Missing image alt attributes and title attributes</li><li><strong>Content Optimization Issues</strong>:</li><li>Short title (only 15 characters)</li><li>Low content-to-code ratio</li><li>Node with excessive child elements (more than 60)</li></ul><br><p>Despite these issues, the site does have some positive aspects:</p><ul><li>HTTPS implementation</li><li>Canonical URL structure</li><li>Mobile-friendly design</li><li>SEO-friendly URLs</li><li>Proper gzip compression</li><li>Social media tags implementation</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Tackle HTML and DOM issues in the next sprint to reduce page load times by at least 30%, improving both user experience and crawl efficiency.</li><li>Implement alt attributes sitewide—align fix timeline with development resource availability.</li></ul><br></div></section>
+                <section id="3-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">3. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><p>Our keyword analysis reveals significant opportunities for JK-werkt to improve their organic visibility:</p><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><ul><li><strong>"website quickscan"</strong>: Currently ranking at position 70</li><li>Search Volume: 70 monthly searches</li><li>Competition: Low</li><li>Seasonal Trend: Higher search volumes in spring months (March-May), peaking at 210 searches in March 2025</li></ul><br><h3 id="recommended-target-keywords">Recommended Target Keywords</h3><ol><li><strong>Primary Keywords</strong>:</li></ol><ul><li><strong>"digitale toegankelijkheid website"</strong></li><li>Search Volume: ~110 (12-month average)</li><li>Competition: Medium</li><li>Relevance: Directly aligned with JK-werkt's core service offering</li></ul><br><ol><li><strong>Secondary Keywords</strong>:</li></ol><ul><li><strong>"toegankelijkheid website testen"</strong></li><li>Search Volume: ~40 (12-month average)</li><li>Competition: High</li><li>Relevance: Aligns with JK-werkt's accessibility quick scan service</li></ul><br><ol><li><strong>Long-tail Opportunities</strong>:</li></ol><ul><li><strong>"website testen op toegankelijkheid"</strong></li><li>Search Volume: ~13 (12-month average)</li><li>Competition: Medium</li><li>Relevance: Highly specific phrase likely to attract qualified leads</li></ul><br><h3 id="keyword-insights">Keyword Insights</h3><ul><li><strong>Seasonal Opportunity</strong>: The significant increase in "website quickscan" searches during spring months presents a strategic opportunity for targeted campaigns</li><li><strong>Content Gap</strong>: The low ranking (position 70) for "website quickscan" despite low competition indicates content optimization issues</li><li><strong>WCAG Focus</strong>: SERP snippets highlight the importance of WCAG guidelines, suggesting users are interested in accessibility standards</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Map out a content calendar focusing on WCAG FAQs and quickscan benefits starting February to align with the seasonal spike.</li></ul><br></div></section>
+                <section id="4-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">4. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><p>Our competitive analysis reveals three main competitors in the Dutch website accessibility market:</p><br><h3 id="top-competitors">Top Competitors</h3><ol><li><strong>digitaaltoegankelijk.nl</strong></li></ol><ul><li><strong>Strength</strong>: Strong meta title and description, clear service offering focused on accessibility quickscan</li><li><strong>Keyword Performance</strong>: Outranking JK-werkt for "website quickscan"</li><li><strong>Content Strategy</strong>: Direct, benefit-focused messaging in meta descriptions</li></ul><br><ol><li><strong>www.accessibility.nl</strong></li></ol><ul><li><strong>Strength</strong>: High ranking for shared keywords, clear service offering</li><li><strong>Keyword Performance</strong>: Outranking JK-werkt for "website quickscan"</li><li><strong>Content Strategy</strong>: Focus on the goal of quickscan (quickly identifying accessibility issues)</li></ul><br><ol><li><strong>digitoegankelijk.nl</strong></li></ol><ul><li><strong>Strength</strong>: High ranking for one shared keyword</li><li><strong>Keyword Performance</strong>: Limited keyword overlap but strong performance where overlap exists</li></ul><br><h3 id="competitive-serp-analysis">Competitive SERP Analysis</h3><ul><li><strong>Title Tag Comparison</strong>:</li><li>JK-werkt: "Quickscan digitale toegankelijkheid" (15 characters)</li><li>digitaaltoegankelijk.nl: "Quickscan Digitale Toegankelijkheid" (more keyword-focused)</li><li>accessibility.nl: "Quickscan" (direct and concise)</li></ul><br><ul><li><strong>Meta Description Comparison</strong>:</li><li>JK-werkt: Focuses on explaining WCAG guidelines (technical approach)</li><li>Competitors: Focus on benefits and purpose of a quickscan (user-centric approach)</li></ul><br><h3 id="competitive-content-strategy-insights">Competitive Content Strategy Insights</h3><ul><li>Competitors use dedicated pages to describe their quickscan service</li><li>Competitors' meta descriptions emphasize benefits rather than technical explanations</li><li>Competitors' titles directly include target keywords</li><li>All competitors focus on the same primary keyword: "website quickscan" (70 monthly searches)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Run A/B tests on Quickscan page meta descriptions: technical vs. benefit-led copy to gauge user engagement improvements.</li></ul><br></div></section>
+                <section id="5-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">5. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><p>Our backlink analysis reveals significant weaknesses in JK-werkt's link profile that are likely contributing to their poor organic performance:</p><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li><strong>Total Backlinks</strong>: Only 9 backlinks</li><li><strong>Referring Domains</strong>: 9 unique domains (8 main domains)</li><li><strong>Backlink Quality</strong>: Medium spam score (40%), indicating moderate quality concerns</li><li><strong>Link Attributes</strong>: 100% nofollow links, providing minimal SEO value</li><li><strong>Link Types</strong>: 5 anchor text links, 4 image links</li><li><strong>Referring Domain Types</strong>: Primarily SEO-related websites rather than industry-relevant sources</li></ul><br><h3 id="backlink-quality-assessment">Backlink Quality Assessment</h3><ul><li><strong>Spam Score Distribution</strong>:</li><li>Low spam score (0-30%): 1 domain (royalseohub.com)</li><li>Medium spam score (31-60%): 7 domains (including seobacklinks.agency, rankgrow.agency, backlink.wiki)</li><li>High spam score (61-100%): None</li></ul><br><h3 id="backlink-issues">Backlink Issues</h3><ul><li><strong>No Dofollow Links</strong>: All 9 backlinks are nofollow, severely limiting their SEO value</li><li><strong>Non-Relevant Sources</strong>: Most backlinks come from SEO service websites rather than accessibility, web design, or Dutch business websites</li><li><strong>Anchor Text Issues</strong>: Anchor texts are primarily URLs or generic text, not optimized for target keywords</li><li><strong>Limited Geographic Diversity</strong>: Limited presence of Netherlands-based referring domains</li></ul><br><h3 id="positive-aspects">Positive Aspects</h3><ul><li><strong>No Broken Backlinks</strong>: All backlinks are functional</li><li><strong>No Toxic Links</strong>: No high spam score backlinks detected</li><li><strong>Strong Internal Linking</strong>: 467 internal links across 28 crawled pages, indicating good internal navigation structure</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Launch a targeted outreach campaign to Dutch accessibility forums, industry blogs, and local business directories for high-value dofollow links.</li></ul><br></div></section>
+                <section id="6-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">6. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><p>Based on our comprehensive analysis, we recommend a multi-faceted approach to improve JK-werkt's search visibility:</p><br><h3 id="technical-seo-improvements">Technical SEO Improvements</h3><ol><li><strong>Fix HTML Structure Issues</strong>: Address the numerous HTML errors to ensure proper rendering and crawling</li><li><strong>Optimize DOM Size</strong>: Reduce the DOM size by simplifying page structure and removing unnecessary elements</li><li><strong>Address Render-Blocking Resources</strong>: Defer or async non-critical JavaScript and CSS</li><li><strong>Improve Accessibility Attributes</strong>: Add descriptive alt tags to all images (ironically important for an accessibility-focused company)</li><li><strong>Optimize Title Tags</strong>: Expand the current 15-character title to include relevant keywords (30-60 characters)</li><li><strong>Increase Content-to-Code Ratio</strong>: Add more valuable text content while reducing unnecessary code</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Integrate SEO tasks into sprint planning to ensure simultaneous fixes across technical and content teams, driving faster impact.</li></ul><br><h3 id="keyword-focused-content-optimization">Keyword-Focused Content Optimization</h3><ol><li><strong>Quickscan Page Optimization</strong>:</li></ol><ul><li>Revamp title tag to include "website quickscan" and "digitale toegankelijkheid"</li><li>Add comprehensive H1, H2, and H3 headings with target keywords</li><li>Expand content to provide in-depth information about the quickscan process, benefits, and WCAG guidelines</li><li>Add internal links from other relevant pages using optimized anchor text</li><li>Optimize images with descriptive alt text including target keywords</li></ul><br><ol><li><strong>Seasonal Content Strategy</strong>:</li></ol><ul><li>Develop promotional campaigns for the Quickscan service targeting March-May when search volume peaks</li><li>Create time-limited offers to capitalize on seasonal interest</li><li>Publish blog content about website accessibility audits in February to capture early interest</li></ul><br><ol><li><strong>Blog Content Development</strong>:</li></ol><ul><li>Create educational articles targeting identified keywords:</li><li>"Waarom is een website quickscan belangrijk?" (Why is a website quickscan important?)</li><li>"Hoe werkt een digitale toegankelijkheid website audit?" (How does a digital accessibility website audit work?)</li><li>"WCAG richtlijnen: Wat je moet weten voor jouw website" (WCAG guidelines: What you need to know for your website)</li><li>"Toegankelijkheid website testen: Een complete gids" (Testing website accessibility: A complete guide)</li></ul><br><ol><li><strong>Content Expansion</strong>:</li></ol><ul><li>Create dedicated landing pages for each major accessibility service</li><li>Develop case studies showcasing successful accessibility implementations</li><li>Create an accessibility resource center with downloadable guides and checklists</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign copywriting tasks for Quickscan page and priority blog posts, with draft deadlines within 2 weeks.</li></ul><br><h3 id="competitor-informed-strategy">Competitor-Informed Strategy</h3><p>Based on our competitive analysis, we recommend:</p><br><ol><li><strong>Meta Description Optimization</strong>:</li></ol><ul><li>Rewrite the Quickscan page meta description to focus on benefits rather than technical WCAG explanations</li><li>Emphasize quick identification of accessibility issues and value proposition</li><li>Keep description concise and action-oriented like competitors</li></ul><br><ol><li><strong>Title Tag Improvement</strong>:</li></ol><ul><li>Change the title tag to more closely match the keyword "website quickscan" or "Quickscan Digitale Toegankelijkheid"</li><li>Ensure title is properly formatted and optimized for length (30-60 characters)</li></ul><br><ol><li><strong>Content Structure Improvements</strong>:</li></ol><ul><li>Review competitors' quickscan pages to identify effective content structures</li><li>Ensure content clearly addresses user search intent</li><li>Highlight benefits, process, and value of the quickscan service</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Implement iterative updates to meta tags and monitor CTR changes in Search Console to refine messaging.</li></ul><br><h3 id="link-building-strategy">Link Building Strategy</h3><p>Based on our backlink analysis, we recommend a comprehensive approach to improve JK-werkt's link profile:</p><br><ol><li><strong>Industry-Relevant Link Building</strong>:</li></ol><ul><li>Target Dutch web accessibility organizations and communities for guest posting opportunities</li><li>Reach out to Dutch web design agencies for partnership opportunities and backlinks</li><li>Create shareable accessibility resources that naturally attract links from relevant sources</li></ul><br><ol><li><strong>Quality Over Quantity</strong>:</li></ol><ul><li>Focus on acquiring dofollow links from authoritative Dutch websites</li><li>Prioritize links from websites with low spam scores and high domain authority</li><li>Avoid further links from generic SEO service websites</li></ul><br><ol><li><strong>Local Link Building</strong>:</li></ol><ul><li>Target Dutch business directories and chambers of commerce</li><li>Pursue local business partnerships and testimonial opportunities</li><li>Engage with Dutch accessibility forums and communities</li></ul><br><ol><li><strong>Content-Driven Link Acquisition</strong>:</li></ol><ul><li>Create linkable assets such as accessibility checklists, WCAG guideline summaries, and case studies</li><li>Develop a Dutch-language accessibility resource center to attract natural backlinks</li><li>Consider creating a free basic accessibility testing tool to attract links</li></ul><br><ol><li><strong>Anchor Text Optimization</strong>:</li></ol><ul><li>When acquiring new links, ensure anchor texts include target keywords where possible</li><li>Vary anchor texts to maintain a natural link profile</li><li>Focus on descriptive anchor texts related to accessibility services</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft an outreach email template and identify 10 high-priority Dutch domains for the initial link-building push.</li></ul><br><h3 id="advanced-seo-tactics">Advanced SEO Tactics</h3><ol><li><strong>Schema Markup Implementation</strong>:</li></ol><ul><li>Add service schema to the Quickscan page</li><li>Implement FAQ schema for accessibility-related questions</li><li>Add review schema for client testimonials</li></ul><br><ol><li><strong>User Experience Optimization</strong>:</li></ol><ul><li>Improve site speed by addressing technical issues</li><li>Enhance mobile experience</li><li>Add clear calls-to-action for the Quickscan service</li></ul><br><ol><li><strong>Content Promotion Strategy</strong>:</li></ol><ul><li>Share blog content on social media platforms</li><li>Develop an email marketing campaign highlighting accessibility services</li><li>Consider paid promotion for the Quickscan service during peak search months</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>After implementing schema, track rich result impressions in Google Search Console to measure incremental gains in visibility.</li></ul><br></div></section>
+                <section id="conclusion-and-prioritized-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tasks"></i></div>
+                        <h2 class="section-title">Conclusion and Prioritized Recommendations</h2>
+                    </div>
+                    <div class="section-content"><p>JK-werkt faces significant SEO challenges, including a severe traffic decline, technical issues, weak content optimization, and a poor backlink profile. To reverse these trends, we recommend the following prioritized actions:</p><br><h3 id="immediate-actions-1-30-days-">Immediate Actions (1-30 days):</h3><ol><li>Fix critical technical SEO issues, particularly HTML structure problems and missing alt attributes</li><li>Optimize the Quickscan page title and meta description to target "website quickscan" keyword</li><li>Begin outreach to relevant Dutch accessibility and web design websites for quality backlinks</li></ol><br><h3 id="short-term-actions-1-3-months-">Short-Term Actions (1-3 months):</h3><ol><li>Develop and publish comprehensive blog content targeting identified keywords</li><li>Create dedicated landing pages for each major service with optimized on-page SEO</li><li>Implement schema markup across the website</li><li>Begin building quality, relevant backlinks from Dutch industry sources</li></ol><br><h3 id="medium-term-actions-3-6-months-">Medium-Term Actions (3-6 months):</h3><ol><li>Create linkable assets to attract natural backlinks</li><li>Develop a seasonal content strategy for the spring peak in "website quickscan" searches</li><li>Expand content to address all identified keyword opportunities</li><li>Continue building quality backlinks from relevant sources</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Allocate dedicated bandwidth for ongoing content creation and link outreach—schedule monthly check-ins to maintain momentum and track KPIs.</li></ul></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - JK-werkt',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

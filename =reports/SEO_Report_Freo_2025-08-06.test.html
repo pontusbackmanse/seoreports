@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Freo</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Freo • freo.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Nederland Market</span>
+                        <span><i class="fas fa-calendar"></i> August 6, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>SEO Performance Overview (Last 12 Months)</strong></th><th><strong>Value / Change</strong></th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="positive">48,243.45 (+6.68%)</td></tr><tr><td class="">Total Ranking Keywords</td><td class="">3,305</td></tr><tr><td class="">Keywords in Position 1</td><td class="positive">40 (+17.65%)</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="positive">80 (+95.12%)</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="positive">385 (+72.65%)</td></tr><tr><td class="">Estimated Paid Traffic Cost</td><td class="">€176,207.14</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The +6.68% ETV growth signals healthy momentum. Maintain focus on high-performing pages while diversifying landing pages to capture non-branded demand.</li><li>Consider monitoring monthly ETV trends to detect shifts early.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Top Competitors & Keywords They Rank Well For</strong></th><th><strong>Freo Position</strong></th><th><strong>Competitor</strong></th><th><strong>Competitor Position</strong></th></tr></thead><tbody><tr><td class="">geld lenen</td><td class="">Outside top 10</td><td class="">Geld.nl</td><td class="">Top 3</td></tr><tr><td class="">BKR registratie</td><td class="">Outside top 10</td><td class="">Geld.nl</td><td class="">Top 5</td></tr><tr><td class="">lening aanvragen</td><td class="">Outside top 10</td><td class="">Pricewise.nl</td><td class="">Top 5</td></tr><tr><td class="">hoeveel kan ik lenen</td><td class="">12</td><td class="">Pricewise.nl</td><td class="">Top 3</td></tr><tr><td class="">snel geld lenen</td><td class="">Outside top 10</td><td class="">Becam.nl</td><td class="">Top 5</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize content and on-page optimization for these five high-impact keywords.</li><li>Map each keyword to a dedicated landing page and set clear ranking targets (e.g., Top 5 in 3 months).</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Opportunity Keywords to Target</strong></th><th><strong>Search Volume</strong></th><th><strong>Competition</strong></th><th><strong>Why Important</strong></th></tr></thead><tbody><tr><td class="">geld lenen</td><td class="">40,500</td><td class="">High</td><td class="">Broad, high-volume, strong commercial intent</td></tr><tr><td class="">lening aanvragen</td><td class="">14,800</td><td class="">High</td><td class="">Users ready to apply loans</td></tr><tr><td class="">BKR registratie</td><td class="">27,100</td><td class="">Medium</td><td class="">Competitors outrank Freo; high informational need</td></tr><tr><td class="">rente op lening berekenen</td><td class="">780</td><td class="">Medium</td><td class="">High commercial intent, loan cost research</td></tr><tr><td class="">hoeveel kan ik lenen</td><td class="">8,100</td><td class="">Medium</td><td class="">Freo ranks #12; opportunity to improve</td></tr><tr><td class="">elektrische auto financieren</td><td class="">90</td><td class="">Low</td><td class="">Growing EV financing interest</td></tr><tr><td class="">online persoonlijke lening afsluiten</td><td class="">30</td><td class="">Low</td><td class="">Emerging online loan application trend</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Focus initial efforts on “geld lenen,” “lening aanvragen,” and “BKR registratie” for maximum impact.</li><li>Allocate content resources to medium-volume, medium-competition terms like “hoeveel kan ik lenen” to gain quick ranking improvements.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Freo’s organic visibility and traffic have grown steadily (+6.68% ETV), with strong rankings for branded and some non-branded keywords.</li><li>Homepage dominates but over-ranks for diverse keywords; dedicated landing pages needed for better targeting.</li><li>Critical technical issue: timeout error (50402) affecting crawlability and user experience.</li><li>Broken backlinks are a major problem: 2,661 broken links (77% of total) require urgent fixing.</li><li>Competitors (Geld.nl, Pricewise.nl, Becam.nl) outrank Freo on high-volume, high-intent keywords like "geld lenen," "BKR registratie," and "lening aanvragen."</li><li>Content gaps exist in BKR-related topics, loan calculators, and comparison content.</li><li>Backlink profile has moderate authority but contains toxic links; disavow and recovery needed.</li><li>Strong opportunities in EV financing content, loan calculators, and enhanced "Mijn Freo" support content.</li><li>Quick wins include fixing broken backlinks, improving meta titles/descriptions, and creating a BKR FAQ page.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>This summary maps directly to actionable tasks. Begin with quick wins to build internal momentum and demonstrate ROI before tackling larger content projects.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-freo" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Freo</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Freo is a financial service provider based in the Netherlands that specializes in offering personal loans with transparent terms and fixed interest rates. As part of the Rabobank group, they provide loans for various purposes including car purchases, home renovations, and sustainability improvements, emphasizing responsible lending practices. <a href="https://freo.nl" class="link-reference" target="_blank" rel="noopener">Company Website</a></p><br></div></section>
+                <section id="research-scope" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Research Scope</h2>
+                    </div>
+                    <div class="section-content"><p>This report aims to provide a comprehensive SEO analysis for Freo in the Dutch market, focusing on their current performance, keyword opportunities, competitive landscape, and backlink profile to identify actionable improvements.</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-traffic">Organic Visibility and Traffic</h3><ul><li><strong>Growth Trend</strong>: Freo.nl has experienced a +6.68% increase in Estimated Traffic Volume (ETV) from August 2024 to July 2025 [SEO Performance Data]</li><li><strong>Current Position Distribution</strong>:</li><li>Position 1: 40 keywords (+17.65% increase)</li><li>Positions 2-3: 80 keywords (+95.12% increase)</li><li>Positions 4-10: 385 keywords (+72.65% increase)</li><li>Positions 11-20: 327 keywords (+1.87% increase)</li><li>Positions 21-100: 2,473 keywords (various increase percentages)</li><li><strong>Latest ETV</strong>: 48,243.45 with 3,305 ranking keywords [SEO Performance Data]</li><li><strong>Estimated Paid Traffic Cost</strong>: €176,207.14, indicating the value of their organic traffic [SEO Performance Data]</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Monitor monthly ETV and keyword position changes via dashboard.</li><li>Set up alerts for sudden drops in top-10 keywords to act quickly.</li></ul><br><h3 id="content-performance-analysis">Content Performance Analysis</h3><br><h4 id="top-performing-pages-">Top-Performing Pages:</h4><ul><li><strong>Homepage</strong> (https://www.freo.nl/): Dominates with highest ETV (40,390.80) and ranks for 2,220 keywords [SEO Performance Data]</li><li><strong>Auto Loan Category</strong> (https://www.freo.nl/waarvoor-kan-ik-lenen/auto/): Strong performer with position 1 rankings [SEO Performance Data]</li><li><strong>Personal Loan Page</strong> (https://www.freo.nl/geld-lenen/persoonlijke-lening/): Secures position 1 rankings with high ETV [SEO Performance Data]</li><li><strong>Login FAQ Page</strong> (https://www.freo.nl/faq/hoe-kan-ik-inloggen-op-mijn-freo/): Strong performer in the FAQ category [SEO Performance Data]</li><li><strong>Electric Car Financing Page</strong> (https://www.freo.nl/waarvoor-kan-ik-lenen/elektrische-auto/): Ranks #1 for "elektrische auto financieren" (90 monthly searches) [Keyword Analysis Data]</li></ul><br><h4 id="underperforming-pages-">Underperforming Pages:</h4><ul><li><strong>Doorlopend Krediet Page</strong> (https://www.freo.nl/geld-lenen/doorlopend-krediet/): Despite ranking #1 for relevant keywords, the page actively discourages clicks by stating this product is no longer offered [Keyword Analysis Data]</li><li><strong>Leentips-Nieuws Category</strong>: Blog-style content generally underperforms with lower ETVs and rankings mostly in positions 21-100 [SEO Performance Data]</li><li>Example: https://www.freo.nl/leentips-nieuws/wat-staat-er-op-mijn-loonstrookje/ (low ETV)</li><li>Example: https://www.freo.nl/leentips-nieuws/nieuwe-leennormen-per-4-september-2023/ (very low ETV, positions 51-60)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Revamp or consolidate underperforming blog pages into comprehensive resource guides to boost engagement.</li><li>Consider merging low-value posts under broader themes (e.g., “Leentips” cluster) to improve authority and internal linking.</li></ul><br><h3 id="content-structure-analysis">Content Structure Analysis</h3><p>Freo's website is organized into several key categories:</p><ol><li><strong>Homepage</strong>: Main entry point with broad loan-related terms</li><li><strong>"Waarvoor kan ik lenen" (What can I borrow for?)</strong>: Targets specific loan purposes (auto, renovation, solar panels, etc.)</li><li><strong>"Geld Lenen" (Borrowing Money)</strong>: Covers general loan topics and products</li><li><strong>"Leentips-Nieuws" (Loan Tips-News)</strong>: Blog-style educational content</li><li><strong>"Service-en-Contact"</strong>: Customer service and contact information</li><li><strong>"Mijn Freo"</strong>: Customer portal information</li></ol><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><ul><li>Critical timeout error (error code 50402) detected, potentially affecting site accessibility and crawlability [SEO Performance Data]</li><li>Minimal paid search activity, suggesting an opportunity to complement organic efforts with targeted paid campaigns</li><li>Homepage over-ranking for diverse keywords, indicating a lack of specific, targeted landing pages [Keyword Analysis Data]</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Urgently resolve the 50402 timeout error to restore crawlability.</li><li>Conduct a technical audit post-fix to ensure no residual issues.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-performing-keywords-positions-1-3-">Top Performing Keywords (Positions 1-3)</h3><p>Freo.nl ranks exceptionally well for branded keywords and several high-value non-branded terms:</p><br><h4 id="branded-keywords-selection-">Branded Keywords (Selection):</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th><th>URL</th></tr></thead><tbody><tr><td class="">freo</td><td class="">14,800</td><td class="">1</td><td class="">https://www.freo.nl/</td></tr><tr><td class="">freo mijn</td><td class="">5,400</td><td class="">1</td><td class="">https://www.freo.nl/</td></tr><tr><td class="">freo inloggen</td><td class="">2,400</td><td class="">2</td><td class="">https://www.freo.nl/faq/hoe-kan-ik-inloggen-op-mijn-freo/</td></tr><tr><td class="">freo lening</td><td class="">1,900</td><td class="">1</td><td class="">https://www.freo.nl/</td></tr><tr><td class="">freo geld lenen</td><td class="">1,000</td><td class="">1</td><td class="">https://www.freo.nl/</td></tr><tr><td class="">freo persoonlijke lening</td><td class="">880</td><td class="">1</td><td class="">https://www.freo.nl/geld-lenen/persoonlijke-lening/</td></tr><tr><td class="">mijn freo inloggen</td><td class="">880</td><td class="">2</td><td class="">https://www.freo.nl/service-en-contact/mijn-freo/</td></tr></tbody></table></div><h4 id="non-branded-keywords-selection-">Non-Branded Keywords (Selection):</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th><th>URL</th></tr></thead><tbody><tr><td class="">lenen voor verbouwen</td><td class="">720</td><td class="">1</td><td class="">https://www.freo.nl/waarvoor-kan-ik-lenen/verbouwing/</td></tr><tr><td class="">elektrische auto financieren</td><td class="">90</td><td class="">1</td><td class="">https://www.freo.nl/waarvoor-kan-ik-lenen/elektrische-auto/</td></tr><tr><td class="">online lenen</td><td class="">320</td><td class="">1</td><td class="">https://www.freo.nl/</td></tr><tr><td class="">persoonlijke lening voor verbouwing</td><td class="">140</td><td class="">1</td><td class="">https://www.freo.nl/waarvoor-kan-ik-lenen/verbouwing/</td></tr></tbody></table></div><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Branded terms show strong domain authority; non-branded wins indicate content relevance. Balance efforts across both to diversify traffic sources.</li></ul><br><h3 id="high-value-keyword-opportunities">High-Value Keyword Opportunities</h3><p>Based on search volume, competition level, and commercial intent, these keywords present significant opportunities:</p><br><h4 id="top-priority-keywords-">Top Priority Keywords:</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th><th>Rationale</th></tr></thead><tbody><tr><td class="">geld lenen</td><td class="">40,500</td><td class="">HIGH</td><td class="">Broad, high-volume term with both informational and transactional intent [Competitive Analysis Data]</td></tr><tr><td class="">lening aanvragen</td><td class="">14,800</td><td class="">HIGH</td><td class="">Strong transactional intent, users ready to apply [Competitive Analysis Data]</td></tr><tr><td class="">BKR registratie</td><td class="">27,100</td><td class="">MEDIUM</td><td class="">High informational intent, competitors outranking Freo [Competitive Analysis Data]</td></tr><tr><td class="">rente op lening berekenen</td><td class="">780</td><td class="">MEDIUM</td><td class="">High commercial intent, users actively researching loan costs</td></tr><tr><td class="">lening berekenen rente</td><td class="">780</td><td class="">MEDIUM</td><td class="">Similar intent, different phrasing</td></tr></tbody></table></div><h4 id="secondary-keywords-">Secondary Keywords:</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th><th>Rationale</th></tr></thead><tbody><tr><td class="">auto financieren</td><td class="">5,400</td><td class="">MEDIUM</td><td class="">Specific loan purpose with good volume [Competitive Analysis Data]</td></tr><tr><td class="">hoeveel kan ik lenen</td><td class="">8,100</td><td class="">MEDIUM</td><td class="">Freo currently ranks #12, opportunity to improve [Competitive Analysis Data]</td></tr><tr><td class="">snel geld lenen</td><td class="">8,100</td><td class="">HIGH</td><td class="">High transactional intent [Competitive Analysis Data]</td></tr><tr><td class="">persoonlijke lening afsluiten</td><td class="">300</td><td class="">HIGH</td><td class="">Clear commercial intent</td></tr><tr><td class="">lening ing berekenen</td><td class="">660</td><td class="">MEDIUM</td><td class="">High volume with moderate competition</td></tr></tbody></table></div><h4 id="long-tail-opportunities-">Long-Tail Opportunities:</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th><th>Rationale</th></tr></thead><tbody><tr><td class="">hoe lang duurt een lening aanvragen rabobank</td><td class="">63</td><td class="">LOW</td><td class="">Specific question, low competition</td></tr><tr><td class="">online persoonlijke lening afsluiten</td><td class="">30</td><td class="">LOW</td><td class="">Growing interest in online applications</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Kick off targeted content for “hoeveel kan ik lenen” with an interactive calculator to leapfrog Pricewise.nl.</li><li>Bundle related “berekenen” terms into a single, comprehensive calculation hub.</li></ul><br><h3 id="keyword-gaps-and-content-opportunities">Keyword Gaps and Content Opportunities</h3><ol><li><strong>Loan Calculator Terms</strong>: Strong search volume for "berekenen" (calculate) keywords indicates demand for interactive loan calculation tools</li><li><strong>Electric Vehicle Financing</strong>: Growing interest in "elektrische auto financieren" presents opportunity for expanded content</li><li><strong>BKR-Related Queries</strong>: Searches for "freo geld lenen zonder bkr" (1,000 monthly searches) indicate need for educational content about credit checks</li><li><strong>"Mijn Freo" Support</strong>: High search volume (5,400) for account access terms suggests need for enhanced support content</li><li><strong>Comparison-Focused Keywords</strong>: Missing opportunities for keywords containing "vergelijken" (compare) [Competitive Analysis Data]</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conceptualize and build an interactive loan calculator module.</li><li>Draft a BKR primer article and FAQ cluster to capture informational intent.</li></ul><br><h3 id="seasonal-trends">Seasonal Trends</h3><p><strong>Note</strong>: Additional research needed to identify seasonal patterns in loan-related searches in the Netherlands.</p><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-competitors-overview">Top Competitors Overview</h3><br><h4 id="1-geld-nl">1. Geld.nl</h4><ul><li><strong>Type</strong>: Direct competitor; comparison platform for loans and mortgages</li><li><strong>Key Strengths</strong>:</li><li>High estimated traffic volume</li><li>Consistently outranks Freo for many relevant keywords</li><li>Strong SERP elements emphasizing comparison and savings</li><li>Effective use of question-based titles and savings claims in meta descriptions</li><li>Comprehensive comparison tables showcasing different loan options</li><li><strong>Sample Strategy</strong>: Uses titles that include questions ("Geld lenen?"), benefits ("Goedkoop én verantwoord lenen"), and calls to action ("Vergelijk nu!") [Competitive Analysis Data]</li></ul><br><h4 id="2-pricewise-nl">2. Pricewise.nl</h4><ul><li><strong>Type</strong>: Direct competitor; comparison platform for financial products</li><li><strong>Key Strengths</strong>:</li><li>High estimated traffic volume</li><li>Ranks higher than Freo for many key terms</li><li>Focuses on providing "best" loan overviews and rate comparisons</li><li>Effective use of year-specific content (e.g., "2025") in titles</li><li>Interactive calculators for loan amount estimation</li><li><strong>Sample Strategy</strong>: Emphasizes "reliable overview" and comparing "rente én voorwaarden" (interest and conditions) in meta descriptions [Competitive Analysis Data]</li></ul><br><h4 id="3-becam-nl">3. Becam.nl</h4><ul><li><strong>Type</strong>: Direct competitor; direct loan provider</li><li><strong>Key Strengths</strong>:</li><li>Outranks Freo for keywords related to BKR registration</li><li>Strong performance for "snel geld lenen" (fast money lending)</li><li>Emphasizes a "hassle-free" lending experience</li><li><strong>Sample Strategy</strong>: Focuses on speed and simplicity of the loan process [Competitive Analysis Data]</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Freo’s advantage lies in transparent, fixed-rate loans. Emphasize this USP in comparison tables and meta descriptions to differentiate from aggregators.</li></ul><br><h3 id="keyword-performance-comparison">Keyword Performance Comparison</h3><br><h4 id="keywords-where-competitors-outperform-freo-">Keywords Where Competitors Outperform Freo:</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Freo Position</th><th>Top Competitor</th><th>Competitor Position</th></tr></thead><tbody><tr><td class="">Geld Lenen</td><td class="">40,500</td><td class="">Outside top 10</td><td class="">Geld.nl</td><td class="">Top 3</td></tr><tr><td class="">BKR Registratie</td><td class="">27,100</td><td class="">Outside top 10</td><td class="">Geld.nl</td><td class="">Top 5</td></tr><tr><td class="">Lening Aanvragen</td><td class="">14,800</td><td class="">Outside top 10</td><td class="">Pricewise.nl</td><td class="">Top 5</td></tr><tr><td class="">Hoeveel Kan Ik Lenen</td><td class="">8,100</td><td class="">12</td><td class="">Pricewise.nl</td><td class="">Top 3</td></tr><tr><td class="">Snel Geld Lenen</td><td class="">8,100</td><td class="">Outside top 10</td><td class="">Becam.nl</td><td class="">Top 5</td></tr></tbody></table></div><h3 id="competitor-content-strategy-analysis">Competitor Content Strategy Analysis</h3><br><h4 id="successful-content-types-formats-">Successful Content Types & Formats:</h4><ol><li><strong>Comparison Tables</strong>: Geld.nl effectively uses comparison tables to showcase different loan options and rates</li><li><strong>Calculators</strong>: Pricewise.nl offers tools to calculate maximum loan amounts, attracting users researching borrowing capacity</li><li><strong>FAQ Sections</strong>: Pricewise.nl uses comprehensive FAQ sections to address common questions about BKR registration</li><li><strong>Blog Posts</strong>: Geld.nl uses targeted blog posts for informational keywords like "Uitbetaling UWV" [Competitive Analysis Data]</li></ol><br><h4 id="serp-strategy-patterns-">SERP Strategy Patterns:</h4><ol><li><strong>Comparison Focus</strong>: Competitors emphasize ability to compare loan options, appealing to research-phase users</li><li><strong>Savings Claims</strong>: Geld.nl specifically mentions potential savings (e.g., "bespaar gemiddeld € 580!")</li><li><strong>Question-Based Titles</strong>: Asking questions in titles increases click-through rates</li><li><strong>Clear Calls to Action</strong>: Competitors use strong CTAs like "Vergelijk nu!" (Compare now!) [Competitive Analysis Data]</li></ol><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li><strong>Total Backlinks</strong>: 3,435 backlinks pointing to Freo.nl [Backlink Analysis Data]</li><li><strong>Referring Domains</strong>: 2,119 unique domains linking to Freo.nl [Backlink Analysis Data]</li><li><strong>Domain Rank</strong>: 235, indicating moderate domain authority [Backlink Analysis Data]</li><li><strong>Backlink Quality</strong>: 36% spam score across all backlinks, suggesting a moderate level of potentially problematic links [Backlink Analysis Data]</li></ul><br><h3 id="geographic-distribution">Geographic Distribution</h3><ul><li><strong>Netherlands (NL)</strong>: 2,046 referring links (65% of total) [Backlink Analysis Data]</li><li><strong>Belgium (BE)</strong>: 434 referring links (14% of total) [Backlink Analysis Data]</li><li><strong>.com Domains</strong>: 400 referring links (13% of total) [Backlink Analysis Data]</li><li><strong>Other TLDs</strong>: Including .net (72), .eu (40), and .org (34) [Backlink Analysis Data]</li></ul><br><h3 id="critical-backlink-issues">Critical Backlink Issues</h3><ul><li><strong>Broken Backlinks</strong>: 2,661 broken backlinks (77% of total backlinks), indicating a significant technical issue requiring immediate attention [Backlink Analysis Data]</li><li><strong>Broken Pages</strong>: 90 pages with broken backlinks, suggesting content that has been removed or URLs that have changed without proper redirects [Backlink Analysis Data]</li><li><strong>Toxic Backlinks</strong>: Several domains with high spam scores (65%) linking to Freo.nl, including:</li><li>primedirectoryzone.com</li><li>directorycloudhub.com</li><li>codeseodirectory.com</li><li>prodirectoryguide.com</li><li>ailistingdirectory.com [Backlink Analysis Data]</li></ul><br><h3 id="backlink-competitors-analysis">Backlink Competitors Analysis</h3><p>Freo shares significant backlink overlap with major financial institutions and comparison sites in the Netherlands:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Domain Rank</th><th>Shared Backlinks</th><th>Opportunity</th></tr></thead><tbody><tr><td class="">ing.nl</td><td class="">166</td><td class="">3,909</td><td class="">High</td></tr><tr><td class="">abnamro.nl</td><td class="">163</td><td class="">3,216</td><td class="">High</td></tr><tr><td class="">rabobank.nl</td><td class="">146</td><td class="">2,814</td><td class="">High (parent company)</td></tr><tr><td class="">independer.nl</td><td class="">163</td><td class="">2,629</td><td class="">High</td></tr><tr><td class="">consumentenbond.nl</td><td class="">144</td><td class="">1,770</td><td class="">Medium</td></tr><tr><td class="">nibud.nl</td><td class="">132</td><td class="">1,717</td><td class="">Medium</td></tr><tr><td class="">geld.nl</td><td class="">172</td><td class="">973</td><td class="">High (direct competitor)</td></tr></tbody></table></div><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><ul><li><strong>Brand Anchors</strong>: Most backlinks use brand-related anchor text like "Freo," "Freo leningen," and "Mijn Freo" [Backlink Analysis Data]</li><li><strong>Commercial Anchors</strong>: Some valuable commercial anchors include "Financieren," "geld lenen voor een verbouwing," and "zonnepanelen" [Backlink Analysis Data]</li><li><strong>Generic Anchors</strong>: Many links use generic anchor text like "Klik hier" and "Bezoek de officiële website" [Backlink Analysis Data]</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Disavow all high-spam domains and monitor for new toxic links monthly.</li><li>Reach out to webmasters for 301 redirects on high-value broken backlinks.</li></ul><br><h3 id="link-acquisition-opportunities">Link Acquisition Opportunities</h3><ul><li><strong>Financial Information Sites</strong>: Potential for guest posts or partnerships with authoritative Dutch financial information sites like nibud.nl</li><li><strong>Automotive Websites</strong>: Several car dealership sites like autovanboxtel.nl already link to Freo, suggesting opportunity for more automotive partnerships</li><li><strong>Home Improvement Sites</strong>: Links from sites like homeblend.nl with anchor text "geld lenen voor een verbouwing" indicate potential for more home renovation partnerships</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our analysis of Freo's SEO performance, keyword data, competitive landscape, and backlink profile, we recommend the following content strategy improvements:</p><br><h3 id="critical-issues-to-address">Critical Issues to Address</h3><ol><li><strong>Revise or Remove the "Doorlopend Krediet" Page</strong>: Despite ranking #1 for relevant keywords, this page actively discourages clicks by stating the product is no longer offered. Either:</li></ol><ul><li>Redirect to a relevant alternative product</li><li>Revise content to focus on support for existing accounts</li><li>Create a new page explaining alternative options to "doorlopend krediet"</li></ul><br><ol><li><strong>Create Dedicated Landing Pages</strong>: The homepage currently ranks for too many diverse keywords. Develop specific landing pages for:</li></ol><ul><li>"Geld lenen" (General loan information)</li><li>"Lening aanvragen" (Loan application process)</li><li>"Geld lenen online" (Benefits of online lending)</li></ul><br><ol><li><strong>Fix Broken Backlinks</strong>: Address the 2,661 broken backlinks by:</li></ol><ul><li>Implementing proper 301 redirects for changed URLs</li><li>Restoring valuable content that has been removed</li><li>Creating a systematic process to monitor and maintain backlinks</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Resolving these critical issues will remove major roadblocks and enable Freo to compete effectively on primary loan terms.</li></ul><br><h3 id="competitive-strategy-improvements">Competitive Strategy Improvements</h3><br><ol><li><strong>Develop a BKR Resource Center</strong>:</li></ol><ul><li>Create a comprehensive resource center on BKR, covering topics like checking registration, understanding codes, and lending with a BKR registration</li><li>Develop in-depth articles, FAQs, and potentially a tool to help users understand their BKR status</li><li>Optimize titles and meta descriptions to include relevant keywords like "BKR registratie checken" and "BKR registratie opvragen"</li><li><strong>Rationale</strong>: Competitors consistently outrank Freo for BKR-related queries, indicating a significant opportunity [Competitive Analysis Data]</li></ul><br><ol><li><strong>Incorporate Comparison Elements</strong>:</li></ol><ul><li>Add comparison tables to relevant landing pages, showcasing Freo's loan options alongside market averages</li><li>Create visual comparisons highlighting Freo's unique selling points</li><li><strong>Rationale</strong>: Comparison platforms like Geld.nl and Pricewise.nl are ranking well for general loan keywords [Competitive Analysis Data]</li></ul><br><ol><li><strong>Enhance SERP Elements</strong>:</li></ol><ul><li>Revamp titles and meta descriptions to include stronger calls to action (e.g., "Bereken uw lening direct!" - Calculate your loan now!)</li><li>Highlight key benefits (e.g., "Vaste lage rente" - Fixed low interest rate, "Boetevrij aflossen" - Penalty-free repayment)</li><li>A/B test different title and meta description variations to optimize click-through rate</li><li><strong>Rationale</strong>: Competitors use more compelling SERP elements that attract clicks [Competitive Analysis Data]</li></ul><br><ol><li><strong>Develop a "Hoeveel Kan Ik Lenen" Calculator</strong>:</li></ol><ul><li>Create an interactive calculator that allows users to estimate their maximum loan amount</li><li>Integrate the calculator into relevant landing pages and promote through content marketing</li><li><strong>Rationale</strong>: Pricewise.nl ranks well for this high-volume keyword (8,100 searches) due to its calculator tool [Competitive Analysis Data]</li></ul><br><h3 id="content-expansion-opportunities">Content Expansion Opportunities</h3><ol><li><strong>Enhance Electric Vehicle Financing Content</strong>:</li></ol><ul><li>Create in-depth guides on EV financing options</li><li>Develop content about tax incentives and subsidies</li><li>Add case studies of customers who financed electric cars through Freo</li><li>Create comparison tools for different EV models and their financing</li></ul><br><ol><li><strong>Develop Loan Calculator Content</strong>:</li></ol><ul><li>Create interactive loan calculators targeting "berekenen" keywords</li><li>Develop educational content explaining interest rates and loan costs</li><li>Add comparison tools for different loan types and terms</li></ul><br><ol><li><strong>Improve "Mijn Freo" Support Content</strong>:</li></ol><ul><li>Create a dedicated FAQ section for account management</li><li>Develop video tutorials for using the customer portal</li><li>Add step-by-step guides for common account tasks</li></ul><br><h3 id="backlink-strategy">Backlink Strategy</h3><ol><li><strong>Implement a Backlink Recovery Plan</strong>:</li></ol><ul><li>Audit all 2,661 broken backlinks to identify high-value links to recover</li><li>Create 301 redirects for changed URLs</li><li>Contact webmasters of high-authority sites to update links</li><li><strong>Rationale</strong>: Recovering even a portion of these broken links could significantly improve domain authority [Backlink Analysis Data]</li></ul><br><ol><li><strong>Disavow Toxic Backlinks</strong>:</li></ol><ul><li>Create a disavow file for all backlinks from domains with spam scores above 60%</li><li>Regularly monitor backlink profile for new toxic links</li><li><strong>Rationale</strong>: High-spam backlinks can negatively impact search rankings [Backlink Analysis Data]</li></ul><br><ol><li><strong>Target Industry-Specific Link Building</strong>:</li></ol><ul><li>Develop partnerships with automotive websites for car loan content</li><li>Create co-branded content with home improvement sites for renovation loans</li><li>Guest post on financial education sites like nibud.nl</li><li><strong>Rationale</strong>: Targeted backlinks from relevant industries will improve topical authority [Backlink Analysis Data]</li></ul><br><ol><li><strong>Leverage Rabobank Connection</strong>:</li></ol><ul><li>Explore opportunities for additional backlinks from parent company Rabobank</li><li>Create complementary content that Rabobank can link to</li><li><strong>Rationale</strong>: Rabobank.nl has a high domain rank (146) and already shares 2,814 backlinks [Backlink Analysis Data]</li></ul><br><h3 id="blog-content-strategy">Blog Content Strategy</h3><ol><li><strong>Revitalize Underperforming Blog Content</strong>:</li></ol><ul><li>Update existing articles with current information</li><li>Enhance with interactive elements (calculators, quizzes)</li><li>Improve internal linking structure</li><li>Add clear calls-to-action</li></ul><br><ol><li><strong>Develop Content Clusters</strong>:</li></ol><ul><li>Create topic clusters around key loan purposes (home renovation, car purchase, etc.)</li><li>Develop comprehensive guides for each loan type</li><li>Add expert interviews and customer testimonials</li></ul><br><h3 id="quick-wins">Quick Wins</h3><ol><li><strong>Optimize Titles and Meta Descriptions</strong>: Implement the suggested improvements to titles and meta descriptions for high-traffic landing pages</li><li><strong>Create a BKR FAQ Page</strong>: Develop a comprehensive FAQ page addressing common questions about BKR registration</li><li><strong>Fix Critical Technical Error</strong>: Address the timeout error (error code 50402) affecting site accessibility</li><li><strong>Implement Top Priority 301 Redirects</strong>: Fix the most valuable broken backlinks immediately</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign owners and deadlines for each quick win. Track completion weekly to maintain momentum.</li></ul><br><h3 id="longer-term-opportunities">Longer-Term Opportunities</h3><ol><li><strong>Build a BKR Resource Center</strong>: Develop a comprehensive resource center on BKR registration and its impact on lending</li><li><strong>Develop a Loan Comparison Tool</strong>: Create an interactive tool that allows users to compare Freo's loan options with market averages</li><li><strong>Expand Content Marketing Efforts</strong>: Create blog posts and articles targeting informational keywords related to lending, BKR, and personal finance</li><li><strong>Implement Systematic Backlink Monitoring</strong>: Develop a process to regularly monitor backlink health and quickly address issues</li></ol><br></div></section>
+                <section id="next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-arrow-right"></i></div>
+                        <h2 class="section-title">Next Steps</h2>
+                    </div>
+                    <div class="section-content"><p>To implement this SEO strategy effectively, we recommend:</p><br><ol><li>Prioritize fixing the broken backlinks issue, as this represents a significant opportunity for quick SEO gains</li><li>Address the technical timeout error affecting site accessibility</li><li>Develop a content calendar focusing on the identified keyword gaps and opportunities</li><li>Create a systematic approach to backlink acquisition and monitoring</li><li>Implement regular competitive analysis to stay ahead of market trends</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Establish a cross-functional task force (SEO, content, development) to ensure alignment and expedite execution of this roadmap.</li></ul></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Freo',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

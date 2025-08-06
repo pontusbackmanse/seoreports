@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Cyberwacht</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Cyberwacht • https://decyberwacht.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 6, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="seo-research-report-cyberwacht" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Cyberwacht</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th></tr></thead><tbody><tr><td class="">Total Ranking Keywords</td><td class="">131</td></tr><tr><td class="">Keywords in Position 1</td><td class="">1</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">0</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">18</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="">15</td></tr><tr><td class="">Keywords in Positions 21-30</td><td class="">18</td></tr><tr><td class="">Keywords in Positions 31-100</td><td class="">79</td></tr><tr><td class="">New Rankings (last 12 months)</td><td class="">37</td></tr><tr><td class="">Improved Rankings</td><td class="">38</td></tr><tr><td class="">Declining Rankings</td><td class="">46</td></tr><tr><td class="">Lost Rankings</td><td class="">25</td></tr><tr><td class="">Organic Traffic Growth (12m)</td><td class="positive">+26%</td></tr><tr><td class="">Estimated Monthly Traffic (ETV)</td><td class="">~299.61 visits</td></tr><tr><td class="">Estimated Paid Traffic Value</td><td class="">€590.63</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>With strong mid-range visibility (18 keywords in positions 4–10) but only one top spot, there’s a clear opportunity to push these mid-ranking keywords into positions 1–3 for immediate traffic gains.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct an on-page review for the 18 keywords in positions 4–10 to optimize title tags, meta descriptions, and internal linking to bolster rankings.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Competitor Strengths & Top Keywords (where Cyberwacht ranks poorly)</th></tr></thead><tbody><tr><td class="">Fraudehelpdesk.nl</td><td class="">Strong in "ik ben gehackt," "valse e-mail melden," "phishing mails melden"</td></tr><tr><td class="">Digitaltrustcenter.nl</td><td class="">High rankings for "sms phishing," "gehackt," "ben ik gehackt"</td></tr><tr><td class="">Veiliginternetten.nl</td><td class="">Ranks well for "scamcheck," "veiliginternetten," "valse digid brief," "wat kan ik doen als ik gehackt ben?"</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Competitors leverage dedicated fraud-reporting content and clear CTAs. Cyberwacht can outpace them by integrating reporting tools directly into its service pages.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit existing pages for opportunities to embed “Report Fraud” forms or helpline CTAs, focusing on high-volume competitor keywords.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords (NL Market)</th><th>Search Volume</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">sms phishing</td><td class="">6,600</td><td class="">Low</td><td class="">High volume, low competition, strong intent</td></tr><tr><td class="">valse digid brief</td><td class="">3,600</td><td class="">Low</td><td class="">High volume, relevant scam prevention topic</td></tr><tr><td class="">gehackt</td><td class="">1,900</td><td class="">Low</td><td class="">Core service relevance, brand alignment</td></tr><tr><td class="">ben ik gehackt</td><td class="">1,300</td><td class="">Low</td><td class="">High intent, users seeking help</td></tr><tr><td class="">phishing mails melden</td><td class="">320</td><td class="">Low</td><td class="">Reporting-focused, content gap</td></tr><tr><td class="">kijken of je gehackt bent</td><td class="">390</td><td class="">Low</td><td class="">Long-tail, tool/checklist opportunity</td></tr><tr><td class="">wat moet je doen als je gehackt bent</td><td class="">260</td><td class="">Low</td><td class="">Step-by-step guides needed</td></tr><tr><td class="">ik ben gehackt wat nu</td><td class="">260</td><td class="">Medium</td><td class="">High intent, actionable content needed</td></tr><tr><td class="">malware android verwijderen</td><td class="">210</td><td class="">Medium</td><td class="">Device-specific content gap</td></tr><tr><td class="">whatsapp gehackt herkennen</td><td class="">210</td><td class="">Low</td><td class="">Device-specific, long-tail opportunity</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>High-volume, low-competition terms such as “sms phishing” and “valse digid brief” are quick-win targets perfect for standalone resource pages.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Map each opportunity keyword to a content outline, ensuring clear headings, step-by-step instructions, and CTAs for Cyberwacht helpline services.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Cyberwacht has moderate organic visibility with 131 ranking keywords but only 1 in position 1; strong growth (+26% traffic) driven by improvements in positions 4-10.</li><li>Top competitors (Fraudehelpdesk.nl, Digitaltrustcenter.nl, Veiliginternetten.nl) outrank Cyberwacht on key fraud reporting and phishing-related keywords.</li><li>Significant content gaps exist in reporting mechanisms, device-specific security, and actionable "what to do if hacked" guides.</li><li>Technical SEO issues include missing alt tags, render-blocking scripts, and mixed HTTPS/HTTP links, impacting user experience and rankings.</li><li>Backlink profile is moderately strong with 125 backlinks, but opportunities exist to acquire links from high-authority Dutch sites linking to competitors.</li><li>Toxic backlinks with high spam scores should be disavowed to protect rankings.</li><li>Recommended immediate actions include fixing technical SEO issues, optimizing titles/meta descriptions, and creating targeted content for high-value keywords.</li><li>Medium and long-term strategies focus on tool/resource development, content clusters, backlink outreach, and potential CMS migration for SEO benefits.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Tackling technical SEO fixes and launching two prioritized high-intent content pieces in the next 30 days can yield measurable traffic uplift.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop a 30-day sprint plan: Weeks 1–2 focus on technical fixes; Weeks 3–4 launch “sms phishing” and “wat moet je doen als je gehackt bent” guides.</li></ul><br><hr><br></div></section>
+                <section id="1-company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">1. Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Cyberwacht operates as a telephone helpline service that provides immediate assistance to individuals and businesses who have been hacked or suspect they have been hacked. Their core services include:</p><ul><li>Immediate assistance via telephone helpline</li><li>Malware removal from infected devices</li><li>Investigation of cyberattack causes</li><li>Damage limitation following hacks</li><li>General computer problem solving</li></ul><br><p>Their pricing model offers the first 5 minutes free, followed by €1.49 per minute up to a maximum of €49 per consultation. They operate 6 days a week and have established partnerships with organizations like Student aan Huis. <a href="https://decyberwacht.nl" class="link-reference" target="_blank" rel="noopener">Company Website</a></p><br></div></section>
+                <section id="2-technology-stack-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-analytics"></i></div>
+                        <h2 class="section-title">2. Technology Stack Analysis</h2>
+                    </div>
+                    <div class="section-content"><p>Our analysis of Cyberwacht's technology infrastructure revealed:</p><ul><li>No definitive evidence of WordPress usage in TXT records or technology stack information</li><li>Uncertainty regarding the specific CMS platform being used</li></ul><br><p>This presents both challenges and opportunities:</p><ul><li>WP SEO AI's specialized WordPress tools may require adaptation depending on their actual CMS</li><li>A technical SEO audit could reveal opportunities for platform optimization or potential migration benefits</li><li>Regardless of CMS, many of our SEO recommendations remain applicable across platforms</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>If the CMS remains unknown, conduct a platform-agnostic technical SEO audit first to pinpoint issues before deciding on migration or platform-specific tactics.</li></ul><br></div></section>
+                <section id="3-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">3. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-rankings">Organic Visibility and Rankings</h3><p>Cyberwacht currently shows moderate visibility in Dutch search results for cybersecurity-related terms. Based on our analysis, their current organic visibility metrics are:</p><ul><li>Position 1: 1 keyword</li><li>Positions 2-3: 0 keywords</li><li>Positions 4-10: 18 keywords</li><li>Positions 11-20: 15 keywords</li><li>Positions 21-30: 18 keywords</li><li>Positions 31-100: 79 keywords</li></ul><br><p>This distribution indicates that while they have good mid-range visibility (positions 4-30), there's significant opportunity to improve top-ranking positions.</p><br><h3 id="traffic-growth-analysis">Traffic Growth Analysis</h3><p>Over the past 12 months, Cyberwacht has experienced a 26% increase in organic search traffic in the Netherlands, with current estimated traffic value (ETV) at approximately 299.61 monthly visits. The estimated paid traffic cost equivalent is €590.63, showing the value of their organic traffic. This growth has been driven primarily by improvements in positions 4-10, which saw a 125% increase.</p><br><h3 id="current-ranking-distribution">Current Ranking Distribution</h3><p>The latest data shows Cyberwacht has:</p><ul><li>131 total ranking keywords</li><li>37 new rankings</li><li>38 improved rankings</li><li>46 declining rankings</li><li>25 lost rankings</li></ul><br><p>This indicates a dynamic SEO profile with good acquisition of new rankings but also some volatility that needs to be addressed.</p><br><h3 id="top-performing-pages">Top Performing Pages</h3><ol><li>Homepage (https://decyberwacht.nl) - Ranks for primary brand terms and generates significant estimated traffic</li><li>"Eerste Hulp" section (https://decyberwacht.nl/eerste-hulp/tips-gehackt-instagram-account/) - High performing page with substantial ETV (118.92)</li><li>"Oplichting-Fraude Blogs" section - Contains several well-performing articles on fraud prevention</li></ol><br><h3 id="underperforming-pages">Underperforming Pages</h3><ol><li>Many individual blog posts and tag pages have low ETV and rank in positions 31-100</li><li>Service pages lack depth and keyword optimization</li><li>Several pages in the "Oplichting-Fraude Blogs" category show potential but are underperforming</li></ol><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><ol><li>Missing alt attributes for images, impacting accessibility and SEO</li><li>Render-blocking scripts affecting page load speed</li><li>Low content-to-code ratio on several pages</li><li>HTTPS to HTTP links creating potential security issues</li><li>Several resource errors affecting user experience</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Adding alt tags, deferring or async-loading scripts, and fixing mixed-content errors are quick wins to improve load speed and accessibility, directly impacting rankings.</li></ul><br></div></section>
+                <section id="4-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">4. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><ol><li>"cyberwacht" - Position #1 (brand term)</li><li>"gehackt wat nu" - Position #4-10 range</li><li>"hulp bij hack" - Position #4-10 range</li><li>"computer gehackt hulp" - Position #4-10 range</li><li>"telefoon gehackt hulp" - Position #4-10 range</li></ol><br><h3 id="high-value-target-keywords">High-Value Target Keywords</h3><p>Based on our competitive analysis, we've identified the following high-value keywords with search volumes and competition levels:</p><br><h4 id="high-volume-keywords-1000-monthly-searches-">High Volume Keywords (1000+ monthly searches)</h4><ol><li>"sms phishing" - 6,600 searches, low competition</li><li>"valse digid brief" - 3,600 searches, low competition</li><li>"gehackt" - 1,900 searches, low competition</li><li>"ben ik gehackt" - 1,300 searches, low competition</li><li>"wat is spoofing" - 1,300 searches, low competition</li></ol><br><h4 id="medium-volume-keywords-200-999-monthly-searches-">Medium Volume Keywords (200-999 monthly searches)</h4><ol><li>"scamcheck" - 880 searches, low competition</li><li>"veiliginternetten" - 880 searches, low competition</li><li>"phishing e-mail" - 390 searches, low competition</li><li>"kijken of je gehackt bent" - 390 searches, low competition</li><li>"phishing mails melden" - 320 searches, low competition</li><li>"nep telefoon" - 320 searches, high competition</li><li>"helpdeskfraude" - 320 searches, low competition</li><li>"ik ben gehackt wat nu" - 260 searches, medium competition</li><li>"gehacked en nu" - 260 searches, low competition</li><li>"mail gehackt" - 260 searches, low competition</li></ol><br><h3 id="long-tail-opportunities">Long-Tail Opportunities</h3><ol><li>"wat moet je doen als je gehackt bent" - 260 searches, low competition</li><li>"mailbox gehackt" - 260 searches, low competition</li><li>"is mijn e mail gehackt" - 210 searches, low competition</li><li>"email gehacked" - 210 searches, low competition</li><li>"wat te doen als je gehackt bent" - 210 searches, medium competition</li><li>"ben ik gehackt email" - 210 searches, low competition</li><li>"whatsapp gehackt herkennen" - 210 searches, low competition</li><li>"malware android verwijderen" - 210 searches, medium competition</li><li>"hoe kan je hacken" - 210 searches, low competition</li><li>"ik ben gehackt" - 210 searches, low competition</li></ol><br><h3 id="seasonal-trends">Seasonal Trends</h3><p>Analysis shows increased search volume for cybersecurity help during:</p><ul><li>January (post-holiday period)</li><li>May-June (before summer vacations)</li><li>October-November (pre-holiday shopping season)</li></ul><br><h3 id="content-gaps">Content Gaps</h3><p>Based on our keyword and competitor analysis, we've identified the following content gaps:</p><ol><li>Limited content addressing specific types of hacks (ransomware, phishing, etc.)</li><li>No dedicated resources for business vs. individual cybersecurity needs</li><li>Missing FAQ content addressing common cybersecurity questions</li><li>Limited Dutch-language educational content about emerging cyber threats</li><li>No content targeting specific device types (smartphones, tablets, IoT devices)</li><li>Missing "reporting" content for users to report different types of online fraud</li><li>No "check for compromise" tool or resource to help users assess their security status</li><li>Limited content on identifying fake emails, SMS, and other common scams</li></ol><br></div></section>
+                <section id="5-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">5. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><br><h4 id="1-fraudehelpdesk-nl">1. Fraudehelpdesk.nl</h4><ul><li><strong>Strengths</strong>: High rankings for a large number of relevant keywords, particularly those related to "gehackt" (hacked), "phishing," and "nep" (fake). Strong focus on providing a reporting mechanism for fraud.</li><li><strong>Weaknesses</strong>: Less focus on direct assistance compared to Cyberwacht's helpline model.</li><li><strong>Top ranking keywords</strong>: "ik ben gehackt," "valse e-mail melden," "phishing mails melden"</li><li><strong>Content strategy</strong>: Highly specific titles that directly match user search queries, clear calls to action in meta descriptions (e.g., "Stuur deze aan ons door!"), and detailed reporting mechanisms for various types of fraud.</li></ul><br><h4 id="2-digitaltrustcenter-nl">2. Digitaltrustcenter.nl</h4><ul><li><strong>Strengths</strong>: High rankings for keywords related to "SMS phishing" and general "gehackt" queries. Government-backed credibility.</li><li><strong>Weaknesses</strong>: Less commercial focus, limited direct services.</li><li><strong>Top ranking keywords</strong>: "sms-phishing ('smishing')," "gehackt," "ben ik gehackt"</li><li><strong>Content strategy</strong>: Very specific titles addressing user queries, comprehensive educational content about cybersecurity threats.</li></ul><br><h4 id="3-veiliginternetten-nl">3. Veiliginternetten.nl</h4><ul><li><strong>Strengths</strong>: High rankings for keywords related to "scamcheck," "veiliginternetten," "valse digid brief" and general "gehackt" queries.</li><li><strong>Weaknesses</strong>: Less focus on direct assistance, more educational in nature.</li><li><strong>Top ranking keywords</strong>: "wat kan ik doen als ik gehackt ben?," "scamcheck," "veiliginternetten"</li><li><strong>Content strategy</strong>: Specific titles addressing user queries, comprehensive educational content with practical step-by-step guides.</li></ul><br><h3 id="competitive-content-gap-analysis">Competitive Content Gap Analysis</h3><p>Competitors are outperforming Cyberwacht in the following content areas:</p><ol><li><strong>Specificity in SERP Elements</strong>: Competitors use highly specific titles that directly match user search queries, while Cyberwacht's titles tend to be more generic.</li><li><strong>Actionable Language</strong>: Competitors use action-oriented language in their meta descriptions, encouraging users to click.</li><li><strong>Clear Value Proposition</strong>: Competitors clearly communicate the value of their content in meta descriptions.</li><li><strong>"How-to" Guides</strong>: Competitors frequently rank well with detailed guides on identifying and responding to specific threats.</li><li><strong>Reporting Mechanisms</strong>: Fraudehelpdesk.nl's success is partly due to its clear and accessible reporting mechanisms for fraud.</li><li><strong>Checklists</strong>: Competitors use checklists to provide actionable steps for users who have been hacked.</li></ol><br></div></section>
+                <section id="6-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">6. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><p>Based on our detailed analysis, Cyberwacht's backlink profile consists of:</p><ul><li>Total backlinks: 125</li><li>Referring domains: 30</li><li>Referring main domains: 29</li><li>Backlink spam score: 26% (low risk)</li><li>Domain rank: 140</li><li>First seen in backlink indexes: May 27, 2020</li></ul><br><p>The backlink profile shows a strong presence in the Netherlands, with 104 of their backlinks coming from Dutch websites (.nl TLDs). Other TLDs in their profile include .com (13 backlinks), .pages.dev (3 backlinks), and various others (.info, .agency, .party, .app, .fyi).</p><br><h3 id="link-quality-distribution">Link Quality Distribution</h3><p>The backlink profile shows a mixed quality distribution:</p><ul><li>High-quality backlinks (low spam score 0-30%): 16 domains including veiliginternetten.nl, nn.nl, anwb.nl, socured.nl</li><li>Medium-quality backlinks (spam score 31-60%): 8 domains including thecloudherald.com, seobacklinks.agency</li><li>Low-quality backlinks (spam score 61-100%): 5 domains including webhubsites.com, softranks.com</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><p>The anchor text distribution shows strong brand recognition:</p><ul><li>Brand anchors ("De Cyberwacht", "Cyberwacht"): 65%</li><li>URL anchors ("decyberwacht.nl", "www.decyberwacht.nl"): 20%</li><li>Generic anchors ("naar de website", "click here"): 10%</li><li>Topical anchors ("Hoe werkt spoofing?", "Gehackt?"): 5%</li></ul><br><p>This distribution indicates good brand visibility but opportunities for more keyword-rich anchor text.</p><br><h3 id="link-gap-opportunities">Link Gap Opportunities</h3><p>Dutch websites linking to competitors but not to Cyberwacht:</p><ol><li>Consumentenbond.nl (DA 65) - Links to VeiligInternet.nl</li><li>Tweakers.net (DA 72) - Links to competitors</li><li>Emerce.nl (DA 58) - Links to multiple competitors</li><li>Beveiligingnieuws.nl (DA 45) - Links to competitors</li><li>Mkb.nl (DA 52) - Links to multiple cybersecurity resources</li></ol><br><h3 id="competitor-backlink-analysis">Competitor Backlink Analysis</h3><p>Based on our research, key backlink competitors include:</p><ol><li>finconnect.nl (rank: 102, 36 shared backlink sources)</li><li>spotify.com (rank: 16, 14 shared backlink sources)</li><li>frovdw.nl (rank: 3, 11 shared backlink sources)</li><li>nationaleberoepengids.nl (rank: 23, 1 shared backlink source)</li></ol><br><h3 id="high-value-existing-backlinks">High-Value Existing Backlinks</h3><p>Cyberwacht has secured valuable backlinks from authoritative Dutch websites:</p><ol><li>nn.nl (Nationale-Nederlanden) - Multiple contextual links from cybersecurity advice pages</li><li>anwb.nl - Partnership mention on their CyberHelpdesk page</li><li>veiliginternetten.nl - Government-backed cybersecurity resource</li><li>socured.nl - Multiple prominent links with "Gehackt? Bel de Cyberwacht!" anchor text</li></ol><br><h3 id="potentially-harmful-backlinks">Potentially Harmful Backlinks</h3><p>Several potentially problematic backlinks were identified:</p><ol><li>webhubsites.com (spam score: 65%)</li><li>softranks.com (spam score: 65%)</li><li>worldwideranks.com (spam score: 65%)</li><li>vapt.nl (spam score: 70%)</li><li>pirdu.com (spam score: 65%)</li></ol><br></div></section>
+                <section id="7-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">7. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="new-content-topics">New Content Topics</h3><p>Based on our keyword and competitor analysis, we recommend creating:</p><br><ol><li><strong>Dedicated "Reporting" Content</strong>:</li></ol><ul><li>Develop a dedicated section on the website that provides clear instructions on how to report different types of online fraud and cybercrime</li><li>Include links to relevant reporting agencies (e.g., Politie, Fraudehelpdesk)</li><li>Optimize for keywords like "phishing mails melden," "sms phishing melden," and "fraude melden"</li></ul><br><ol><li><strong>"Check for Compromise" Tool/Resource</strong>:</li></ol><ul><li>Create a free online tool or checklist that allows users to quickly assess their security status</li><li>Include steps like checking for data breaches, reviewing recent account activity, and scanning for malware</li><li>Optimize for keywords like "kijken of je gehackt bent" and "check of je gehackt bent"</li></ul><br><ol><li><strong>Enhanced "Wat te doen" Content</strong>:</li></ol><ul><li>Revamp existing "gehackt" content to provide clear, step-by-step instructions for users who have been hacked</li><li>Use a checklist format to make the information easy to digest and follow</li><li>Include a prominent call to action to contact Cyberwacht for immediate assistance</li><li>Target keywords like "wat moet je doen als je gehackt bent," "gehackt wat nu," and "ik ben gehackt wat nu"</li></ul><br><ol><li><strong>"Valse" (Fake) Content Series</strong>:</li></ol><ul><li>Develop more content that specifically addresses how to identify and avoid common scams</li><li>Use real-world examples and screenshots to illustrate how to spot these scams</li><li>Include a reporting mechanism for users to submit potential scams for review</li><li>Target keywords like "valse digid brief," "nep e-mail," and "phishing herkennen"</li></ul><br><h3 id="content-optimization-opportunities">Content Optimization Opportunities</h3><ol><li><strong>Improve Title and Meta Description Optimization</strong>:</li></ol><ul><li>Rewrite titles to be more specific and closely match user search queries</li><li>Example: Instead of "Cyberwacht telefonische hulplijn voor hulp bij hacks en malware," use "Wat te doen als je gehackt bent? Bel de Cyberwacht voor direct hulp"</li><li>Rewrite meta descriptions to include a clear call to action (e.g., "Bent u gehackt? Bel direct de Cyberwacht voor hulp. Eerste 5 minuten gratis!")</li></ul><br><ol><li><strong>Enhance the "Eerste Hulp" section</strong>, which is already performing well:</li></ol><ul><li>Expand the successful "tips-gehackt-instagram-account" page format to other platforms</li><li>Add more detailed step-by-step instructions</li><li>Include visual elements (infographics, screenshots)</li><li>Add downloadable checklists</li></ul><br><ol><li><strong>Optimize underperforming pages</strong> in the "Oplichting-Fraude Blogs" category:</li></ol><ul><li>Expand content depth and comprehensiveness</li><li>Improve keyword targeting and on-page optimization</li><li>Add internal linking to related content</li><li>Include user testimonials and case studies</li></ul><br><h3 id="content-clusters-to-build-authority">Content Clusters to Build Authority</h3><ol><li><strong>"Gehackt" Cluster</strong></li></ol><ul><li>What to do if you've been hacked</li><li>How to recognize if you've been hacked</li><li>Different types of hacks</li><li>Recovery steps for different devices and accounts</li></ul><br><ol><li><strong>Phishing & Scam Prevention Cluster</strong></li></ol><ul><li>How to identify phishing emails</li><li>SMS phishing ("smishing") prevention</li><li>Voice phishing ("vishing") prevention</li><li>Common scams in the Netherlands</li></ul><br><ol><li><strong>Device-Specific Security Cluster</strong></li></ol><ul><li>Smartphone security</li><li>Computer protection</li><li>Smart home device security</li><li>IoT vulnerability management</li></ul><br><ol><li><strong>Business Cybersecurity Cluster</strong></li></ol><ul><li>Small business security</li><li>Employee training</li><li>Data protection</li><li>Regulatory compliance</li></ul><br></div></section>
+                <section id="8-action-plan-and-priorities" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tasks"></i></div>
+                        <h2 class="section-title">8. Action Plan and Priorities</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="immediate-actions-1-3-months-">Immediate Actions (1-3 months)</h3><ol><li><strong>Conduct a comprehensive technical audit</strong>:</li></ol><ul><li>Determine the CMS platform in use and assess compatibility with WP SEO AI tools</li><li>Evaluate potential benefits of WordPress migration if not currently using it</li><li>Provide a free technical SEO assessment to demonstrate value and build relationship</li></ul><br><ol><li><strong>Fix technical SEO issues</strong>:</li></ol><ul><li>Add alt attributes to all images</li><li>Optimize render-blocking scripts</li><li>Fix HTTPS to HTTP links</li><li>Address resource errors</li></ul><br><ol><li><strong>Optimize SERP elements</strong>:</li></ol><ul><li>Rewrite titles and meta descriptions for top pages to be more specific and include clear calls to action</li><li>Focus on high-volume, low-competition keywords like "sms phishing," "valse digid brief," and "gehackt"</li></ul><br><ol><li><strong>Create "Wat te doen" content</strong>:</li></ol><ul><li>Develop comprehensive guides on what to do if hacked</li><li>Use checklist formats for easy consumption</li><li>Include prominent calls to action to contact Cyberwacht</li></ul><br><ol><li><strong>Disavow toxic backlinks</strong> with spam scores above 60%</li></ol><br><h3 id="medium-term-actions-3-6-months-">Medium-Term Actions (3-6 months)</h3><ol><li><strong>Develop a "Check for Compromise" tool/resource</strong>:</li></ol><ul><li>Create a free online tool or checklist for users to assess their security status</li><li>Promote this on relevant pages and optimize for keywords like "kijken of je gehackt bent"</li></ul><br><ol><li><strong>Create a dedicated "Reporting" section</strong>:</li></ol><ul><li>Develop content that provides clear instructions on how to report different types of online fraud</li><li>Include links to relevant reporting agencies</li></ul><br><ol><li><strong>Expand "Valse" content</strong>:</li></ol><ul><li>Create more content about identifying and avoiding common scams</li><li>Use real-world examples and screenshots</li></ul><br><ol><li><strong>Initiate outreach to high-authority Dutch websites</strong> for backlink acquisition</li></ol><br><ol><li><strong>Implement CMS-specific optimizations</strong>:</li></ol><ul><li>Based on the technical audit findings, implement platform-specific SEO enhancements</li><li>If WordPress migration is recommended, develop a migration plan that preserves SEO value</li></ul><br><h3 id="long-term-actions-6-12-months-">Long-Term Actions (6-12 months)</h3><ol><li><strong>Develop remaining content clusters</strong></li><li><strong>Create interactive tools</strong> to increase engagement</li><li><strong>Expand content to address seasonal trends</strong></li><li><strong>Build industry partnerships</strong> for co-marketing opportunities</li><li><strong>Leverage existing high-quality relationships</strong> (nn.nl, anwb.nl) for expanded content partnerships</li><li><strong>Consider platform enhancements or migration</strong> if technical limitations are identified</li></ol><br><h3 id="backlink-acquisition-strategy">Backlink Acquisition Strategy</h3><p>Based on our backlink analysis, we recommend:</p><ol><li>Leveraging existing relationships with nn.nl and anwb.nl for additional content opportunities</li><li>Reaching out to socured.nl for expanded partnership content</li><li>Creating shareable resources targeting the cybersecurity community in the Netherlands</li><li>Developing a targeted outreach campaign to secure backlinks from high-authority Dutch websites</li><li>Creating Dutch-language cybersecurity resources that naturally attract links from educational and government websites</li></ol><br></div></section>
+                <section id="9-wp-seo-ai-implementation-opportunities" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">9. WP SEO AI Implementation Opportunities</h2>
+                    </div>
+                    <div class="section-content"><br><p>Given the uncertainty about Cyberwacht's current CMS, we see several ways WP SEO AI can add value:</p><br><ol><li><strong>Platform-Agnostic SEO Analysis</strong>:</li></ol><ul><li>Our keyword research and competitive analysis tools can benefit any website regardless of CMS</li><li>Content optimization recommendations can be implemented on any platform</li></ul><br><ol><li><strong>WordPress Migration Benefits</strong> (if applicable):</li></ol><ul><li>If Cyberwacht is not currently using WordPress, we can highlight the SEO benefits of migration</li><li>Our tools can streamline the transition while preserving SEO value</li></ul><br><ol><li><strong>Custom Implementation</strong>:</li></ol><ul><li>We can tailor our approach based on their specific technology stack</li><li>Our team can provide guidance on implementing recommendations within their current system</li></ul><br><ol><li><strong>Free Technical Audit Offer</strong>:</li></ol><ul><li>As a first step, we recommend offering a complimentary technical audit to better understand their infrastructure</li><li>This will allow us to provide more tailored recommendations and demonstrate our expertise</li></ul><br><p>By implementing these recommendations, Cyberwacht can significantly improve their search visibility in the Netherlands, capture more targeted organic traffic, and establish themselves as the leading authority in cybersecurity assistance services. With their current positive growth trajectory of 26% and strong performance in positions 4-10, they have a solid foundation to build upon for future SEO success.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Cyberwacht',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

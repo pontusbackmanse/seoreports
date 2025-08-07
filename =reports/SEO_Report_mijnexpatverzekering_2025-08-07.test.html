@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - mijnexpatverzekering</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">mijnexpatverzekering • www.mijnexpatverzekering.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> nederland Market</span>
+                        <span><i class="fas fa-calendar"></i> August 7, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>August 2024</th><th>December 2024</th><th>July 2025</th><th>Change (Aug 2024 - Jul 2025)</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">38.71</td><td class="">52.09</td><td class="">35.14</td><td class="negative">-9.20%</td></tr><tr><td class="">Total Keywords Ranked</td><td class="">10</td><td class="">10</td><td class="">3</td><td class="negative">-70%</td></tr><tr><td class="">Keywords in Position 1</td><td class="">0</td><td class="">0</td><td class="">0</td><td class="">0</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">0</td><td class="">0</td><td class="">0</td><td class="">0</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">0</td><td class="">0</td><td class="">0</td><td class="">0</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="">2</td><td class="">-</td><td class="">2</td><td class="">0</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>The decline in ETV and keyword rankings highlights the need for focused optimization on high-volume terms and immediate technical corrections.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize keyword gap analysis and schedule technical fixes (meta descriptions, title length) in the next sprint.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor Domain</th><th>Key Keywords They Rank Well For (Mijnexpatverzekering.nl Ranks Poorly)</th><th>Search Volume</th><th>Mijnexpatverzekering.nl Position</th></tr></thead><tbody><tr><td class="">www.expatverzekering.nl</td><td class="">"ooms verzekering"</td><td class="">6,600</td><td class="">16</td></tr><tr><td class="">www.expatverzekering.nl</td><td class="">"expat zorgverzekering"</td><td class="">110</td><td class="">48</td></tr><tr><td class="">www.zorgwijzer.nl</td><td class="">"expat zorgverzekering"</td><td class="">110</td><td class="">48</td></tr><tr><td class="">www.nederlandwereldwijd.nl</td><td class="">"expat zorgverzekering"</td><td class="">110</td><td class="">48</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Competitors outrank on critical expat insurance terms, indicating a content and authority gap.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Benchmark competitor content formats and backlink profiles to inform your own content development.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">"ooms verzekering"</td><td class="">6,600</td><td class="">Low</td><td class="">High volume, currently position 16, quick win</td></tr><tr><td class="">"mijn oom verzekeringen"</td><td class="">170</td><td class="">Low</td><td class="">Brand-related, close to top 10 (position 12)</td></tr><tr><td class="">"zorgverzekering expats"</td><td class="">70-210</td><td class="">Medium</td><td class="">Relevant core topic, medium competition</td></tr><tr><td class="">"buitenland ziektekostenverzekering"</td><td class="">210-720</td><td class="">Medium</td><td class="">High search volume, relevant to expat insurance</td></tr><tr><td class="">"internationale zorgverzekering kosten"</td><td class="">10-50</td><td class="">Low</td><td class="">Low competition, niche opportunity</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>High-volume, low-competition keywords like "ooms verzekering" and brand-related "mijn oom verzekeringen" are immediate targets for content expansion.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create and optimize dedicated landing pages for these keywords with rich content, FAQs, and clear CTAs.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Organic visibility and traffic have declined by 9.2% over the last 12 months, with keyword rankings dropping from 10 to 3.</li><li>No keywords currently rank in the top 10 positions; all rankings are in lower SERP positions.</li><li>The strongest page ranks for 2 keywords in positions 11-20 but still has low traffic volume.</li><li>Technical SEO is generally good but needs fixes: missing meta descriptions, short titles, missing image alt text, duplicate H1 tags, and low content depth.</li><li>High-value keyword opportunities exist, especially for "ooms verzekering" (6,600 SV) and "expat zorgverzekering" (110 SV), where competitors outrank the company.</li><li>Competitors like expatverzekering.nl dominate core keywords with better content and backlink profiles.</li><li>Backlink profile is weak: only 12 referring domains, medium spam scores on half, and low anchor text diversity.</li><li>Content strategy should focus on optimizing existing pages, creating dedicated pages for high-value keywords, and improving backlink quality.</li><li>Platform-agnostic SEO improvements recommended due to unknown tech stack.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>The core weaknesses lie in technical SEO and backlink quality, constraining top-10 rankings.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Formulate an action plan to address technical issues within 30 days and launch a targeted link-building campaign focusing on authoritative .nl domains.</li></ul><br><hr><br></div></section>
+                <section id="seo-analysis-report-for-mijnexpatverzekering-nl" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-analytics"></i></div>
+                        <h1 class="section-title">SEO Analysis Report for mijnexpatverzekering.nl</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for mijnexpatverzekering.nl in the Dutch market. Based on our research, the website is experiencing a decline in organic visibility, with specific technical SEO issues that need addressing. The site has both strong and underperforming pages that present opportunities for optimization. Our keyword analysis reveals significant opportunities to improve rankings for high-value keywords related to expat insurance in the Netherlands. Additionally, we've identified key competitors and strategies to outperform them, along with backlink profile weaknesses that need attention. This analysis aims to provide actionable insights to improve search visibility and outrank competitors in the Netherlands.</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-rankings">Organic Visibility and Rankings</h3><p>The website has experienced a <strong>9.20% decrease in estimated traffic volume (ETV)</strong> from August 2024 to July 2025, indicating a concerning downward trend in organic visibility. As of July 2025, the site's organic visibility metrics show:</p><br><ul><li><strong>Position 1</strong>: 0 keywords</li><li><strong>Positions 2-3</strong>: 0 keywords</li><li><strong>Positions 4-10</strong>: 0 keywords</li><li><strong>Positions 11-20</strong>: 2 keywords</li><li><strong>Positions 41-50</strong>: 1 keyword</li><li><strong>Total keyword count</strong>: 3 keywords</li><li><strong>Estimated Traffic Volume</strong>: 35.14</li><li><strong>Estimated Paid Traffic Cost</strong>: $15.75</li></ul><br><p>This represents a significant reduction from August 2024, when the site ranked for 10 keywords across various positions with an ETV of 38.71.</p><br><h3 id="traffic-trends-last-12-months-">Traffic Trends (Last 12 Months)</h3><p>The 12-month trend shows fluctuating performance with a general downward trajectory:</p><ul><li><strong>August 2024</strong>: ETV of 38.71, ranking for 10 keywords</li><li><strong>December 2024</strong>: Peak performance with ETV of 52.09, ranking for 10 keywords</li><li><strong>July 2025</strong>: Declined to ETV of 35.14, ranking for only 3 keywords</li></ul><br><p>This pattern suggests the site is losing ground in search visibility over time, with a particularly sharp decline between December 2024 and July 2025.</p><br><h3 id="top-performing-pages">Top-Performing Pages</h3><p>Based on our analysis, the following page demonstrates relatively strong performance:</p><ul><li><strong>https://mijnexpatverzekering.nl/expat-verzekeringen/oom-verzekeringen/</strong>: Ranks for 2 keywords in positions 11-20, with an estimated traffic volume of 34.93 and estimated paid traffic cost of $14.55. This page is relatively new and shows potential for improvement.</li></ul><br><h3 id="underperforming-pages">Underperforming Pages</h3><p>The following page requires optimization:</p><ul><li><strong>https://mijnexpatverzekering.nl/expat-verzekeringen/de-goudse-verzekeringen-en-oom-verzekeringen/</strong>: Ranks for only 1 keyword in positions 41-50, with a very low estimated traffic volume of 0.21. The ranking position has declined, indicating potential issues with content or optimization.</li></ul><br><h3 id="technical-seo-analysis">Technical SEO Analysis</h3><p>The website has an overall on-page score of 93.41, which is good, but several technical issues need addressing:</p><br><p><strong>Website Technology:</strong></p><ul><li>The tech stack of mijnexpatverzekering.nl is currently unknown (<a href="https://builtwith.com" class="link-reference" target="_blank" rel="noopener">BuiltWith</a>)</li><li>This may require a more generalized approach to technical SEO recommendations</li><li>WP SEO AI's solutions are designed to work across various platforms, making them suitable regardless of the underlying technology</li></ul><br><p><strong>Strengths:</strong></p><ul><li>HTTPS implementation</li><li>SEO-friendly URL structure</li><li>Proper canonical tags</li><li>Fast page loading time</li><li>No render-blocking resources</li><li>No duplicate meta tags</li></ul><br><p><strong>Issues to Address:</strong></p><ol><li><strong>Missing meta descriptions</strong>: The site lacks meta descriptions, which are crucial for improving click-through rates from search results.</li><li><strong>Title length</strong>: Titles are too short and should be expanded to be more descriptive and keyword-rich.</li><li><strong>Missing image alt text</strong>: Images lack alt attributes, affecting both accessibility and SEO.</li><li><strong>Duplicate H1 tags</strong>: Pages contain multiple H1 tags, whereas best practice is to have only one H1 per page.</li><li><strong>Low content rate</strong>: The ratio of plain text to HTML is low, indicating potential thin content issues.</li><li><strong>HTML errors</strong>: Several HTML errors and warnings need fixing for proper rendering.</li><li><strong>Outdated content</strong>: The last modified date in meta tags (2022-09-09) suggests content may be outdated.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Tackle meta descriptions, title expansions, and image alt text in the upcoming sprint.</li><li>Schedule an HTML and H1 audit to resolve structural issues within 2 weeks.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><p>Our analysis shows that mijnexpatverzekering.nl currently ranks for a limited number of keywords in the Netherlands:</p><br><ol><li><strong>"mijn oom verzekeringen"</strong></li></ol><ul><li>Search Volume: 170</li><li>Current Position: 12</li><li>Page: /expat-verzekeringen/oom-verzekeringen/</li></ul><br><ol><li><strong>"ooms verzekering"</strong></li></ol><ul><li>Search Volume: 6,600</li><li>Current Position: 16</li><li>Page: /expat-verzekeringen/oom-verzekeringen/</li></ul><br><ol><li><strong>"expat zorgverzekering"</strong></li></ol><ul><li>Current Position: 48</li><li>Page: /expat-verzekeringen/de-goudse-verzekeringen-en-oom-verzekeringen/</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Boosting positions for near-top-10 keywords can have an immediate traffic impact.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Optimize title tags and meta descriptions for these pages within two weeks.</li></ul><br><h3 id="high-value-keyword-opportunities">High-Value Keyword Opportunities</h3><p>Based on our analysis, the following keywords present the best opportunities for targeting:</p><br><p><strong>Top Priority Keywords:</strong></p><ul><li><strong>"zorgverzekering expats"</strong> - Search Volume: 70-210 | Competition: MEDIUM</li><li><strong>"zorgverzekering voor expats"</strong> - Search Volume: 70-210 | Competition: MEDIUM</li><li><strong>"buitenland ziektekostenverzekering"</strong> - Search Volume: 210-720 | Competition: MEDIUM</li></ul><br><p><strong>Secondary Keywords:</strong></p><ul><li><strong>"ziektekostenverzekering buitenland"</strong> - Search Volume: 210-720 | Competition: MEDIUM</li><li><strong>"ziektekostenverzekering in buitenland"</strong> - Search Volume: 210-720 | Competition: MEDIUM</li><li><strong>"ziektekostenverzekering in het buitenland"</strong> - Search Volume: 210-720 | Competition: MEDIUM</li><li><strong>"internationale zorgverzekering kosten"</strong> - Search Volume: 10-50 | Competition: LOW</li></ul><br><p><strong>Long-term Opportunities:</strong></p><ul><li><strong>"internationale zorgverzekering"</strong> - Search Volume: 320-590 | Competition: HIGH</li><li><strong>"anwb tijdelijke reisverzekering"</strong> - Search Volume: 50-210 | Competition: LOW</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Prioritize "zorgverzekering expats" and "buitenland ziektekostenverzekering" to capture medium competition niches with sizable search volume.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop outlines for dedicated landing pages and set publishing deadlines for each high-value keyword.</li></ul><br><h3 id="keyword-performance-analysis">Keyword Performance Analysis</h3><p>The keyword "ooms verzekering" represents the highest potential value with a search volume of 6,600 and a current position of 16. Moving this keyword into the top 10 would significantly increase organic traffic.</p><br><p>The keyword "mijn oom verzekeringen" (search volume: 170, position: 12) is very close to breaking into the top 10 and represents a strong brand-related opportunity that could be improved with targeted optimization.</p><br><p>The poor performance for "expat zorgverzekering" (position: 48) indicates a content gap that needs to be addressed, especially given that this is a core topic for the business.</p><br><h3 id="seasonal-trends">Seasonal Trends</h3><p>The search volume trend for "expat zorgverzekering" shows decreasing monthly and quarterly patterns but an increase yearly. This suggests seasonal fluctuations that should be considered when planning content updates and campaigns.</p><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-competitors-overview">Top Competitors Overview</h3><p>Our analysis has identified the following key competitors in the Dutch market:</p><br><ol><li><strong>www.expatverzekering.nl</strong></li></ol><ul><li><strong>Competitor Type</strong>: Direct competitor</li><li><strong>Key Strengths</strong>: High rankings for high-volume keywords like "ooms verzekering" (6,600 search volume) and "expat zorgverzekering"</li><li><strong>Performance</strong>: Significantly outranks mijnexpatverzekering.nl for core keywords</li></ul><br><ol><li><strong>www.zorgwijzer.nl</strong></li></ol><ul><li><strong>Competitor Type</strong>: Indirect competitor (broader insurance comparison site)</li><li><strong>Key Strengths</strong>: High rankings for "expat zorgverzekering"</li><li><strong>Performance</strong>: Strong authority in the health insurance niche</li></ul><br><ol><li><strong>www.nederlandwereldwijd.nl</strong></li></ol><ul><li><strong>Competitor Type</strong>: Indirect competitor (government website)</li><li><strong>Key Strengths</strong>: High domain authority and trust as a government domain</li><li><strong>Performance</strong>: Good rankings for relevant expat insurance keywords</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Direct competitor expatverzekering.nl dominates key terms; their content format and backlink profile set the bar for your strategy.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a gap analysis on their top-ranking pages to inform your own page structure and content depth.</li></ul><br><h3 id="competitor-keyword-analysis">Competitor Keyword Analysis</h3><p>Our research reveals significant gaps where competitors are outperforming mijnexpatverzekering.nl:</p><br><ol><li><strong>"expat zorgverzekering"</strong> (Search Volume: 110, Competition: MEDIUM)</li></ol><ul><li>All three competitors (expatverzekering.nl, zorgwijzer.nl, and nederlandwereldwijd.nl) rank significantly higher</li><li>Search intent: Both informational and transactional</li></ul><br><ol><li><strong>"ooms verzekering"</strong> (Search Volume: 6,600, Competition: LOW)</li></ol><ul><li>expatverzekering.nl ranks significantly higher</li><li>Search intent: Primarily navigational</li></ul><br><h3 id="serp-strategy-analysis">SERP Strategy Analysis</h3><p>Comparing title tags and meta descriptions reveals important insights:</p><br><p><strong>For "expat zorgverzekering":</strong></p><ul><li><strong>mijnexpatverzekering.nl</strong>: Title "DE GOUDSE VERZEKERINGEN EN OOM VERZEKERINGEN" is not optimized for the keyword. Meta description is generic.</li><li><strong>nederlandwereldwijd.nl</strong>: Uses question-oriented title "Wat moet ik doen met mijn Nederlandse zorgverzekering in..."</li><li><strong>expatverzekering.nl</strong>: Uses relevant keyword in title "Internationale ziektekostenverzekering"</li><li><strong>zorgwijzer.nl</strong>: Highly targeted title "Internationale zorgverzekering (voor expat of student)"</li></ul><br><p><strong>For "ooms verzekering":</strong></p><ul><li><strong>mijnexpatverzekering.nl</strong>: Title "OOM Verzekeringen - Mijn Expatverzekering" is decent but could be improved</li><li><strong>expatverzekering.nl</strong>: Simple, direct title "OOM Verzekeringen" with clear value proposition in meta description</li></ul><br><p><strong>Effective Patterns in Competitor SERP Elements:</strong></p><ul><li>Keyword-rich titles</li><li>Clear value propositions in meta descriptions</li><li>Question-oriented titles</li><li>Informational articles and guides perform well for "expat zorgverzekering"</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Refine your title and meta tags to mirror successful competitor patterns, including question formats and clear value propositions.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="backlink-profile-overview">Backlink Profile Overview</h3><p>Our analysis of mijnexpatverzekering.nl's backlink profile reveals several important insights:</p><br><ul><li><strong>Total Backlinks</strong>: 139 backlinks from 12 referring domains</li><li><strong>Backlink Spam Score</strong>: 17% (low range, but still indicates some potential issues)</li><li><strong>Domain Rank</strong>: 104</li><li><strong>Referring Domains</strong>: 12 unique domains</li><li><strong>Referring Main Domains</strong>: 12</li><li><strong>Referring IPs</strong>: 12</li><li><strong>Referring Subnets</strong>: 11</li></ul><br><h3 id="backlink-quality-analysis">Backlink Quality Analysis</h3><p>The quality of backlinks shows room for improvement:</p><br><ul><li><strong>Spam Score Distribution</strong>:</li><li>Low spam score (0-30%): 6 domains</li><li>Medium spam score (31-60%): 6 domains</li><li>High spam score (61-100%): 0 domains</li></ul><br><ul><li><strong>Top Referring Domains</strong>:</li><li>vpadvies.nl (0% spam score)</li><li>waywaywest.com (0% spam score)</li><li>royalseohub.com (30% spam score)</li><li>gigago.nl (30% spam score)</li><li>obake.pages.dev (25% spam score)</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><p>The anchor text distribution lacks diversity:</p><ul><li>Most backlinks use generic anchor text "Expats" (particularly from vpadvies.nl)</li><li>Some use the domain name "mijnexpatverzekering.nl"</li><li>There's a lack of keyword-rich anchor text that could help improve rankings for target keywords</li></ul><br><h3 id="competitive-backlink-analysis">Competitive Backlink Analysis</h3><p>Competitors have stronger backlink profiles:</p><ul><li><strong>schadehulp.nl</strong>: Rank 12 (compared to mijnexpatverzekering.nl's rank of 104)</li><li><strong>annytab.se</strong>: Rank 51</li></ul><br><h3 id="link-building-opportunities">Link Building Opportunities</h3><p>Based on our analysis, we've identified several opportunities for improving the backlink profile:</p><ol><li><strong>Increase referring domains</strong>: The current count of 12 referring domains is very low and should be expanded</li><li><strong>Improve anchor text diversity</strong>: Seek backlinks with more varied and keyword-rich anchor texts</li><li><strong>Focus on quality over quantity</strong>: Target authoritative domains in the insurance and expat niches</li><li><strong>Reduce reliance on medium-spam score domains</strong>: 6 of the 12 referring domains have medium spam scores</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Diversifying anchor text and increasing referring domains will strengthen authority for target keywords.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Plan a 90-day outreach calendar targeting 20 new high-authority .nl sites with desired keyword-rich anchor texts.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our keyword, competitive, and backlink analysis, we recommend the following content strategy:</p><br><h3 id="immediate-optimization-opportunities">Immediate Optimization Opportunities</h3><br><ol><li><strong>Optimize the OOM Verzekeringen Landing Page:</strong></li></ol><ul><li><strong>Quick Win</strong>: Optimize the title tag to be more specific, such as "OOM Verzekeringen: Expat Insurance - Mijn Expatverzekering"</li><li>Enhance internal linking to this page from other relevant pages on the site</li><li>Add more comprehensive information about OOM insurance, including FAQs, customer testimonials, and detailed coverage options</li><li>Make the call to action more prominent and compelling (e.g., "Get a Quote Now," "Compare OOM Insurance Plans")</li><li>Focus on improving rankings for "mijn oom verzekeringen" and "ooms verzekering" to break into the top 10</li></ul><br><ol><li><strong>Create a Dedicated "Expat Zorgverzekering" Page:</strong></li></ol><ul><li><strong>Quick Win</strong>: Rewrite the meta description to be more compelling with a clear value proposition</li><li>Develop a comprehensive guide addressing the health insurance needs of expats in the Netherlands</li><li>Naturally incorporate the keyword "expat zorgverzekering" and related terms throughout the content</li><li>Highlight the unique benefits of mijnexpatverzekering.nl for expats seeking health insurance</li><li>Address common questions and concerns based on informational search intent</li></ul><br><ol><li><strong>Develop Content for High-Value Keywords:</strong></li></ol><ul><li>Create dedicated landing pages for each of the top priority keywords identified</li><li>Develop blog posts that answer common questions about expat health insurance, using the secondary keywords as inspiration</li><li>Focus on content that directly addresses the needs of expats in the Netherlands regarding health insurance</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Quick wins will improve rankings in the short term, but sustained growth requires ongoing content production and link acquisition.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Establish a monthly content calendar and outreach plan with clear KPIs for new page launches and backlink targets.</li></ul><br><h3 id="technical-seo-improvements">Technical SEO Improvements</h3><br><ol><li><strong>SERP Optimization:</strong></li></ol><ul><li>Update and optimize meta descriptions across the site to improve click-through rates</li><li>Revise page titles to be more descriptive and keyword-rich, following competitor patterns</li><li>Implement schema markup on relevant pages to enhance SERP visibility</li><li>Analyze top-ranking pages for target keywords to identify common themes and content formats</li></ul><br><ol><li><strong>On-Page Optimization:</strong></li></ol><ul><li>Add alt text to all images to improve accessibility and SEO</li><li>Fix HTML structure issues, particularly the duplicate H1 tags</li><li>Increase content depth to address the low content rate issue</li><li>Update content regularly to signal freshness to search engines</li></ul><br><ol><li><strong>Platform-Agnostic Technical Improvements:</strong></li></ol><ul><li>Since the website's tech stack is unknown, focus on universal SEO best practices</li><li>Implement technical improvements that work across all platforms (WordPress, custom CMS, etc.)</li><li>Consider a technical audit to identify the underlying technology and provide more tailored recommendations</li></ul><br><h3 id="backlink-strategy">Backlink Strategy</h3><br><ol><li><strong>Quality Link Building Campaign:</strong></li></ol><ul><li>Develop high-quality, linkable content assets (guides, infographics, tools) focused on expat insurance in the Netherlands</li><li>Reach out to authoritative websites in the expat, insurance, and Netherlands-focused niches</li><li>Focus on obtaining backlinks with diverse, keyword-rich anchor texts</li><li>Target Dutch domains (.nl) as they make up the majority of current referring links</li></ul><br><ol><li><strong>Competitor Backlink Analysis:</strong></li></ol><ul><li>Analyze backlink profiles of competitors like schadehulp.nl to identify potential link opportunities</li><li>Reach out to websites linking to competitors but not to mijnexpatverzekering.nl</li><li>Focus on improving domain rank through quality backlinks from authoritative sources</li></ul><br><ol><li><strong>Anchor Text Diversification:</strong></li></ol><ul><li>Work on obtaining backlinks with anchor texts that include target keywords like "expat zorgverzekering," "expat insurance," and other relevant terms</li><li>Reduce reliance on generic anchor texts like "Expats" or just the domain name</li></ul><br><h3 id="long-term-content-strategy">Long-Term Content Strategy</h3><br><ol><li><strong>Develop a Dutch-Language Content Strategy:</strong></li></ol><ul><li>Create high-quality, informative content in Dutch that addresses the needs of expats in the Netherlands</li><li>Include blog posts, guides, FAQs, and case studies</li><li>Focus on topics related to expat insurance needs and challenges</li></ul><br><ol><li><strong>Competitive Content Analysis:</strong></li></ol><ul><li>Regularly monitor competitor content strategies and identify gaps</li><li>Create content that addresses topics covered by competitors but with added value and unique insights</li><li>Focus on differentiating factors that set mijnexpatverzekering.nl apart from competitors</li></ul><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><br><p>Mijnexpatverzekering.nl is currently experiencing a decline in organic visibility in the Netherlands, but our analysis reveals significant opportunities for improvement. By focusing on optimizing existing content, creating new targeted pages, addressing technical SEO issues, implementing a keyword-driven content strategy, and improving the backlink profile, the site can improve its rankings and increase organic traffic.</p><br><p>The most immediate opportunities include:</p><ol><li>Optimizing for "ooms verzekering" (search volume: 6,600) and "mijn oom verzekeringen" (search volume: 170)</li><li>Creating dedicated content for "expat zorgverzekering" and other high-value keywords</li><li>Addressing technical SEO issues to improve overall site performance</li><li>Implementing SERP optimization strategies based on competitor analysis</li><li>Expanding and diversifying the backlink profile, which currently has only 12 referring domains</li></ol><br><p>The competitive analysis reveals that expatverzekering.nl is the strongest direct competitor, with significant advantages in keyword rankings and likely a stronger backlink profile. By implementing the recommended strategies, mijnexpatverzekering.nl can close these gaps and establish stronger visibility in the Dutch market for expat insurance services.</p><br><p>The backlink analysis shows that the current profile is limited in both quantity and quality, with a heavy reliance on a small number of referring domains and generic anchor texts. A focused link-building campaign targeting authoritative domains in the insurance and expat niches would significantly improve the site's authority and rankings for key terms.</p><br><p>Our platform-agnostic approach to SEO recommendations ensures that these strategies can be implemented regardless of the underlying technology stack, providing a clear path to improved search visibility and increased organic traffic for mijnexpatverzekering.nl in the Dutch market.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Implementation of these recommendations should yield measurable improvements within 3–6 months if tracked and adjusted regularly.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - mijnexpatverzekering',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

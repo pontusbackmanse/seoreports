@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Committo B.V.</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Committo B.V. • https://committo.nl/</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 7, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary-committo-b-v-seo-analysis-netherlands-market" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary: Committo B.V. SEO Analysis – Netherlands Market</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Metric</strong></th><th><strong>Value / Change</strong></th><th><strong>Notes</strong></th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">47.64 (July 2025)</td><td class="">Declined by 52.27% over last 12 months</td></tr><tr><td class="">Total Ranking Keywords</td><td class="">53</td><td class="">24 new, 18 improving, 9 declining, 20 lost</td></tr><tr><td class="">Top 10 Rankings</td><td class="">0</td><td class="">No keywords in top 10 positions</td></tr><tr><td class="">Positions 2-3</td><td class="">0</td><td class="">No high visibility rankings</td></tr><tr><td class="">Positions 4-10</td><td class="">1</td><td class="">Minimal first-page presence</td></tr><tr><td class="">Positions 11-20</td><td class="">9</td><td class="">Some second-page visibility</td></tr><tr><td class="">Positions 21-100</td><td class="">43</td><td class="">Majority of rankings on page 3+</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize boosting at least 5 keywords into positions 4–10 to arrest the traffic decline and regain visibility on page one.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Top Competitors</strong></th><th><strong>Strengths</strong></th><th><strong>Keywords They Rank Well For (Committo Ranks Poorly)</strong></th></tr></thead><tbody><tr><td class="">nl.indeed.com</td><td class="">High domain authority, broad listings</td><td class="">"vacatures zutphen gemeente" (1300), "vacature nijmegen communicatie" (320), "interim communicatie" (90)</td></tr><tr><td class="">www.monsterboard.nl</td><td class="">Established brand, good keyword positions</td><td class="">"vacatures communicatie arnhem" (110), "vacature organisatie evenementen" (590), "senior communicatieadviseur" (210)</td></tr><tr><td class="">www.culturele-vacatures.nl</td><td class="">Niche focus on cultural sector</td><td class="">"vacature organisatie evenementen" (590), "evenementen organisatie vacature" (590)</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The domain authority gap highlights the need for a targeted niche backlink strategy, focusing on local and industry-specific publications.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Opportunity Keywords</strong></th><th><strong>Search Volume (NL)</strong></th><th><strong>Competition</strong></th><th><strong>Why Important</strong></th></tr></thead><tbody><tr><td class="">vacatures communicatie</td><td class="">5400</td><td class="">Low</td><td class="">High volume, low competition, directly relevant to Committo’s core recruitment services</td></tr><tr><td class="">communicatie vacatures</td><td class="">5400</td><td class="">Low</td><td class="">Same as above, strong transactional intent</td></tr><tr><td class="">vacatures in communicatie</td><td class="">5400</td><td class="">Low</td><td class="">High search volume, opportunity to capture broad communication job seekers</td></tr><tr><td class="">vacatures marketing</td><td class="">4400-5400</td><td class="">Medium</td><td class="">Relevant to marketing professionals, medium competition but high volume</td></tr><tr><td class="">vacatures junior communicatie</td><td class="">590-720</td><td class="">Low</td><td class="">Long-tail, less competitive, targets junior roles, untapped segment</td></tr><tr><td class="">interim communicatie</td><td class="">90</td><td class="">Medium</td><td class="">Growing segment, currently under-targeted</td></tr><tr><td class="">vacature organisation evenementen</td><td class="">590</td><td class="">Medium</td><td class="">Event management roles with significant search volume, no current strong Committo presence</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop dedicated landing pages for each high-priority keyword, optimizing titles, meta descriptions, and on-page content to capture immediate traffic gains.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR – Key Findings</h3><br><ul><li><strong>Organic visibility is declining sharply</strong>: 52.27% drop in estimated traffic volume over 12 months; no keywords in top 10 positions.</li><li><strong>Limited first-page presence</strong>: Only 1 keyword ranks between positions 4-10; majority rank beyond page 2.</li><li><strong>Strong local opportunity in Zutphen and other Dutch cities</strong>: High-volume location-specific keywords with poor rankings.</li><li><strong>High-value keyword gaps</strong>: Large-volume, low-competition keywords like "vacatures communicatie" and junior/interim roles are underutilized.</li><li><strong>Competitors are mainly large job boards with high domain authority</strong>: Indeed and Monsterboard dominate general job searches; niche competitor culturele-vacatures.nl excels in cultural sector.</li><li><strong>Technical SEO issues</strong>: Missing H1 tags, meta descriptions, image alt attributes, and render-blocking resources impacting site speed.</li><li><strong>Backlink profile needs improvement</strong>: Moderate number of backlinks with medium spam risk; lack of keyword-rich anchor text; toxic links identified.</li><li><strong>Content strategy should focus on location-specific pages, interim roles, event management, and role-specific evergreen content</strong>.</li><li><strong>Link building opportunities exist with local directories, industry publications, educational institutions, and municipal websites</strong>.</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><p>The steep traffic decline is primarily due to low visibility on page one. Immediate focus should be on reclaiming first-page positions for high-volume, low-competition terms.</p><br><hr><br></div></section>
+                <section id="seo-research-report-committo-b-v-" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Committo B.V.</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Overview</h2>
+                    </div>
+                    <div class="section-content"><br><p>Committo B.V. is a recruitment agency with 25 years of experience specializing in connecting communication and marketing professionals with companies for both permanent positions and interim projects in the Netherlands. <a href="https://committo.nl/" class="link-reference" target="_blank" rel="noopener">Company Website</a> Their focus on quality matching between candidates and employers represents a key value proposition that can be leveraged in their SEO strategy.</p><br><p>This report provides a comprehensive SEO analysis for Committo B.V., focusing on their performance in the Dutch market and offering actionable recommendations to improve their search visibility and competitive positioning.</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-organic-visibility">Current Organic Visibility</h3><br><p>Committo.nl's organic visibility in the Netherlands shows concerning trends that require immediate attention:</p><br><ul><li><strong>Declining Traffic</strong>: The site has experienced a significant 52.27% decrease in Estimated Traffic Volume (ETV) over the past year</li><li><strong>Current Organic Metrics</strong> (as of July 2025):</li><li>ETV: 47.64</li><li>Ranking Keywords: 53 total keywords</li><li>Keyword Movement: 24 new, 18 improving, 9 declining, 20 lost</li><li>Estimated Paid Traffic Cost: €61.75</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Address the traffic decline by targeting high-volume, low-competition keywords in your core service areas and improving click-through rates with optimized title tags and meta descriptions.</li></ul><br><h3 id="position-distribution">Position Distribution</h3><br><p>Committo.nl's current SERP position distribution reveals significant ranking challenges:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Position</th><th>Count</th><th>Analysis</th></tr></thead><tbody><tr><td class="">1</td><td class="">0</td><td class="">No top rankings</td></tr><tr><td class="">2-3</td><td class="">0</td><td class="">No high visibility rankings</td></tr><tr><td class="">4-10</td><td class="">1</td><td class="">Minimal first-page presence</td></tr><tr><td class="">11-20</td><td class="">9</td><td class="">Some second-page visibility</td></tr><tr><td class="">21-100</td><td class="">43</td><td class="">Majority of rankings on page 3+</td></tr></tbody></table></div><p>This distribution indicates limited search visibility, with most content ranking too low to generate significant organic traffic.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>With 81% of keywords beyond page two, repurpose existing pages and strengthen internal linking to quickly boost rankings into the top 10.</li></ul><br><h3 id="top-performing-pages">Top Performing Pages</h3><br><p>Based on the analysis, Committo's best performing pages are:</p><br><ol><li><strong><code>/vacature/participatie-regisseur/</code></strong>: Highest ETV (21.91) with 8 ranking keywords including one in top 10 positions and 5 in positions 11-20</li><li><strong><code>/vacature/communityeventmanager/</code></strong>: High ETV (14.10) with 12 ranking keywords, though mostly in positions 31-50</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Expand these high-performing pages into content hubs by adding related role overviews, city-specific details, and internal links to similar listings.</li></ul><br><h3 id="underperforming-pages">Underperforming Pages</h3><br><p>Several key pages are significantly underperforming:</p><br><ol><li><strong>Homepage</strong> (<code>https://committo.nl/</code>): Despite ranking for 16 keywords, it has a low ETV (4.94) with most rankings in positions 21-70</li><li><strong>Job Posting Pages</strong>: Multiple job listings have very low ETVs (below 2) and rank in positions 40+, including:</li></ol><ul><li><code>/vacature/senior-communicatieadviseur-7/</code></li><li><code>/vacature/communicatieadviseur-4/</code></li><li><code>/vacature/senior-marketingcommunicatieadviseur/</code></li><li><code>/perswoordvoerder-adviseur-corporate-communicatie/</code></li><li><code>/vacature/strategisch-communicatieadviseur/</code></li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Refresh content and meta elements on these pages, adding clear H1s, benefit-driven copy, and location/role-specific keywords to move them up the rankings.</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><br><p>The technical audit reveals several issues impacting performance:</p><br><ul><li><strong>On-Page Score</strong>: 91.59 (generally good practices)</li><li><strong>Critical Issues</strong>:</li><li>Missing H1 tags</li><li>Missing meta descriptions</li><li>Missing image alt text and title attributes</li><li>Render-blocking resources affecting page speed</li><li>Low content-to-code ratio</li><li>Duplicate meta tags</li><li>HTTPS to HTTP links</li><li>Spelling errors</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Implement a technical cleanup plan:</li><li>Add missing H1s and meta descriptions.</li><li>Provide alt text and titles for all images.</li><li>Defer or inline critical CSS/JS to remove render-blocking.</li><li>Consolidate duplicate tags and fix mixed protocol links.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><br><p>Our analysis reveals that Committo.nl is not ranking in the top 10 positions for any keywords, which represents a significant missed opportunity.</p><br><p>The most promising keywords where Committo currently ranks in positions 11-30 include:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Current Position</th></tr></thead><tbody><tr><td class="">werken gemeente zutphen</td><td class="">90</td><td class="">13</td></tr><tr><td class="">strategisch communicatieadviseur</td><td class="">170</td><td class="">14</td></tr><tr><td class="">werken bij gemeente zutphen</td><td class="">90</td><td class="">14</td></tr><tr><td class="">vacature projecten</td><td class="">110</td><td class="">15</td></tr><tr><td class="">gemeente zutphen vacature</td><td class="">1300</td><td class="">18</td></tr><tr><td class="">gemeente zutphen vacatures</td><td class="">1300</td><td class="">18</td></tr><tr><td class="">senior communicatieadviseur</td><td class="">210</td><td class="">20</td></tr><tr><td class="">pivot park vacatures</td><td class="">110</td><td class="">19</td></tr><tr><td class="">vacature zutphen gemeente</td><td class="">1300</td><td class="">21</td></tr><tr><td class="">vacatures zutphen gemeente</td><td class="">1300</td><td class="">22</td></tr><tr><td class="">interim communicatie</td><td class="">90</td><td class="">24</td></tr><tr><td class="">vacatures projecten</td><td class="">110</td><td class="">24</td></tr><tr><td class="">communicatie interim</td><td class="">90</td><td class="">30</td></tr></tbody></table></div><p>This data reveals several key insights:</p><ul><li>Committo has significant visibility for Zutphen municipality-related job searches</li><li>The site ranks for specific communication roles like "strategisch communicatieadviseur"</li><li>There's some visibility for interim communication positions, but rankings are low</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Leverage existing rankings for Zutphen-focused terms by enhancing those pages with additional local context, testimonials, and job-related FAQs to push them into top 10 positions.</li></ul><br><h3 id="high-value-keyword-opportunities">High-Value Keyword Opportunities</h3><br><p>Based on our analysis, these high-value keywords represent immediate opportunities for Committo:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th></tr></thead><tbody><tr><td class="">vacatures communicatie</td><td class="">5400</td><td class="">LOW</td></tr><tr><td class="">communicatie vacatures</td><td class="">5400</td><td class="">LOW</td></tr><tr><td class="">vacatures in communicatie</td><td class="">5400</td><td class="">LOW</td></tr><tr><td class="">vacatures marketing</td><td class="">4400-5400</td><td class="">MEDIUM</td></tr></tbody></table></div><p>These keywords combine high search volume with relatively low competition, making them ideal targets for immediate optimization efforts. The direct relevance to Committo's core business makes them particularly valuable.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create or optimize core service pages around these primary keywords, ensuring each page has a clear call-to-action (apply/register) and uses structured data where applicable.</li></ul><br><h3 id="long-tail-keyword-opportunities">Long-Tail Keyword Opportunities</h3><br><p>These long-tail keywords offer targeted traffic opportunities with less competition:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th></tr></thead><tbody><tr><td class="">vacatures communicatie groningen</td><td class="">720-1000</td><td class="">LOW</td></tr><tr><td class="">vacatures junior communicatie</td><td class="">590-720</td><td class="">LOW</td></tr><tr><td class="">junior communicatie vacatures</td><td class="">590-720</td><td class="">LOW</td></tr><tr><td class="">communicatie vacatures junior</td><td class="">590-720</td><td class="">LOW</td></tr><tr><td class="">interim communicatie opdrachten</td><td class="">50-210</td><td class="">MEDIUM</td></tr></tbody></table></div><p>These keywords target specific segments (location-based, experience level, and employment type) that align with Committo's service offerings.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Develop long-tail landing pages that speak directly to each target audience segment, offering role guides, salary info, and application tips to capture niche traffic quickly.</li></ul><br><h3 id="seasonal-keyword-trends">Seasonal Keyword Trends</h3><br><p>The keyword data shows some seasonal patterns in recruitment-related searches:</p><ul><li>Municipality job searches (like "gemeente zutphen vacature") show consistent search volume</li><li>Junior communication role searches tend to peak during graduation seasons</li><li>Interim position searches remain relatively stable throughout the year</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><p>Plan content calendar to align junior role pages with graduation peaks (May-July) and refresh interim role pages quarterly for consistent performance.</p><br><h3 id="content-gap-analysis">Content Gap Analysis</h3><br><p>Our analysis identified several significant content gaps:</p><br><ol><li><strong>Interim Communication Roles</strong>: Despite ranking for "interim communicatie" (position 24) and "communicatie interim" (position 30), Committo lacks dedicated content targeting this service area.</li><li><strong>Junior Communication Positions</strong>: High-volume keywords like "vacatures junior communicatie" (590-720 monthly searches) represent an untapped opportunity.</li><li><strong>Location-Specific Content</strong>: Despite ranking for Zutphen-related terms, Committo lacks optimized landing pages for specific locations where they recruit.</li><li><strong>Role-Specific Content</strong>: While job postings exist for roles like "strategisch communicatieadviseur," there's no evergreen content targeting these high-value keywords.</li><li><strong>Event Management Roles</strong>: Keywords related to event management positions show significant search volume but Committo is not effectively targeting them.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Map each content gap to a specific asset (e.g., hub page, blog post) and assign deadlines for creation and publication within the next 8 weeks.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><br><p>Our competitive analysis reveals that Committo's main competitors in the Dutch market are:</p><br><ol><li><strong>nl.indeed.com (Indirect Competitor)</strong></li></ol><ul><li><strong>Key Strengths</strong>: High average keyword position, large estimated traffic volume, broad job listings, strong domain authority</li><li><strong>Type</strong>: General job board competing for the same job seekers but covering all industries</li><li><strong>Why It Matters</strong>: Indeed's strong domain authority allows it to rank highly for communication and marketing job searches despite being a generalist</li></ul><br><ol><li><strong>www.monsterboard.nl (Indirect Competitor)</strong></li></ol><ul><li><strong>Key Strengths</strong>: Good average keyword position, significant estimated traffic volume, established brand in the job market</li><li><strong>Type</strong>: General job board with broad coverage across industries</li><li><strong>Why It Matters</strong>: Like Indeed, Monsterboard's brand recognition and domain strength give it an advantage in search rankings</li></ul><br><ol><li><strong>www.culturele-vacatures.nl (Direct Competitor)</strong></li></ol><ul><li><strong>Key Strengths</strong>: Niche focus on cultural sector vacancies</li><li><strong>Type</strong>: Direct competitor for specific cultural sector roles</li><li><strong>Why It Matters</strong>: This competitor demonstrates the effectiveness of niche specialization in the recruitment space</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Committo should emphasize its specialized expertise and local insights in communications and marketing to differentiate from generalist job boards.</li></ul><br><h3 id="competitor-keyword-analysis">Competitor Keyword Analysis</h3><br><p>Our analysis identified several keyword categories where competitors are outperforming Committo:</p><br><ol><li><strong>Location-Based Keywords</strong> (High Volume, Low Competition):</li></ol><ul><li>"vacatures zutphen gemeente" (1300)</li><li>"gemeente zutphen vacatures" (1300)</li><li>"gemeente zutphen vacature" (1300)</li><li>"vacature zutphen gemeente" (1300)</li><li>"vacatures communicatie arnhem" (110)</li><li>"werken bij gemeente zutphen" (90)</li><li>"werken gemeente zutphen" (90)</li><li>"werk zoeken in zutphen" (70)</li></ul><br><ol><li><strong>Event-Related Keywords</strong> (Medium Volume, Medium Competition):</li></ol><ul><li>"vacature organisatie evenementen" (590)</li><li>"vacatures evenementen organiseren" (590)</li><li>"evenementen organisatie vacature" (590)</li><li>"evenement organiseren vacature" (590)</li><li>"organiseren evenementen vacature" (590)</li></ul><br><ol><li><strong>Communication-Related Keywords</strong> (Medium Volume, Low Competition):</li></ol><ul><li>"vacature nijmegen communicatie" (320)</li><li>"communicatie nijmegen vacature" (320)</li><li>"vacatures nijmegen communicatie" (320)</li><li>"senior communicatieadviseur" (210)</li><li>"vacatures senior communicatieadviseur" (170)</li><li>"vacature senior communicatieadviseur" (170)</li></ul><br><ol><li><strong>Interim-Related Keywords</strong> (Medium Volume, Medium Competition):</li></ol><ul><li>"interim opdracht communicatie" (110)</li><li>"interim opdrachten communicatie" (110)</li><li>"interim communicatie" (90)</li><li>"interim vacatures communicatie" (70)</li><li>"interim communicatie vacature" (70)</li></ul><br><p>The search intent for these keywords is primarily transactional (finding a job) and informational (learning about job opportunities), aligning perfectly with Committo's business model.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create a priority roadmap mapping competitor keyword gaps to new content topics and optimize existing pages accordingly.</li></ul><br><h3 id="competitor-serp-strategies">Competitor SERP Strategies</h3><br><p>Our analysis of competitor SERP elements reveals several effective strategies that Committo can learn from:</p><br><ol><li><strong>Title and Meta Description Tactics</strong>:</li></ol><ul><li><strong>Indeed</strong>: Uses keyword-rich titles and meta descriptions that clearly state the page's purpose (e.g., "8.000 Jobs, Employment in Gemeente Zutphen"). They also include a list of job titles to attract clicks.</li><li><strong>Monsterboard</strong>: Uses urgency tactics like "Laatste Kans" (Last Chance) in titles to drive click-through rates.</li><li><strong>Committo</strong>: Often uses generic titles like "Participatie Regisseur" or "Committo | werving, selectie & interim". Meta descriptions are often truncated or not optimized for the specific keyword.</li></ul><br><ol><li><strong>Successful Content Types</strong>:</li></ol><ul><li><strong>Aggregated Job Listings</strong>: Indeed and Monsterboard perform well with pages that list multiple jobs related to a specific keyword.</li><li><strong>Tag Pages</strong>: culturele-vacatures.nl effectively uses tag pages that list multiple jobs related to a specific keyword.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Adopt urgency cues and dynamic job count metrics in titles, and implement aggregated listings for each key term to improve click-through rates.</li></ul><br><h3 id="competitor-domain-authority">Competitor Domain Authority</h3><br><p>The analysis indicates that general job boards like Indeed and Monsterboard have significantly higher domain authority than Committo, giving them an advantage in search rankings. This suggests that Committo should focus on:</p><br><ol><li>Building domain authority through quality backlinks</li><li>Targeting more specific long-tail keywords where domain authority is less critical</li><li>Creating highly specialized content that general job boards don't offer</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Launch a targeted backlink acquisition campaign focusing on niche industry sites, local business blogs, and educational institutions to close the authority gap.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><br><p>Our backlink analysis reveals that Committo.nl has a moderate backlink profile with several areas for improvement:</p><br><ul><li><strong>Total Backlinks</strong>: 86 backlinks</li><li><strong>Referring Domains</strong>: 45 unique domains</li><li><strong>Domain Rank</strong>: 108</li><li><strong>Spam Score</strong>: 31% (medium risk)</li><li><strong>Geographic Distribution</strong>:</li><li>Netherlands: 61 referring links</li><li>Belgium: 3 referring links</li><li>United States: 2 referring links</li><li>Other/Unknown: 20 referring links</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Focus outreach efforts on Dutch domains where existing links already demonstrate geographic relevance, aiming to convert low-value links into high-authority placements.</li></ul><br><h3 id="backlink-quality-assessment">Backlink Quality Assessment</h3><br><p>The quality of Committo's backlink profile shows concerning patterns:</p><br><ul><li><strong>Spam Score Distribution</strong>:</li><li>Low spam score (0-30%): 21 domains</li><li>Medium spam score (31-60%): 23 domains</li><li>High spam score (61-100%): 0 domains</li></ul><br><p>While there are no high-spam domains linking to Committo, the significant number of medium-spam domains (23) could be negatively impacting search rankings.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a detailed audit of medium-risk referring domains and disavow any links from categories or sources that offer no strategic value.</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><br><p>The anchor text distribution in Committo's backlink profile lacks diversity and keyword optimization:</p><br><ul><li>Most common anchor texts:</li><li>"www.committo.nl" (generic URL)</li><li>"Committo" (brand name)</li><li>"Company Website" (generic)</li><li>"visit committo.nl for latest info" (generic)</li></ul><br><p>This reveals a missed opportunity to include relevant keywords in anchor text, which could improve rankings for target terms like "communicatie vacatures" or "werving en selectie."</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>When acquiring new backlinks, prioritize anchor text variations that incorporate primary and long-tail keywords to strengthen relevance signals.</li></ul><br><h3 id="toxic-backlinks">Toxic Backlinks</h3><br><p>Our analysis identified several potentially problematic backlinks that may be harming Committo's search rankings:</p><br><ul><li><strong>Medium-Risk Domains</strong>:</li><li>businessvocal.com (60% spam score)</li><li>seobacklinks.agency (45% spam score)</li><li>rankgrow.agency (45% spam score)</li><li>bye.fyi (50% spam score)</li><li>prolinkbox.com (50% spam score)</li></ul><br><p>These domains appear to be part of link schemes or low-quality directories, which Google may penalize. We recommend disavowing these links to improve overall domain authority.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prepare and submit a disavow file for identified toxic domains, then monitor domain authority for improvements over the next 4–6 weeks.</li></ul><br><h3 id="competitor-backlink-analysis">Competitor Backlink Analysis</h3><br><p>Our analysis identified several competitors with overlapping backlink profiles:</p><br><ol><li><strong>allepaginas.nl</strong>: 150 intersecting backlinks</li><li><strong>communicatieadvies-info.nl</strong>: 130 intersecting backlinks</li><li><strong>b9.nl</strong>: 41 intersecting backlinks</li><li><strong>nationaleondernemersgids.nl</strong>: 22 intersecting backlinks</li><li><strong>pivotpark.com</strong>: 16 intersecting backlinks</li></ol><br><p>These competitors have successfully acquired backlinks from domains that already link to Committo, suggesting opportunities for additional link building with these domains.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Leverage shared link sources by proposing joint content (e.g., industry reports) or guest posts that provide mutual value to these domains.</li></ul><br><h3 id="strategic-link-building-opportunities">Strategic Link Building Opportunities</h3><br><p>Based on our analysis, we've identified several categories of websites that link to competitors but not to Committo:</p><br><ol><li><strong>Local Business Directories</strong>: Dutch business directories that list recruitment agencies</li><li><strong>Industry Publications</strong>: Communication and marketing industry publications and blogs</li><li><strong>Educational Institutions</strong>: Universities and colleges with communication and marketing programs</li><li><strong>Municipal Websites</strong>: Government websites that link to job resources</li></ol><br><p>These represent high-value link building opportunities that could significantly improve Committo's domain authority and search visibility.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Compile a contact list for each category and initiate an outreach campaign with tailored content offers (e.g., guest articles, resource partnerships).</li></ul><br><h3 id="backlink-acquisition-strategy">Backlink Acquisition Strategy</h3><br><p>To improve Committo's backlink profile, we recommend focusing on:</p><br><ol><li><strong>Content-Driven Link Building</strong>: Creating valuable resources like salary guides, industry reports, and career advice that naturally attract links</li><li><strong>Local Partnerships</strong>: Developing relationships with local businesses and organizations in key geographic areas like Zutphen</li><li><strong>Guest Posting</strong>: Contributing expert content to industry publications to build authority and earn backlinks</li><li><strong>Directory Listings</strong>: Ensuring presence in relevant Dutch business and recruitment directories</li><li><strong>Link Detox</strong>: Disavowing toxic backlinks from medium-spam domains identified in our analysis</li></ol><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="content-gap-recommendations">Content Gap Recommendations</h3><br><p>Based on our comprehensive analysis, we recommend the following content strategy initiatives:</p><br><ol><li><strong>Create Location-Specific Landing Pages</strong>: With high-volume keywords like "gemeente zutphen vacature" (1300 monthly searches) currently ranking in position 18, dedicated location pages could capture significant traffic. Priority locations include:</li></ol><ul><li>Zutphen (highest current rankings)</li><li>Arnhem (110 monthly searches for "vacatures communicatie arnhem")</li><li>Nijmegen (320 monthly searches for "vacature nijmegen communicatie")</li></ul><br><p>Each page should:</p><ul><li>Clearly explain Committo's recruitment services in that location</li><li>List all current job openings in the area</li><li>Include information about the local job market</li><li>Optimize all on-page elements with location-specific keywords</li></ul><br><ol><li><strong>Develop an Interim Communication Hub</strong>: Keywords like "interim communicatie" (90 monthly searches), "interim opdracht communicatie" (110 monthly searches), and "interim communicatie vacature" (70 monthly searches) represent an opportunity to create a dedicated section for interim roles. This should:</li></ol><ul><li>Explain the benefits of using Committo for interim positions</li><li>Showcase current interim opportunities</li><li>Include success stories and testimonials from interim placements</li><li>Target specific interim-related keywords identified in our analysis</li></ul><br><ol><li><strong>Create an Event Management Career Section</strong>: With significant search volume for keywords like "vacature organisatie evenementen" (590 monthly searches) and "evenementen organisatie vacature" (590 monthly searches), a dedicated section for event management roles would capture untapped traffic. This should:</li></ol><ul><li>Highlight Committo's expertise in recruiting for event management positions</li><li>Showcase current event management job openings</li><li>Provide resources for event management professionals</li><li>Target the specific event-related keywords identified in our analysis</li></ul><br><ol><li><strong>Optimize Role-Specific Landing Pages</strong>: Keywords like "strategisch communicatieadviseur" (170 monthly searches) and "senior communicatieadviseur" (210 monthly searches) need dedicated, evergreen content beyond individual job postings. Create role-specific landing pages that:</li></ol><ul><li>Explain the role and its importance</li><li>Outline typical requirements and responsibilities</li><li>Showcase current openings for these positions</li><li>Include salary information and career development paths</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign team members and deadlines for each content piece, ensuring the first three priority pages are live within 6 weeks.</li></ul><br><h3 id="content-optimization-opportunities">Content Optimization Opportunities</h3><br><p>Several existing pages show potential for significant improvement:</p><br><ol><li><strong>Homepage Optimization</strong>: The homepage currently has a low ETV (4.94) despite ranking for 16 keywords. We recommend:</li></ol><ul><li>Restructuring the homepage to target high-value keywords like "vacatures communicatie" (5400 monthly searches)</li><li>Adding clear sections for different service areas (permanent placement, interim, etc.)</li><li>Improving meta tags and H1 headings to include primary keywords</li><li>Addressing misspellings like "comm it" and "committally" in alt text to capture these searches</li></ul><br><ol><li><strong>Job Posting Structure</strong>: Implement a standardized SEO structure for all job listings:</li></ol><ul><li>Include the job title in the H1 and URL</li><li>Use structured data markup for job postings</li><li>Create consistent meta descriptions that include location and key requirements</li><li>Add internal links to related roles and location pages</li></ul><br><ol><li><strong>SERP Element Enhancement</strong>: Based on competitor strategies, improve SERP elements by:</li></ol><ul><li>Creating compelling meta descriptions that include example job titles (like Indeed does)</li><li>Using urgency tactics in titles where appropriate (like Monsterboard's "Laatste Kans")</li><li>Ensuring all meta descriptions accurately describe the page's content and include a call to action</li><li>Including location information in titles and descriptions for job listings</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Quick wins on homepage restructuring and meta updates can deliver measurable traffic gains within 4–6 weeks.</li></ul><br><h3 id="content-cluster-strategy">Content Cluster Strategy</h3><br><p>To build topical authority, we recommend implementing these content clusters:</p><br><ol><li><strong>Communication Roles Cluster</strong>:</li></ol><ul><li>Pillar page: "Communication Careers Guide"</li><li>Supporting content:</li><li>"How to Become a Strategic Communication Advisor"</li><li>"Senior vs. Junior Communication Roles: Career Paths"</li><li>"Communication Role Salary Guide for the Netherlands"</li><li>"Top Skills for Modern Communication Professionals"</li></ul><br><ol><li><strong>Location-Based Recruitment Cluster</strong>:</li></ol><ul><li>Pillar page: "Communication & Marketing Jobs by Location"</li><li>Supporting content:</li><li>"Communication Jobs in Zutphen: Complete Guide"</li><li>"Marketing Career Opportunities in Arnhem"</li><li>"Nijmegen's Communication Job Market: Trends & Opportunities"</li><li>"Working in Municipality Communication Departments"</li></ul><br><ol><li><strong>Interim Professionals Cluster</strong>:</li></ol><ul><li>Pillar page: "Interim Communication & Marketing Guide"</li><li>Supporting content:</li><li>"Benefits of Interim Communication Roles"</li><li>"How to Succeed as an Interim Professional"</li><li>"Interim vs. Permanent: Which is Right for You?"</li><li>"Finding Interim Communication Assignments"</li></ul><br><ol><li><strong>Event Management Careers Cluster</strong>:</li></ol><ul><li>Pillar page: "Event Management Career Guide"</li><li>Supporting content:</li><li>"From Coordinator to Director: Event Management Career Path"</li><li>"Skills Needed for Modern Event Management Roles"</li><li>"Event Management Salary Guide for the Netherlands"</li><li>"Corporate vs. Agency Event Management Careers"</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop an editorial calendar mapping out each cluster topic for the next 3–6 months, assigning publication dates and responsible authors.</li></ul><br></div></section>
+                <section id="next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-arrow-right"></i></div>
+                        <h2 class="section-title">Next Steps</h2>
+                    </div>
+                    <div class="section-content"><br><p>To maximize Committo's SEO performance in the Netherlands, we recommend:</p><br><ol><li><strong>Immediate Actions</strong>:</li></ol><ul><li>Optimize existing content for high-value keywords identified in this report</li><li>Create location-specific landing pages for Zutphen, Arnhem, and Nijmegen</li><li>Fix technical SEO issues, particularly missing H1 tags and meta descriptions</li><li>Improve SERP elements based on competitor strategies</li><li>Begin disavowing toxic backlinks from medium-spam domains</li></ul><br><ol><li><strong>Short-Term Initiatives</strong> (1-3 months):</li></ol><ul><li>Develop the recommended content clusters</li><li>Implement the standardized job posting structure</li><li>Create the Interim Communication Hub and Event Management Career Section</li><li>Begin targeted link building with industry publications and local directories</li><li>Focus on acquiring backlinks with keyword-rich anchor text</li></ul><br><ol><li><strong>Long-Term Strategy</strong> (3-6 months):</li></ol><ul><li>Expand location-specific content to additional Dutch cities</li><li>Develop comprehensive resources like salary guides and career path guides</li><li>Implement regular performance monitoring and optimization</li><li>Continue building domain authority through quality backlinks</li><li>Create a systematic approach to monitor and disavow new toxic backlinks</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>By addressing technical SEO, content gaps, and backlink quality in parallel, Committo can turn around the 52.27% traffic decline and secure top-10 rankings for high-value keywords, driving more qualified leads in the Dutch market.</p><br><p>With a 52.27% decline in organic traffic and no top 10 rankings, Committo has significant room for improvement. By implementing these recommendations, they can substantially increase their visibility for high-value keywords, improve their position against competitors, and generate more qualified leads for their recruitment services.</p><br><p>The competitive analysis reveals that while Committo faces strong competition from general job boards with high domain authority, there are significant opportunities to capture targeted traffic through specialized content focusing on location-specific searches, interim roles, and event management positions. By leveraging their expertise in communication and marketing recruitment, Committo can create content that general job boards cannot match in depth and relevance.</p><br><p>Additionally, addressing the backlink profile issues—particularly the medium-spam domains and lack of keyword-rich anchor text—will help improve domain authority and search rankings. By combining content optimization with strategic link building and toxic link removal, Committo can significantly improve their SEO performance in the Dutch market.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Committo B.V.',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

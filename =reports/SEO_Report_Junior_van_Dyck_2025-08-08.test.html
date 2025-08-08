@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Junior van Dyck</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Junior van Dyck • www.tinquiete.be</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> België Market</span>
+                        <span><i class="fas fa-calendar"></i> August 8, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Current Value / Status</th><th>12-Month Growth / Notes</th></tr></thead><tbody><tr><td class="">Organic Visibility</td><td class="">No relevant Dutch-language rankings in Belgium</td><td class="">No growth; critical SEO gap</td></tr><tr><td class="">Estimated Search Traffic (ETV)</td><td class="">0 visits from organic search in Belgium</td><td class="">No growth; zero organic traffic</td></tr><tr><td class="">Technical SEO Score</td><td class="">92.32 / 100</td><td class="">Stable; good foundation but with key issues</td></tr><tr><td class="">Backlink Profile</td><td class="">0 referring domains</td><td class="">No backlinks; major disadvantage</td></tr></tbody></table></div><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Avg. Keyword Position</th><th>Estimated Traffic (ETV)</th><th>Key Ranking Keywords (where Tinquiete.be ranks poorly)</th><th>Notable Strengths / Strategies</th></tr></thead><tbody><tr><td class="">maatkastenonline.be</td><td class="">1.33</td><td class="">3,638.36 visits</td><td class="">"kasten op maat", "inbouwkasten op maat", "dressing op maat"</td><td class="">Strong keyword rankings despite missing meta tags</td></tr><tr><td class="">ilovemaatkasten.be</td><td class="">6.33</td><td class="">2,232.92 visits</td><td class="">"kasten op maat online", "kasten laten maken op maat"</td><td class="">Online cabinet configurator, instant quotes, strong meta</td></tr><tr><td class="">camber.be</td><td class="">3.25</td><td class="">655.81 visits</td><td class="">"maatkasten", "kasten op maat"</td><td class="">Good rankings but missing meta titles and descriptions</td></tr></tbody></table></div><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Monthly Search Volume</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">kasten op maat</td><td class="">4,400</td><td class="">High</td><td class="">Highest volume, strong buyer intent</td></tr><tr><td class="">inbouwkasten op maat</td><td class="">863</td><td class="">High</td><td class="">Specific product type, high intent</td></tr><tr><td class="">dressing op maat</td><td class="">483</td><td class="">High</td><td class="">Niche keyword with clear purchase intent</td></tr><tr><td class="">kasten op maat online</td><td class="">1,057</td><td class="">High</td><td class="">Competitors rank here; opportunity to capture online buyers</td></tr><tr><td class="">kasten laten maken op maat</td><td class="">440</td><td class="">High</td><td class="">Clear service intent; users ready to hire</td></tr><tr><td class="">maatkasten ontwerpen</td><td class="">70</td><td class="">High</td><td class="">Early-stage buyers; content can nurture leads</td></tr><tr><td class="">schrijnwerker kasten op maat</td><td class="">310</td><td class="">High</td><td class="">Professional service keyword; potential for differentiation</td></tr></tbody></table></div><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li><strong>No organic visibility or traffic</strong> for Tinquiete.be in Belgium for relevant Dutch keywords; urgent SEO action needed.</li><li><strong>Technical SEO is solid (92.32/100)</strong> but critical issues exist: missing H1 tags, render-blocking CSS, low content, missing alt text, and weak meta tags.</li><li><strong>Backlink profile is non-existent</strong>, severely limiting domain authority and ranking potential.</li><li><strong>Competitors rank well</strong> for high-volume keywords and leverage features like online configurators and instant quotes.</li><li><strong>Meta data optimization is a quick win</strong>, as two top competitors lack proper meta titles and descriptions.</li><li><strong>High-value keywords with strong buyer intent</strong> identified, including "kasten op maat" (4,400 searches/month).</li><li><strong>Content gaps and keyword opportunities</strong> exist around room-specific cabinets, materials, pricing, and design process.</li><li><strong>Backlink acquisition from Belgian industry sites and local business associations is critical</strong>.</li><li><strong>Developing an online cabinet configurator and instant quote system</strong> is a key competitive differentiator.</li><li><strong>Local SEO and Google My Business optimization</strong> remain untapped opportunities.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong> Prioritize quick meta-tag fixes and a dedicated landing page for “kasten op maat” to start capturing high-intent traffic within 2–4 weeks.</div><br><hr><br></div></section>
+                <section id="seo-research-report-tinquiete-be" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Tinquiete.be</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for Tinquiete.be, a Belgian company specializing in custom-made cabinets ("maatkasten"). The analysis focuses on the company's current SEO performance in the Belgian market and provides actionable recommendations to improve search visibility and outrank competitors.</p><br><div class="highlight-box"><strong>Next Step:</strong> Assign an internal task force to implement immediate on-page fixes (H1, meta tags, alt text) within the next sprint.</div><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Tinquiete.be, led by Junior van Dyck, is a specialized business that designs and installs custom-made cabinets in Belgium. The company offers a personalized service from initial consultation to installation, emphasizing quality materials and collaborating with a Belgian workshop that has 30 years of experience. Their product range includes custom cabinets for bedrooms, living rooms, children's rooms, and offices. (<a href="https://www.tinquiete.be" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</p><br><div class="highlight-box"><strong>Clarification:</strong> Emphasize the “30 years of workshop experience” in all service pages to strengthen trust signals and unique value proposition.</div><br></div></section>
+                <section id="1-overall-seo-performance-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><p>Our analysis reveals significant challenges and opportunities for Tinquiete.be in the Belgian market:</p><br><ul><li><strong>Lack of Organic Visibility</strong>: Tinquiete.be currently has no relevant pages ranking on Google in Belgium for Dutch-language searches. This indicates a critical gap in SEO performance and a major opportunity for improvement.</li><li><strong>Technical SEO Performance</strong>:</li><li>Overall on-page score: 92.32 out of 100, indicating a generally healthy technical foundation.</li><li>The site uses HTTPS and has an SEO-friendly URL structure.</li><li>No broken links or duplicate titles/descriptions were found.</li></ul><br><h3 id="areas-for-technical-improvement-">Areas for Technical Improvement:</h3><ul><li>Missing H1 tag, which is crucial for indicating the main topic of the page.</li><li>Render-blocking resources (stylesheets) that may impact page load speed.</li><li>Low content rate, suggesting insufficient text content on the page.</li><li>Irrelevant title and description that may not accurately reflect the page's content.</li><li>Missing image alt attributes.</li><li>Title too short.</li></ul><br><h3 id="positive-technical-aspects-">Positive Technical Aspects:</h3><ul><li>The site has a favicon.</li><li>Uses Cloudflare for improved performance and security.</li><li>Relatively small page size, which can contribute to faster loading times.</li><li>Implements social media tags (og:title, og:type, og:description, twitter:description).</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong> Block or defer noncritical CSS to improve perceived load time; use a tool like PageSpeed Insights to verify render-blocking items and resolve immediately.</div><br></div></section>
+                <section id="2-keyword-analysis-for-the-belgian-market" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Belgian Market</h2>
+                    </div>
+                    <div class="section-content"><br><p>Our keyword analysis reveals that Tinquiete.be is not currently ranking for any relevant keywords in the Belgian market. This presents a significant opportunity to establish visibility for high-value search terms. We recommend targeting the following:</p><br><h3 id="top-priority-keywords">Top Priority Keywords</h3><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Monthly Search Volume</th><th>Competition</th></tr></thead><tbody><tr><td class="">kasten op maat</td><td class="">4,400</td><td class="">HIGH</td></tr><tr><td class="">inbouwkasten op maat</td><td class="">863</td><td class="">HIGH</td></tr><tr><td class="">dressing op maat</td><td class="">483</td><td class="">HIGH</td></tr></tbody></table></div><h3 id="secondary-keywords">Secondary Keywords</h3><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Monthly Search Volume</th><th>Competition</th></tr></thead><tbody><tr><td class="">kasten op maat online</td><td class="">1,057</td><td class="">HIGH</td></tr><tr><td class="">kasten laten maken op maat</td><td class="">440</td><td class="">HIGH</td></tr><tr><td class="">kasten op maat laten maken</td><td class="">440</td><td class="">HIGH</td></tr><tr><td class="">kasten op maat goedkoop</td><td class="">400</td><td class="">HIGH</td></tr></tbody></table></div><h3 id="long-term-opportunities">Long-term Opportunities</h3><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Monthly Search Volume</th><th>Competition</th></tr></thead><tbody><tr><td class="">maatkasten ontwerpen</td><td class="">70</td><td class="">HIGH</td></tr><tr><td class="">schrijnwerker kasten op maat</td><td class="">310</td><td class="">HIGH</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong> Launch a focused content pillar on “kasten op maat” with subpages for installs, materials, and price ranges to capture both high-intent and early-stage queries.</div><br></div></section>
+                <section id="3-competitive-landscape-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><p>Our competitive analysis reveals that Tinquiete.be faces strong competition in the Belgian custom cabinet market. We've identified three key competitors who are currently outperforming Tinquiete.be in organic search:</p><br><h3 id="top-competitors">Top Competitors</h3><br><ol><li>www.maatkastenonline.be</li></ol><ul><li>Average keyword position of 1.33 and estimated traffic of 3,638 visits</li><li>Strengths: Strong rankings despite missing meta tags</li><li>Weaknesses: No meta titles or descriptions</li></ul><br><ol><li>ilovemaatkasten.be</li></ol><ul><li>Average position of 6.33 and estimated traffic of 2,233 visits</li><li>Strengths: Compelling meta title/description, online configurator, instant quotes</li><li>Unique Feature: Cabinet configurator tool & direct quote system</li><li>Tech Stack: Uses Google Search Console for ongoing SEO monitoring (via BuiltWith)</li></ul><br><ol><li>www.camber.be</li></ol><ul><li>Average position of 3.25 and traffic of 655 visits</li><li>Weaknesses: Missing meta titles and descriptions</li></ul><br><h3 id="competitive-analysis-insights">Competitive Analysis Insights</h3><br><ul><li><strong>Online Configuration Tool</strong>: ilovemaatkasten.be’s configurator drives engagement and instant lead generation—Tinquiete.be lacks this feature.</li><li><strong>Meta Data Optimization</strong>: Two of three competitors lack proper meta tags—this is a low-hanging opportunity.</li><li><strong>Value Proposition Communication</strong>: Clear, benefit-driven messaging in meta descriptions correlates with higher click-through rates.</li><li><strong>Keyword Focus</strong>: All competitors prioritize “maatkasten” and “kasten op maat,” confirming mandatory target terms.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong> Draft and A/B test two meta-description variants per primary landing page, emphasizing the 30-year workshop heritage and instant quote offering.</div><br></div></section>
+                <section id="4-backlink-authority-analysis-for-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><p>Our backlink analysis reveals a critical weakness in Tinquiete.be's SEO strategy:</p><br><ul><li><strong>No Existing Backlinks</strong>: Zero referring domains, creating minimal domain authority.</li><li><strong>Domain Authority Impact</strong>: Lack of external links makes it difficult to rank for competitive terms.</li><li><strong>Competitive Disadvantage</strong>: Competitors likely have established backlink profiles boosting their visibility.</li></ul><br><h3 id="backlink-strategy-recommendations-">Backlink Strategy Recommendations:</h3><br><ol><li>Industry directories (home improvement, furniture) – secure listings.</li><li>Local business associations – Belgian chamber of commerce citations.</li><li>Supplier partnerships – request backlinks from material vendors.</li><li>Content marketing – publish shareable guides and infographics.</li><li>Local press – pitch features to Belgian home design blogs.</li><li>Social proof – encourage customer mentions on personal blogs/social.</li><li>Guest blogging – contribute expert articles to relevant sites.</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong> Create a “Belgian Cabinet Design Guide” PDF to distribute via outreach—high-value linkable asset for partner sites and directories.</div><br></div></section>
+                <section id="5-content-strategy-recommendations-for-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our analysis, we recommend the following content strategy:</p><br><h3 id="on-page-optimization">On-Page Optimization</h3><ol><li><strong>Optimize Title Tags / Meta Descriptions</strong>: Fill gaps and leverage competitor weaknesses.</li><li><strong>Header Structure</strong>: Add H1s and logical subheadings (H2–H6).</li><li><strong>Image Alt Text</strong>: Describe images with keywords.</li><li><strong>Content Depth</strong>: Expand pages to 800+ words focusing on process, materials, and benefits.</li></ol><br><h3 id="content-development">Content Development</h3><ol><li><strong>Room-Specific Pages</strong>: Bedrooms, living rooms, offices, children’s rooms.</li><li><strong>Material & Style Pages</strong>: “Massief hout maatkasten,” “moderne maatkasten,” “landelijke maatkasten.”</li><li><strong>Process & Expertise</strong>: Detail the 30-year workshop experience and installation workflow.</li><li><strong>Case Studies / Portfolio</strong>: High-res images + project stories.</li><li><strong>Pricing Overviews</strong>: Transparent price ranges to address cost concerns.</li></ol><br><h3 id="competitive-edge-development">Competitive Edge Development</h3><ol><li><strong>Online Configurator Tool</strong>: Plan development to mirror top competitor features.</li><li><strong>Instant Quote System</strong>: Implement a basic quote generator for standard cabinet types.</li><li><strong>Unique Value Emphasis</strong>: Spotlight 30 years’ expertise and Belgian-made quality.</li></ol><br><h3 id="content-marketing">Content Marketing</h3><ol><li><strong>Blog Launch</strong>: Weekly articles on design trends, maintenance tips, and project highlights.</li><li><strong>Video Showcase</strong>: “From design to install” process walkthroughs.</li><li><strong>Local SEO Pages</strong>: City-specific landing pages (e.g., “kasten op maat Antwerpen”).</li><li><strong>Linkable Assets</strong>: In-depth material comparison chart or interactive style selector.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong> Develop a 3-month editorial calendar, prioritizing high-volume keywords and asset creation (guides, videos) to support outreach.</div><br></div></section>
+                <section id="conclusion-and-next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion and Next Steps</h2>
+                    </div>
+                    <div class="section-content"><br><p>Tinquiete.be has a solid technical foundation but faces critical gaps in visibility and authority. The lack of backlinks and absence from Belgian Google results are urgent issues. Competitors leverage online configurators and strong meta messaging to capture leads.</p><br><p>Immediate next steps:</p><br><ol><li><strong>Technical SEO</strong>: Add H1s, optimize meta tags, implement alt texts.</li><li><strong>Content Creation</strong>: Launch pillar content for “kasten op maat” and related terms.</li><li><strong>Backlink Campaign</strong>: Target industry directories, associations, and partners.</li><li><strong>Configurator Development</strong>: Initiate planning for an online tool.</li><li><strong>Local SEO</strong>: Claim/optimize Google My Business and local citations.</li><li><strong>SEO Tools</strong>: Set up Google Search Console and monitor performance.</li></ol><br><p>By executing these recommendations, Tinquiete.be can rapidly build authority, capture high-intent traffic, and differentiate itself in the Belgian custom cabinet market. The high search volume for “kasten op maat” underscores the untapped potential—address technical gaps, create compelling content, and secure quality backlinks to drive sustainable growth.</p><br><div class="highlight-box"><strong>Next Step:</strong> Assign owners and deadlines for each of the seven immediate actions above, with a bi-weekly review cadence to track progress and adapt tactics.</div></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Junior van Dyck',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

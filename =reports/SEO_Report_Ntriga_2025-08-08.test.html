@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Ntriga</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Ntriga • ntriga.be</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Belgium Market</span>
+                        <span><i class="fas fa-calendar"></i> August 8, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th></tr></thead><tbody><tr><td class="">Total Keywords Ranking</td><td class="">120</td></tr><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">946.89</td></tr><tr><td class="">12-Month ETV Growth</td><td class="negative">-40.31% (significant decline)</td></tr><tr><td class="">Keywords in Position 1</td><td class="">0</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">2</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">15</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="">30</td></tr><tr><td class="">Keywords in Positions 21-30</td><td class="">19</td></tr><tr><td class="">Keywords in Positions 31-100</td><td class="">54</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong> With 85 of 120 keywords ranking outside the top 20, focus on on-page optimization and targeted content updates to push mid-tier keywords into the top 10.</div><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Keywords They Rank Well For (Ntriga Ranks Poorly)</th><th>Search Volume</th><th>Competition</th><th>Ntriga's Position</th></tr></thead><tbody><tr><td class="">Krachtigonline.be</td><td class="">digital marketing bureaus</td><td class="">320</td><td class="">LOW</td><td class="">Poor ranking</td></tr><tr><td class=""></td><td class="">digital marketingbureau</td><td class="">320</td><td class="">LOW</td><td class="">Poor ranking</td></tr><tr><td class=""></td><td class="">online seo analyse</td><td class="">170</td><td class="">LOW</td><td class="">Poor ranking</td></tr><tr><td class=""></td><td class="">reclame bureau belgie</td><td class="">70</td><td class="">MEDIUM</td><td class="">Poor ranking</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong> Create optimized landing pages or blog posts targeting these specific competitor keywords to reclaim low-competition traffic.</div><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume</th><th>Competition</th><th>Rationale</th></tr></thead><tbody><tr><td class="">marketing bureau</td><td class="">1600</td><td class="">MEDIUM</td><td class="">High volume, core service relevance</td></tr><tr><td class="">bureau marketing</td><td class="">1600</td><td class="">MEDIUM</td><td class="">Alternative phrasing capturing different search intent</td></tr><tr><td class="">digital marketing bureau</td><td class="">400</td><td class="">LOW</td><td class="">Good volume, low competition, directly relevant</td></tr><tr><td class="">online marketing bureau</td><td class="">400</td><td class="">LOW</td><td class="">Focus on online services, low competition</td></tr><tr><td class="">marketing bureau antwerpen</td><td class="">400</td><td class="">MEDIUM</td><td class="">Location-specific, decent volume</td></tr><tr><td class="">seo marketing bureau</td><td class="">200</td><td class="">LOW</td><td class="">Targets specific service, low competition</td></tr><tr><td class="">content marketing bureau</td><td class="">150</td><td class="">LOW</td><td class="">Growing niche, low competition</td></tr><tr><td class="">branding bureau</td><td class="">150</td><td class="">MEDIUM</td><td class="">Relevant to core services</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong> High-value terms “marketing bureau” and “bureau marketing” should form the backbone of service page optimizations and content campaigns.</div><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Ntriga’s organic visibility in Belgium has dropped sharply by 40.31% over the past year.</li><li>No keywords currently rank in position 1; only 2 keywords rank in positions 2-3.</li><li>Top traffic driver is the Google Tag Manager page, but it shows signs of ranking decline.</li><li>Core service pages and blog posts underperform, ranking mostly beyond position 40.</li><li>Technical SEO issues include missing H1 tags, missing image alt text, and render-blocking resources.</li><li>High-value keywords like "marketing bureau" and "digital marketing bureau" are not well targeted.</li><li>Competitor Krachtigonline.be outranks Ntriga on several important, low-competition keywords.</li><li>Competitor uses keyword-rich titles, location targeting, and clear value propositions in SERP snippets.</li><li>Ntriga’s backlink profile is strong but contains toxic backlinks that need disavowal.</li><li>Anchor text is mostly brand-focused; more keyword diversity is needed.</li><li>Content strategy should focus on optimizing service pages, expanding case studies, and creating location-specific content.</li><li>Paid search is currently underutilized in Belgium, representing an additional growth opportunity.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong> Assemble a cross-functional team to address the top three areas (technical fixes, content optimization, competitor keyword targeting) within the next 30 days.</div><br><hr><br></div></section>
+                <section id="seo-research-report-ntriga" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Ntriga</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Ntriga is a Belgian marketing agency offering services in three main areas: Development, Branding, and Marketing (<a href="https://ntriga.be" class="link-reference" target="_blank" rel="noopener">Company Website</a>). They provide data-driven development solutions, brand strategy services, and marketing campaign management across both online and offline channels.</p><br></div></section>
+                <section id="research-objectives" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Research Objectives</h2>
+                    </div>
+                    <div class="section-content"><p>This report analyzes Ntriga's SEO performance in the Belgian market, providing actionable insights to improve their search visibility, outrank competitors, and capture untapped opportunities.</p><br></div></section>
+                <section id="1-overall-seo-performance-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-traffic-trends">Organic Visibility and Traffic Trends</h3><p>Ntriga has experienced a significant <strong>40.31% decrease in Estimated Traffic Volume (ETV)</strong> over the past year in the Belgian market. This substantial decline in organic visibility indicates serious issues with their SEO strategy that need immediate attention.</p><br><h3 id="current-organic-visibility-latest-data-">Current Organic Visibility (Latest Data)</h3><ul><li><strong>Total Keywords Ranking</strong>: 120 keywords</li><li><strong>Estimated Traffic Volume</strong>: 946.89</li><li><strong>Estimated Paid Traffic Cost</strong>: €4,236.11</li><li><strong>Position Distribution</strong>:</li><li>Position 1: 0 keywords</li><li>Positions 2-3: 2 keywords</li><li>Positions 4-10: 15 keywords</li><li>Positions 11-20: 30 keywords</li><li>Positions 21-30: 19 keywords</li><li>Positions 31-100: 54 keywords</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong> The absence of any position-1 rankings underscores the need for intensely targeted content and link-building to claim those prime spots.</div><br><h3 id="top-performing-pages">Top Performing Pages</h3><p>The standout performer in Ntriga's website is their Google Tag Manager page:</p><ul><li><strong>URL</strong>: https://ntriga.be/nl/google-tag-manager</li><li><strong>ETV</strong>: 660.75</li><li><strong>Estimated Paid Traffic Cost</strong>: €3,554.31</li><li><strong>Ranking Keywords</strong>: 7</li><li><strong>Performance Trend</strong>: More ranking drops (3) than improvements (1), indicating potential issues</li></ul><br><div class="highlight-box"><strong>Next Step:</strong> Conduct a detailed on-page audit of the Google Tag Manager page—update keywords, refresh content, and optimize internal links to stabilize and boost its rankings.</div><br><h3 id="underperforming-pages">Underperforming Pages</h3><p>Several key service and blog pages are significantly underperforming:</p><ul><li><strong>Service Pages</strong>:</li><li>https://ntriga.be/nl/communiceren/advertising (ETV: 3.84, positions mostly beyond 50)</li><li>https://ntriga.be/nl/analyseren/seo-analyse (ETV: 4.17, positions mostly beyond 60)</li><li><strong>Blog Posts</strong>:</li><li>Multiple blog posts with ETV below 1.0 and positions beyond position 40</li></ul><br><div class="highlight-box"><strong>Next Step:</strong> Prioritize a content refresh for these service pages with updated keyword targeting and consolidate or remove low-value blog posts to improve overall site authority.</div><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><p>The website received a high on-page score of 95.24, but several technical issues were identified:</p><ul><li>Missing H1 tags on multiple pages</li><li>Missing alt text for images</li><li>Render-blocking resources affecting page speed</li><li>HTML validation errors</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong> Addressing these technical barriers will directly improve crawlability and page experience metrics, laying a stronger foundation for content improvements.</div><br></div></section>
+                <section id="2-keyword-analysis-for-the-belgian-market" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Belgian Market</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-keyword-rankings">Current Keyword Rankings</h3><p>Ntriga is currently ranking for several keywords in the Belgian market, with their strongest positions in the following areas:</p><br><h4 id="top-performing-keywords-positions-1-10-">Top Performing Keywords (Positions 1-10)</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th><th>URL</th></tr></thead><tbody><tr><td class="">vleeswaren decru</td><td class="">110</td><td class="">2</td><td class="">https://ntriga.be/nl/cases/decru-klantenportaal~c78</td></tr><tr><td class="">pieter supply</td><td class="">210</td><td class="">3</td><td class="">https://ntriga.be/nl/pieter-supply</td></tr><tr><td class="">google gtm</td><td class="">5400</td><td class="">5</td><td class="">https://ntriga.be/nl/google-tag-manager</td></tr><tr><td class="">google tag</td><td class="">390</td><td class="">6</td><td class="">https://ntriga.be/nl/google-tag-manager</td></tr><tr><td class="">google tag manager</td><td class="">5400</td><td class="">6</td><td class="">https://ntriga.be/nl/google-tag-manager</td></tr><tr><td class="">pim systeem</td><td class="">110</td><td class="">7</td><td class="">https://ntriga.be/nl/blog/kan-mijn-bedrijf-baat-hebben-bij-een-pim-systeem~b32</td></tr><tr><td class="">kick-off meeting</td><td class="">480</td><td class="">8</td><td class="">https://ntriga.be/nl/blog/kick-off-meeting-start-totaalproject~b120</td></tr><tr><td class="">kick off meeting</td><td class="">480</td><td class="">8</td><td class="">https://ntriga.be/nl/blog/kick-off-meeting-start-totaalproject~b120</td></tr><tr><td class="">tag manager</td><td class="">1000</td><td class="">8</td><td class="">https://ntriga.be/nl/google-tag-manager</td></tr><tr><td class="">ga3</td><td class="">110</td><td class="">8</td><td class="">https://ntriga.be/nl/blog/maak-een-export-van-je-ga3-data~b89</td></tr><tr><td class="">meeting kick off</td><td class="">480</td><td class="">9</td><td class="">https://ntriga.be/nl/blog/kick-off-meeting-start-totaalproject~b120</td></tr><tr><td class="">kick-off-meeting</td><td class="">480</td><td class="">9</td><td class="">https://ntriga.be/nl/blog/kick-off-meeting-start-totaalproject~b120</td></tr><tr><td class="">depoortere vlas</td><td class="">90</td><td class="">10</td><td class="">https://ntriga.be/nl/cases/Depoortere~c129</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong> Leverage these high-performing pages with internal linking and update supporting content to consolidate topical authority.</div><br><h3 id="high-value-keyword-opportunities">High-Value Keyword Opportunities</h3><p>Based on search volume, competition levels, and relevance to Ntriga's business, we've identified the following high-priority keywords to target:</p><br><h4 id="top-priority-keywords">Top Priority Keywords</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th><th>Rationale</th></tr></thead><tbody><tr><td class="">marketing bureau</td><td class="">1600</td><td class="">MEDIUM</td><td class="">High search volume, broad term relevant to core services</td></tr><tr><td class="">bureau marketing</td><td class="">1600</td><td class="">MEDIUM</td><td class="">Alternative word order capturing different search patterns</td></tr><tr><td class="">digital marketing bureau</td><td class="">400</td><td class="">LOW</td><td class="">Good volume with low competition, directly relevant</td></tr><tr><td class="">online marketing bureau</td><td class="">400</td><td class="">LOW</td><td class="">Focuses on online services with low competition</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong> Develop dedicated landing pages optimized for each of these top-priority keywords, complete with clear CTAs and localized content.</div><br><h4 id="secondary-keywords">Secondary Keywords</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th><th>Rationale</th></tr></thead><tbody><tr><td class="">marketing bureau antwerpen</td><td class="">400</td><td class="">MEDIUM</td><td class="">Location-specific with decent search volume</td></tr><tr><td class="">marketing bureau online</td><td class="">400</td><td class="">LOW</td><td class="">Good volume with low competition</td></tr><tr><td class="">seo marketing bureau</td><td class="">200</td><td class="">LOW</td><td class="">Targets specific service with low competition</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong> Integrate secondary keywords into blog posts and internal links to broaden reach without creating isolated pages.</div><br><h4 id="long-term-opportunities">Long-term Opportunities</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th><th>Rationale</th></tr></thead><tbody><tr><td class="">content marketing bureau</td><td class="">150</td><td class="">LOW</td><td class="">Growing area with low competition</td></tr><tr><td class="">branding bureau</td><td class="">150</td><td class="">MEDIUM</td><td class="">Relevant to core services</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong> Schedule quarterly content development for these long-term opportunities, aligning with the editorial calendar.</div><br><h3 id="keywords-to-avoid">Keywords to Avoid</h3><ul><li><strong>marketing bureau gent</strong>: High competition with lower search volume compared to other location-based keywords</li><li>Keywords with "branding bureau" and a city name: Low search volume and high competition</li><li>Keywords with "branding bureau" and a country name: Zero search volume</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong> Allocate resources to high-impact keywords rather than investing in low-ROI targets.</div><br></div></section>
+                <section id="3-competitive-landscape-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors-analysis">Key Competitors Analysis</h3><p>Our research identified <strong>Krachtigonline.be</strong> as a primary direct competitor in the Belgian market. This competitor demonstrates several SEO strengths that Ntriga should be aware of:</p><br><h4 id="competitor-strengths">Competitor Strengths</h4><ul><li><strong>Higher Average Keyword Positions</strong>: Krachtigonline.be consistently ranks better for key industry terms</li><li><strong>Greater Estimated Traffic Volume</strong>: Their organic traffic exceeds Ntriga's current performance</li><li><strong>Strong Performance for Core Service Keywords</strong>: Particularly for terms like "digital marketing bureau" and "SEO"</li></ul><br><div class="highlight-box"><strong>Next Step:</strong> Audit and update title tags and meta descriptions to match competitor best practices—incorporate primary keywords and location mentions.</div><br><h3 id="keyword-gap-analysis">Keyword Gap Analysis</h3><p>Krachtigonline.be is outperforming Ntriga on several high-value keywords:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th><th>Ntriga's Position</th></tr></thead><tbody><tr><td class="">digital marketing bureaus</td><td class="">320</td><td class="">LOW</td><td class="">Poor ranking</td></tr><tr><td class="">digital marketingbureau</td><td class="">320</td><td class="">LOW</td><td class="">Poor ranking</td></tr><tr><td class="">online seo analyse</td><td class="">170</td><td class="">LOW</td><td class="">Poor ranking</td></tr><tr><td class="">reclame bureau belgie</td><td class="">70</td><td class="">MEDIUM</td><td class="">Poor ranking</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong> Each missed keyword is a low-competition opportunity; adding them to the content roadmap can yield quick traffic gains.</div><br><h3 id="serp-strategy-comparison">SERP Strategy Comparison</h3><p>Krachtigonline.be employs several effective SERP strategies that Ntriga could learn from:</p><br><ol><li><strong>Keyword-Focused Titles and Descriptions</strong>:</li></ol><ul><li>Competitor uses target keywords prominently in both title tags and meta descriptions</li><li>Ntriga's titles and descriptions are often generic or brand-focused</li></ul><ol><li><strong>Location Targeting</strong>:</li></ol><ul><li>Competitor includes specific location information (e.g., "Geel," "Boom") in SERP elements</li><li>This helps attract local clients searching for services in specific areas</li></ul><ol><li><strong>Value Proposition Inclusion</strong>:</li></ol><ul><li>Competitor highlights benefits (e.g., "hoge ROI") directly in meta descriptions</li><li>Creates more compelling click-through incentives</li></ul><ol><li><strong>Dedicated Service Landing Pages</strong>:</li></ol><ul><li>Competitor uses specific URL structures (e.g., "/marketingbureau/", "/seo-optimalisatie/")</li><li>Allows for more targeted content that directly addresses search intent</li></ul><br><div class="highlight-box"><strong>Next Step:</strong> Implement meta tag updates with keyword and location modifiers in the next content sprint to improve click-through rates.</div><br></div></section>
+                <section id="4-backlink-authority-analysis-for-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="backlink-profile-overview">Backlink Profile Overview</h3><p>Ntriga has established a substantial backlink profile with <strong>38,344 backlinks</strong> from <strong>231 referring domains</strong>, demonstrating a strong online presence in the Belgian market. Key metrics include:</p><br><ul><li><strong>Domain Rank</strong>: 422</li><li><strong>Referring Domains</strong>: 231 (225 main domains)</li><li><strong>Backlink Spam Score</strong>: 1% (indicating generally good quality)</li><li><strong>Country Distribution</strong>: Majority from Belgium (31,203 backlinks)</li><li><strong>TLD Distribution</strong>: Predominantly .be domains (28,894 backlinks)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong> The heavy .be backlink footprint is a competitive advantage—leverage local industry partnerships to grow relevance.</div><br><h4 id="high-quality-referring-domains">High-Quality Referring Domains</h4><ul><li><strong>ntriga.agency</strong> (0% spam score)</li><li><strong>maquina.be</strong> (0% spam score)</li><li><strong>key-tec.be</strong> (0% spam score)</li><li><strong>eurometropolis.eu</strong> (0% spam score)</li><li><strong>resiplast.be</strong> (17% spam score)</li></ul><br><h4 id="toxic-backlinks-requiring-disavowal-">Toxic Backlinks (Requiring Disavowal)</h4><ul><li><strong>backlinktime.com</strong> (81% spam score)</li><li><strong>99ranks.com</strong> (75% spam score)</li><li><strong>topbilliondirectory.com</strong> (70% spam score)</li><li><strong>microlinksite.com</strong> (65% spam score)</li><li><strong>ourcutebabies.com</strong> (65% spam score)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong> Compile and upload a disavow file targeting the listed toxic domains to preserve domain authority.</div><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><p>Analysis of Ntriga's anchor text profile reveals:</p><br><ol><li><strong>Brand-Focused Anchors</strong>: Most backlinks use "Ntriga" or "Website door Ntriga" as anchor text</li><li><strong>Limited Keyword Diversity</strong>: Very few backlinks use service-related keywords as anchors</li><li><strong>Consistent Branding</strong>: The uniform use of brand name indicates strong brand visibility</li><li><strong>Opportunity for Improvement</strong>: More diverse, keyword-rich anchor text could improve rankings for target keywords</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong> Introduce keyword-rich anchor text in future outreach campaigns to reinforce service relevance.</div><br><h3 id="competitor-backlink-comparison">Competitor Backlink Comparison</h3><p>The analysis identified several key competitors in the backlink space:</p><br><ol><li><strong>ntriga.agency</strong>: 119 intersecting backlinks, indicating a strong overlap in content or SEO strategy</li><li><strong>list-manage.com</strong>: 45 intersecting backlinks</li><li><strong>missbelgium.be</strong>: 36 intersecting backlinks</li><li><strong>oost-vlaanderen.be</strong>: 33 intersecting backlinks</li></ol><br><div class="highlight-box"><strong>Next Step:</strong> Explore joint content or partnerships with these intersecting referring domains to capture additional backlinks.</div><br><h3 id="backlink-opportunities">Backlink Opportunities</h3><p>Based on the analysis, we've identified several high-value backlink opportunities for Ntriga:</p><br><ol><li><strong>Local Business Directories</strong>: Belgian business directories with high domain authority</li><li><strong>Industry Partnerships</strong>: Websites of partners like key-tec.be and maquina.be could provide additional quality backlinks</li><li><strong>Client Websites</strong>: Expanding client testimonials and case studies could generate more natural backlinks</li><li><strong>Content Partnerships</strong>: Collaborating with Belgian industry publications for guest posting opportunities</li></ol><br><div class="highlight-box"><strong>Next Step:</strong> Launch an outreach initiative targeting these four opportunity categories to secure new high-authority links.</div><br></div></section>
+                <section id="5-content-strategy-recommendations-for-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="content-optimization-priorities">Content Optimization Priorities</h3><ol><li><strong>Google Tag Manager Page</strong>: Despite being the top performer, this page shows signs of declining rankings. Optimizing this content could protect and enhance this valuable traffic source.</li><li><strong>Service Pages</strong>: Key service pages like SEO analysis and advertising are ranking poorly despite their importance to the business. These pages need comprehensive optimization.</li><li><strong>Blog Content Strategy</strong>: The blog section contains numerous underperforming posts. A content audit should identify which posts to update, consolidate, or remove.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong> Conduct a full content audit, assign page owners, and create an optimization timeline for each priority area.</div><br><h3 id="keyword-driven-content-opportunities">Keyword-Driven Content Opportunities</h3><p>Based on the keyword analysis, we recommend developing or optimizing content around:</p><br><ol><li><strong>Marketing Bureau Services</strong>: Create comprehensive service pages targeting high-volume keywords like "marketing bureau" and "digital marketing bureau" with location-specific variants.</li><li><strong>Case Studies</strong>: Expand on successful case studies like "vleeswaren decru" and "pieter supply" which are already ranking well.</li><li><strong>Technical Marketing Content</strong>: Leverage the success of the Google Tag Manager page by creating more technical marketing content that can attract similar high-value traffic.</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong> Align new content topics directly to the identified keyword gaps to maximize relevance and search volume potential.</div><br><h3 id="serp-optimization-recommendations">SERP Optimization Recommendations</h3><p>Based on competitor analysis, we recommend:</p><br><ol><li><strong>Improve Title Tags and Meta Descriptions</strong>:</li></ol><ul><li>Rewrite titles and meta descriptions to be more keyword-focused</li><li>Include target keywords prominently at the beginning</li><li>Add location information (Brugge, Pittem) to target local clients</li><li>Keep titles under 60 characters and meta descriptions under 160 characters</li></ul><ol><li><strong>Create Dedicated Landing Pages</strong>:</li></ol><ul><li>Develop specific landing pages for key services (SEO, PPC, social media)</li><li>Structure URLs to clearly indicate service focus (e.g., /digital-marketing/, /seo-services/)</li><li>Tailor content to address specific search intent for each service</li></ul><ol><li><strong>Highlight Value Propositions</strong>:</li></ol><ul><li>Include clear benefits and unique selling points in meta descriptions</li><li>Focus on outcomes clients can expect (ROI, growth metrics, etc.)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong> Redraft title tags and meta descriptions for the top 10 target pages in the next two-week sprint.</div><br><h3 id="content-structure-improvements">Content Structure Improvements</h3><ul><li>Implement proper H1 tags across all pages</li><li>Enhance image optimization with descriptive alt text</li><li>Improve page loading speed by addressing render-blocking resources</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong> Fixing these structural elements will boost both user experience and search engine crawl efficiency.</div><br><h3 id="backlink-driven-content-strategy">Backlink-Driven Content Strategy</h3><ol><li><strong>Client Showcase Content</strong>: Create more in-depth case studies for clients that are already generating backlinks</li><li><strong>Technical Resource Hub</strong>: Expand the successful Google Tag Manager content into a comprehensive technical marketing resource center</li><li><strong>Local Content</strong>: Develop location-specific content to attract more Belgian backlinks</li><li><strong>Disavow Campaign</strong>: Create a disavow file for toxic backlinks with high spam scores</li></ol><br><div class="highlight-box"><strong>Next Step:</strong> Outline a 6-month execution plan that includes content creation, outreach, and the disavowal process.</div><br></div></section>
+                <section id="conclusions" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusions</h2>
+                    </div>
+                    <div class="section-content"><br><p>Ntriga is facing significant challenges with their SEO performance in Belgium, as evidenced by the 40.31% decrease in organic visibility over the past year. Our comprehensive analysis reveals several key areas for improvement:</p><br><ol><li><strong>Keyword Strategy Refinement</strong>: While Ntriga ranks well for technical terms like "google tag manager" and specific case studies, they're missing opportunities in high-volume, core service keywords like "marketing bureau" (1600 monthly searches) and "digital marketing bureau" (400 monthly searches).</li><li><strong>Content Quality and Relevance</strong>: Many pages rank outside the top 20 positions, indicating potential issues with content quality, keyword targeting, or user engagement metrics.</li><li><strong>Competitive Positioning</strong>: Krachtigonline.be is outperforming Ntriga on several high-value, low-competition keywords that directly relate to their core services. Adopting some of their competitor's SERP strategies could yield significant improvements.</li><li><strong>Technical SEO Improvements</strong>: Despite the high overall score, addressing missing H1 tags, image alt text, and render-blocking resources could improve rankings.</li><li><strong>Backlink Profile Management</strong>: While Ntriga has a substantial backlink profile (38,344 backlinks), they need to address toxic backlinks with high spam scores and diversify their anchor text beyond just brand mentions.</li><li><strong>Strategic Focus</strong>: The Google Tag Manager page generates significant traffic but shows signs of declining performance. This suggests a need to diversify traffic sources by improving other key service pages.</li><li><strong>SERP Element Optimization</strong>: Ntriga's titles and meta descriptions need to be more keyword-focused and include location information to better target local clients, following the successful patterns observed in competitor listings.</li><li><strong>Paid Search Opportunity</strong>: The absence of paid traffic data suggests Ntriga is not leveraging paid advertising in Belgium, which could be an opportunity to explore while organic rankings are improved.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong> Consolidate this report into a phased roadmap—Immediate (0-30 days), Mid-term (1-3 months), and Long-term (3-6 months)—with owners and KPIs assigned for each action area.</div></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Ntriga',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

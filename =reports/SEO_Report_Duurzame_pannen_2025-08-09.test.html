@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Duurzame pannen</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Duurzame pannen • duurzamepannen.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Nedderland Market</span>
+                        <span><i class="fas fa-calendar"></i> August 9, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th></tr></thead><tbody><tr><td class=""><strong>Organic Visibility Growth</strong></td><td class="positive">+19,756.88% ETV increase (May to August 2025)</td></tr><tr><td class=""><strong>Current Estimated Traffic Volume (ETV)</strong></td><td class="">150.12</td></tr><tr><td class=""><strong>Total Ranking Keywords</strong></td><td class="">95</td></tr><tr><td class=""><strong>Keywords in Top Positions</strong></td><td class="">Position 1: 0<br>Positions 2-3: 0<br>Positions 4-10: 4</td></tr><tr><td class=""><strong>New Keywords Ranked</strong></td><td class="">74</td></tr><tr><td class=""><strong>Improved Keywords</strong></td><td class="">12</td></tr><tr><td class=""><strong>Declined Keywords</strong></td><td class="">6</td></tr><tr><td class=""><strong>Lost Keywords</strong></td><td class="">17</td></tr><tr><td class=""><strong>Backlink Profile</strong></td><td class="">No detectable backlinks (critical weakness)</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The explosive ETV growth highlights strong momentum, but only 4 keywords in the top 10 indicates that priority must shift to improving rankings for high-volume terms.</li><li>Zero backlinks underscores an urgent need for an outreach strategy to convert visibility gains into sustainable authority.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Keywords They Rank Well For (High Volume & Duurzame Pannen Ranks Poorly)</th></tr></thead><tbody><tr><td class=""><strong>Pannenwinkel.com</strong></td><td class="">"braadpan" (12,100), "wokpan" (8,100), "steelpan" (4,400), "gietijzeren braadpan" (6,600), "keramische koekenpan" (1,600)</td></tr><tr><td class=""><strong>Greenpan.nl</strong></td><td class="">"pfas vrij" (390), "keramische wokpan" (320), "braadpan" (12,100), "wokpan" (8,100), "steelpan" (4,400)</td></tr><tr><td class=""><strong>Cookandpan.com</strong></td><td class="">"emaille pannen" (720), "emaille pan" (590), "wat is emaille" (260), "gietijzeren braadpan" (6,600)</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Perform an in-depth keyword gap audit for each competitor’s top 20 terms and map content/technical tasks to bridge those gaps within 90 days.</li><li>Identify three competitor domains for backlink opportunities (e.g., guest posts, resource pages) and initiate outreach.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class=""><strong>pfas vrije pan</strong></td><td class="">5,150</td><td class="">High</td><td class="">Core focus keyword, high volume, aligns with brand mission</td></tr><tr><td class=""><strong>gietijzeren braadpan</strong></td><td class="">6,600</td><td class="">Medium</td><td class="">High volume, currently ranking page 2, potential for top 10</td></tr><tr><td class=""><strong>bk koekenpan</strong></td><td class="">1,900</td><td class="">Medium</td><td class="">Brand-specific, high search volume, currently page 4</td></tr><tr><td class=""><strong>wokpan pfas vrij</strong></td><td class="">880</td><td class="">Medium</td><td class="">Relevant to sustainable cookware, low competition</td></tr><tr><td class=""><strong>emaille pan inductie</strong></td><td class="">88</td><td class="">High</td><td class="">Niche product + cooking method, good for content cluster</td></tr><tr><td class=""><strong>oude emaille pan op inductie</strong></td><td class="">20</td><td class="">Low</td><td class="">Long-tail, low competition, easy to rank</td></tr><tr><td class=""><strong>pfas vrije pan ikea</strong></td><td class="">8</td><td class="">Low</td><td class="">Comparison shoppers, untapped niche</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize “pfas vrije pan” as the flagship target and build a content cluster around related long-tails to establish topical authority.</li><li>Leverage low-competition terms like “oude emaille pan op inductie” and “pfas vrije pan ikea” for early wins and to funnel link equity to primary pages.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Duurzame Pannen has shown explosive growth in organic visibility but still lacks top 3 keyword rankings and backlinks.</li><li>The site ranks for 95 keywords, but only 4 are in the top 10 positions; no keywords in positions 1-3.</li><li>Competitors Pannenwinkel.com, Greenpan.nl, and Cookandpan.com dominate high-volume and transactional keywords.</li><li>No backlinks detected for Duurzame Pannen, while competitors have strong backlink profiles.</li><li>High-value keyword opportunities exist around "pfas vrije pan," "gietijzeren braadpan," and brand-specific terms like "bk koekenpan."</li><li>Seasonal spikes in cookware searches occur in Q4, especially December, ideal for targeted campaigns.</li><li>Technical SEO is strong overall but needs fixes for page speed and minor on-page issues.</li><li>Content strategy should focus on optimizing existing pages, creating new guides on PFAS-free cookware, and building backlinks through partnerships and outreach.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit and optimize the 4 pages currently in the top 10 for quick ranking improvements.</li><li>Assign a backlink outreach lead to secure at least 5 high-authority links within the next 60 days.</li><li>Finalize Q4 content calendar by mid-September to capitalize on holiday season search peaks.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-duurzame-pannen" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Duurzame Pannen</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Duurzame Pannen (duurzamepannen.nl) is an online retailer based in the Netherlands that specializes in sustainable cookware, particularly eco-friendly pans free from harmful chemicals like PFAS and PFOA. The company also maintains a blog with tips and information related to sustainable cooking, demonstrating their commitment to educating consumers about sustainable kitchen practices. (<a href="https://duurzamepannen.nl" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</p><br></div></section>
+                <section id="research-scope" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Research Scope</h2>
+                    </div>
+                    <div class="section-content"><p>This SEO analysis focuses on Duurzame Pannen's performance in the Dutch market, examining their organic visibility, keyword rankings, competitive positioning, and backlink profile to identify opportunities for improvement.</p><br></div></section>
+                <section id="1-overall-seo-performance" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-growth">Organic Visibility Growth</h3><p>Duurzame Pannen has experienced remarkable growth in organic visibility over the past few months, with an impressive <strong>19,756.88% increase in Estimated Traffic Volume (ETV)</strong> from May to August 2025. This indicates that the site is gaining significant traction in search results, though it's starting from a very low baseline.</p><br><h3 id="current-organic-rankings-august-2025-">Current Organic Rankings (August 2025)</h3><ul><li><strong>Position 1</strong>: 0 keywords</li><li><strong>Positions 2-3</strong>: 0 keywords</li><li><strong>Positions 4-10</strong>: 4 keywords</li><li><strong>Positions 11-20</strong>: 14 keywords</li><li><strong>Positions 21-30</strong>: 26 keywords</li><li><strong>Positions 31-40</strong>: 18 keywords</li><li><strong>Positions 41-50</strong>: 12 keywords</li><li><strong>Positions 51-100</strong>: 21 keywords</li></ul><br><h3 id="traffic-metrics">Traffic Metrics</h3><ul><li><strong>Current ETV</strong>: 150.12</li><li><strong>Total Ranking Keywords</strong>: 95</li><li><strong>Estimated Paid Traffic Cost</strong>: €95.10</li><li><strong>New Rankings</strong>: 74 keywords</li><li><strong>Improved Rankings</strong>: 12 keywords</li><li><strong>Declined Rankings</strong>: 6 keywords</li><li><strong>Lost Rankings</strong>: 17 keywords</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ol><li><strong>/braadpannen/gietijzeren-braadpan/</strong>: ETV of 33.66, ranking in positions 11-20</li><li><strong>/braadpannen/</strong>: ETV of 25.41, ranking in positions 61-70</li><li><strong>/wokpannen/</strong>: ETV of 17.56, ranking in positions 51-80</li><li><strong>/merken/isenvi/</strong>: ETV of 9.85, ranking in positions 4-10</li><li><strong>/steelpannen/</strong>: ETV of 9.68, ranking in positions 61-80</li><li><strong>/kookblogs/wat-is-een-emaille-pan/</strong>: ETV of 5.67, ranking in positions 11-60</li><li><strong>/blue-label-granite-koekenpan-24-cm-bk/</strong>: ETV of 5.64, ranking in positions 4-20</li></ol><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><ul><li><strong>On-page Score</strong>: 98.17 (very good)</li><li><strong>Strengths</strong>: HTTPS implementation, canonical URLs, SEO-friendly URL structure, mobile-friendly design, no broken links</li><li><strong>Issues to Address</strong>:</li><li>Render-blocking resources affecting page load speed</li><li>Low content-to-HTML ratio</li><li>Duplicate "generator" meta tags</li><li>Missing image title attributes</li><li>Large DOM nodes (nodes with more than 60 children)</li></ul><br></div></section>
+                <section id="2-keyword-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-keyword-performance">Current Keyword Performance</h3><p>Based on our analysis, Duurzame Pannen has significant opportunities to improve keyword rankings, as they currently have no keywords ranking in the top 3 positions and only 4 keywords in positions 4-10.</p><br><h4 id="high-volume-keywords-with-ranking-potential-">High-Volume Keywords with Ranking Potential:</h4><br><ol><li><strong>"gietijzeren braadpan"</strong> (cast iron dutch oven)</li></ol><ul><li>Search Volume: 6,600</li><li>Current Position: 20</li><li>Page: /braadpannen/gietijzeren-braadpan/</li><li>This is the highest volume keyword in the analysis, currently ranking on page 2</li></ul><br><ol><li><strong>"bk koekenpan"</strong> (BK frying pan)</li></ol><ul><li>Search Volume: 1,900</li><li>Current Position: 34</li><li>Page: /balans-koekenpan-20-cm-keramische-koekenpan-bk/</li><li>Brand-specific keyword with high search volume, currently ranking on page 4</li></ul><br><ol><li><strong>"wokpan pfas vrij"</strong> (PFAS-free wok pan)</li></ol><ul><li>Search Volume: 880</li><li>Current Position: 32</li><li>Page: /wokpannen/wokpan-zonder-pfas/</li><li>Highly relevant to the site's focus on sustainable cookware</li></ul><br><ol><li><strong>"keramische hapjespan"</strong> (ceramic snack pan)</li></ol><ul><li>Search Volume: 390</li><li>Current Position: 18</li><li>Page: /hapjespannen/</li><li>Good volume with ranking on page 2</li></ul><br><ol><li><strong>"pfas vrije wokpan"</strong> (PFAS-free wok pan)</li></ol><ul><li>Search Volume: 390</li><li>Current Position: 28</li><li>Page: /wokpannen/wokpan-zonder-pfas/page/2/</li><li>Variation of "wokpan pfas vrij" with similar search intent</li></ul><br><h3 id="recommended-priority-keywords">Recommended Priority Keywords</h3><br><p>Based on search volume, competition, and relevance to the business:</p><br><ol><li><strong>"pfas vrije pan"</strong> (PFAS-free pan)</li></ol><ul><li>Search Volume: 5,150</li><li>Competition Level: HIGH</li><li>Core keyword with highest search volume directly related to the site's primary focus</li></ul><br><ol><li><strong>"emaille pan inductie"</strong> (enamel pan induction)</li></ol><ul><li>Search Volume: 88</li><li>Competition Level: HIGH</li><li>Specific product type and cooking method combination</li></ul><br><ol><li><strong>"emaille pan op inductie"</strong> (enamel pan on induction)</li></ol><ul><li>Search Volume: 38</li><li>Competition Level: HIGH</li><li>Variation of above with slightly different phrasing</li></ul><br><ol><li><strong>"oude emaille pan op inductie"</strong> (old enamel pan on induction)</li></ol><ul><li>Search Volume: 20</li><li>Competition Level: LOW</li><li>Long-tail variation with lower competition</li></ul><br><ol><li><strong>"pfas vrije pan ikea"</strong> (PFAS-free pan IKEA)</li></ol><ul><li>Search Volume: 8</li><li>Competition Level: LOW</li><li>Opportunity to capture comparison shoppers</li></ul><br><h3 id="seasonal-keyword-trends">Seasonal Keyword Trends</h3><br><p>Our analysis reveals clear seasonal patterns in cookware-related searches:</p><br><ul><li><strong>Holiday Season Peak</strong>: Search volumes for cookware keywords increase significantly in the months leading up to and including December, likely due to holiday cooking and gift-giving</li><li><strong>"gietijzeren braadpan"</strong> shows a particularly strong spike in December</li><li><strong>"bk koekenpan"</strong> searches increase by approximately 50% from October to December</li></ul><br><p>This seasonal trend suggests strategic timing for content optimization and promotional campaigns.</p><br></div></section>
+                <section id="3-competitive-landscape" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-competitors-overview">Top Competitors Overview</h3><br><p>Based on our analysis, Duurzame Pannen faces three main competitors in the Dutch sustainable cookware market:</p><br><ol><li><strong>Pannenwinkel.com</strong></li></ol><ul><li><strong>Key Strengths</strong>: High estimated traffic volume, strong keyword performance for core pan-related keywords, and a broad product range</li><li><strong>Competitor Type</strong>: Direct competitor focusing on selling a wide variety of pans and cookware</li><li><strong>Notable Rankings</strong>: Ranks significantly higher for high-volume keywords like "braadpan" (12,100 searches), "wokpan" (8,100 searches), and "steelpan" (4,400 searches)</li></ul><br><ol><li><strong>Greenpan.nl</strong></li></ol><ul><li><strong>Key Strengths</strong>: Strong brand recognition, high rankings for keywords related to "PFAS-free" and "keramische" pans, clear focus on healthy cooking</li><li><strong>Competitor Type</strong>: Direct competitor specializing in ceramic, PFAS-free cookware</li><li><strong>Notable Rankings</strong>: Dominates for health-conscious keywords like "pfas vrij" (390 searches) and "keramische wokpan" (320 searches)</li></ul><br><ol><li><strong>Cookandpan.com</strong></li></ol><ul><li><strong>Key Strengths</strong>: High rankings for core pan-related keywords, strong messaging around "gifvrij" (toxin-free) and "vaatwasserbestendig" (dishwasher-safe), focus on design and user experience</li><li><strong>Competitor Type</strong>: Direct competitor emphasizing healthy and easy cooking with stylish cookware</li><li><strong>Notable Rankings</strong>: Performs well for "emaille pannen" (720 searches) and informational queries like "wat is emaille" (260 searches)</li></ul><br><h3 id="keyword-gap-analysis">Keyword Gap Analysis</h3><br><p>Our analysis identified several high-value keywords where competitors significantly outrank Duurzame Pannen:</p><br><h4 id="high-volume-keywords-1-000-searches-">High-Volume Keywords (1,000+ searches)</h4><ul><li><strong>"braadpan"</strong> (12,100 searches): Pannenwinkel.com and Greenpan.nl rank significantly higher</li><li><strong>"wokpan"</strong> (8,100 searches): Pannenwinkel.com and Greenpan.nl rank significantly higher</li><li><strong>"gietijzeren braadpan"</strong> (6,600 searches): Pannenwinkel.com and Cookandpan.com rank significantly higher</li><li><strong>"steelpan"</strong> (4,400 searches): Pannenwinkel.com and Greenpan.nl rank significantly higher</li><li><strong>"keramische koekenpan"</strong> (1,600 searches): All three competitors rank significantly higher</li></ul><br><h4 id="medium-volume-keywords-300-999-searches-">Medium-Volume Keywords (300-999 searches)</h4><ul><li><strong>"wokpan pfas vrij"</strong> (880 searches): Greenpan.nl and Cookandpan.com rank significantly higher</li><li><strong>"emaille pannen"</strong> (720 searches): Cookandpan.com ranks significantly higher</li><li><strong>"emaille pan"</strong> (590 searches): Cookandpan.com ranks significantly higher</li><li><strong>"pfas vrij"</strong> (390 searches): Greenpan.nl and Cookandpan.com rank significantly higher</li><li><strong>"pfas pannen"</strong> (390 searches): Greenpan.nl and Cookandpan.com rank significantly higher</li></ul><br><h4 id="search-intent-patterns">Search Intent Patterns</h4><p>The keywords where competitors outperform Duurzame Pannen fall into several intent categories:</p><br><ol><li><strong>Informational Intent</strong>: Keywords like "wat is pfas-vrij", "wat is emaille", and "pfas in pannen" where users seek information about materials and safety</li><li><strong>Navigational Intent</strong>: Brand-specific searches like "bk koekenpan", "greenchef wokpan", and "wokpan demeyere"</li><li><strong>Transactional Intent</strong>: Purchase-oriented keywords like "braadpan kopen", "wokpan kopen", and "keramische koekenpan kopen"</li><li><strong>Product Category Intent</strong>: General category searches like "braadpan", "wokpan", "steelpan", and "koekenpan"</li></ol><br><h3 id="serp-strategy-analysis">SERP Strategy Analysis</h3><br><p>Our analysis of competitor SERP elements reveals several effective patterns:</p><br><h4 id="title-and-meta-description-comparison">Title and Meta Description Comparison</h4><ul><li><strong>Pannenwinkel.com</strong>: Uses concise, keyword-focused titles (e.g., "Gietijzeren Braadpan") with meta descriptions that briefly describe the product and its uses</li><li><strong>Greenpan.nl</strong>: Includes product name and brand in titles, with meta descriptions highlighting key benefits like "PFAS-free" and "gezonde keramische antiaanbaklaag"</li><li><strong>Cookandpan.com</strong>: Employs keyword-focused titles with unique selling propositions (e.g., "Keramische koekenpan kopen? – Bakken met crispy finesse") and meta descriptions emphasizing the "gifvrij" aspect</li></ul><br><h4 id="successful-content-types">Successful Content Types</h4><ul><li><strong>Category Pages</strong>: Competitors rank well with comprehensive category pages showcasing product ranges (e.g., "Braadpannen", "Wokpannen")</li><li><strong>Brand Pages</strong>: Dedicated pages for specific brands perform well for brand-related searches</li><li><strong>Informational Blog Posts</strong>: Content answering common questions about cookware materials and safety attracts significant organic traffic</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><p>Our backlink analysis for Duurzame Pannen revealed a critical SEO weakness: <strong>the website currently has no detectable backlinks</strong>. This represents a significant opportunity for improvement, as backlinks are a fundamental ranking factor in search engine algorithms.</p><br><h3 id="key-findings-">Key Findings:</h3><br><ol><li><strong>Complete Absence of Backlinks</strong>: The analysis showed no referring domains to duurzamepannen.nl, indicating that the site has not established any external link authority.</li></ol><br><ol><li><strong>No Toxic Backlinks</strong>: While the absence of backlinks is a weakness, it also means there are no harmful or spammy links that could negatively impact rankings.</li></ol><br><ol><li><strong>Competitive Disadvantage</strong>: All three main competitors (Pannenwinkel.com, Greenpan.nl, and Cookandpan.com) have established backlink profiles that contribute to their higher rankings for competitive keywords.</li></ol><br><h3 id="backlink-acquisition-opportunities-">Backlink Acquisition Opportunities:</h3><br><ol><li><strong>Industry Partnerships</strong>: Identify Dutch cooking blogs, sustainable living websites, and eco-friendly product reviewers that could provide relevant, authoritative backlinks.</li></ol><br><ol><li><strong>Content-Driven Link Building</strong>: Create shareable, informative content about sustainable cooking and PFAS-free cookware that naturally attracts links from health and environmental websites.</li></ol><br><ol><li><strong>Local Business Directories</strong>: Ensure presence in relevant Dutch business directories and local listings to establish basic link authority.</li></ol><br><ol><li><strong>Supplier Relationships</strong>: Leverage relationships with sustainable cookware brands and suppliers for potential backlinks from their "where to buy" pages.</li></ol><br><ol><li><strong>Educational Outreach</strong>: Create educational resources about sustainable cooking that could attract links from educational institutions and health organizations.</li></ol><br></div></section>
+                <section id="5-content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our comprehensive analysis, we recommend the following content strategy:</p><br><h3 id="1-optimize-high-potential-pages">1. Optimize High-Potential Pages</h3><br><p>Focus on improving these pages that target high-volume keywords but aren't ranking in top positions:</p><br><ul><li><strong>Gietijzeren Braadpan Page</strong> (/braadpannen/gietijzeren-braadpan/)</li><li>Expand content with detailed information about benefits of cast iron</li><li>Add size comparisons, care instructions, and recipe suggestions</li><li>Improve internal linking to this page from relevant blog posts</li><li>Target keyword: "gietijzeren braadpan" (6,600 searches)</li></ul><br><ul><li><strong>PFAS-Free Wokpan Page</strong> (/wokpannen/wokpan-zonder-pfas/)</li><li>Enhance content explaining PFAS dangers and benefits of PFAS-free options</li><li>Include comparison tables of different PFAS-free wok options</li><li>Add customer testimonials and expert opinions</li><li>Target keywords: "wokpan pfas vrij" (880 searches) and "pfas vrije wokpan" (390 searches)</li></ul><br><ul><li><strong>BK Koekenpan Page</strong> (/balans-koekenpan-20-cm-keramische-koekenpan-bk/)</li><li>Optimize for the brand-specific search "bk koekenpan" (1,900 searches)</li><li>Add more detailed product specifications and benefits</li><li>Include comparison with other BK models</li></ul><br><h3 id="2-create-new-content-for-keyword-gaps">2. Create New Content for Keyword Gaps</h3><br><p>Develop new content targeting these high-value keywords:</p><br><ul><li><strong>Comprehensive Guide to PFAS-Free Cookware</strong></li><li>Target the high-volume keyword "pfas vrije pan" (5,150 searches)</li><li>Include explanations of what PFAS are and their health impacts</li><li>Compare different PFAS-free materials (ceramic, cast iron, enamel, etc.)</li></ul><br><ul><li><strong>Enamel Cookware on Induction Hobs</strong></li><li>Target the cluster of keywords around "emaille pan inductie" (88 searches)</li><li>Address common questions about using enamel cookware on induction</li><li>Include tips for best practices and care</li></ul><br><ul><li><strong>Informational Content on Cookware Materials</strong></li><li>Create in-depth blog posts answering common questions like "Wat is een PFAS-vrije pan en waarom is het belangrijk?" and "Emaille vs. Keramiek: Welke pan is het beste voor jou?"</li><li>Target informational keywords where competitors currently dominate</li></ul><br><h3 id="3-improve-serp-elements-based-on-competitor-analysis">3. Improve SERP Elements Based on Competitor Analysis</h3><br><ul><li><strong>Revise Title Tags</strong>: Make titles more concise and keyword-focused, following the pattern of successful competitors. For example, instead of "Braadpan kopen? | Vrij van schadelijke stoffen," use "Braadpan Kopen: Duurzame & PFAS-vrije Braadpannen"</li><li><strong>Enhance Meta Descriptions</strong>: Focus on highlighting key benefits in meta descriptions, such as "PFAS-free," "gezond koken," "vaatwasserbestendig," and "geschikt voor inductie"</li><li><strong>Create Dedicated Brand Pages</strong>: Develop pages for specific brands that Duurzame Pannen sells (e.g., "BK Pannen," "GreenChef Cookware") to capture brand-specific searches</li></ul><br><h3 id="4-backlink-acquisition-strategy">4. Backlink Acquisition Strategy</h3><br><p>Given the complete absence of backlinks, we recommend a multi-faceted approach:</p><br><ul><li><strong>Expert Content Partnerships</strong>: Collaborate with Dutch cooking experts and sustainable living influencers to create guest posts that link back to Duurzame Pannen</li><li><strong>Resource Link Building</strong>: Create comprehensive guides on topics like "Complete Guide to PFAS-Free Cooking" or "Sustainable Kitchen Essentials" that serve as linkable assets</li><li><strong>Local Business Outreach</strong>: Connect with complementary local businesses (e.g., organic food stores, eco-friendly home goods shops) for cross-promotion opportunities</li><li><strong>Industry Directory Listings</strong>: Submit the site to relevant Dutch business directories, sustainable product listings, and eco-friendly shopping guides</li><li><strong>PR Outreach</strong>: Develop newsworthy content about sustainable cooking trends or health impacts of traditional cookware to attract media coverage and links</li></ul><br><h3 id="5-seasonal-content-strategy">5. Seasonal Content Strategy</h3><br><p>Leverage the identified seasonal trends:</p><br><ul><li><strong>Q4 Content Push</strong>: Schedule major content updates and new articles for September-October to capture the increasing search volume leading into the holiday season</li><li><strong>Holiday Gift Guides</strong>: Create gift guides featuring sustainable cookware in November</li><li><strong>Holiday Cooking Content</strong>: Develop recipes and cooking tips using sustainable cookware for traditional Dutch holiday dishes</li></ul><br><h3 id="6-technical-optimization">6. Technical Optimization</h3><br><ul><li>Address render-blocking resources to improve page load speed</li><li>Increase content-to-HTML ratio on key pages</li><li>Fix duplicate "generator" meta tags</li><li>Add missing image title attributes</li><li>Optimize large DOM nodes</li></ul><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><br><p>Duurzame Pannen has shown impressive growth in organic visibility but has significant untapped potential. With no keywords currently ranking in the top 3 positions, only 4 in the top 10, and a complete absence of backlinks, there are substantial opportunities for improvement through targeted optimization.</p><br><p>The competitive analysis reveals that Pannenwinkel.com, Greenpan.nl, and Cookandpan.com are dominating high-value keywords in the sustainable cookware space. These competitors have established effective SERP strategies, including concise keyword-focused titles, benefit-oriented meta descriptions, comprehensive category pages, and—critically—established backlink profiles that Duurzame Pannen currently lacks.</p><br><p>Our keyword analysis identified several high-volume terms like "gietijzeren braadpan" (6,600 searches), "braadpan" (12,100 searches), and "pfas vrije pan" (5,150 searches) that align perfectly with Duurzame Pannen's focus on sustainable cookware. By optimizing existing pages, creating strategic new content targeting these keywords, and implementing a robust backlink acquisition strategy, the company can significantly improve search visibility.</p><br><p>The seasonal trends identified in the data suggest that Q4 is a critical period for cookware searches, with December showing peak volumes. This provides a clear timeline for implementing SEO improvements to maximize impact during this high-traffic period.</p><br><p>By implementing the recommended content strategy, backlink acquisition plan, and technical optimizations, Duurzame Pannen can capitalize on its recent growth momentum and establish a stronger position in the competitive Dutch sustainable cookware market.</p><br><h3 id="next-steps">Next Steps</h3><br><ol><li><strong>Immediate Actions (1-2 months)</strong>:</li></ol><ul><li>Optimize titles and meta descriptions for top 10 priority keywords</li><li>Address technical SEO issues affecting page speed</li><li>Create a dedicated brand page for a popular brand like BK or GreenChef</li><li>Begin basic backlink acquisition through business directories and supplier relationships</li></ul><br><ol><li><strong>Medium-Term Actions (3-6 months)</strong>:</li></ol><ul><li>Develop comprehensive informational content about PFAS-free cookware</li><li>Optimize category pages for major product types</li><li>Implement seasonal content strategy for Q4</li><li>Launch content partnerships for quality backlink acquisition</li></ul><br><ol><li><strong>Long-Term Strategy (6-12 months)</strong>:</li></ol><ul><li>Build a comprehensive content library addressing all identified keyword gaps</li><li>Develop an ongoing backlink acquisition program</li><li>Continuously monitor competitor rankings and adjust strategy accordingly</li><li>Expand into related product categories based on keyword research findings</li></ul><br><p>This comprehensive SEO strategy addresses all key areas where Duurzame Pannen can improve: on-page optimization, content development, technical SEO, and—most critically—backlink acquisition. By implementing these recommendations, the company can build on its recent growth and establish a stronger competitive position in the Dutch sustainable cookware market.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Duurzame pannen',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

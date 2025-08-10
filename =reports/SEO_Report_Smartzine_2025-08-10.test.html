@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Smartzine</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Smartzine • smartzine.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 10, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>SEO Performance Metric</strong></th><th><strong>Current Value</strong></th><th><strong>12-Month Change</strong></th></tr></thead><tbody><tr><td class="">Total Ranking Keywords</td><td class="">1,427</td><td class="negative">-20.62% estimated traffic volume (ETV) decline</td></tr><tr><td class="">Keywords in Position 1</td><td class="">7</td><td class="negative">-12.50%</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">37</td><td class="positive">+8.82%</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">209</td><td class="positive">+29.81%</td></tr><tr><td class="">Estimated Monthly Organic Traffic (ETV)</td><td class="">4,354 visits</td><td class="">Declining (Aug 2024 peak: 5,485 visits)</td></tr><tr><td class="">Traffic Value Equivalent</td><td class="">€3,874.81</td><td class="">N/A</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Focus on reclaiming lost Position 1 rankings by updating title tags and on-page content for the 7 high-value keywords that slipped.</li><li>Leverage growth in positions 4–10 by adding internal links and optimizing meta elements to push these into the top three.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Top Competitors</strong></th><th><strong>Key Keywords They Rank Well For (High Volume & Smartzine Poor Ranking)</strong></th></tr></thead><tbody><tr><td class="">Kamera Express</td><td class="">"digitaal fotolijst" (14,800), "selfie stick" (4,400), "telefoon statief" (3,600), "ring light" (2,900), "macro lens" (1,000), "fisheye lens" (1,000), "tripod telefoon" (880), "iphone statief" (880)</td></tr><tr><td class="">Smartphonefotograaf</td><td class="">"smartphone fotografie workshop", "workshop smartphone fotografie", "cursus fotograferen" (5,400), "workshops fotografie" (1,000), "online cursus fotografie" (110)</td></tr><tr><td class="">Photofacts Academy</td><td class="">"cursus fotograferen" (5,400), "bokeh" (5,400), "diafragma" (4,400), "gouden uurtje" (1,600), "zwart-wit fotografie" (480), "fotobewerkingsprogramma" (1,900), "bewerken van foto" (8,100)</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a gap analysis for each competitor to identify content and UX patterns that drive their high rankings.</li><li>Prioritize creating similar or improved pages targeting at least the top three keywords per competitor.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Opportunity Keywords to Target</strong></th><th><strong>Monthly Search Volume (NL)</strong></th><th><strong>Competition</strong></th><th><strong>Why Target?</strong></th></tr></thead><tbody><tr><td class="">digitaal fotolijst</td><td class="">14,800</td><td class="">High</td><td class="">Very high search volume, currently dominated by competitors, strong e-commerce potential</td></tr><tr><td class="">bewerken van foto</td><td class="">8,100</td><td class="">High</td><td class="">High volume, strong user intent for editing tutorials, content gap for Smartzine</td></tr><tr><td class="">cursus fotograferen</td><td class="">5,400</td><td class="">Medium</td><td class="">High interest in courses, opportunity to expand educational offerings</td></tr><tr><td class="">bokeh</td><td class="">5,400</td><td class="">Medium</td><td class="">Popular photography technique, low current ranking, good for authoritative content</td></tr><tr><td class="">diafragma</td><td class="">4,400</td><td class="">Medium</td><td class="">Core photography concept, opportunity to educate and rank well</td></tr><tr><td class="">selfie stick</td><td class="">4,400</td><td class="">Medium</td><td class="">Equipment-related keyword with commercial intent</td></tr><tr><td class="">telefoon statief</td><td class="">3,600</td><td class="">Medium</td><td class="">Equipment keyword with buying intent, currently underutilized</td></tr><tr><td class="">foto bewerken apps</td><td class="">2,900</td><td class="">Medium</td><td class="">Popular editing apps, opportunity for app-specific tutorials</td></tr><tr><td class="">gouden uurtje</td><td class="">1,600</td><td class="">Low</td><td class="">Niche photography topic with good search volume and low competition</td></tr><tr><td class="">zwart-wit fotografie</td><td class="">480</td><td class="">Medium</td><td class="">Specialized content opportunity</td></tr><tr><td class="">smartphone fotografie tips</td><td class="">17</td><td class="">Low</td><td class="">Long-tail, low competition, good for targeted content</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize content that balances high volume with medium competition (e.g., “bokeh,” “diafragma”) to gain traction more quickly.</li><li>Schedule quick-win content for low-competition, highly categorical topics like “gouden uurtje” and “smartphone fotografie tips.”</li></ul><br><hr><br><h3 id="tl-dr-most-important-findings">TL;DR - Most Important Findings</h3><br><ul><li>Smartzine.nl’s organic traffic declined by 20.62% over the past year despite growth in mid-range keyword rankings (positions 4-10).</li><li>The site ranks for 1,427 keywords but only 7 in position 1, indicating room to improve top rankings.</li><li>Key competitors Kamera Express, Smartphonefotograaf, and Photofacts Academy outrank Smartzine on high-volume, high-intent keywords, especially in equipment and photography education.</li><li>Technical SEO issues (multiple H1 tags, missing image attributes, large DOM size) are hurting performance and should be fixed immediately.</li><li>Content gaps exist in photography techniques (e.g., bokeh, diafragma), photo editing tutorials, equipment buying guides, and Android-specific content.</li><li>Backlink profile is moderate but contains toxic links that should be disavowed; opportunities exist to gain authoritative links from photography museums and educational sites.</li><li>Competitor strategies include optimized product pages with schema markup, engaging course landing pages with strong CTAs, and comprehensive educational guides.</li><li>Recommendations include technical SEO fixes, targeted content creation on high-value keywords, SERP optimization with compelling titles and meta descriptions, and a focused backlink acquisition strategy.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Address critical technical SEO issues (H1 tags, image attributes, DOM size) in the next sprint.</li><li>Align immediate content creation efforts with high-priority opportunity keywords.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-smartzine-nl" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Smartzine.nl</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for Smartzine, a website dedicated to smartphone photography in the Netherlands. Based on our data-driven analysis, Smartzine has experienced a 20.62% decrease in organic traffic over the past year, with current estimated monthly traffic at 4,354 visits. While the site has several high-performing pages and ranks well for numerous smartphone photography keywords, there are significant opportunities to improve search visibility through technical fixes, content optimization, strategic keyword targeting, and backlink profile enhancement to outperform key competitors like Kamera Express, Smartphonefotograaf, and Photofacts Academy in the Dutch market.</p><br></div></section>
+                <section id="1-company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">1. Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Smartzine is a specialized website offering practical tips, inspiring examples, courses, and workshops on smartphone photography. They help users create photos with atmosphere, story, and character using iPhones or Android devices. Additionally, they operate an e-commerce section selling accessories for smartphone photography. <a href="https://smartzine.nl" class="link-reference" target="_blank" rel="noopener">Company Website</a></p><br></div></section>
+                <section id="2-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">2. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="2-1-organic-visibility-and-rankings">2.1 Organic Visibility and Rankings</h3><ul><li><strong>Current organic visibility</strong>: Smartzine ranks for approximately 1,427 keywords in Google Netherlands</li><li><strong>Year-over-year organic visibility change</strong>: -20.62% decrease in estimated traffic volume (ETV)</li><li><strong>Distribution of keyword rankings</strong> (latest data):</li><li>Position 1: 7 keywords (-12.50% decrease year-over-year)</li><li>Positions 2-3: 37 keywords (+8.82% increase year-over-year)</li><li>Positions 4-10: 209 keywords (+29.81% increase year-over-year)</li><li>Positions 11-20: 221 keywords (-22.73% decrease year-over-year)</li><li>Positions 21-30: 232 keywords (no change year-over-year)</li><li>Positions 31-100: 721 keywords (various decreases across ranges)</li></ul><br><h3 id="2-2-search-engine-traffic">2.2 Search Engine Traffic</h3><ul><li><strong>Current estimated monthly organic traffic</strong>: 4,354 visits</li><li><strong>Traffic value</strong>: Estimated paid traffic cost equivalent of €3,874.81</li><li><strong>Traffic trend</strong>: Declining trend over the past 12 months, with August 2024 showing 5,485 visits compared to current 4,354 visits</li></ul><br><h3 id="2-3-top-performing-pages">2.3 Top-Performing Pages</h3><ul><li><strong>https://smartzine.nl/albelli-fotoboek-maken-het-kan-sneller-en-gemakkelijker/</strong>: Highest traffic page (ETV: 770.03) with estimated traffic value of €1,217.19</li><li><strong>https://smartzine.nl/is-het-einde-van-de-digitale-fotolijst-nabij-of/</strong>: Strong performer (ETV: 335.83) with traffic value of €200.53</li><li><strong>https://smartzine.nl/slimme-tips-voor-het-maken-van-een-leuke-profielfoto/</strong>: Good performer (ETV: 284.46) with traffic value of €153.91</li><li><strong>https://smartzine.nl/fotos-overzetten-van-iphone-naar-pc-zo-doe-je-het/</strong>: Solid traffic (ETV: 233.56) with value of €195.01</li></ul><br><h3 id="2-4-underperforming-pages">2.4 Underperforming Pages</h3><p>Several pages have very low estimated traffic values (below 10 ETV), including:</p><ul><li><strong>https://smartzine.nl/reflectie-waarom-regen-een-fotografisch-cadeautje-is/</strong>: ETV of just 5.18</li><li>Multiple product and technique pages with minimal traffic despite relevant topics</li></ul><br><h3 id="2-5-technical-seo-assessment">2.5 Technical SEO Assessment</h3><p>Several technical issues were identified:</p><ul><li>Multiple H1 tags on the homepage, creating confusion for search engines</li><li>Missing image title attributes across the site</li><li>Large DOM size affecting page performance</li><li>Mobile optimization issues on some pages</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Resolve H1 and heading hierarchy issues immediately to improve crawl efficiency.</li><li>Add missing image title and alt attributes to boost image search visibility.</li><li>Optimize DOM performance and mobile responsiveness in the next development cycle.</li></ul><br></div></section>
+                <section id="3-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">3. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="3-1-current-ranking-keywords">3.1 Current Ranking Keywords</h3><p>Smartzine ranks well (positions 1-10) for numerous smartphone photography-related keywords. Here are some of their top-performing keywords with search volumes:</p><br><p><strong>Position 1 Keywords:</strong></p><ul><li>"digiscoping met smartphone" (110 monthly searches)</li><li>"fototentoonstelling 2024" (140 monthly searches)</li><li>"lume cube 2.0" (70 monthly searches)</li><li>"macrolens telefoon" (140 monthly searches)</li><li>"telephoto iphone" (90 monthly searches)</li></ul><br><p><strong>Positions 2-3 Keywords:</strong></p><ul><li>"sluitertijd samsung" (140 monthly searches)</li><li>"foto filter retro" (170 monthly searches)</li><li>"licht en schaduw fotografie" (70 monthly searches)</li><li>"smartphone fotografie workshop" (90 monthly searches)</li><li>"workshop smartphone fotografie" (140 monthly searches)</li><li>"zoomlens voor smartphone" (70 monthly searches)</li><li>"moment lens" (140 monthly searches)</li><li>"smartphone lens" (140 monthly searches)</li><li>"telelens smartphone" (210 monthly searches)</li></ul><br><p><strong>Positions 4-10 Keywords:</strong></p><ul><li>"filmen met telefoon" (70 monthly searches)</li><li>"grip smartphone" (110 monthly searches)</li><li>"cursus fotografie met smartphone" (320 monthly searches)</li><li>"cursus smartphone fotografie" (90 monthly searches)</li><li>"smartphone-telelens" (210 monthly searches)</li><li>"telelens iphone" (260 monthly searches)</li><li>"anonieme profielfoto" (210 monthly searches)</li><li>"goedkope smartphone met goede camera" (210 monthly searches)</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Focus on boosting positions 2–3 into Position 1 by improving internal linking and refreshing content around these keywords.</li></ul><br><h3 id="3-2-high-value-target-keywords">3.2 High-Value Target Keywords</h3><p>Based on our analysis, these high-value keywords present significant opportunities for Smartzine:</p><br><p><strong>Top Priority Keywords:</strong></p><ul><li>"digitaal fotolijst" (14,800 monthly searches, HIGH competition)</li><li>"bewerken van foto" (8,100 monthly searches, HIGH competition)</li><li>"cursus fotograferen" (5,400 monthly searches, MEDIUM competition)</li><li>"bokeh" (5,400 monthly searches, MEDIUM competition)</li><li>"diafragma" (4,400 monthly searches, MEDIUM competition)</li><li>"selfie stick" (4,400 monthly searches, MEDIUM competition)</li><li>"telefoon statief" (3,600 monthly searches, MEDIUM competition)</li></ul><br><p><strong>Secondary Keywords:</strong></p><ul><li>"foto bewerken apps" (2,900 monthly searches, MEDIUM competition)</li><li>"spiegelreflexcamera" (2,400 monthly searches, HIGH competition)</li><li>"foto's maken" (2,400 monthly searches, MEDIUM competition)</li><li>"fotobewerkingsprogramma" (1,900 monthly searches, MEDIUM competition)</li><li>"gouden uurtje" (1,600 monthly searches, LOW competition)</li></ul><br><p><strong>Long-term Opportunities:</strong></p><ul><li>"zwart-wit fotografie" (480 monthly searches, MEDIUM competition)</li><li>"smartphone fotografie tips" (17 monthly searches, LOW competition)</li><li>"tips smartphone fotografie" (10 monthly searches, LOW competition)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Map existing pages (or plan new pages) to these keywords, ensuring each target keyword has a dedicated content asset and meta elements optimized.</li></ul><br><h3 id="3-3-long-tail-keyword-opportunities">3.3 Long-Tail Keyword Opportunities</h3><p>The data reveals several long-tail keyword opportunities with lower competition:</p><ul><li>"statief voor smartphone" (390 monthly searches)</li><li>"smartphone statief" (390 monthly searches)</li><li>"hond fotograferen" (390 monthly searches)</li><li>"portretten fotograferen" (320 monthly searches)</li><li>"fotografie composities" (320 monthly searches)</li><li>"silhouet foto maken" (210 monthly searches)</li><li>"foto silhouet maken" (210 monthly searches)</li><li>"foto opslaan in de cloud" (210 monthly searches)</li></ul><br><h3 id="3-4-seasonal-keyword-trends">3.4 Seasonal Keyword Trends</h3><p>While specific seasonal data wasn't available in the research, the analysis suggests an opportunity to create seasonal content around photography opportunities (e.g., "Autumn smartphone photography tips," "Winter landscape photography with your phone").</p><br><h3 id="3-5-content-gaps-and-keyword-opportunities">3.5 Content Gaps and Keyword Opportunities</h3><p>Based on the keyword analysis, several content gaps were identified:</p><br><ol><li><strong>Photography Techniques</strong>: Keywords like "bokeh," "diafragma," "gouden uurtje," "zwart-wit fotografie," "kikvorsperspectief," and "vogelperspectief" show significant search volume but Smartzine isn't ranking well for them</li><li><strong>Photo Editing</strong>: Terms like "bewerken van foto," "foto bewerken apps," and "fotobewerkingsprogramma" have high search volumes with competitors outranking Smartzine</li><li><strong>Equipment-Related Content</strong>: Keywords like "digitaal fotolijst," "selfie stick," "telefoon statief," "ring light," and "macro lens" show high interest but Smartzine isn't maximizing visibility</li><li><strong>Android-Specific Content</strong>: While iPhone content is strong, there's a gap in Android-specific content despite interest in keywords like "sluitertijd samsung"</li><li><strong>Local Workshop Content</strong>: Keywords for workshops in specific Dutch cities (Utrecht, Rotterdam, Eindhoven) show interest in location-specific offerings</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Build content clusters around the top content gaps by grouping technique, editing, and equipment topics into cohesive pillar pages with interlinked subpages.</li></ul><br></div></section>
+                <section id="4-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">4. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="4-1-key-competitors">4.1 Key Competitors</h3><p>Our analysis identified three primary competitors in the Dutch smartphone photography market:</p><br><ol><li><strong>Kamera Express (www.kamera-express.nl)</strong></li></ol><ul><li><strong>Competitor Type</strong>: Direct competitor with e-commerce focus</li><li><strong>Key Strengths</strong>: High average keyword position (1), significant estimated traffic volume (106.4), and outranking Smartzine for numerous high-volume keywords</li><li><strong>Focus Areas</strong>: Photography equipment sales with strong educational content</li></ul><br><ol><li><strong>Smartphonefotograaf (smartphonefotograaf.nl)</strong></li></ol><ul><li><strong>Competitor Type</strong>: Direct competitor focused on smartphone photography education</li><li><strong>Key Strengths</strong>: High rankings for keywords related to smartphone photography courses and workshops</li><li><strong>Focus Areas</strong>: Smartphone photography courses and workshops with compelling action-oriented content</li></ul><br><ol><li><strong>Photofacts Academy (photofactsacademy.nl)</strong></li></ol><ul><li><strong>Competitor Type</strong>: Direct competitor in the photography education niche</li><li><strong>Key Strengths</strong>: Strong backlink profile (145 backlink intersections), high rankings for photography courses</li><li><strong>Focus Areas</strong>: General photography education with online courses</li></ul><br><h3 id="4-2-competitor-seo-strengths-and-weaknesses">4.2 Competitor SEO Strengths and Weaknesses</h3><br><h4 id="kamera-express">Kamera Express</h4><p><strong>Strengths:</strong></p><ul><li>Strong domain authority and backlink profile</li><li>Excellent e-commerce SEO with optimized product pages</li><li>Effective use of schema markup in SERPs</li><li>Direct keyword matching in title tags</li><li>Benefit-oriented meta descriptions with clear calls to action</li></ul><br><p><strong>Weaknesses:</strong></p><ul><li>Less focus on in-depth educational content</li><li>Primarily focused on equipment rather than techniques</li></ul><br><h4 id="smartphonefotograaf">Smartphonefotograaf</h4><p><strong>Strengths:</strong></p><ul><li>Highly targeted niche focus on smartphone photography</li><li>Engaging titles with emojis (e.g., "📱 Leukste Smartphone Fotografie Cursussen en Workshops")</li><li>Strong call-to-action in meta descriptions ("Mis nooit meer een mooi fotomoment!")</li><li>Well-optimized course and workshop landing pages</li></ul><br><p><strong>Weaknesses:</strong></p><ul><li>Smaller site with less overall content</li><li>Limited product offerings compared to Kamera Express</li></ul><br><h4 id="photofacts-academy">Photofacts Academy</h4><p><strong>Strengths:</strong></p><ul><li>Comprehensive photography education content</li><li>Strong backlink profile with 145 backlink intersections</li><li>Descriptive titles that include keywords</li><li>Content highlighting instructor expertise</li></ul><br><p><strong>Weaknesses:</strong></p><ul><li>Less specific focus on smartphone photography</li><li>Broader approach to photography education</li></ul><br><h3 id="4-3-keywords-where-competitors-outperform-smartzine">4.3 Keywords Where Competitors Outperform Smartzine</h3><p>Our analysis identified several high-value keywords where competitors are outranking Smartzine:</p><br><p><strong>Equipment-Related Keywords:</strong></p><ul><li>"digitaal fotolijst" (14,800 monthly searches) - dominated by Kamera Express</li><li>"selfie stick" (4,400 monthly searches)</li><li>"telefoon statief" (3,600 monthly searches)</li><li>"ring light" (2,900 monthly searches)</li><li>"macro lens" (1,000 monthly searches)</li><li>"fisheye lens" (1,000 monthly searches)</li><li>"tripod telefoon" (880 monthly searches)</li><li>"iphone statief" (880 monthly searches)</li></ul><br><p><strong>Photography Education Keywords:</strong></p><ul><li>"cursus fotograferen" (5,400 monthly searches)</li><li>"workshops fotografie" (1,000 monthly searches)</li><li>"online cursus fotografie" (110 monthly searches)</li><li>"smartphone fotografie cursus" (not specified)</li></ul><br><p><strong>Photography Techniques Keywords:</strong></p><ul><li>"bokeh" (5,400 monthly searches)</li><li>"diafragma" (4,400 monthly searches)</li><li>"gouden uurtje" (1,600 monthly searches)</li><li>"zwart-wit fotografie" (480 monthly searches)</li><li>"kikvorsperspectief" (1,000 monthly searches)</li><li>"vogelperspectief" (880 monthly searches)</li><li>"sluitertijd" (590 monthly searches)</li></ul><br><p><strong>Photo Editing Keywords:</strong></p><ul><li>"bewerken van foto" (8,100 monthly searches)</li><li>"foto bewerken apps" (2,900 monthly searches)</li><li>"fotobewerkingsprogramma" (1,900 monthly searches)</li><li>"snapseed" (not specified)</li><li>"luminar" (880 monthly searches)</li></ul><br><h3 id="4-4-competitor-content-strategies">4.4 Competitor Content Strategies</h3><p>Our analysis revealed several effective content strategies employed by competitors:</p><br><h4 id="kamera-express">Kamera Express</h4><ul><li><strong>Product Pages</strong>: Highly optimized product pages with detailed specifications, reviews, and related products</li><li><strong>Title Strategy</strong>: Uses titles that directly match search queries (e.g., "Digitale fotolijst met wifi kopen? Bekijk snel het aanbod!")</li><li><strong>Meta Description Strategy</strong>: Highlights product benefits, special offers, and includes clear calls to action</li><li><strong>Schema Markup</strong>: Effectively uses schema markup to display product information, ratings, and availability directly in SERPs</li><li><strong>Content Structure</strong>: Product-focused content with educational elements to support purchase decisions</li></ul><br><h4 id="smartphonefotograaf">Smartphonefotograaf</h4><ul><li><strong>Course Landing Pages</strong>: Dedicated landing pages for different courses and workshops</li><li><strong>Title Strategy</strong>: Uses engaging titles with emojis to stand out in SERPs</li><li><strong>Meta Description Strategy</strong>: Focuses on benefits of courses with strong calls to action</li><li><strong>Content Structure</strong>: Step-by-step guides and clear value propositions for educational offerings</li></ul><br><h4 id="photofacts-academy">Photofacts Academy</h4><ul><li><strong>Comprehensive Guides</strong>: In-depth guides on specific photography topics</li><li><strong>Title Strategy</strong>: Descriptive titles that include keywords and brand name</li><li><strong>Meta Description Strategy</strong>: Highlights breadth of course offerings and instructor expertise</li><li><strong>Content Structure</strong>: Educational content organized by topic and skill level</li></ul><br></div></section>
+                <section id="5-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">5. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="5-1-current-backlink-profile">5.1 Current Backlink Profile</h3><p>Our analysis reveals that Smartzine.nl has a moderately healthy backlink profile with some areas for improvement:</p><br><ul><li><strong>Total backlinks</strong>: 739 backlinks from 127 referring domains</li><li><strong>Backlink spam score</strong>: 29% (low-medium risk)</li><li><strong>Referring domains distribution</strong>: 123 main domains with 25 using nofollow attributes</li><li><strong>Geographic distribution</strong>: Primary referring TLDs include .com (393 links), .nl (104 links), .fr (90 links), and .org (81 links)</li><li><strong>Link types</strong>: 443 anchor text links, 278 image links, and 6 redirect links</li><li><strong>Link attributes</strong>: 51 nofollow links, 68 with noopener attribute, 15 with noreferrer attribute</li><li><strong>Platform types of referring sites</strong>: Primarily from e-commerce (557 links), unknown (90 links), blogs (54 links), and CMS platforms (48 links)</li></ul><br><h3 id="5-2-backlink-quality-assessment">5.2 Backlink Quality Assessment</h3><p>The backlink profile shows a mix of quality levels:</p><br><p><strong>High-Quality Backlinks (Low Spam Score):</strong></p><ul><li>nederlandsfotomuseum.nl (0% spam score) - Authoritative photography museum</li><li>cursus-fotografie.nl (0% spam score) - Relevant photography education site</li><li>visitleiden.nl (0% spam score) - Local tourism site</li><li>kevinstraveldiary.com (0% spam score) - Travel photography blog</li><li>mijnonlineidentiteit.nl (0% spam score) - Digital identity resource</li></ul><br><p><strong>Medium-Quality Backlinks (Medium Spam Score):</strong></p><ul><li>korail-bayonne.fr (35% spam score)</li><li>gerritsenmedia.nl (35% spam score)</li><li>backlinksboostdirectory.com (40% spam score)</li><li>seobacklinkdirectory.com (40% spam score)</li><li>topsiterankdirectory.com (40% spam score)</li></ul><br><p><strong>Toxic Backlinks (High Spam Score):</strong></p><ul><li>fergusauto.com (70% spam score)</li><li>developmentmi.com (65% spam score)</li><li>worldwidetopsite.com (65% spam score)</li><li>wayranks.com (65% spam score)</li><li>developmentmi.online (65% spam score)</li></ul><br><h3 id="5-3-backlink-gap-analysis">5.3 Backlink Gap Analysis</h3><p>Our analysis identified several key competitors in the backlink space:</p><br><ol><li><strong>Photofacts Academy (photofactsacademy.nl)</strong></li></ol><ul><li>145 backlink intersections with Smartzine</li><li>Rank: 46 (significantly higher than Smartzine)</li><li>Opportunity: Analyze their backlink acquisition strategy for educational content</li></ul><br><ol><li><strong>Natuurfotografie.nl</strong></li></ol><ul><li>45 backlink intersections with Smartzine</li><li>Rank: 52</li><li>Opportunity: Target similar nature photography resources for backlinks</li></ul><br><ol><li><strong>Smartphoto.com</strong></li></ol><ul><li>10 backlink intersections with Smartzine</li><li>Rank: 19 (much higher than Smartzine)</li><li>Opportunity: Identify commercial photography sites linking to them but not to Smartzine</li></ul><br><ol><li><strong>Adobe.com</strong></li></ol><ul><li>7 backlink intersections with Smartzine</li><li>Rank: 29</li><li>Opportunity: Create content about Adobe mobile apps to attract similar links</li></ul><br><ol><li><strong>Nederlands Fotomuseum (nederlandsfotomuseum.nl)</strong></li></ol><ul><li>3 backlink intersections with Smartzine</li><li>Rank: 2 (extremely authoritative)</li><li>Opportunity: Develop relationships with photography museums and cultural institutions</li></ul><br><h3 id="5-4-anchor-text-analysis">5.4 Anchor Text Analysis</h3><p>The backlink analysis revealed interesting patterns in how sites are linking to Smartzine:</p><br><ul><li><strong>Brand anchors</strong>: "Smartzine", "smartzine.nl"</li><li><strong>Workshop-related anchors</strong>: "workshop smartphone-fotografie", "workshop macrofotografie met je smartphone"</li><li><strong>Technique-related anchors</strong>: "diafragma", "Snapseed", "screenprotector"</li><li><strong>Educational anchors</strong>: "Lees verder", "Meer informatie", "Bekijk voorbeeld"</li><li><strong>Author anchors</strong>: "Gerard Voshaar" (likely the site owner/primary content creator)</li></ul><br><p>This suggests that Smartzine is primarily recognized for its workshops and educational content about smartphone photography techniques.</p><br><h3 id="5-5-toxic-backlink-recommendations">5.5 Toxic Backlink Recommendations</h3><p>Based on our analysis, we recommend disavowing the following toxic backlinks:</p><br><ul><li>fergusauto.com (70% spam score)</li><li>developmentmi.com (65% spam score)</li><li>worldwidetopsite.com (65% spam score)</li><li>wayranks.com (65% spam score)</li><li>developmentmi.online (65% spam score)</li></ul><br><p>These links appear to be from low-quality directory sites and could potentially harm Smartzine's search rankings.</p><br></div></section>
+                <section id="6-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">6. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="6-1-content-topic-suggestions">6.1 Content Topic Suggestions</h3><p>Based on Smartzine's current content performance, keyword analysis, and competitor strategies, we recommend focusing on:</p><br><ol><li><strong>Photography Techniques Content</strong></li></ol><ul><li>Create comprehensive guides on high-search-volume topics like "bokeh" (5,400 searches), "diafragma" (4,400 searches), and "gouden uurtje" (1,600 searches)</li><li>Develop in-depth content on "zwart-wit fotografie" (480 searches) and perspective techniques like "kikvorsperspectief" (1,000 searches) and "vogelperspectief" (880 searches)</li><li>Create content on "sluitertijd" (590 searches) specifically for smartphone cameras</li></ul><br><ol><li><strong>Photo Editing Tutorials</strong></li></ol><ul><li>Develop comprehensive guides targeting "bewerken van foto" (8,100 searches)</li><li>Create app-specific tutorials for popular editing apps, targeting "foto bewerken apps" (2,900 searches)</li><li>Produce comparison content for different "fotobewerkingsprogramma" (1,900 searches) options</li><li>Create content specifically about "Snapseed" and "Luminar" (880 searches)</li></ul><br><ol><li><strong>Equipment-Focused Content</strong></li></ol><ul><li>Create buying guides and reviews for "digitaal fotolijst" (14,800 searches)</li><li>Develop comprehensive content about "telefoon statief" (3,600 searches) and "selfie stick" (4,400 searches)</li><li>Create comparison content for "ring light" (2,900 searches) options</li><li>Produce in-depth guides for lens accessories like "macro lens" (1,000 searches) and "fisheye lens" (1,000 searches)</li></ul><br><ol><li><strong>Photography Education Content</strong></li></ol><ul><li>Develop a comprehensive "cursus fotograferen" (5,400 searches) section</li><li>Create location-specific workshop pages for major Dutch cities</li><li>Produce free mini-courses to compete for "online cursus fotografie" (110 searches) keywords</li></ul><br><ol><li><strong>Specialized Photography Content</strong></li></ol><ul><li>Create guides on "hond fotograferen" (390 searches)</li><li>Develop content on "portretten fotograferen" (320 searches)</li><li>Produce tutorials on "silhouet foto maken" (210 searches)</li><li>Create guides on "foto opslaan in de cloud" (210 searches)</li></ul><br><h3 id="6-2-serp-optimization-recommendations">6.2 SERP Optimization Recommendations</h3><p>Based on competitor strategies, we recommend:</p><br><ol><li><strong>Title Tag Optimization</strong></li></ol><ul><li>Include exact search queries in title tags (following Kamera Express's strategy)</li><li>Consider using emojis in titles for certain content types (following Smartphonefotograaf's strategy)</li><li>Keep titles concise and benefit-oriented</li></ul><br><ol><li><strong>Meta Description Improvements</strong></li></ol><ul><li>Craft compelling meta descriptions that highlight benefits and include clear calls to action</li><li>Ensure meta descriptions aren't truncated in SERPs</li><li>Include key selling points and unique value propositions</li></ul><br><ol><li><strong>Schema Markup Implementation</strong></li></ol><ul><li>Add schema markup to product pages, how-to guides, and reviews</li><li>Implement FAQ schema for question-based content</li><li>Use course schema for educational content</li></ul><br><h3 id="6-3-content-structure-recommendations">6.3 Content Structure Recommendations</h3><p>Based on competitor analysis and keyword research:</p><br><ol><li><strong>Create Dedicated Landing Pages</strong></li></ol><ul><li>Develop specific landing pages for key product categories like "digitale fotolijsten," "selfie sticks," and "telefoon statieven"</li><li>Create dedicated course pages for different photography techniques</li><li>Develop location-specific workshop pages</li></ul><br><ol><li><strong>Comprehensive Guides</strong></li></ol><ul><li>Create in-depth guides on photography techniques, following the structure of successful competitor content</li><li>Include practical examples, step-by-step instructions, and visual aids</li><li>Organize content into clear sections with proper heading hierarchy</li></ul><br><ol><li><strong>Content Clusters</strong></li></ol><ul><li>Develop topical clusters around key themes like smartphone camera technology, photo editing, accessories, and photography techniques</li><li>Create strong internal linking structures between related content</li><li>Establish pillar pages for main topics with supporting content for subtopics</li></ul><br></div></section>
+                <section id="7-conclusion-and-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tasks"></i></div>
+                        <h2 class="section-title">7. Conclusion and Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-seo-status">Current SEO Status</h3><p>Smartzine.nl is experiencing a decline in organic traffic (-20.62% year-over-year) despite having several strong-performing pages and ranking well for numerous smartphone photography keywords. The site has good mid-range rankings (positions 4-10) but is losing ground in top positions and deeper search results. The backlink profile shows moderate strength (739 backlinks from 127 referring domains) but contains some toxic links that should be addressed. Key competitors like Kamera Express, Smartphonefotograaf, and Photofacts Academy are outperforming Smartzine for many high-value keywords in the Dutch market and have stronger backlink profiles.</p><br><h3 id="priority-recommendations">Priority Recommendations</h3><br><ol><li><strong>Technical SEO Fixes:</strong></li></ol><ul><li>Resolve the multiple H1 tag issues on the homepage</li><li>Add proper image attributes to improve image search visibility</li><li>Optimize page speed by addressing DOM size issues</li><li>Implement schema markup following Kamera Express's successful approach</li></ul><br><ol><li><strong>Content Strategy:</strong></li></ol><ul><li>Create comprehensive guides on high-search-volume topics like "bokeh," "diafragma," and "gouden uurtje"</li><li>Develop equipment-focused content targeting "digitaal fotolijst" (14,800 searches) and other high-volume keywords</li><li>Create photo editing tutorials targeting "bewerken van foto" (8,100 searches)</li><li>Develop more specialized content on topics like "hond fotograferen" and "portretten fotograferen"</li></ul><br><ol><li><strong>SERP Optimization:</strong></li></ol><ul><li>Rewrite title tags to include exact search queries, following Kamera Express's strategy</li><li>Craft compelling meta descriptions with clear calls to action, following Smartphonefotograaf's approach</li><li>Implement schema markup for enhanced SERP visibility</li></ul><br><ol><li><strong>Backlink Strategy:</strong></li></ol><ul><li>Disavow toxic backlinks from sites like fergusauto.com (70% spam score) and developmentmi.com (65% spam score)</li><li>Target high-quality photography sites like nederlandsfotomuseum.nl for new backlinks</li><li>Analyze Photofacts Academy's backlink strategy (145 intersections) to identify opportunities</li><li>Develop relationships with educational institutions and photography museums</li><li>Create shareable, high-quality content that naturally attracts links from photography enthusiasts</li></ul><br><ol><li><strong>Competitor Strategy Adaptation:</strong></li></ol><ul><li>Create dedicated landing pages for product categories, following Kamera Express's approach</li><li>Develop engaging course and workshop pages, following Smartphonefotograaf's strategy</li><li>Create comprehensive educational content, following Photofacts Academy's approach</li><li>Leverage Gerard Voshaar's expertise (identified in anchor text analysis) as a brand differentiator</li></ul><br><p>By implementing these recommendations, Smartzine can reverse the current traffic decline, clean up its backlink profile, outperform key competitors, and establish stronger authority in the smartphone photography niche within the Netherlands.</p><br><hr><br><p><em>This report provides insights based on available data and competitive analysis. Implementation should be prioritized based on resource availability and business objectives.</em></p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Smartzine',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

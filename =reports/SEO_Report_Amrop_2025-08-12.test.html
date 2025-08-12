@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Amrop</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Amrop • https://www.amrop.com/nl/nl/</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 12, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value</th><th>Notes</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">628.28 monthly visits</td><td class="positive">+21.93% YoY growth in organic traffic</td></tr><tr><td class="">Keyword Rankings Distribution</td><td class="">Position 1: 4 keywords</td><td class="">Positions 4-10: 18 keywords</td></tr><tr><td class=""></td><td class="">Positions 11-20: 23</td><td class="">Positions 21-30: 14</td></tr><tr><td class=""></td><td class="">Positions 31-100: 104</td><td class=""></td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>A large number of keywords in positions 31–100 indicates breadth but low visibility. Focus on moving mid‐tier keywords (positions 11–30) into top 10.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Keywords They Rank Well For (Amrop’s Position)</th><th>Notes</th></tr></thead><tbody><tr><td class="">executivesearchnederland.nl</td><td class="">"headhunter" (#1), "executive search nederland" (#2)</td><td class="">Directory format dominates broad terms</td></tr><tr><td class="">headhuntersinnederland.nl</td><td class="">"headhunter nederland" (#3), "executive search" (#4)</td><td class="">Localized aggregator with strong titles</td></tr><tr><td class="">topofminds.com</td><td class="">"interim manager" (#5), "operationele directeur" (#6)</td><td class="">Role-specific landing pages & content</td></tr><tr><td class="">heidrick.com, egonzehnder.com</td><td class="">Various executive search & leadership keywords</td><td class="">Strong domain authority and content</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit competitor landing pages for page structure and content depth; replicate high‐value elements (e.g., clear H1s, concise summaries).</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume</th><th>Competition</th><th>Current Position</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">headhunter nederland</td><td class="">High</td><td class="">High</td><td class="">N/A</td><td class="">High volume, high intent, currently unranked</td></tr><tr><td class="">executive search nederland</td><td class="">210</td><td class="">Medium</td><td class="">14</td><td class="">Medium volume, competitive, needs improvement</td></tr><tr><td class="">vacature interim manager</td><td class="">N/A</td><td class="">Medium</td><td class="">N/A</td><td class="">Untapped recruitment-related opportunity</td></tr><tr><td class="">hoe wordt je ceo</td><td class="">110</td><td class="">Low/Medium</td><td class="">11</td><td class="">Educational content gap, good engagement</td></tr><tr><td class="">scale-up companies</td><td class="">590</td><td class="">Medium</td><td class="">20</td><td class="">Sector-specific content opportunity</td></tr><tr><td class="">interim management noord nederland</td><td class="">0-20</td><td class="">Low/Unknown</td><td class="">N/A</td><td class="">Niche, low competition, potential for growth</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>“headhunter nederland” and “vacature interim manager” represent untapped high-intent queries. Prioritize content development around these.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li><strong>Strong brand presence</strong> with #1 rankings for branded keywords like "amrop" and "amrop executive search."</li><li><strong>Significant ranking gaps</strong> for high-value, broad keywords such as "headhunter" (position 51) and "executive search nederland" (position 14).</li><li><strong>Competitors dominate</strong> broad and location-specific keywords using directory formats and role-specific landing pages.</li><li><strong>Content gaps</strong> exist in location-specific, industry-specific, and educational content areas.</li><li><strong>Technical SEO</strong> requires further audit, especially site speed and mobile optimization.</li><li><strong>Backlink profile</strong> is solid but lacks Netherlands-specific authoritative links.</li><li><strong>Recommendations</strong> include optimizing meta titles/descriptions, creating local and sector-specific pages, expanding interim management content, and pursuing targeted backlink acquisition.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Convene a cross-functional SEO and content workshop to align on quick wins and assign ownership for technical audit, content updates, and backlink outreach.</li></ul><br><hr><br></div></section>
+                <section id="-" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">————————————————————————————————————————————</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="seo-research-report-amrop-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Amrop Netherlands</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for Amrop's Dutch website (https://www.amrop.com/nl/nl/), focusing on their current performance and opportunities in the Netherlands market. Amrop is a global executive search network offering executive search, board services, leadership advisory, and interim management across various sectors including consumer & retail, professional services, health & life sciences, technology, and more.</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-organic-visibility-and-rankings-">Current Organic Visibility and Rankings:</h3><ul><li><strong>Estimated Traffic Volume (ETV)</strong>: 628.28 monthly visits</li><li><strong>Year-over-Year Growth</strong>: +21.93% increase in organic traffic</li><li><strong>Keyword Distribution by Position</strong>:</li><li>Position 1: 4 keywords</li><li>Positions 4-10: 18 keywords</li><li>Positions 11-20: 23 keywords</li><li>Positions 21-30: 14 keywords</li><li>Positions 31-100: 104 keywords</li></ul><br><h3 id="top-performing-pages-">Top-Performing Pages:</h3><ol><li><strong>Dutch Homepage</strong> (https://www.amrop.com/nl/nl/):</li></ol><ul><li>Highest ETV (185.32)</li><li>Ranks #1 for 3 keywords</li><li>Low estimated paid traffic cost (1.36)</li></ul><br><ol><li><strong>Global Homepage</strong> (https://www.amrop.com/):</li></ol><ul><li>High ETV (103.16)</li><li>Ranks #1 for 1 keyword</li><li>Moderate estimated paid traffic cost (41.29)</li></ul><br><ol><li><strong>News Article</strong> (https://www.amrop.com/nl/en/news-insights/articles/ariaan-siezen-nieuwe-group-digital-it-director-bij-bergman-clinics/):</li></ol><ul><li>High ETV (82.72)</li><li>Zero estimated paid traffic cost</li></ul><br><ol><li><strong>COO Function Page</strong> (https://www.amrop.com/nl/nl/functies/coo/):</li></ol><ul><li>Strong ETV (53.09)</li><li>Low estimated paid traffic cost (9.45)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Leading pages are broad and branded; convert this authority by expanding internal links from these pages to priority service and location pages.</li></ul><br><h3 id="underperforming-pages-">Underperforming Pages:</h3><ul><li>Several service pages and position-specific pages ranking in positions 31-100 have significant improvement potential, including:</li><li>Board Advisory page (ETV: 0.55)</li><li>CMO position page (ETV: 0.73)</li></ul><br><h3 id="technical-seo-observations-">Technical SEO Observations:</h3><ul><li>Site is hosted on Microsoft-IIS/10.0 server</li><li>No identified CMS, suggesting a custom platform</li><li>Site speed and mobile optimization require further analysis</li><li>Potential for improved internal linking structure (146,677 internal links identified)</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>A custom platform may limit plug-and-play SEO tools; check compatibility for performance plugins or consider rolling custom solutions.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Schedule a Core Web Vitals and mobile usability audit; document issues and set A/B testing plan for template updates.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-performing-keywords-positions-1-10-">Top Performing Keywords (Positions 1-10):</h3><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">amrop</td><td class="">320</td><td class="">1</td></tr><tr><td class="">amrop executive search</td><td class="">140</td><td class="">1</td></tr><tr><td class="">amrop international</td><td class="">320</td><td class="">1</td></tr><tr><td class="">executive search amrop</td><td class="">140</td><td class="">1</td></tr><tr><td class="">executive search netherlands</td><td class="">210</td><td class="">5</td></tr><tr><td class="">beursgenoteerde bedrijven</td><td class="">260</td><td class="">6</td></tr><tr><td class="">director bergman</td><td class="">1600</td><td class="">7</td></tr><tr><td class="">klm security services</td><td class="">70</td><td class="">7</td></tr><tr><td class="">non-executive director</td><td class="">260</td><td class="">8</td></tr><tr><td class="">vonk noordegraaf</td><td class="">110</td><td class="">6</td></tr><tr><td class="">non executive director</td><td class="">260</td><td class="">9</td></tr><tr><td class="">chief sales officer</td><td class="">1000</td><td class="">10</td></tr><tr><td class="">executive coach</td><td class="">210</td><td class="">10</td></tr><tr><td class="">nancy kabalt</td><td class="">170</td><td class="">10</td></tr><tr><td class="">wolters europe</td><td class="">320</td><td class="">10</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Analyze landing page copy for top-performers; identify common content elements (word count, sub-topics) and replicate in underperforming pages.</li></ul><br><h3 id="high-potential-keywords-positions-11-30-">High-Potential Keywords (Positions 11-30):</h3><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">executive search company</td><td class="">390</td><td class="">11</td></tr><tr><td class="">hoe wordt je ceo</td><td class="">110</td><td class="">11</td></tr><tr><td class="">executive search firm</td><td class="">390</td><td class="">13</td></tr><tr><td class="">executive search nederland</td><td class="">210</td><td class="">14</td></tr><tr><td class="">coo</td><td class="">9900</td><td class="">18</td></tr><tr><td class="">private equity-bedrijven</td><td class="">140</td><td class="">17</td></tr><tr><td class="">executive search</td><td class="">1300</td><td class="">20</td></tr><tr><td class="">leadership coach</td><td class="">170</td><td class="">18</td></tr><tr><td class="">ekelenkamp</td><td class="">1900</td><td class="">22</td></tr><tr><td class="">scale-up companies</td><td class="">590</td><td class="">20</td></tr><tr><td class="">chief commercial officer betekenis</td><td class="">5400</td><td class="">21</td></tr><tr><td class="">scaleup companies</td><td class="">590</td><td class="">22</td></tr><tr><td class="">vacatures executive search</td><td class="">90</td><td class="">22</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>“coo” and “chief commercial officer betekenis” signal high-volume, non-branded interest; develop dedicated pillar pages or FAQs to capture this intent.</li></ul><br><h3 id="underperforming-high-value-keywords-">Underperforming High-Value Keywords:</h3><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th><th>Position</th></tr></thead><tbody><tr><td class="">headhunter</td><td class="">2900</td><td class="">LOW</td><td class="">51</td></tr><tr><td class="">executive search</td><td class="">1300</td><td class="">HIGH</td><td class="">20</td></tr><tr><td class="">executive search nederland</td><td class="">210</td><td class="">MEDIUM</td><td class="">14</td></tr><tr><td class="">headhunters nederland</td><td class="">170</td><td class="">HIGH</td><td class="">44</td></tr><tr><td class="">executive search amsterdam</td><td class="">140</td><td class="">MEDIUM</td><td class="">40</td></tr><tr><td class="">headhunter nederland</td><td class="">N/A</td><td class="">HIGH</td><td class="">N/A</td></tr><tr><td class="">vacature interim manager</td><td class="">N/A</td><td class="">MEDIUM</td><td class="">N/A</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize on-page optimization for “headhunter” and “executive search nederland,” including content expansion, internal links, and targeted metadata.</li></ul><br><h3 id="keyword-performance-analysis-">Keyword Performance Analysis:</h3><ol><li><strong>Branded Keywords</strong>: Excellent performance for branded terms like "amrop" (320 searches, position 1) and "amrop executive search" (140 searches, position 1).</li></ol><br><ol><li><strong>High-Volume Opportunities</strong>:</li></ol><ul><li>"coo" (9900 searches, position 18)</li><li>"chief commercial officer betekenis" (5400 searches, position 21)</li><li>"headhunter" (2900 searches, position 51)</li><li>"ekelenkamp" (1900 searches, position 22)</li><li>"director bergman" (1600 searches, position 7)</li><li>"executive search" (1300 searches, position 20)</li></ul><br><ol><li><strong>Content Gap Opportunities</strong>:</li></ol><ul><li>"hoe wordt je ceo" (110 searches, position 11) - educational content opportunity</li><li>"scale-up companies" (590 searches, position 20) - sector-specific content opportunity</li><li>"vacatures executive search" (90 searches, position 22) - recruitment opportunity</li><li>Industry-specific keywords (e.g., "marketing executive search," "financial executive search")</li><li>"interim management" related keywords - significant opportunity based on competitor analysis</li></ul><br><ol><li><strong>Page Type Performance</strong>:</li></ol><ul><li>Homepage ranks well for broad terms but lacks depth for competitive keywords</li><li>Service pages perform well for specific queries</li><li>News/article pages rank effectively for specific names and titles</li><li>Function pages (CEO, COO, etc.) show strong performance for role-specific searches</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Position 11–20 keywords often respond well to content refresh and schema markup enhancements, which can accelerate movement into top 10.</li></ul><br><h3 id="recommended-target-keywords-">Recommended Target Keywords:</h3><ol><li><strong>Top Priority Keywords</strong>:</li></ol><ul><li>"headhunter nederland" (High volume, High competition)</li><li>"executive search nederland" (210 searches, Medium competition)</li><li>"headhunters amsterdam" (Medium volume, Medium competition)</li><li>"vacature interim manager" (High volume, Medium competition)</li></ul><br><ol><li><strong>Secondary Keywords</strong>:</li></ol><ul><li>"executive search bureaus nederland" (10-30 searches, medium competition)</li><li>"executive search bureau nederland" (10-30 searches, medium competition)</li><li>"interim management noord nederland" (0-20 searches, no competition data)</li><li>"top 10 executive search nederland" (50-140 searches, high competition)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Cluster these target keywords by theme (e.g., location vs. service) to streamline content development and internal linking campaigns.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-competitors-">Top Competitors:</h3><br><ol><li><strong>executivesearchnederland.nl</strong></li></ol><ul><li><strong>Type</strong>: Indirect competitor (aggregator/directory)</li><li><strong>Key Strengths</strong>: Dominates rankings for broad "executive search" and "headhunter" keywords, particularly those including "Nederland" or "Amsterdam"</li><li><strong>Value Proposition</strong>: Comprehensive directory of executive search firms in the Netherlands</li><li><strong>SERP Strategy</strong>: Clear titles that state their value proposition (e.g., "Executive Search Nederland - Alle Executive Search Bureau's in Nederland")</li></ul><br><ol><li><strong>headhuntersinnederland.nl</strong></li></ol><ul><li><strong>Type</strong>: Indirect competitor (aggregator/directory)</li><li><strong>Key Strengths</strong>: Ranks highly for broad "headhunter" and "executive search" terms, especially those localized to the Netherlands</li><li><strong>SERP Strategy</strong>: Titles clearly state their value proposition (e.g., "Headhunters in Nederland - Het volledige overzicht van...")</li></ul><br><ol><li><strong>topofminds.com</strong></li></ol><ul><li><strong>Type</strong>: Direct competitor providing executive search services</li><li><strong>Key Strengths</strong>: Strong rankings for core "executive search" and "headhunter" keywords, as well as "interim manager" related terms</li><li><strong>Unique Selling Point</strong>: Modern leadership focus ("Deze nieuwe tijd vraagt om nieuwe leiders")</li><li><strong>Content Strategy</strong>: Landing pages focused on specific roles (e.g., "operationele directeur") and informational content</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Map out competitor keyword–to–URL strategy; identify gaps in your site’s taxonomy and update menu/navigation accordingly.</li></ul><br><h3 id="direct-industry-competitors-">Direct Industry Competitors:</h3><ul><li><strong>heidrick.com</strong> (Heidrick & Struggles)</li><li><strong>egonzehnder.com</strong> (Egon Zehnder)</li><li><strong>kornferry.com</strong> (Korn Ferry)</li><li><strong>russellreynolds.com</strong> (Russell Reynolds Associates)</li><li><strong>stantonchase.com</strong> (Stanton Chase)</li><li><strong>boyden.com</strong> (Boyden)</li></ul><br><h3 id="competitive-analysis-">Competitive Analysis:</h3><br><ol><li><strong>Keyword Performance Comparison</strong>:</li></ol><ul><li>Amrop is consistently outranked for almost all keywords related to "headhunter," "executive search," and "executive recruitment," especially when combined with location terms</li><li>Competitors dominate for high-value terms like "headhunter" (2900 search volume) where Amrop ranks 51st</li><li>Amrop underperforms for "executive search nederland" (210 search volume) at position 14, while competitors rank much higher</li></ul><br><ol><li><strong>SERP Strategy Comparison</strong>:</li></ol><ul><li><strong>Amrop</strong>: Often uses generic titles like "Executive search: zoektocht naar directeur, bestuurder of..." with meta descriptions that are often cut off or don't effectively summarize the page content</li><li><strong>Competitors</strong>: Use titles that clearly state their value proposition, incorporate relevant keywords, emphasize local presence, and highlight comprehensive coverage</li></ul><br><ol><li><strong>Successful Content Types</strong>:</li></ol><ul><li><strong>Directories/Aggregators</strong>: The directory format used by executivesearchnederland.nl and headhuntersinnederland.nl is highly successful for capturing broad search traffic</li><li><strong>Role-Specific Landing Pages</strong>: Top of Minds' pages targeting specific roles like "operationele directeur" perform well</li><li><strong>Informational Content</strong>: Top of Minds' "Headhunter" page offering tips ranks well, indicating the value of providing helpful content</li></ul><br><ol><li><strong>Competitor Content Strategies</strong>:</li></ol><ul><li><strong>Forbes.com</strong>: Publishing thought leadership content on executive search and leadership trends</li><li><strong>Heidrick.com</strong>: Creating in-depth industry reports and leadership surveys</li><li><strong>Egonzehnder.com</strong>: Developing comprehensive sector-specific landing pages</li><li><strong>Kornferry.com</strong>: Offering interactive tools and assessments for leadership development</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Competitor meta descriptions and titles are more concise and CTA-driven; update Amrop’s key SERP elements to match or exceed clarity and relevance.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile-">Current Backlink Profile:</h3><ul><li><strong>Total Backlinks</strong>: 16,722</li><li><strong>Referring Domains</strong>: 1,402</li><li><strong>Referring Main Domains</strong>: 1,259</li><li><strong>Domain Rank</strong>: 370</li><li><strong>Backlink Spam Score</strong>: 7% (relatively low)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Export list of referring domains by country; prioritize outreach to top Dutch domains for link reclamation and new placements.</li></ul><br><h3 id="geographic-distribution-of-backlinks-">Geographic Distribution of Backlinks:</h3><ul><li><strong>Top Countries</strong>: Germany (4,320 backlinks), Lithuania (3,018), South Africa (1,579), USA (691)</li><li><strong>Netherlands-Specific Backlinks</strong>: Limited presence, indicating opportunity for growth</li></ul><br><h3 id="backlink-quality-analysis-">Backlink Quality Analysis:</h3><ul><li><strong>Low Spam Score Domains</strong> (majority): amrop.lt, woodburnmann.co.za, amrop.azurewebsites.net</li><li><strong>Medium Spam Score Domains</strong> (few): c0untd0wn.net, wvpbs.com, textualpowerhouse.com</li><li><strong>High Spam Score Domains</strong>: None identified, indicating good overall backlink hygiene</li></ul><br><h3 id="anchor-text-analysis-">Anchor Text Analysis:</h3><ul><li><strong>Current Anchor Text Distribution</strong>:</li><li>Brand anchors: "Amrop," "Amrop India HR Agency"</li><li>Generic anchors: "Read More," "T&Cs," "English"</li><li>Keyword anchors: "executive search firms," "international recruitment agencies"</li><li><strong>Opportunity</strong>: More strategic use of keyword-rich anchor text for Dutch market terms</li></ul><br><h3 id="competitor-backlink-comparison-">Competitor Backlink Comparison:</h3><ul><li><strong>High-Authority Competitors</strong>:</li><li>forbes.com (rank: 70)</li><li>crunchbase.com (rank: 61)</li><li>glassdoor.com (rank: 99)</li><li>heidrick.com (rank: 140)</li><li>egonzehnder.com (rank: 130)</li><li>kornferry.com (rank: 139)</li><li>russellreynolds.com (rank: 134)</li><li>stantonchase.com (rank: 141)</li><li>boyden.com (rank: 129)</li></ul><br><h3 id="backlink-opportunities-">Backlink Opportunities:</h3><ol><li><strong>High-Value Dutch Websites</strong>:</li></ol><ul><li>Dutch business publications</li><li>Dutch university career centers</li><li>Dutch industry associations</li><li>Dutch business directories</li></ul><br><ol><li><strong>Industry-Specific Opportunities</strong>:</li></ol><ul><li>HR and recruitment publications</li><li>Business leadership forums</li><li>Industry-specific publications in target sectors</li></ul><br><ol><li><strong>Competitor Backlink Sources</strong>:</li></ol><ul><li>Target sites linking to competitors but not to Amrop</li><li>Focus on high-authority sites like Forbes, Crunchbase, and Glassdoor</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Securing links from national industry bodies and university career pages builds topical relevance and local authority faster than broad directories.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="recommended-content-improvements-">Recommended Content Improvements:</h3><br><ol><li><strong>Title and Meta Description Optimization</strong>:</li></ol><ul><li><strong>Current Issue</strong>: Generic titles and truncated meta descriptions</li><li><strong>Recommendation</strong>: Rewrite titles and meta descriptions for key pages to be more keyword-rich and compelling</li><li><strong>Example</strong>: Instead of "Executive search: zoektocht naar directeur, bestuurder of...", use "Executive Search Nederland: Vind de Beste Headhunter in Amsterdam | Amrop"</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create a spreadsheet of current vs. proposed titles/meta descriptions; review with content team and schedule updates.</li></ul><br><ol><li><strong>Location-Specific Content</strong>:</li></ol><ul><li><strong>Recommendation</strong>: Develop content specifically targeting users searching for executive search firms in Amsterdam and other major Dutch cities</li><li><strong>Example</strong>: Create a landing page titled "Executive Search Amsterdam: Uw Partner voor Top Talent" highlighting Amrop's Amsterdam office and services</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft outlines for Amsterdam, Rotterdam, and Utrecht landing pages; map internal links from the homepage and footer.</li></ul><br><ol><li><strong>Expand Interim Management Content</strong>:</li></ol><ul><li><strong>Recommendation</strong>: Create more in-depth content on interim management, including case studies, articles, and FAQs</li><li><strong>Example</strong>: Develop a resource page titled "Interim Management Nederland: Vind de Juiste Interim Manager voor Uw Bedrijf"</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Interview internal experts for 3–5 case studies; plan a content calendar for weekly interim management insights.</li></ul><br><ol><li><strong>Industry-Specific Content</strong>:</li></ol><ul><li><strong>Recommendation</strong>: Create content targeting users searching for executive search firms in specific industries</li><li><strong>Example</strong>: Develop landing pages for "Marketing Executive Search Nederland" and "Financial Executive Search Nederland"</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit existing sector pages; identify top 5 industries by search volume and draft new page briefs.</li></ul><br><ol><li><strong>Directory Listing Strategy</strong>:</li></ol><ul><li><strong>Recommendation</strong>: Consider listing on directories like executivesearchnederland.nl and headhuntersinnederland.nl to increase visibility</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Directory listings improve link diversity but ensure listings are on reputable aggregators to avoid spam signals.</li></ul><br><ol><li><strong>Educational Content Development</strong>:</li></ol><ul><li><strong>Recommendation</strong>: Create educational content around topics like "how to become a CEO" and leadership development</li><li><strong>Example</strong>: Develop a comprehensive guide on "Hoe wordt je CEO: De Complete Gids voor Ambitieuze Professionals"</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Outline a multi-part blog series; incorporate downloadable templates or checklists for lead generation.</li></ul><br><ol><li><strong>News & Insights Strategy</strong>:</li></ol><ul><li><strong>Recommendation</strong>: Continue publishing news and articles about executive placements and leadership insights</li><li><strong>Example</strong>: Create a regular "Dutch Leadership Insights" series focusing on trends in the Dutch executive market</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Set up an editorial calendar; assign authors and define KPIs (e.g., social shares, time on page).</li></ul><br><ol><li><strong>Backlink Acquisition Strategy</strong>:</li></ol><ul><li><strong>Recommendation</strong>: Develop high-quality content specifically designed to attract backlinks from authoritative Dutch websites</li><li><strong>Example</strong>: Create an annual "Dutch Executive Leadership Survey" and promote to business publications</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft survey questions; partner with a PR agency to secure publication placements.</li></ul><br><h3 id="quick-wins-">Quick Wins:</h3><ul><li>Optimize titles and meta descriptions for the "executive search" and "interim management" pages</li><li>Create a location-specific landing page for Amsterdam</li><li>List on top executive search directories in the Netherlands</li><li>Improve anchor text diversity in existing backlinks where possible</li></ul><br><h3 id="long-term-opportunities-">Long-Term Opportunities:</h3><ul><li>Develop a comprehensive content strategy targeting a wider range of keywords</li><li>Build high-quality backlinks from relevant Dutch websites</li><li>Create case studies showcasing Amrop's successful placements</li><li>Implement a strategic outreach campaign to acquire backlinks from high-authority sites</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize quick wins in a 30-day sprint; assign measurable goals and review progress in bi-weekly stand-ups.</li></ul><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><br><p>Amrop's Dutch website demonstrates strong SEO performance for branded keywords and specific executive search terms, with healthy year-over-year growth (+21.93%) in organic traffic. However, the competitive analysis reveals that Amrop is consistently outranked by both direct competitors and directory sites for high-value keywords in the Dutch market.</p><br><h3 id="key-findings-">Key Findings:</h3><br><ol><li><strong>Strong Brand Presence</strong>: Amrop ranks #1 for all branded terms but struggles with broader industry keywords.</li><li><strong>Competitive Gap</strong>: Significant gap between Amrop and competitors for key terms like "headhunter" (position 51) and "executive search nederland" (position 14).</li><li><strong>Content Opportunities</strong>: Clear opportunities to develop location-specific, industry-specific, and educational content to capture untapped search traffic.</li><li><strong>SERP Strategy Weaknesses</strong>: Current title tags and meta descriptions are not optimized for click-through rates or keyword targeting compared to competitors.</li><li><strong>Backlink Profile</strong>: Solid overall backlink profile (16,722 backlinks from 1,402 referring domains) with low spam score (7%), but limited Netherlands-specific backlinks.</li></ol><br><h3 id="key-recommendations-">Key Recommendations:</h3><br><ol><li><strong>Optimize SERP Elements</strong>: Rewrite titles and meta descriptions for key pages to better incorporate target keywords and communicate value proposition.</li><li><strong>Develop Location-Specific Content</strong>: Create dedicated pages for Amsterdam and other major Dutch cities to capture local search traffic.</li><li><strong>Expand Service Content</strong>: Enhance content around interim management and industry-specific executive search services.</li><li><strong>Consider Directory Strategy</strong>: Explore listing on top executive search directories to increase visibility for broad search terms.</li><li><strong>Technical SEO Audit</strong>: Conduct a comprehensive technical audit to identify and address potential issues affecting rankings.</li><li><strong>Backlink Acquisition Strategy</strong>: Implement a targeted outreach campaign to acquire high-quality backlinks from authoritative Dutch websites, particularly those linking to competitors.</li><li><strong>Content Diversification</strong>: Create more educational and thought leadership content to attract both searchers and potential backlink sources.</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Align the technical, content, and outreach teams on a unified roadmap with quarterly OKRs to ensure each recommendation translates into measurable SEO gains.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Host a roadmap kickoff meeting; define priorities, timelines, and KPIs for the next 90 days to track implementation and impact.</li></ul></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Amrop',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

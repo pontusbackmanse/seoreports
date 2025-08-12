@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Dmr</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Dmr • Marketingreus.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 12, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">14.39 (Aug 2025)</td></tr><tr><td class="">ETV Change (Aug 2024 - Aug 2025)</td><td class="negative">-23.74%</td></tr><tr><td class="">Total Ranking Keywords</td><td class="">25</td></tr><tr><td class="">Keywords in Top 10 Positions</td><td class="">1 (Position 4-10)</td></tr><tr><td class="">Keywords in Positions 11-30</td><td class="">4</td></tr><tr><td class="">Keywords in Positions 31-100</td><td class="">20</td></tr><tr><td class="">Estimated Paid Traffic Cost</td><td class="">€80.86</td></tr><tr><td class="">Technical SEO Score</td><td class="">97.07 (Good)</td></tr><tr><td class="">Backlinks</td><td class="">1,209</td></tr><tr><td class="">Referring Domains</td><td class="">39</td></tr><tr><td class="">Backlink Spam Score</td><td class="positive">1% (Low)</td></tr></tbody></table></div><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Strong Keywords (High Volume & Rank)</th><th>Marketing Reus Rank</th><th>Competitor Rank</th></tr></thead><tbody><tr><td class="">onlinemarketingagency.nl (OMA)</td><td class="">"website laten maken ede" (210/mo)</td><td class="">41</td><td class="">13</td></tr><tr><td class=""></td><td class="">"seo ede" (140/mo)</td><td class="">30</td><td class="">5</td></tr><tr><td class=""></td><td class="">"webdesigner ede" (90/mo)</td><td class="">97</td><td class="">10</td></tr><tr><td class=""></td><td class="">"online marketing bureau ede" (70/mo)</td><td class="">26</td><td class="">4</td></tr><tr><td class=""></td><td class="">"seo specialist ede" (50/mo)</td><td class="">35</td><td class="">6</td></tr><tr><td class="">happyhorizon.com</td><td class="">Broad full-service marketing keywords (varied)</td><td class="">Low visibility</td><td class="">High</td></tr><tr><td class="">ticonlinemarketing.nl</td><td class="">Various local marketing keywords</td><td class="">Mid-low</td><td class="">Mid</td></tr></tbody></table></div><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume (NL)</th><th>Current Rank</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">website laten maken ede</td><td class="">210</td><td class="">41</td><td class="">High volume, competitor ranks #13, local intent</td></tr><tr><td class="">marketing en communicatiebureau</td><td class="">210</td><td class="">101</td><td class="">High volume, competitor ranks #80, service focus</td></tr><tr><td class="">seo ede</td><td class="">140</td><td class="">30</td><td class="">Strong local intent, competitor ranks #5</td></tr><tr><td class="">webdesigner ede</td><td class="">90</td><td class="">97</td><td class="">High local relevance, competitor ranks #10</td></tr><tr><td class="">online marketing bureau ede</td><td class="">70</td><td class="">26</td><td class="">Competitor ranks #4, strong commercial intent</td></tr><tr><td class="">seo specialist ede</td><td class="">50</td><td class="">35</td><td class="">Niche service keyword, competitor ranks #6</td></tr><tr><td class="">screens met zonnecellen</td><td class="">40</td><td class="">51-80</td><td class="">Existing content with growth potential</td></tr><tr><td class="">website laten maken wageningen</td><td class="">30</td><td class="">69</td><td class="">Nearby location, competitor ranks #11</td></tr></tbody></table></div><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Marketing Reus’s organic visibility and traffic have declined by 23.74% over the past year.</li><li>Only 1 keyword ranks in the top 10; most keywords rank between positions 31-100.</li><li>Strong competitor onlinemarketingagency.nl (OMA) outranks Marketing Reus on all key local keywords.</li><li>Technical SEO is generally good (score 97.07) but issues like missing image alt tags and render-blocking resources remain.</li><li>Backlink profile is clean but over-optimized with repetitive anchor text and some toxic backlinks identified.</li><li>Content gaps exist in hyper-local service pages and broader marketing service keywords.</li><li>Competitors use effective hyper-local SEO strategies with dedicated service+location pages and optimized meta tags.</li><li>Immediate opportunities include optimizing existing pages, creating hyper-local landing pages, diversifying backlinks, and disavowing toxic links.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize hyper-local landing pages for top opportunity keywords to capture local intent quickly.</li><li>Leverage the SolarGaps subdomain’s current traction by deepening content and adding internal links.</li></ul><br><hr><br><hr><br></div></section>
+                <section id="seo-research-report-marketing-reus-dmr-" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Marketing Reus (DMR)</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for Marketing Reus, an online marketing agency based in Ede, Netherlands. The analysis reveals a concerning 23.74% decrease in estimated traffic volume (ETV) over the past year, with most keywords ranking in lower positions (31-100). Their strongest competitor, onlinemarketingagency.nl (OMA), consistently outranks them for location-based keywords. Technical SEO issues including missing image alt attributes and render-blocking resources are hindering performance. While their backlink profile is relatively clean with 1,209 backlinks and a low spam score (1%), the repetitive anchor text pattern suggests potential over-optimization. This report outlines actionable recommendations to improve search visibility and outrank competitors in the Dutch market, with a focus on implementing a hyper-local SEO strategy and diversifying their backlink profile.</p><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Marketing Reus is a digital marketing agency offering services including SEO, Google & Microsoft Ads (SEA), website design, conversion rate optimization (CRO), content marketing, social media marketing, email marketing, and employer branding. They emphasize a strategic approach and data-driven decision-making in their marketing campaigns. <a href="https://marketingreus.nl" class="link-reference" target="_blank" rel="noopener">Company Website</a></p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-status-">Current Status:</h3><ul><li><strong>Organic visibility trend</strong>: 23.74% decrease in ETV from 8/2024 to 8/2025</li><li><strong>Latest ETV (Estimated Traffic Volume)</strong>: 14.39 (month 8/2025)</li><li><strong>Current organic visibility breakdown by position</strong>:</li><li>Position 1: 0 keywords</li><li>Positions 2-3: 0 keywords</li><li>Positions 4-10: 1 keyword</li><li>Positions 11-20: 2 keywords</li><li>Positions 21-30: 2 keywords</li><li>Positions 31-40: 3 keywords</li><li>Positions 41-50: 0 keywords</li><li>Positions 51-60: 2 keywords</li><li>Positions 61-70: 6 keywords</li><li>Positions 71-80: 6 keywords</li><li>Positions 81-90: 1 keyword</li><li>Positions 91-100: 2 keywords</li><li><strong>Total ranking keywords</strong>: 25 keywords</li><li><strong>Estimated paid traffic cost</strong>: €80.86</li></ul><br><h3 id="top-performing-pages-">Top-Performing Pages:</h3><ul><li><strong>SolarGaps subdomain</strong> (<code>solargaps.marketingreus.nl/screens-met-zonnecellen</code>): Highest ETV (8.32) and ranking for 12 keywords, but positions are low (51-80)</li><li><strong>Homepage</strong> (<code>marketingreus.nl/</code>): ETV of 1.83, ranking for 3 keywords between positions 4-30</li></ul><br><h3 id="underperforming-pages-">Underperforming Pages:</h3><ul><li><code>/seo-bedrijf-ede</code>: Low ETV (1.68) with 3 keywords and declining rankings (2 positions down)</li><li><code>/website-laten-maken-ede</code>: Low ETV (0.99) with 3 keywords and declining rankings (3 positions down)</li><li>The main homepage has no ranking keywords in some reports</li></ul><br><h3 id="technical-seo-assessment-">Technical SEO Assessment:</h3><ul><li><strong>Overall technical score</strong>: 97.07 (good)</li><li><strong>Positive aspects</strong>:</li><li>Using HTTPS, mobile-friendly, proper canonical URLs</li><li>Implements SPF email authentication, demonstrating good technical practices [BuiltWith]</li><li><strong>Issues identified</strong>:</li><li>Missing image alt attributes</li><li>Render-blocking resources affecting page speed</li><li>Large DOM size</li><li>Some pages with technical issues affecting performance</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit and add missing alt attributes to all high-traffic images.</li><li>Defer non-critical scripts or inline critical CSS to resolve render-blocking delays.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords-">Current Ranking Keywords:</h3><ul><li>Most keywords are ranking in lower positions (31-100)</li><li>Only 1 keyword ranking in positions 4-10</li><li>4 keywords ranking in positions 11-30</li><li>20 keywords ranking in positions 31-100</li></ul><br><h3 id="high-value-keyword-opportunities-">High-Value Keyword Opportunities:</h3><p>Based on competitor analysis, these high-priority keywords show significant search volume and opportunity:</p><ul><li>"website laten maken ede" (210 searches/month) - currently ranking 41 vs. OMA at 13</li><li>"marketing en communicatiebureau" (210 searches/month) - currently ranking 101 vs. OMA at 80</li><li>"webdesigner ede" - currently ranking 97 vs. OMA at 10</li><li>"seo ede" - currently ranking 30 vs. OMA at 5</li><li>"marketing bureau ede" - currently ranking 18 vs. OMA at 7</li><li>"online marketing bureau ede" - currently ranking 26 vs. OMA at 4</li><li>"online marketing ede" - currently ranking 30 vs. OMA at 4</li><li>"seo specialist ede" - currently ranking 35 vs. OMA at 6</li></ul><br><h3 id="long-tail-keyword-opportunities-">Long-Tail Keyword Opportunities:</h3><ul><li>"Screens met zonnecellen" (screens with solar cells) - currently their best performing topic but ranking in positions 51-80</li><li>"Website laten maken Wageningen" - currently ranking 69 vs. OMA at 11</li></ul><br><h3 id="seasonal-trends-">Seasonal Trends:</h3><ul><li>Data shows fluctuations in keyword performance throughout the year</li><li>Highest ETV recorded in month 10/2024 (34.36) compared to current 14.39 (month 8/2025)</li></ul><br><h3 id="content-gaps-">Content Gaps:</h3><ul><li>Limited visibility for core service keywords outside of Ede location</li><li>No strong rankings for broader marketing service terms</li><li>Lack of hyper-local content targeting specific services in specific locations (e.g., "webdesign ede")</li><li>Missing dedicated service pages for keywords like "webdesigner ede" and "seo specialist ede"</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Prioritize closing content gaps for highest-volume, service+location keywords to maximize rankings uplift.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors-">Key Competitors:</h3><ul><li><strong>onlinemarketingagency.nl (OMA)</strong>: Strongest direct competitor, consistently outranking Marketing Reus for location-based keywords in Ede and Wageningen</li><li><strong>happyhorizon.com</strong>: Broader "full service" agency with high estimated traffic volume</li><li><strong>ticonlinemarketing.nl</strong>: Direct competitor with lower average keyword positions but still competing in the same market</li></ul><br><h3 id="competitor-seo-comparison-">Competitor SEO Comparison:</h3><ul><li><strong>OMA's strengths</strong>:</li><li>Hyper-local SEO strategy with dedicated pages for each service+location combination</li><li>Strong rankings for location-based keywords (e.g., "seo ede" at position 5)</li><li>Clear service offerings tied to specific locations</li><li><strong>Happy Horizon's strengths</strong>:</li><li>Higher overall traffic volume</li><li>Broader "full service" positioning</li><li><strong>Marketing Reus's weaknesses</strong>:</li><li>Poor rankings for location-based keywords</li><li>Less focused titles and meta descriptions</li><li>Limited hyper-local content strategy</li></ul><br><h3 id="competitor-top-performing-pages-">Competitor Top-Performing Pages:</h3><ul><li><strong>OMA</strong>: Location-specific service pages like "Webdesign Ede" and "SEO Ede" consistently outrank Marketing Reus</li><li><strong>OMA's SERP strategy</strong>: Uses location-specific keywords in both titles and descriptions (e.g., "Webdesign Ede - OMA")</li></ul><br><h3 id="competitor-strategies-">Competitor Strategies:</h3><ul><li><strong>OMA's effective SERP elements</strong>:</li><li>Location-based targeting with consistent use of location keywords in titles and descriptions</li><li>Clear value propositions in meta descriptions</li><li>Direct answers to user queries (e.g., "Jij wilt een website, en je zit in Ede. Komt dat even goed uit.")</li><li>Dedicated landing pages for each service and location combination</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Replicate hyper-local landing pages but infuse unique brand messaging in titles/descriptions to stand out.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile-">Current Backlink Profile:</h3><ul><li><strong>Total backlinks</strong>: 1,209</li><li><strong>Referring domains</strong>: 39</li><li><strong>Domain rank</strong>: 304</li><li><strong>Backlink spam score</strong>: Very low (1%)</li><li><strong>Referring TLDs</strong>: Primarily Dutch domains (.nl: 1,014 backlinks)</li><li><strong>Backlink types</strong>: Primarily anchor text links (1,008) with some redirects (28) and image links (7)</li><li><strong>Backlink attributes</strong>: 144 noopener, 22 nofollow, 8 noreferrer, 1 ugc</li></ul><br><h3 id="anchor-text-analysis-">Anchor Text Analysis:</h3><ul><li><strong>Dominant anchor text</strong>: "Realisatie: Marketing Reus" appears repeatedly across multiple client websites</li><li><strong>Pattern identified</strong>: Most backlinks come from client websites where Marketing Reus is credited as the website creator</li><li><strong>Potential issue</strong>: Over-optimization with repetitive anchor text could be viewed negatively by search engines</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Diversify anchor text by collaborating with clients to include service and brand variations (e.g., “Marketing Reus SEO partner”).</li></ul><br><h3 id="link-gap-analysis-">Link Gap Analysis:</h3><ul><li><strong>Competitor backlink overlap</strong>: leadinfo.com (5 overlapping backlinks), 20forma.nl (3 overlapping backlinks)</li><li><strong>Authoritative Dutch websites</strong>: Opportunities exist to acquire backlinks from high-authority domains that competitors are leveraging</li></ul><br><h3 id="toxic-backlinks-">Toxic Backlinks:</h3><ul><li><strong>High spam score backlinks</strong>: 2 domains identified with high spam scores</li><li>rock-radio.net (65% spam score)</li><li>maakjestart.nl (75% spam score)</li><li><strong>Medium spam score backlinks</strong>: 17 domains with medium spam scores (32-60%)</li><li><strong>Recommendation</strong>: Consider disavowing the high spam score backlinks to protect domain authority</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prepare and submit a disavow file for the two high-spam domains within the next week.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="content-opportunities-">Content Opportunities:</h3><ul><li><strong>Implement hyper-local landing pages</strong>: Create dedicated pages for each key service targeting specific locations (Ede, Wageningen, Utrecht), following OMA's successful model</li><li><strong>Optimize SolarGaps content</strong>: Enhance the already-performing content about "screens met zonnecellen" to move from positions 51-80 to top 30</li><li><strong>Develop service-specific content</strong>: Create dedicated pages for "webdesigner ede" and "seo specialist ede" to target these specific high-value keywords</li></ul><br><h3 id="content-optimization-">Content Optimization:</h3><ul><li><strong>Title and meta description optimization</strong>: Rewrite titles and meta descriptions to include location-specific keywords and clear value propositions</li><li>Example: Instead of "Website laten maken Ede en omgeving?", use "Website Laten Maken Ede | Professioneel Webdesign - Marketing Reus"</li><li><strong>Homepage optimization</strong>: The homepage needs significant SEO improvement to rank for relevant keywords</li><li><strong>Service pages enhancement</strong>: Pages like <code>/seo-bedrijf-ede</code> and <code>/website-laten-maken-ede</code> need optimization to reverse declining rankings</li></ul><br><h3 id="content-clusters-">Content Clusters:</h3><ul><li><strong>Location cluster</strong>: Build more content around Ede, Wageningen, and nearby locations</li><li><strong>Service clusters</strong>: Create comprehensive content clusters around each service offering</li><li><strong>SolarGaps cluster</strong>: Expand the apparently successful niche focus on solar screen technology</li></ul><br><h3 id="backlink-strategy-">Backlink Strategy:</h3><ul><li><strong>Diversify anchor text</strong>: Work with clients to vary the anchor text beyond "Realisatie: Marketing Reus"</li><li><strong>Target quality Dutch domains</strong>: Focus on acquiring backlinks from authoritative .nl domains in relevant industries</li><li><strong>Disavow toxic links</strong>: Submit a disavow file for the identified high-spam-score backlinks</li><li><strong>Competitor backlink acquisition</strong>: Target the same high-quality domains that are linking to competitors like leadinfo.com</li></ul><br><h3 id="quick-wins-">Quick Wins:</h3><ul><li><strong>Optimize existing pages</strong>: Immediately update titles and meta descriptions of existing pages targeting Ede to include more specific keywords</li><li><strong>Google My Business optimization</strong>: Ensure the Google My Business profile is fully optimized with accurate information, relevant keywords, and customer reviews</li><li><strong>Schema markup</strong>: Implement local business schema markup to improve visibility in local search results</li><li><strong>Disavow toxic backlinks</strong>: Submit a disavow file for the 2 high-spam-score domains identified</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Quick on-page and local schema fixes will yield faster visibility gains while long-form content clusters are under development.</li></ul><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><p>Marketing Reus is experiencing a concerning 23.74% decrease in organic search visibility over the past year. Their strongest competitor, onlinemarketingagency.nl (OMA), consistently outranks them for location-based keywords by implementing a hyper-local SEO strategy with dedicated service+location pages and optimized SERP elements.</p><br><p>While Marketing Reus has a relatively clean backlink profile with 1,209 backlinks and a low spam score (1%), the repetitive anchor text pattern ("Realisatie: Marketing Reus") across client websites suggests potential over-optimization. Additionally, the presence of some high-spam-score backlinks could be negatively impacting their rankings.</p><br><p>To improve their search visibility in the Dutch market, Marketing Reus should:</p><br><ol><li>Address technical SEO issues to improve page speed and performance</li><li>Implement a hyper-local SEO strategy similar to OMA, with dedicated pages for each service+location combination</li><li>Optimize titles and meta descriptions to include location-specific keywords and clear value propositions</li><li>Enhance the SolarGaps subdomain content to improve rankings from positions 51-80 to top 30</li><li>Focus on high-priority keywords where competitors are currently outranking them, such as "website laten maken ede" and "seo ede"</li><li>Diversify their backlink anchor text beyond the repetitive "Realisatie: Marketing Reus" pattern</li><li>Disavow the identified high-spam-score backlinks to protect domain authority</li><li>Target high-quality Dutch domains for new backlink acquisition, particularly those linking to competitors</li><li>Optimize their Google My Business profile and implement local business schema markup</li></ol><br><p>With these targeted improvements, Marketing Reus can reverse the declining trend in organic visibility and better compete against OMA and other competitors in the Dutch digital marketing landscape.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Dmr',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Soeplr</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Soeplr • https://soeplr.nl/</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 13, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Current Status / Value</th><th>12-Month Growth / Notes</th></tr></thead><tbody><tr><td class="">Organic Visibility</td><td class="">Minimal; no relevant Dutch keyword rankings detected</td><td class="">No measurable growth due to lack of SEO tools</td></tr><tr><td class="">Search Engine Traffic (ETV)</td><td class="">Not tracked (no analytics tools installed)</td><td class="">Unknown; implementation of analytics recommended</td></tr><tr><td class="">Top Performing Pages</td><td class="">None identified via rankings; 4 blog articles present</td><td class="">Opportunity to optimize and expand content</td></tr><tr><td class="">Technical SEO Score</td><td class="">93.41 (Good)</td><td class="">Minor technical issues identified; room for improvement</td></tr><tr><td class="">Backlink Profile</td><td class="">12 backlinks from 8 domains; DA 37</td><td class="">Limited but high-quality; fewer than competitors</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Implement analytics tools immediately to benchmark current ETV and traffic sources.</li><li>Prioritize fixing technical issues that can have a quick impact on rankings (e.g., alt text, minification).</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Strengths / SEO Advantages</th><th>Keywords They Rank For (Soeplr Ranks Poorly)</th></tr></thead><tbody><tr><td class="">Vainu.com</td><td class="">Strong backlink profile (48 intersections), keyword-rich titles, clear CTAs</td><td class="">Business data related keywords (indirect competitor)</td></tr><tr><td class="">Mackenzie Limited</td><td class="">Rich snippets with pricing and ratings, strong content for "fresh homemade soup delivery"</td><td class="">"fresh homemade soup delivery" (Position 1)</td></tr><tr><td class="">Spoonful of Comfort</td><td class="">Unique content angle ("soup-er care package")</td><td class="">"fresh homemade soup delivery" (Position 2)</td></tr><tr><td class="">NOURISH Cooking</td><td class="">Perfect ratings, pricing snippets, fresh delivery focus</td><td class="">"fresh homemade soup delivery" (Position 3)</td></tr><tr><td class="">Daily Harvest</td><td class="">Healthy soups, pricing and ratings snippets</td><td class="">"fresh homemade soup delivery" (Position 7)</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Analyze competitor metadata and SERP features; adopt rich snippets (pricing + ratings).</li><li>Benchmark Vainu.com’s backlink sources for potential outreach opportunities.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Monthly Search Volume (NL)</th><th>Competition Level</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">soep thuisbezorgd</td><td class="">30-50</td><td class="">Medium</td><td class="">Location-specific, moderate competition</td></tr><tr><td class="">thuisbezorgd soep</td><td class="">30-50</td><td class="">Medium</td><td class="">Similar to above, good intent for ordering soup</td></tr><tr><td class="">saoto soep thuisbezorgd</td><td class="">10-30</td><td class="">Low</td><td class="">Niche, low competition, culturally relevant</td></tr><tr><td class="">soep online bestellen</td><td class="">20-40</td><td class="">High</td><td class="">High intent but competitive; good for long-term</td></tr><tr><td class="">gezonde soep aan huis</td><td class="">Low (long-tail)</td><td class="">Low</td><td class="">Long-tail, low competition, high conversion potential</td></tr><tr><td class="">biologische soep bestellen</td><td class="">Low (long-tail)</td><td class="">Low</td><td class="">Growing interest in organic products</td></tr><tr><td class="">winterse soep recepten</td><td class="">Seasonal</td><td class="">Medium</td><td class="">Seasonal content to capture winter demand</td></tr><tr><td class="">bedrijfssoep</td><td class="">Low</td><td class="">Low</td><td class="">Niche B2B market segment</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Build a prioritized keyword list with monthly volume and ease of ranking.</li><li>Launch initial content pieces around “soep thuisbezorgd” and “saoto soep thuisbezorgd.”</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Soeplr currently has minimal organic visibility and no tracked search traffic in the Netherlands.</li><li>No relevant Dutch keywords rank for Soeplr; competitors dominate niche and related keywords.</li><li>Technical SEO is generally good but has minor issues (missing alt text, unminified files, render-blocking resources).</li><li>Soeplr lacks essential analytics and SEO tools, preventing performance tracking and optimization.</li><li>Backlink profile is small but clean and high-quality; significant backlink gap compared to competitors.</li><li>Competitors use keyword-rich titles, clear CTAs, and rich snippets with pricing and ratings to dominate SERPs.</li><li>Recommended focus on location-specific, niche, and long-tail keywords with moderate to low competition.</li><li>Content expansion and optimization, especially location and treatment-specific pages, are critical.</li><li>Implementing analytics and SEO tools is a priority to enable data-driven SEO improvements.</li><li>Backlink building should focus on local partnerships, healthcare directories, and content marketing.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Set up a dashboard roadmap: track wins on keyword rankings, technical fixes, and backlink growth monthly.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-soeplr-netherlands-" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Soeplr (Netherlands)</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><br><p>This report provides a comprehensive SEO analysis for Soeplr (https://soeplr.nl/) in the Dutch market. Our research reveals significant opportunities for improving their search visibility and outranking competitors in the Netherlands. The company currently has minimal organic presence for relevant Dutch keywords, presenting substantial growth potential through strategic SEO implementation. A critical finding is that Soeplr lacks essential analytics and SEO tools, severely limiting their ability to measure and improve their search performance.</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-organic-visibility">Current Organic Visibility</h3><p>Our analysis indicates that Soeplr has limited organic visibility in the Netherlands. No relevant pages were found ranking for the target domain (soeplr.nl) in Dutch search results, suggesting a significant gap in their SEO strategy for the Dutch market.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize quick-win optimizations on existing pages while establishing baseline analytics to measure future gains.</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><p>The technical SEO audit revealed the following:</p><ul><li>Overall on-page score: 93.41 (good)</li><li>Page load time: 0.207 seconds (good, but with room for improvement)</li><li>The site uses HTTPS and has basic SEO elements in place</li><li>Meta title: "Fysiotherapie in Schiedam - Voor écht en duurzaam herstel - Soeplr" (66 characters)</li><li>Meta description: "Fysiotherapie in Schiedam - Binnen 24 uur een afspraak gemaakt. Shockwave therapie - Echografie- Peesblessure - Sportblessure" (125 characters)</li><li>Internal links: 101 | External links: 14 | Total links: 115 | Internal link ratio: 87.8%</li></ul><br><p>Several technical issues were identified:</p><ul><li>8 images without alt text (37 images have proper alt text)</li><li>1 unminified CSS file</li><li>3 unminified JS files</li><li>Resource errors (invalid characters in attribute values, mismatched closing tags)</li><li>Large DOM nodes (more than 60 child elements)</li><li>Render-blocking resources affecting page load speed</li><li>Low content-to-HTML ratio</li><li>Duplicate meta tags</li><li>HTTPS to HTTP links</li><li>Inconsistent last modified dates</li></ul><br><p>These technical issues, while not critical, are impacting the site's search performance and user experience.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign a sprint to address image alt text, file minification, and render-blocking resources within 2 weeks.</li></ul><br><h3 id="tech-stack-limitations">Tech Stack Limitations</h3><p>A critical finding from our tech stack analysis is that Soeplr lacks essential analytics and SEO tools:</p><ul><li>No analytics tools detected (such as Google Analytics)</li><li>No SEO tools identified (such as Google Search Console, Semrush, Ahrefs, or Moz)</li><li>Only basic SPF record for email authentication was found: <code>v=spf1 include:_spf.transip.email ~all</code></li></ul><br><p>This absence of measurement tools means Soeplr has no systematic way to:</p><ul><li>Track website traffic and user behavior</li><li>Monitor keyword rankings</li><li>Identify technical SEO issues</li><li>Analyze backlink profiles</li><li>Conduct competitor analysis</li><li>Measure the effectiveness of SEO efforts</li></ul><br><p>This represents a significant gap in their digital marketing infrastructure and a major opportunity for improvement.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Implement Google Analytics and Search Console immediately to begin collecting data; aim to have both tools live within 1 week.</li></ul><br><h3 id="top-performing-pages">Top Performing Pages</h3><p>Due to the limited organic visibility, we were unable to identify top-performing pages for Soeplr in the Netherlands. However, the site does have a blog with 4 articles that could be optimized:</p><br><ol><li>"Peesontsteking behandelen in Schiedam" - about treating tendinitis in Schiedam</li><li>"Achillespeesklachten na hardlopen" - about treating Achilles tendon issues after running</li><li>"Schouderklachten behandeling schiedam" - about treating shoulder issues in Schiedam</li><li>"Tenniselleboog behandeling Schiedam" - about treating tennis elbow in Schiedam</li></ol><br><p>These articles represent an opportunity for content optimization and expansion.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct keyword mapping for each blog article and add internal links to relevant service pages.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p>Our keyword analysis for Soeplr in the Netherlands revealed minimal current rankings but significant opportunities for growth.</p><br><h3 id="recommended-target-keywords">Recommended Target Keywords</h3><br><p>Based on our analysis, we recommend the following prioritized keywords for Soeplr:</p><br><p><strong>Top Priority Keywords:</strong></p><ul><li><strong>soep thuisbezorgd:</strong> 30-50 monthly searches | MEDIUM competition</li><li><strong>thuisbezorgd soep:</strong> 30-50 monthly searches | MEDIUM competition</li><li><strong>saoto soep thuisbezorgd:</strong> 10-30 monthly searches | LOW competition</li><li><strong>fresh homemade soup delivery:</strong> Emerging opportunity with multiple competitors ranking</li></ul><br><p><strong>Secondary Keywords:</strong></p><ul><li><strong>soep online bestellen:</strong> 20-40 monthly searches | HIGH competition</li><li><strong>online soep bestellen:</strong> 20-40 monthly searches | HIGH competition</li><li><strong>soep thuisbezorgd amsterdam:</strong> 0-10 monthly searches | LOW competition</li><li><strong>Dutch soup company:</strong> Niche opportunity with limited direct competition</li></ul><br><p><strong>Long-term Opportunities:</strong></p><ul><li><strong>thuisbezorgd saoto soep:</strong> 10 monthly searches | LOW competition</li><li><strong>soep bestellen thuisbezorgd:</strong> 0-10 monthly searches | NULL competition</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Focus initial content efforts on “soep thuisbezorgd” and “thuisbezorgd soep” to capture moderate-volume, intent-driven searches.</li></ul><br><h3 id="keyword-strategy-recommendations">Keyword Strategy Recommendations</h3><br><ol><li><strong>Location-Specific Keywords:</strong> The potential success of terms like "soep bestellen amsterdam" highlights the importance of targeting specific Dutch cities where Soeplr delivers.</li><li><strong>Seasonal Keywords:</strong> Consider creating content around seasonal terms like "winterse soep recepten" which may have higher search volume during colder months.</li><li><strong>Niche Targeting:</strong> Keywords like "bedrijfssoep" (company soup) represent specific market segments with less competition and more targeted intent.</li><li><strong>Long-Tail Opportunities:</strong> Focus on longer, more specific phrases that have lower competition but high conversion potential, such as "gezonde soep aan huis" or "biologische soep bestellen."</li><li><strong>Emerging Market Opportunities:</strong> Our research shows growing interest in "fresh homemade soup delivery" with multiple competitors ranking but no dominant player in the Netherlands market.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Integrate these keyword themes into a 3-month content calendar, assigning topics and deadlines.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p>Our competitive analysis identified several indirect competitors for Soeplr in the Netherlands, suggesting that Soeplr may operate in a specialized niche within a broader market.</p><br><h3 id="key-competitors">Key Competitors</h3><br><ol><li><strong>Vainu.com</strong></li></ol><ul><li><strong>Strengths:</strong> Strong backlink profile (48 backlink intersections with Soeplr)</li><li><strong>Meta Title:</strong> "Company and contact data for B2B companies ⏐ Vainu"</li><li><strong>Meta Description:</strong> "Vainu empowers thousands of B2B businesses to generate more revenue by providing them with real-time company data. Learn how we do it here."</li><li><strong>Strategy:</strong> Clear value proposition in meta description, keyword-rich title, includes call to action</li></ul><br><ol><li><strong>Vainu.app</strong></li></ol><ul><li><strong>Strengths:</strong> Moderate backlink profile (6 backlink intersections)</li><li><strong>Meta Title:</strong> "Vainu" - Simple, brand-focused</li><li><strong>Meta Description:</strong> None (missed opportunity)</li><li><strong>Strategy:</strong> Leveraging brand recognition from vainu.com</li></ul><br><ol><li><strong>Spotify.com</strong></li></ol><ul><li><strong>Strengths:</strong> Massive domain authority, strong backlink profile (6 backlink intersections)</li><li><strong>Meta Title:</strong> None detected</li><li><strong>Meta Description:</strong> None detected</li><li><strong>Strategy:</strong> Likely connection through general business-related content or mentions</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Audit competitor meta tags for common high-impact keywords and replicate strong CTAs in Soeplr’s metadata.</li></ul><br><h3 id="-fresh-homemade-soup-delivery-competitors">"Fresh Homemade Soup Delivery" Competitors</h3><br><p>Our keyword research identified several competitors ranking for "fresh homemade soup delivery" terms:</p><br><ol><li><strong>Mackenzie Limited</strong> - Position 1</li></ol><p>Strategy: Emphasizes "flavorful and bold soups and stews"</p><p>Rich snippets with pricing ($22 to $90) and ratings (4.2/5)</p><br><ol><li><strong>Spoonful of Comfort</strong> - Position 2</li></ol><p>Strategy: Focuses on "soup-er care package" concept</p><br><ol><li><strong>NOURISH Cooking</strong> - Position 3</li></ol><p>Strategy: Highlights "Made from Scratch, Fresh to Your Order, Delivered"</p><p>Rich snippets with pricing ($17 to $25) and perfect ratings (5.0/5)</p><br><ol><li><strong>Daily Harvest</strong> - Position 7</li></ol><p>Strategy: Promotes "healthy soups delivered to your door"</p><p>Rich snippets with pricing ($9.99) and strong ratings (4.6/5)</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prototype rich snippet markup (Schema.org) for pricing and ratings on 2-3 service pages to test SERP impact.</li></ul><br><h3 id="competitive-analysis-insights">Competitive Analysis Insights</h3><br><ul><li>The competitors identified are primarily indirect competitors, suggesting Soeplr operates in a specialized niche</li><li>No keywords were found where competitors are directly outranking Soeplr, which could indicate either:</li><li>Soeplr is already dominating relevant keywords</li><li>The competitors are targeting different keywords</li><li>The keyword analysis needs expansion</li><li><strong>Effective Competitor Patterns:</strong></li><li>Use of keyword-rich titles (e.g., Vainu.com)</li><li>Clear value propositions in meta descriptions</li><li>Inclusion of calls to action in meta descriptions</li><li>Strong backlink profiles from relevant domains</li><li>Rich snippets with pricing and ratings information</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Perform a gap analysis on keywords where competitors show rich snippets to determine quick wins for Soeplr.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><p>Our detailed backlink analysis revealed that Soeplr has a small but high-quality backlink profile with significant room for growth.</p><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li><strong>Total Backlinks:</strong> 12 backlinks from 8 referring domains</li><li><strong>Domain Authority:</strong> Rank score of 37 (moderate)</li><li><strong>Backlink Quality:</strong> Low spam score (1), indicating high-quality backlinks</li><li><strong>Referring Domains:</strong> 8 domains (6 with nofollow attributes)</li><li><strong>Referring Main Domains:</strong> 3 main domains (1 with nofollow attributes)</li><li><strong>Geographic Distribution:</strong> 4 backlinks from .nl domains, 6 from .com domains</li><li><strong>Link Types:</strong> All 10 referring pages use anchor text links</li><li><strong>Platform Types:</strong> 7 links from organization sites, 3 from blogs, 3 from CMS platforms</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Identify and prioritize local citation sites to double the .nl backlinks within 3 months.</li></ul><br><h3 id="key-referring-domains">Key Referring Domains</h3><br><ol><li><strong>fysiotherapieschiedam.nl</strong> (0% spam score)</li></ol><p>Partnership backlink mentioning "Shockwave Therapie" and "echo's"</p><p>Example anchor text: "Soeplr." in context of physiotherapy partnership</p><br><ol><li><strong>indebuurt.nl</strong> (0% spam score)</li></ol><p>Local directory listing</p><p>Anchor text: "www.soeplr.nl"</p><p>Valuable local citation</p><br><ol><li><strong>vainu.com</strong> (2% spam score)</li></ol><p>Business information database</p><p>Anchor text: "soeplr.nl"</p><p>Multiple variations from different subdomains</p><br><h3 id="backlink-opportunities">Backlink Opportunities</h3><ul><li><strong>Competitor Backlink Analysis:</strong> Target the 48 backlinks pointing to vainu.com that could potentially link to Soeplr</li><li><strong>Local Partnerships:</strong> Expand partnerships with local physiotherapy practices and healthcare providers, following the successful model with fysiotherapieschiedam.nl</li><li><strong>Local Directories:</strong> Increase presence in Dutch local directories similar to indebuurt.nl</li><li><strong>Industry Associations:</strong> Seek backlinks from Dutch healthcare and wellness associations</li><li><strong>Content Marketing:</strong> Develop shareable content about physiotherapy, wellness, and recovery to attract natural backlinks</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Create a “Partner Resource” page to host co-branded content, making link acquisition more appealing to local providers.</li></ul><br><h3 id="backlink-gap-analysis">Backlink Gap Analysis</h3><ul><li>Soeplr has significantly fewer backlinks than competitors like Vainu (48 backlink intersections)</li><li>The current backlinks are high-quality but limited in number</li><li>Recent backlinks from June 2025 show active partnership development</li><li>No toxic backlinks were identified, providing a clean foundation for growth</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Set monthly backlink acquisition targets (e.g., at least 5 new high-quality links per month) and track progress.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our technical SEO findings, keyword analysis, competitive landscape assessment, and backlink analysis, we recommend:</p><br><ol><li><strong>Content Development Strategy</strong>:</li></ol><ul><li>Create comprehensive, high-quality content around physiotherapy and wellness topics in Dutch</li><li>Develop location-specific landing pages for different Dutch cities (Amsterdam, Rotterdam, Utrecht, etc.)</li><li>Implement proper keyword optimization with appropriate heading structure</li><li>Ensure all images have descriptive alt text (currently 8 images are missing alt text)</li><li>Create seasonal content to capture keywords related to seasonal health issues</li><li>Expand the existing blog beyond the current 4 articles, focusing on topics that align with successful backlinks (e.g., Shockwave Therapy)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Define 3–5 core content pillars (e.g., treatments, locations, patient stories) to guide all future articles and pages.</li></ul><br><ol><li><strong>Page-Specific Optimizations</strong>:</li></ol><ul><li><strong>Treatment Pages:</strong> Optimize for keywords like "shockwave therapie" and "echografie"</li><li><strong>Location Pages:</strong> Target terms like "fysiotherapie schiedam" with detailed service information</li><li><strong>Specialty Pages:</strong> Create dedicated content for specific conditions like "tenniselleboog" and "achillespeesklachten"</li><li><strong>Partnership Pages:</strong> Develop pages highlighting partnerships with local healthcare providers</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit existing pages, update headings and add internal links to reflect priority keywords.</li></ul><br><ol><li><strong>SERP Optimization Strategy</strong>:</li></ol><ul><li><strong>Improve Meta Title:</strong> Current title is 66 characters, which is slightly long. Create a more concise, keyword-rich title that clearly communicates the page's purpose</li><li><strong>Enhance Meta Description:</strong> Current description is 125 characters. Develop a more compelling meta description that:</li><li>Clearly states Soeplr's value proposition</li><li>Includes a strong call to action</li><li>Incorporates primary keywords naturally</li><li>Stays within the optimal 150-160 character limit</li><li><strong>Example Improved Meta Description:</strong> "Specialistische fysiotherapie in Schiedam met Shockwave en Echografie. Binnen 24 uur een afspraak voor pees- en sportblessures. Maak direct een afspraak voor écht herstel!"</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Roll out new meta titles and descriptions in batches of 5 pages per week.</li></ul><br><ol><li><strong>Technical Improvements</strong>:</li></ol><ul><li>Add alt text to the 8 images currently missing this attribute</li><li>Minify the 1 CSS file and 3 JS files identified as unminified</li><li>Optimize render-blocking resources to improve page speed beyond the current 0.207 seconds</li><li>Fix HTTPS to HTTP links</li><li>Increase the text-to-HTML ratio with more valuable content</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Schedule technical SEO fixes in two-week sprints, starting with high-impact items like resource minification.</li></ul><br><ol><li><strong>Analytics Implementation</strong>:</li></ol><ul><li>Install Google Analytics to track website traffic, user behavior, and conversion metrics</li><li>Set up Google Search Console to monitor search performance and identify technical issues</li><li>Implement event tracking to measure user interactions with key website elements</li><li>Create custom dashboards to monitor SEO performance metrics</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Define core KPIs (sessions, bounce rate, keyword positions) and map them to custom dashboards in Data Studio.</li></ul><br><ol><li><strong>Backlink Building Strategy</strong>:</li></ol><ul><li>Expand local partnerships following the successful model with fysiotherapieschiedam.nl</li><li>Create shareable content about physiotherapy techniques and treatments</li><li>Develop a targeted outreach campaign to relevant Dutch healthcare websites</li><li>Establish presence in additional local directories beyond indebuurt.nl</li><li>Create a testimonial exchange program with partner clinics and suppliers</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Launch an outreach email sequence to 20 potential partners, aiming for at least 3 link commitments in the first month.</li></ul><br></div></section>
+                <section id="conclusion-next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion & Next Steps</h2>
+                    </div>
+                    <div class="section-content"><br><p>Soeplr has significant opportunities to improve their SEO performance in the Netherlands. The current lack of organic visibility, limited backlink profile, and absence of analytics tools present both challenges and opportunities for substantial growth through strategic SEO implementation.</p><br><h3 id="recommended-action-plan-">Recommended Action Plan:</h3><ol><li>Implement essential analytics and SEO tools to establish measurement capabilities</li><li>Optimize meta titles and descriptions following the patterns of successful competitors</li><li>Develop a content calendar focused on high-value Dutch keywords related to physiotherapy</li><li>Implement technical SEO fixes to address the identified issues</li><li>Execute the backlink building strategy, focusing first on expanding local partnerships</li><li>Establish regular monitoring of rankings and organic traffic growth</li></ol><br><p>WP SEO AI's comprehensive AI-driven SEO toolset is ideally positioned to help Soeplr address these challenges through:</p><ul><li>AI-powered keyword analysis to identify the most valuable Dutch search terms</li><li>Content idea generation tailored to the Dutch physiotherapy market</li><li>Automated content creation in Dutch language</li><li>Technical SEO audits to resolve the identified issues</li><li>Competitor tracking to stay ahead of other providers in the Netherlands</li><li>Analytics integration to measure performance and demonstrate ROI</li><li>Backlink monitoring and opportunity identification</li></ul><br><p>The lack of analytics and SEO tools in Soeplr's current tech stack represents a critical gap that WP SEO AI can immediately address, providing the measurement framework necessary for all other SEO improvements. By implementing these recommendations, Soeplr can significantly improve their organic visibility in the Netherlands, capture untapped search traffic, and outrank competitors in their niche.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Soeplr',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

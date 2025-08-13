@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Appartementor</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Appartementor • www.appartementor.be</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Belgium Market</span>
+                        <span><i class="fas fa-calendar"></i> August 13, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th><th>Notes</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">33.99 (August 2025)</td><td class="positive">429.33% increase over last 12 months</td></tr><tr><td class="">Number of Ranking Keywords</td><td class="">7</td><td class="">All keywords rank outside top 30 positions</td></tr><tr><td class="">Keyword Position Distribution</td><td class="">31-40: 2 keywords<br>41-50: 1 keyword<br>71-80: 3 keywords<br>81-90: 1 keyword</td><td class="">Indicates significant ranking improvement potential</td></tr><tr><td class="">Top Performing Page</td><td class="">Homepage (ETV 31.08)</td><td class="">Ranks mostly 71-80, needs optimization</td></tr><tr><td class="">Paid Traffic Cost Equivalent</td><td class="">€45.25</td><td class="">Reflects organic traffic value</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong> The significant ETV growth indicates strong momentum, but the absence of top-30 keyword rankings highlights the need for immediate on-page improvements to capitalize on this visibility.</div><div class="highlight-box"><strong>Next Step:</strong> Prioritize optimizing existing top-ranking pages (Homepage, “Voor de mede-eigenaar”) to break into the top 30, focusing on title tags, meta descriptions, and H1 optimization.</div><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Strong Ranking Keywords (Belgium)</th><th>Appartementor Ranking for These Keywords</th><th>Notes on Competitor Strategy</th></tr></thead><tbody><tr><td class="">De Syndicus</td><td class="">"mede-eigenaars" (#1)</td><td class="">Positions 71-90</td><td class="">Strong authority, high traffic volume</td></tr><tr><td class="">Uw Syndic</td><td class="">"mede-eigenaars"</td><td class="">Positions 71-90</td><td class="">Location-specific meta titles (Sint-Niklaas & Aalst)</td></tr><tr><td class="">Easy Syndic</td><td class="">"mede-eigenaars", "mede eigenaren"</td><td class="">Positions 71-90</td><td class="">Highlights low-cost syndic services in meta description</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong> Competitors leverage location-specific meta tags and clear value propositions—Appartementor should test geo-targeted titles and emphasize unique selling points to compete for “mede-eigenaars.”</div><div class="highlight-box"><strong>Next Step:</strong> Audit Appartementor’s current meta titles/descriptions for location or benefit mentions, then run A/B tests on VME-focused messaging.</div><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Monthly Search Volume (Belgium)</th><th>Competition Level</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">mede-eigenaars</td><td class="">260</td><td class="">Low</td><td class="">High volume, low competition, core service</td></tr><tr><td class="">beheer mede-eigendom</td><td class="">10-20</td><td class="">Low</td><td class="">Relevant long-tail keyword, easy to rank</td></tr><tr><td class="">beheer mede eigendom</td><td class="">10-20</td><td class="">Low</td><td class="">Variation of above, captures additional traffic</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong> The low competition and solid search volumes for “mede-eigenaars” and related long-tail queries present immediate high-impact content optimization opportunities.</div><div class="highlight-box"><strong>Next Step:</strong> Develop dedicated content modules for each low-competition keyword variant to avoid cannibalization and target searcher intent precisely.</div><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Appartementor’s organic traffic grew by 429.33% in 12 months but ranks no keywords in the top 30 positions.</li><li>The company ranks for only 7 keywords, mostly in low positions (31-90), indicating large SEO growth potential.</li><li>Competitors dominate the high-value keyword "mede-eigenaars" (260 monthly searches) with top #1 rankings.</li><li>Keyword competition is low across relevant terms, suggesting achievable ranking improvements.</li><li>Technical SEO issues and limited indexed pages restrict visibility.</li><li>Backlink profile is locally relevant but has medium spam risk and limited anchor text diversity.</li><li>Content lacks depth and specificity, especially around "mede-eigenaars" and the "Vereniging van Mede-Eigenaars" (VME).</li><li>Competitors use more targeted meta titles/descriptions and content formats (blogs, FAQs) that better satisfy user intent.</li><li>Immediate wins include optimizing the "mede-eigenaars" page title/meta and adding FAQ content.</li><li>Longer-term strategy should focus on content hubs, backlink growth, and local SEO optimization.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong> The TL;DR highlights both immediate priorities (meta and FAQ updates) and longer-term investments (content hubs, backlinks)—aligning your roadmap with these timeframes ensures balanced progress.</div><div class="highlight-box"><strong>Next Step:</strong> Assign sprint cycles: Sprint 1 for on-page quick wins; Sprint 2 for content hub planning; Sprint 3 for backlink outreach.</div><br><hr><br></div></section>
+                <section id="seo-research-report-appartementor" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Appartementor</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Appartementor is a Belgian company that provides independent advice for syndics (property managers), co-owners, and project developers, focusing on sustainable and professional solutions for co-ownership management. Their key value propositions include no long-term contracts, 100% independent advice, and 30 years of expertise in the field (<a href="https://www.appartementor.be" class="link-reference" target="_blank" rel="noopener">Company Website</a>).</p><br></div></section>
+                <section id="research-objectives" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Research Objectives</h2>
+                    </div>
+                    <div class="section-content"><p>This report aims to provide a comprehensive SEO analysis for Appartementor in the Belgian market, delivering actionable insights and relevant facts that can help address specific needs and challenges related to SEO performance.</p><br></div></section>
+                <section id="1-overall-seo-performance-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-traffic-growth">Organic Visibility and Traffic Growth</h3><ul><li>Appartementor has experienced a significant <strong>429.33% increase in Estimated Traffic Volume (ETV)</strong> from August 2024 to August 2025, indicating strong growth in organic visibility.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong> Growth in ETV without keyword position improvements suggests current content gains visibility but lacks relevance and depth to rank in top positions.</div><br><ul><li>Current organic traffic estimation (as of August 2025): <strong>33.99 ETV</strong> with an estimated paid traffic cost equivalent of €45.25.</li><li>The website currently ranks for <strong>7 keywords</strong> in total, with most positions falling in the lower ranges (31-40, 41-50, 71-80, 81-90).</li></ul><br><h3 id="position-distribution-august-2025-">Position Distribution (August 2025)</h3><ul><li>Position 31-40: 2 keywords</li><li>Position 41-50: 1 keyword</li><li>Position 71-80: 3 keywords</li><li>Position 81-90: 1 keyword</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ul><li><strong>Homepage</strong> (<code>https://www.appartementor.be/</code>): Best performing page with an ETV of 31.08, but ranking in positions 71-80, indicating significant room for improvement.</li><li><strong>"Voor de mede-eigenaar"</strong> page: Second highest performer with an ETV of 1.64, ranking in positions 71-90.</li><li><strong>"Voor de bouwheer"</strong> page: Lower performance with an ETV of 0.55, ranking in positions 41-50.</li><li><strong>"Jobs"</strong> page: Moderate performance with an ETV of 0.74, ranking in positions 31-40.</li></ul><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><ul><li>Technical audit encountered errors with URL validation, suggesting potential technical SEO issues that need addressing.</li><li>The limited number of ranking pages (only 4 in the dataset) indicates potential indexing or content visibility problems.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong> Conduct a full technical SEO audit to resolve URL errors and ensure all high-value pages are crawled and indexed.</div><br></div></section>
+                <section id="2-keyword-analysis-for-the-belgian-market" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Belgian Market</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-keyword-rankings">Current Keyword Rankings</h3><ul><li><strong>Most striking observation</strong>: Appartementor does not rank in the top 30 positions for any of their target keywords, indicating significant room for improvement.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong> Prioritizing high-volume, low-competition keywords in structured content can convert visibility into improved rankings.</div><br><ul><li><strong>Jobs-related keywords</strong>: The <code>/jobs/</code> page ranks for "property manager" and "property manager vacature" but in positions 31-40.</li><li><strong>Co-owner keywords</strong>: The <code>/voor-de-mede-eigenaar2/</code> page ranks for "mede eigenaren" and "mede-eigenaars" in positions 71-90.</li><li><strong>Developer keywords</strong>: The <code>/voor-de-bouwheer2/</code> page ranks for "bouwheer" in positions 41-50.</li><li><strong>Homepage</strong>: Ranks for the broad term "appartement" but at a very low position (71-80).</li></ul><br><h3 id="keyword-opportunities">Keyword Opportunities</h3><ul><li><strong>Low competition</strong>: All analyzed keywords show "LOW" competition levels, suggesting relatively easier ranking improvement potential.</li><li><strong>Keyword cannibalization</strong>: The terms "mede eigenaren" and "mede-eigenaars" (with and without hyphen) both direct to the same page, potentially diluting ranking power.</li><li><strong>Search volume trends</strong>: Most keywords show a slight decrease in search volume over the past year, except for "appartement" which shows significant increase, indicating growing interest.</li></ul><br><h3 id="recommended-target-keywords">Recommended Target Keywords</h3><ul><li><strong>Top priority keywords</strong>:</li><li>"beheer mede-eigendom" (10-20 monthly searches | LOW competition)</li><li>"beheer mede eigendom" (10-20 monthly searches | LOW competition)</li><li>"mede-eigenaars" (260 monthly searches | LOW competition)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong> Focus content updates on these primary keywords and track ranking improvements weekly.</div><br></div></section>
+                <section id="3-competitive-landscape-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-competitors-overview">Top Competitors Overview</h3><ul><li><strong>Strongest Competitors</strong>: De Syndicus, Uw Syndic, and Easy Syndic</li><li>All three are direct competitors offering syndic services in the Belgian market.</li></ul><br><h3 id="competitor-strengths">Competitor Strengths</h3><ul><li><strong>De Syndicus</strong>: Ranks #1 for the keyword "mede-eigenaars", indicating strong authority and relevance for this term. Has high estimated traffic volume.</li><li><strong>Uw Syndic</strong>: Ranks well for "mede-eigenaars" and has a clear meta title and description targeting building management and specific locations (Sint-Niklaas & Aalst).</li><li><strong>Easy Syndic</strong>: Ranks very well for "mede-eigenaars" and "mede eigenaren". Their meta description highlights a key differentiator: low-cost syndic services for smaller co-ownerships.</li></ul><br><h3 id="keyword-performance-comparison">Keyword Performance Comparison</h3><ul><li><strong>Critical Gap</strong>: Competitors consistently outperform Appartementor for the keyword variations of "mede-eigenaars" (mede-eigenaars, mede eigenaren, mede-eigenaren).</li><li><strong>Search Intent and Volume</strong>: The keyword "mede-eigenaars" has a search volume of 260 and low competition, representing a significant opportunity to capture relevant traffic.</li></ul><br><h3 id="serp-strategy-analysis">SERP Strategy Analysis</h3><ul><li><strong>Title and Meta Description Comparison</strong>:</li><li>Appartementor's title for the "mede-eigenaars" page is simply "Appartementor voor de mede-eigenaars" with a generic meta description that doesn't clearly address user search intent.</li><li>Competitors use more specific titles and descriptions that directly address the user's query. For example, Easy Syndic's title includes "De vereniging van mede-eigenaars | VME : Welke rol" which is more descriptive and relevant.</li></ul><br><ul><li><strong>Effective Patterns in Competitor SERP Elements</strong>:</li><li><strong>Specificity</strong>: Competitors use titles and descriptions that are highly specific to the content of the page and the user's search query.</li><li><strong>Keyword Inclusion</strong>: They prominently include the target keyword ("mede-eigenaars") in both the title and description.</li><li><strong>Value Proposition</strong>: Easy Syndic highlights its low-cost service in its meta description.</li></ul><br><ul><li><strong>Content Types/Formats</strong>: Competitors are using blog posts, FAQs, and dedicated pages to target the "mede-eigenaars" keyword. Easy Syndic's success suggests that content explaining the role and function of the "Vereniging van Mede-Eigenaars" (VME) is particularly effective.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong> Adopt competitor patterns—craft specific, keyword-rich titles and meta descriptions, and build targeted content formats (blogs, FAQs) to satisfy user intent.</div><br></div></section>
+                <section id="4-backlink-authority-analysis-for-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li>Appartementor has <strong>162 backlinks</strong> from <strong>16 referring domains</strong>, primarily from Belgian websites (.be domains), indicating strong local relevance.</li><li>The website has a <strong>backlink spam score of 53%</strong> (medium), suggesting a need for careful monitoring and potential cleanup of lower-quality links.</li><li>The site has <strong>no high spam score referring domains</strong>, which is positive, but does have 6 medium spam score domains that should be reviewed.</li></ul><br><h3 id="quality-of-referring-domains">Quality of Referring Domains</h3><ul><li><strong>Notable quality backlinks</strong> from reputable sites include:</li><li>voka.be (Voka - Flemish Chamber of Commerce)</li><li>dvl.education (Educational institution)</li><li>made-in.be (Business news platform)</li><li>bedrijfinfo.be and bedrijvenwijzer.be (Business directories)</li><li>These quality backlinks provide authority and relevance to Appartementor's domain.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong> The backlink profile is locally focused but lacks diversity; targeting high-authority industry sites can boost domain authority more effectively than incremental local links.</div><br><h3 id="backlink-opportunities">Backlink Opportunities</h3><ul><li><strong>Educational and organizational backlinks</strong> (e.g., dvl.education) highlight Appartementor's potential to expand into content partnerships with educational or non-profit sectors.</li><li><strong>Anchor text diversity is limited</strong>, with most links using generic or branded terms, indicating an opportunity to optimize for more varied and targeted anchor texts.</li><li><strong>Potential for local partnerships</strong>: The strong presence of Belgian backlinks suggests opportunities for further local collaborations.</li></ul><br><h3 id="backlink-gaps">Backlink Gaps</h3><ul><li><strong>Medium spam score links</strong> from sites like prolinkbox.com and driftseo.click should be reviewed for quality and relevance.</li><li><strong>Backlink profile diversity</strong> could be improved beyond the current dominance of unknown and CMS-based referring sites.</li><li><strong>Competitor backlink analysis</strong> reveals opportunities to target authoritative sites that link to competitors but not to Appartementor.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="content-performance-analysis">Content Performance Analysis</h3><ul><li><strong>Content segmentation</strong>: The website employs a segmented content strategy targeting different user groups (co-owners, developers, job seekers), which is strategically sound but needs optimization.</li><li><strong>Content depth</strong>: Current ranking pages may lack sufficient depth or comprehensiveness to satisfy searcher needs and earn higher rankings.</li><li><strong>SERP snippet patterns</strong>:</li><li>The snippets for job-related pages highlight that Appartementor is informed of vacancies for property manager roles.</li><li>The snippets for co-owner pages highlight the role of the syndicus and their responsibilities.</li><li>The snippet for the developer page highlights Appartementor's role in reviewing the "basisakte."</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong> Align content depth with competitor formats—incorporating FAQs and case studies can improve dwell time and SERP feature visibility.</div><br><h3 id="actionable-recommendations">Actionable Recommendations</h3><br><h4 id="on-page-optimization-for-mede-eigenaars-keywords">On-Page Optimization for "Mede-eigenaars" Keywords</h4><ul><li><strong>Create a dedicated, comprehensive page</strong> specifically targeting "mede-eigenaars" and its variations.</li><li><strong>Optimize the page title</strong> to be more descriptive and include the primary keyword: e.g., "Mede-eigenaars: Rechten, Plichten & Beheer | Appartementor."</li><li><strong>Write a compelling meta description</strong> that clearly addresses the user's search intent and highlights the value proposition: "Alles wat mede-eigenaars moeten weten: rechten, plichten, VME, en meer. Vind antwoorden en professioneel advies bij Appartementor."</li><li><strong>Ensure the keyword is naturally integrated</strong> throughout the page content, including headings, subheadings, and body text.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong> Implement these on-page optimizations within two weeks to capture rising search interest.</div><br><h4 id="content-strategy-focused-on-vereniging-van-mede-eigenaars-vme-">Content Strategy Focused on "Vereniging van Mede-Eigenaars" (VME)</h4><ul><li><strong>Create a series of blog posts or articles</strong> explaining different aspects of the VME, such as its role, responsibilities, legal requirements, and how it impacts co-owners.</li><li><strong>Develop a comprehensive FAQ section</strong> addressing common questions about the VME.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong> Plan a content series calendar with deadlines for VME-related topics over the next quarter.</div><br><h4 id="targeted-content-for-specific-user-needs">Targeted Content for Specific User Needs</h4><ul><li><strong>Analyze the content of top-ranking pages</strong> for "mede-eigenaars" to identify specific questions and concerns users are seeking answers to.</li><li><strong>Create content that directly addresses these needs</strong>, providing clear, concise, and actionable information.</li></ul><br><h4 id="backlink-strategy">Backlink Strategy</h4><ul><li><strong>Leverage existing quality relationships</strong>: Reach out to current quality backlink sources like voka.be and dvl.education for additional content collaboration opportunities.</li><li><strong>Improve anchor text diversity</strong>: Work with referring domains to optimize anchor text to include target keywords rather than generic terms or URLs.</li><li><strong>Local business directories</strong>: Ensure consistent NAP (Name, Address, Phone) information across all Belgian business directories.</li><li><strong>Educational content partnerships</strong>: Create valuable educational content about co-ownership management that educational institutions might reference.</li><li><strong>Review medium-spam score backlinks</strong>: Evaluate the 6 medium-spam score referring domains and consider disavowing any that appear manipulative or irrelevant.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong> Identify 5 new educational and organizational outreach targets by week 1 to initiate backlink requests.</div><br><h4 id="quick-wins">Quick Wins</h4><ul><li><strong>Immediately update the title and meta description</strong> of the existing "Appartementor voor de mede-eigenaars" page to be more specific and keyword-rich.</li><li><strong>Add a prominent FAQ section</strong> to the page addressing common questions about co-ownership.</li><li><strong>Optimize anchor text</strong> in existing backlinks where possible, especially from high-quality referring domains.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong> Track CTR and ranking changes weekly to validate quick-win impact.</div><br><h4 id="longer-term-opportunities">Longer-Term Opportunities</h4><ul><li><strong>Develop a comprehensive content hub</strong> dedicated to co-ownership, covering all aspects of the topic in detail.</li><li><strong>Build backlinks</strong> to the "mede-eigenaars" page from relevant websites and directories.</li><li><strong>Consider creating video content</strong> explaining key concepts related to co-ownership and the VME.</li><li><strong>Target authoritative Belgian real estate and property management websites</strong> for guest posting opportunities.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong> Define metrics and milestones for each longer-term initiative to monitor progress monthly.</div><br><h4 id="additional-content-recommendations">Additional Content Recommendations</h4><ol><li><strong>In-depth keyword research</strong>: Conduct thorough keyword research to identify relevant, long-tail keywords with lower competition that reflect Appartementor's specific services.</li><li><strong>Content enhancement</strong>:</li></ol><ul><li>Create dedicated service pages targeting "beheer mede-eigendom" and variations.</li><li>Develop comprehensive content about co-ownership management benefits.</li><li>Add more detailed information, examples, and case studies to existing pages.</li><li>Address keyword cannibalization by choosing one primary keyword for the "mede eigenaren" page.</li></ul><ol><li><strong>Content variety</strong>: Develop different content types (blog posts, videos, infographics, case studies) to attract a wider audience and improve engagement.</li><li><strong>Local SEO</strong>: Optimize for local keywords, claim and optimize Google My Business listing, and build local citations to improve visibility in Belgium.</li><li><strong>Technical SEO audit</strong>: Conduct a comprehensive technical audit to identify and fix issues that may be hindering performance.</li></ol><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><p>Appartementor's SEO performance shows significant room for improvement, with no keywords currently ranking in the top 30 positions despite low competition levels. The website has experienced strong traffic growth (429.33% increase), indicating positive momentum that can be leveraged with strategic optimization.</p><br><p>Key opportunities include:</p><ul><li>Targeting the high-value keyword "mede-eigenaars" (260 monthly searches) where competitors are currently outperforming Appartementor</li><li>Enhancing content depth and relevance, particularly around the "Vereniging van Mede-Eigenaars" (VME) topic</li><li>Improving title tags and meta descriptions to be more specific and address user search intent</li><li>Addressing technical SEO issues</li><li>Implementing local SEO strategies for the Belgian market</li><li>Leveraging existing quality backlinks while improving anchor text diversity</li><li>Building new relationships with authoritative Belgian websites in the property management sector</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong> Concentrating on the "mede-eigenaars" vertical can serve as a case study for replicating success across other service lines.</div><br></div></section>
+                <section id="next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-arrow-right"></i></div>
+                        <h2 class="section-title">Next Steps</h2>
+                    </div>
+                    <div class="section-content"><ol><li>Conduct a comprehensive technical SEO audit to identify and fix any issues that may be hindering performance</li><li>Implement on-page optimization for the "mede-eigenaars" page as a priority</li><li>Develop a content calendar focused on VME-related topics</li><li>Review and optimize the backlink profile, focusing on anchor text diversity and quality</li><li>Monitor rankings and traffic regularly to track progress and make necessary adjustments</li></ol><br><div class="highlight-box"><strong>Clarification:</strong> Each next step should be assigned to a team member with clear deadlines to ensure timely execution.</div></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Appartementor',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

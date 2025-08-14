@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Argos Zorggroep</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Argos Zorggroep • werkenbijargoszorggroep.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Nederland Market</span>
+                        <span><i class="fas fa-calendar"></i> August 14, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="seo-research-report-argos-zorggroep" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Argos Zorggroep</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="overall-seo-performance-growth-last-12-months-">Overall SEO Performance & Growth (Last 12 Months)</h3><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Current Value</th><th>Growth (%) YoY</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">3,070.64</td><td class="positive">+2.31%</td></tr><tr><td class="">Keywords in Position 1</td><td class="">6</td><td class="positive">+50.00%</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">27</td><td class="positive">+8.00%</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">86</td><td class="positive">+79.17%</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="">84</td><td class="positive">+100.00%</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The strong growth in mid-range rankings (positions 4–10 and 11–20) indicates rising momentum. Prioritize content and on-page tweaks for these keywords to push them into the top 3.</li></ul><br><hr><br><h3 id="top-competitors-keywords-they-rank-well-for-where-argos-ranks-poorly-">Top Competitors & Keywords They Rank Well For (Where Argos Ranks Poorly)</h3><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Strengths / Top Keywords They Rank For (Argos Ranks Poorly)</th></tr></thead><tbody><tr><td class="">nl.indeed.com</td><td class="">Generic job terms: "verzorgende ig vacatures", "salaris verzorgende ig niveau 3"</td></tr><tr><td class="">www.nationalevacaturebank.nl</td><td class="">BBL/Learning: "bbl verzorgende ig vacatures", Internship: "stage maatschappelijk zorg"</td></tr><tr><td class="">www.werkeninderotterdamsezorg.nl</td><td class="">Location-specific healthcare jobs in Rotterdam, salary-related keywords</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a content gap analysis for generic and salary-related queries. Develop dedicated pages or guides to capture these high-intent searches.</li></ul><br><hr><br><h3 id="keyword-opportunities-why">Keyword Opportunities & Why</h3><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Monthly Search Volume</th><th>Competition Level</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">vacature fysiotherapeut</td><td class="">3,600</td><td class="">Medium</td><td class="">High volume, relevant healthcare job</td></tr><tr><td class="">spijkenisse vacature</td><td class="">2,900</td><td class="">Medium</td><td class="">Location-specific, low competition</td></tr><tr><td class="">werk leer vacatures</td><td class="">1,900</td><td class="">High</td><td class="">High intent for learning/work opportunities</td></tr><tr><td class="">thuiszorgplanner</td><td class="">1,900</td><td class="">Low</td><td class="">Niche role, low competition</td></tr><tr><td class="">hoogvliet vacatures</td><td class="">1,600</td><td class="">Low</td><td class="">Location-specific, low competition</td></tr><tr><td class="">maassluis vacature</td><td class="">1,300</td><td class="">Medium</td><td class="">Location-specific, medium competition</td></tr><tr><td class="">zorgbemiddelaar vacature</td><td class="">1,000</td><td class="">Low</td><td class="">Low competition, relevant to recruitment</td></tr><tr><td class="">bbl verzorgende ig vacature</td><td class="">390</td><td class="">Medium</td><td class="">Long-tail, learning program focus</td></tr><tr><td class="">bijbaan ouderenzorg</td><td class="">320</td><td class="">High</td><td class="">Long-tail, student/part-time job seekers</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Low-competition, location-focused keywords like "thuiszorgplanner" and "hoogvliet vacatures" present quick-win opportunities. Create dedicated landing pages optimized for these terms.</li></ul><br><hr><br><h3 id="tl-dr-most-important-findings">TL;DR - Most Important Findings</h3><br><ul><li>Argos Zorggroep’s recruitment site shows steady organic growth, especially in top 10 keyword rankings (+79.17% in positions 4-10).</li><li>Strong dominance in branded and location-specific keywords, but weak in generic healthcare job terms and salary-related queries.</li><li>Key competitors (Indeed, Nationale Vacaturebank) outrank Argos on generic and learning-related job keywords.</li><li>Technical SEO is solid but needs fixing of 15 broken pages to avoid indexing issues.</li><li>Backlink profile is moderate with 193 backlinks from 43 domains; some toxic backlinks from generic directories need disavowal.</li><li>High-value keyword opportunities exist in location-specific job searches and niche roles like "thuiszorgplanner" and BBL programs.</li><li>Seasonal peaks in job searches occur in Jan-Feb and Sept; content and campaigns should align accordingly.</li><li>Content gaps include salary info, career paths, BBL/stage program details, and optimized location landing pages.</li><li>Backlink outreach should focus on local news, healthcare organizations, educational institutions, and job boards.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop a quarterly content calendar aligned with peak job-search periods (Jan–Feb, Sept) to maximize visibility and applications.</li></ul><br><hr><br></div></section>
+                <section id="full-research-report" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Full Research Report</h2>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="seo-research-report-argos-zorggroep" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Argos Zorggroep</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for Argos Zorggroep, a healthcare organization specializing in elderly care services in the Netherlands. The analysis focuses on their recruitment website werkenbijargoszorggroep.nl. Our research examines their current SEO performance, keyword opportunities, competitive landscape, and backlink profile in the Dutch market, with actionable recommendations to improve their search visibility and organic traffic.</p><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Argos Zorggroep is a healthcare provider offering elderly care services including nursing homes ("verpleeghuizen"), home care ("thuiszorg"), and rehabilitation ("revalidatie") <a href="https://werkenbijargoszorggroep.nl" class="link-reference" target="_blank" rel="noopener">Company Website</a>. They operate in several locations in the Netherlands, including Schiedam, Vlaardingen, Maassluis, Hoogvliet, Rhoon, Poortugaal, and Spijkenisse. The organization emphasizes innovation, technology, and employee development in their approach to elderly care.</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-organic-visibility">Current Organic Visibility</h3><p>The werkenbijargoszorggroep.nl website has shown positive growth in organic visibility over the past year:</p><br><ul><li><strong>Estimated Traffic Volume (ETV)</strong>: 3,070.64 (current) - a 2.31% increase from the previous year</li><li><strong>Current SERP Position Distribution</strong>:</li><li>Position 1: 6 keywords</li><li>Positions 2-3: 27 keywords</li><li>Positions 4-10: 86 keywords</li><li>Positions 11-20: 84 keywords</li><li>Positions 21-30: 75 keywords</li><li>Positions 31-100: 172 keywords</li></ul><br><ul><li><strong>Year-over-Year Position Changes</strong>:</li><li>Position 1: +50.00% increase</li><li>Positions 2-3: +8.00% increase</li><li>Positions 4-10: +79.17% increase</li><li>Positions 11-20: +100.00% increase</li></ul><br><p>This data indicates improving organic visibility, particularly for higher-ranking positions, which is a positive trend for the website.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>With 84 keywords moving into positions 11–20, optimize meta titles and descriptions to improve click-through rates and nudge these into the top 10.</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><p>Based on the SEO data analysis, the following pages demonstrate the strongest performance:</p><br><ol><li><strong>Homepage</strong> (https://www.werkenbijargoszorggroep.nl/): Highest ETV (751.11) and estimated paid traffic value ($1,232.02), ranking for 6 SERPs in top positions</li><li><strong>Job Listings Page</strong> (https://www.werkenbijargoszorggroep.nl/vacatures/): High ETV (487.19) with strong rankings for 6 SERPs</li><li><strong>Location Page - Driemaasstede</strong> (https://www.werkenbijargoszorggroep.nl/locaties/driemaasstede/): Exceptional ETV (408.66) with top positions for 8 SERPs</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Strengthen internal linking from underperforming job pages to these top-performing pages to distribute authority and improve overall site rankings.</li></ul><br><h3 id="underperforming-pages">Underperforming Pages</h3><p>Several pages show potential but currently underperform:</p><ol><li><strong>Individual Job Postings</strong>: Many specific job vacancy pages rank in lower positions (31-100) with low ETVs, such as:</li></ol><ul><li>https://www.werkenbijargoszorggroep.nl/vacatures/vacature-medewerker-schoonmaak-8-12-uur-de-meerpaal/ (ETV: 0.73)</li><li>https://www.werkenbijargoszorggroep.nl/vacatures/vacature-teamleider-centrale-flexpool-24-36-uur-centrale-diensten/ (ETV: 1.09)</li></ul><br><ol><li><strong>Informational Pages</strong>: Pages like "/doelgroepen/" and "/over-ons/" show lower performance despite their potential value for recruitment marketing</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Consolidate thin or similar job pages into category pages to enhance topical relevance and avoid keyword cannibalization.</li></ul><br><h3 id="technical-seo-factors">Technical SEO Factors</h3><p>The website is built on WordPress, which provides a solid foundation for SEO. However, there are some technical aspects that could be improved:</p><br><ul><li><strong>Server</strong>: Running on nginx (good performance potential)</li><li><strong>CMS</strong>: WordPress (SEO-friendly with proper optimization)</li><li><strong>Country</strong>: Netherlands (NL) - correctly targeted for the Dutch market</li><li><strong>Broken Pages</strong>: 15 broken pages identified that need to be fixed</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize fixing the 15 broken pages within the next two weeks and implement ongoing automated checks for new broken links.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><p>The website ranks for approximately 450 keywords in total across various positions. Our analysis reveals the following top-performing keywords:</p><br><p><strong>Top Position 1 Keywords:</strong></p><ul><li>"argos vacatures" (390 monthly searches)</li><li>"argos zorggroep vacatures" (480 monthly searches)</li><li>"vacature argos zorggroep" (110 monthly searches)</li><li>"vacatures argos zorggroep" (110 monthly searches)</li></ul><br><p><strong>Top Position 2-3 Keywords:</strong></p><ul><li>"vacature argos" (390 monthly searches)</li><li>"werken bij argos zorggroep" (70 monthly searches)</li><li>"driemaashave" (590 monthly searches)</li><li>"driemaashave argos zorggroep" (1000 monthly searches)</li><li>"driemaasstede argos zorggroep" (2400 monthly searches)</li></ul><br><p><strong>Top Position 4-10 Keywords:</strong></p><ul><li>"de meerpaal vlaardingen" (210 monthly searches)</li><li>"driemaasstede" (880 monthly searches)</li><li>"driemaasstede schiedam" (170 monthly searches)</li><li>"breede vliet argos zorggroep" (1000 monthly searches)</li></ul><br><p>This data shows that the website dominates branded search terms and location-based searches for specific facilities, with the <code>/locaties/</code> pages consistently ranking well for location-specific searches and the <code>/vacatures/</code> page ranking well for job-related searches.</p><br><h3 id="keyword-opportunities">Keyword Opportunities</h3><p>Based on our analysis, we've identified several high-potential keyword opportunities:</p><br><p><strong>Top Priority Keywords:</strong></p><ul><li>"vacature fysiotherapeut" (3600 search volume, MEDIUM competition)</li><li>"spijkenisse vacature" (2900 search volume, MEDIUM competition)</li><li>"werk leer vacatures" (1900 search volume, HIGH competition)</li><li>"thuiszorgplanner" (1900 search volume, LOW competition)</li><li>"hoogvliet vacatures" (1600 search volume, LOW competition)</li><li>"maassluis vacature"/"vacature maassluis" (1300 search volume, MEDIUM competition)</li></ul><br><p><strong>Secondary Keywords:</strong></p><ul><li>"zorgbemiddelaar vacature" (1000 search volume, LOW competition)</li><li>"fysio vacature" (1000 search volume, LOW competition)</li><li>"stageplekken" (880 search volume, LOW competition)</li><li>"flexpool" (880 search volume, LOW competition)</li><li>"zorggroep vacatures" (880 search volume, LOW competition)</li></ul><br><p><strong>Long-Tail Opportunities:</strong></p><ul><li>"verzorgende ig nachtdienst maassluis" (low search volume but highly targeted)</li><li>"bbl verzorgende ig vacature" (390 search volume, MEDIUM competition)</li><li>"helpende niveau 2 vacature" (320 search volume, HIGH competition)</li><li>"bijbaan ouderenzorg" (320 search volume, HIGH competition)</li></ul><br><h3 id="seasonal-trends">Seasonal Trends</h3><p>Our analysis indicates that healthcare job searches in the Netherlands show some seasonality:</p><br><ul><li><strong>Peak Periods</strong>: January-February (post-holiday job seeking) and September (back-to-school period)</li><li><strong>Lower Activity</strong>: July-August (summer holiday period)</li></ul><br><p>This suggests that content and recruitment campaigns should be timed accordingly, with increased efforts during peak job-seeking periods.</p><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-competitors">Top Competitors</h3><p>Our competitive analysis has identified the following key competitors in the Dutch healthcare recruitment market:</p><br><ol><li><strong>nl.indeed.com</strong> (Indirect competitor - job aggregator)</li></ol><ul><li><strong>Key Strengths</strong>: High estimated traffic volume, ranks higher for a large number of relevant keywords, strong domain authority</li><li><strong>Strategy</strong>: Aggregates job postings from various sources, providing comprehensive selection</li></ul><br><ol><li><strong>www.nationalevacaturebank.nl</strong> (Indirect competitor - job board)</li></ol><ul><li><strong>Key Strengths</strong>: High estimated traffic volume, ranks higher for several relevant keywords</li><li><strong>Strategy</strong>: Well-established job board in the Netherlands with broad coverage</li></ul><br><ol><li><strong>www.werkeninderotterdamsezorg.nl</strong> (Direct competitor - niche job board)</li></ol><ul><li><strong>Key Strengths</strong>: Focuses specifically on healthcare jobs in the Rotterdam area</li><li><strong>Strategy</strong>: Targets a more specific audience interested in healthcare positions in Rotterdam</li></ul><br><h3 id="competitor-serp-strategies">Competitor SERP Strategies</h3><p>Analysis of competitor SERP elements reveals effective patterns:</p><br><ol><li><strong>Title Tag Strategies</strong>:</li></ol><ul><li><strong>Indeed/Nationale Vacaturebank</strong>: Use list-based titles ("100+ vacatures voor...") or location-based titles ("vacatures in Spijkenisse")</li><li><strong>werkeninderotterdamsezorg.nl</strong>: Includes job title and location in titles</li></ul><br><ol><li><strong>Meta Description Approaches</strong>:</li></ol><ul><li><strong>Indeed/Nationale Vacaturebank</strong>: Generic descriptions highlighting the types of jobs available</li><li><strong>werkeninderotterdamsezorg.nl</strong>: Brief overviews of the role with clear calls to action</li></ul><br><ol><li><strong>Successful Content Types</strong>:</li></ol><ul><li><strong>Job Aggregation Pages</strong>: Comprehensive listings of jobs from various sources</li><li><strong>Job Board Category Pages</strong>: Pages dedicated to specific job categories or locations</li></ul><br><h3 id="keyword-performance-vs-competitors">Keyword Performance vs. Competitors</h3><p>Argos Zorggroep outperforms competitors for:</p><ul><li>Branded keywords (e.g., "argos zorggroep vacatures")</li><li>Location-specific facility searches (e.g., "driemaasstede")</li></ul><br><p>However, competitors outrank Argos Zorggroep for:</p><ul><li>Generic job search terms (e.g., "verzorgende ig vacatures")</li><li>Salary-related keywords (e.g., "salaris verzorgende ig niveau 3")</li><li>BBL/Learning opportunity keywords (e.g., "bbl verzorgende ig vacatures")</li><li>Stage/internship keywords (e.g., "stage maatschappelijk zorg")</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><p>Our backlink analysis reveals the following metrics for werkenbijargoszorggroep.nl:</p><br><ul><li><strong>Total Backlinks</strong>: 193</li><li><strong>Referring Domains</strong>: 43</li><li><strong>Backlink Spam Score</strong>: 14 (relatively low)</li><li><strong>Domain Rank</strong>: 143</li><li><strong>First Seen</strong>: June 12, 2021</li><li><strong>Target Spam Score</strong>: 6 (low)</li></ul><br><h3 id="referring-domain-quality">Referring Domain Quality</h3><p>The website has a mix of referring domains with varying quality:</p><br><p><strong>High-Quality Referring Domains (Low Spam Score):</strong></p><ul><li>indebuurt.nl (13% spam score) - Local news site</li><li>ad.nl (0% spam score) - Major Dutch news outlet</li><li>simplyhired.nl (0% spam score) - Job board</li><li>magnet.me (0% spam score) - Professional network</li><li>anteszorg.nl (0% spam score) - Healthcare organization</li></ul><br><p><strong>Medium-Quality Referring Domains (Medium Spam Score):</strong></p><ul><li>seobacklinks.agency (45% spam score)</li><li>rankgrow.agency (45% spam score)</li><li>prolinkbox.com (50% spam score)</li><li>Various .online domains (40% spam score)</li></ul><br><p>The backlink profile shows a concerning number of medium-spam score backlinks (18 domains) that could potentially harm rankings. These appear to be from generic directory sites rather than relevant healthcare or recruitment websites.</p><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><p>The anchor text distribution shows opportunities for improvement:</p><br><ul><li>Most backlinks use generic anchor text like "hier" (here), "Apply Now", or the website URL</li><li>Few backlinks use keyword-rich anchor text related to healthcare jobs or locations</li><li>Some valuable contextual links exist with relevant anchor text like "DrieMaasStede" and "Argos Extra's"</li></ul><br><h3 id="backlink-competitors">Backlink Competitors</h3><p>Key backlink competitors include:</p><br><ol><li><strong>funktiemediair.nl</strong> (37 overlapping backlinks)</li><li><strong>linkremoval.net</strong> (11 overlapping backlinks)</li><li><strong>permanentbacklinks.com</strong> (11 overlapping backlinks)</li><li><strong>argoszorggroep.nl</strong> (7 overlapping backlinks) - Main company website</li></ol><br><h3 id="backlink-opportunities">Backlink Opportunities</h3><p>Based on our analysis, we've identified several opportunities:</p><br><ol><li><strong>Local News Sites</strong>: Expand presence on sites like indebuurt.nl with more location-specific content</li><li><strong>Healthcare Organizations</strong>: Build relationships with other healthcare providers like anteszorg.nl</li><li><strong>Job Boards</strong>: Increase visibility on job platforms like simplyhired.nl and jobsonline.nl</li><li><strong>Educational Institutions</strong>: Develop backlinks from Dutch educational institutions for BBL programs</li></ol><br><h3 id="toxic-backlink-concerns">Toxic Backlink Concerns</h3><p>Several potentially harmful backlinks were identified from directory sites with medium spam scores (40-50%). These should be reviewed and potentially disavowed to prevent negative SEO impact.</p><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our comprehensive SEO analysis, we recommend the following content strategy improvements:</p><br><h3 id="title-and-meta-description-optimization">Title and Meta Description Optimization</h3><ul><li><strong>Action</strong>: For location-specific pages (e.g., "Werken in Maassluis"), include the phrase "Vacatures in Maassluis" in the title tag</li><li><strong>Action</strong>: For job category pages, use titles like "Verzorgende IG Vacatures bij Argos Zorggroep"</li><li><strong>Action</strong>: Include clear calls to action in meta descriptions (e.g., "Solliciteer direct!" or "Bekijk onze openstaande vacatures")</li></ul><br><h3 id="location-specific-content-enhancement">Location-Specific Content Enhancement</h3><ul><li><strong>Action</strong>: Create dedicated landing pages for key locations (Maassluis, Hoogvliet, Spijkenisse) that include:</li><li>List of all open positions in that location</li><li>Information about working at Argos Zorggroep in that location</li><li>Employee testimonials and facility photos</li><li>Map showing the location of facilities</li></ul><br><h3 id="salary-and-career-path-content">Salary and Career Path Content</h3><ul><li><strong>Action</strong>: Create a blog post or FAQ page providing salary ranges for common positions</li><li><strong>Action</strong>: Develop content addressing career progression opportunities at Argos Zorggroep</li></ul><br><h3 id="bbl-and-stage-program-optimization">BBL and Stage Program Optimization</h3><ul><li><strong>Action</strong>: Create dedicated landing pages for BBL and stage programs with:</li><li>Clear explanation of program benefits</li><li>Information about different tracks available</li><li>Student testimonials</li><li>List of all open BBL/stage positions</li></ul><br><h3 id="job-category-pages">Job Category Pages</h3><ul><li><strong>Action</strong>: Develop specialized pages for high-volume job categories like:</li><li>Verzorgende IG positions</li><li>Helpende positions</li><li>Fysiotherapeut positions</li><li>Nachtdienst positions</li></ul><br><h3 id="backlink-acquisition-strategy">Backlink Acquisition Strategy</h3><ul><li><strong>Action</strong>: Develop a targeted outreach campaign to local Dutch news sites covering healthcare topics</li><li><strong>Action</strong>: Create shareable content about healthcare careers that can attract natural backlinks</li><li><strong>Action</strong>: Review and potentially disavow toxic backlinks from low-quality directory sites</li><li><strong>Action</strong>: Pursue backlink opportunities with educational institutions offering healthcare programs</li></ul><br><h3 id="quick-wins">Quick Wins</h3><ul><li>Optimize title tags and meta descriptions for high-volume, medium-competition keywords</li><li>Create a salary FAQ page</li><li>Enhance existing "Werken in [Location]" pages with more robust content</li><li>Review and disavow toxic backlinks</li></ul><br><h3 id="longer-term-opportunities">Longer-Term Opportunities</h3><ul><li>Develop comprehensive location-specific landing pages</li><li>Create detailed BBL and stage program content</li><li>Build relationships with local schools and universities to promote BBL and stage programs</li><li>Implement a strategic backlink acquisition campaign targeting authoritative Dutch healthcare websites</li></ul><br></div></section>
+                <section id="next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-arrow-right"></i></div>
+                        <h2 class="section-title">Next Steps</h2>
+                    </div>
+                    <div class="section-content"><br><p>To provide a complete SEO roadmap for Argos Zorggroep, we recommend:</p><br><ol><li><strong>Technical SEO Audit</strong>: Address the 15 broken pages identified and ensure proper site structure</li><li><strong>Backlink Profile Cleanup</strong>: Review and disavow potentially harmful backlinks from directory sites</li><li><strong>Content Optimization Plan</strong>: Develop a prioritized plan for optimizing existing content and creating new content based on identified keyword opportunities</li><li><strong>Backlink Acquisition Strategy</strong>: Create a targeted outreach plan to build high-quality backlinks from relevant Dutch healthcare and educational websites</li><li><strong>Regular Rank Tracking</strong>: Implement a system to track keyword rankings over time and identify any potential issues or opportunities</li></ol><br><p>This analysis provides Argos Zorggroep with a data-driven SEO roadmap to improve their search visibility, attract more qualified job applicants, and strengthen their online presence in the Dutch healthcare recruitment market.</p><br><p>By implementing these recommendations, werkenbijargoszorggroep.nl can further improve its SEO performance, attract more job applicants, and reach a wider audience in need of elderly care services.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Argos Zorggroep',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Faes</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Faes • faes.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 14, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change (Last 12 Months)</th></tr></thead><tbody><tr><td class="">Total Keywords Ranked</td><td class="">104</td></tr><tr><td class="">Keywords in Position 1</td><td class="">4</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">3</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">20</td></tr><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="positive">654.57 (1234.58% increase June-Aug 2025)</td></tr><tr><td class="">Estimated Paid Traffic Cost</td><td class="">$846.12</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The 1234.58% ETV surge indicates strong momentum. Prioritize converting this visibility into targeted product page improvements to capture high-intent traffic.</li></ul><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Competitor Strengths & Top Keywords (Faes.nl Ranks Poorly)</th></tr></thead><tbody><tr><td class="">Profipack.nl</td><td class="">"kartonnen verpakking" (390), "verpakkingsbedrijf" (320), "karton verpakking op maat" (170)</td></tr><tr><td class="">Rajapack.nl</td><td class="">"kartonnen verpakking" (390), "transport kisten" (170), "verpakking en zo" (140)</td></tr><tr><td class="">Koffersenkisten.nl</td><td class="">"aluminium kist" (590), "kunststof kisten" (320), "waterdichte kist" (260)</td></tr><tr><td class="">Opportunity Keywords</td><td class="">Search Volume</td><td class="">Current Position</td><td class="">Reason for Targeting</td></tr><tr><td class="">flightcases</td><td class="">1900</td><td class="">23</td><td class="">High volume, product-specific, currently outside top 10</td></tr><tr><td class="">aluminium kist</td><td class="">590</td><td class="">21</td><td class="">High volume, competitor strength, product focus</td></tr><tr><td class="">custom packaging solutions</td><td class="">High</td><td class="">Not ranked</td><td class="">High commercial intent, content gap</td></tr><tr><td class="">houten kisten</td><td class="">3600-5400</td><td class="">12-14</td><td class="">Seasonal peak, high volume, product category</td></tr><tr><td class="">kunststof kratten</td><td class="">720-880</td><td class="">Not top ranked</td><td class="">High competition, strong product relevance</td></tr><tr><td class="">koffer schuim</td><td class="">110</td><td class="">Not ranked</td><td class="">Niche product, competitor presence</td></tr><tr><td class="">boels</td><td class="">60,500</td><td class="">Not ranked</td><td class="">Very high volume, potential partnership/case study</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Start with “flightcases,” “aluminium kist,” and “custom packaging solutions” to capture the highest volume and commercial intent first.</li></ul><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Faes.nl has shown exceptional recent organic traffic growth (1234.58% increase in 3 months) but still ranks poorly for many high-volume product keywords.</li><li>Strong brand keyword rankings but underperformance on key product and commercial terms like "flightcases," "aluminium kist," and "custom packaging solutions."</li><li>Technical SEO issues (short page titles, missing image alt text, unminified resources) limit full ranking potential despite fast page speed.</li><li>Competitors have stronger, benefit-oriented SERP listings and more optimized product pages targeting high-value keywords.</li><li>Backlink profile is modest with mostly branded anchors; opportunities exist to acquire authoritative links from industry directories, publications, and regional networks.</li><li>Content gaps include custom packaging, foam inserts, industry-specific packaging, and sustainability topics.</li><li>Seasonal keyword trends (e.g., "houten kisten" peak in October) should be leveraged in content planning.</li><li>WP SEO AI can support Faes.nl with AI-driven keyword targeting, content optimization, technical audits, competitor tracking, and backlink management.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop a 90-day SEO roadmap focusing on:</li></ul><p>• Technical fixes (titles, images, resource minification)</p><p>• Targeting top 3 opportunity keywords</p><p>• Outlining content calendar for seasonal and commercial terms</p><br><hr><br></div></section>
+                <section id="seo-research-report-faes-nl" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Faes.nl</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for Faes.nl, a Dutch company specializing in packaging solutions. Our analysis reveals significant organic growth potential, with recent data showing a 1234.58% increase in estimated traffic volume (ETV) over a three-month period. While the company has established a strong foundation with their Knowledge Center content and brand authority, there are substantial opportunities to improve product page performance, enhance technical SEO, develop a more strategic keyword targeting approach, and strengthen their backlink profile to outperform competitors in the Dutch market.</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-traffic-growth">Organic Visibility and Traffic Growth</h3><p>Faes.nl has experienced remarkable growth in organic visibility, with a 1234.58% increase in estimated traffic volume (ETV) from June to August 2025. This growth trajectory indicates recent successful SEO efforts but also suggests significant room for continued improvement.</p><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Continue tracking ETV monthly and correlate spikes with published content or campaigns to identify most effective tactics.</li></ul><br><h3 id="current-organic-visibility-metrics-august-2025-">Current Organic Visibility Metrics (August 2025)</h3><ul><li><strong>Position 1</strong>: 4 keywords</li><li><strong>Positions 2-3</strong>: 3 keywords</li><li><strong>Positions 4-10</strong>: 20 keywords</li><li><strong>Positions 11-20</strong>: 13 keywords</li><li><strong>Positions 21-30</strong>: 10 keywords</li><li><strong>Positions 31-100</strong>: 54 keywords</li><li><strong>Total Keywords</strong>: 104</li><li><strong>Estimated Traffic Volume (ETV)</strong>: 654.57</li><li><strong>Estimated Paid Traffic Cost</strong>: $846.12</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ol><li><strong>Homepage</strong> (https://faes.nl/): Ranks for 5 keywords with positions 1-3 for 4 of them, generating the highest ETV (283.65)</li><li><strong>Knowledge Center Article on REACH and RoHS</strong> (https://faes.nl/kenniscentrum/reach-en-rohs-hoe-zit-dat-nu-precies/): Ranks in positions 1-2 for 2 keywords with high ETV (70.96)</li></ol><br><h3 id="underperforming-pages">Underperforming Pages</h3><ol><li><strong>Product Category Pages</strong>: Multiple product pages (e.g., https://faes.nl/producten/kartonnen-verpakkingen/, https://faes.nl/producten/houten-kisten-en-pallets/) rank in positions 51-90 with low ETV values (1-3)</li><li><strong>Customer Case Studies</strong>: "Klantcases" pages rank in positions 11-30 with minimal traffic value</li><li><strong>Generic Products Page</strong> (/producten/): Poor performance in positions 21-60 with very low ETV</li></ol><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><p>Our technical audit identified several critical issues that are likely impacting Faes.nl's search performance:</p><br><ol><li><strong>Page Title Issues</strong>: The homepage title "Home - Faes" is only 11 characters, significantly below the recommended minimum of 50 characters, limiting keyword targeting opportunities</li><li><strong>Image Optimization Problems</strong>:</li></ol><ul><li>11 images missing alt text, affecting accessibility and image search potential</li><li>8 large images exceeding 100KB that should be compressed for improved page speed</li></ul><ol><li><strong>Resource Optimization</strong>:</li></ol><ul><li>5 unminified CSS files</li><li>5 unminified JS files</li></ul><ol><li><strong>Positive Aspects</strong>:</li></ol><ul><li>Fast page load time (0.141 seconds)</li><li>Good internal linking structure (88 internal links)</li><li>Appropriate meta description length (139 characters)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Address image alt text and minification within the next sprint. Boosting these low-effort fixes can yield immediate ranking and UX improvements.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-keyword-performance">Current Keyword Performance</h3><p>Our detailed keyword analysis reveals that Faes.nl has established strong rankings for branded terms but is underperforming for high-volume product keywords:</p><br><h4 id="top-performing-keywords-positions-1-10-">Top Performing Keywords (Positions 1-10)</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">faes cases</td><td class="">90</td><td class="">1</td></tr><tr><td class="">faes reusel</td><td class="">260</td><td class="">1</td></tr><tr><td class="">reach and rohs</td><td class="">90</td><td class="">2</td></tr><tr><td class="">faes packaging</td><td class="">90</td><td class="">2</td></tr><tr><td class="">faes</td><td class="">1000</td><td class="">3</td></tr><tr><td class="">rohs reach</td><td class="">90</td><td class="">3</td></tr><tr><td class="">rako box</td><td class="">70</td><td class="">5</td></tr><tr><td class="">verpakkingsmanagement</td><td class="">140</td><td class="">5</td></tr><tr><td class="">kunststof kisten waterdicht</td><td class="">140</td><td class="">6</td></tr><tr><td class="">kunststof kist</td><td class="">320</td><td class="">7</td></tr><tr><td class="">transportkist kunststof</td><td class="">90</td><td class="">7</td></tr><tr><td class="">crates</td><td class="">1300</td><td class="">10</td></tr><tr><td class="">flightcase op maat</td><td class="">390</td><td class="">10</td></tr></tbody></table></div><p>This data shows that Faes.nl has strong brand recognition (ranking #1-3 for branded terms) and good performance for specific product terms like "kunststof kisten waterdicht" and "rako box." The Knowledge Center content on "reach and rohs" is performing particularly well.</p><br><h4 id="keyword-opportunities-positions-11-30-">Keyword Opportunities (Positions 11-30)</h4><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">kunststof kisten</td><td class="">320</td><td class="">11</td></tr><tr><td class="">waterdicht kist</td><td class="">260</td><td class="">12</td></tr><tr><td class="">kunststof kist waterdicht</td><td class="">140</td><td class="">12</td></tr><tr><td class="">houten kisten op maat</td><td class="">90</td><td class="">12</td></tr><tr><td class="">waterdichte kist</td><td class="">260</td><td class="">14</td></tr><tr><td class="">meaning doa</td><td class="">1000</td><td class="">17</td></tr><tr><td class="">aluminium kisten</td><td class="">90</td><td class="">18</td></tr><tr><td class="">aluminium koffers</td><td class="">170</td><td class="">19</td></tr><tr><td class="">d o a meaning</td><td class="">1000</td><td class="">20</td></tr><tr><td class="">systems integration</td><td class="">140</td><td class="">20</td></tr><tr><td class="">aluminium kist</td><td class="">590</td><td class="">21</td></tr><tr><td class="">flightcases</td><td class="">1900</td><td class="">23</td></tr><tr><td class="">koffer schuim</td><td class="">110</td><td class="">25</td></tr><tr><td class="">transport verpakkingen</td><td class="">110</td><td class="">26</td></tr></tbody></table></div><p>These keywords represent significant opportunities, particularly high-volume terms like "flightcases" (1900 searches), "meaning doa" (1000 searches), and "aluminium kist" (590 searches) that currently rank outside the top 10.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize on-page optimization for the top three opportunity keywords from this list, creating or enhancing dedicated landing pages.</li></ul><br><h3 id="high-value-keywords-with-strong-search-intent">High-Value Keywords with Strong Search Intent</h3><p>Based on our analysis, we've identified several high-priority keywords that Faes.nl should target:</p><br><h4 id="top-priority-keywords">Top Priority Keywords</h4><ul><li><strong>kunststof kratten</strong>: 720 (Jan) - 880 (Feb-Apr) | HIGH competition</li><li><strong>kratten kunststof</strong>: 720 (Jan) - 880 (Feb-Apr) | HIGH competition</li><li><strong>houten kisten</strong>: 3600 (Jun) - 5400 (Oct) | HIGH competition</li><li><strong>custom packaging solutions</strong>: High-value term with no current ranking</li></ul><br><h4 id="secondary-keywords">Secondary Keywords</h4><ul><li><strong>kunststof kratten met deksel</strong>: 90 (Jun) - 170 (Mar) | HIGH competition</li><li><strong>kunststof kratten 60x40</strong>: 90 (Feb) - 170 (Apr) | HIGH competition</li><li><strong>gebruikte kunststof kratten</strong>: 50 (Jun) - 140 (Feb) | HIGH competition</li><li><strong>Dutch packaging company</strong>: Valuable branding term with no current ranking</li></ul><br><h4 id="long-term-opportunities">Long-term Opportunities</h4><ul><li><strong>aluminium koffers motor</strong>: 20 (Feb) - 50 (May) | HIGH competition</li><li><strong>aluminium transportkisten</strong>: 10 (Jun) - 20 (Jan) | LOW competition</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Target “houten kisten” ahead of its October peak by publishing optimized content in August, ensuring maximum seasonal impact.</li></ul><br><h3 id="content-performance-analysis">Content Performance Analysis</h3><p>Our analysis of Faes.nl's content performance reveals:</p><br><ol><li><strong>Home Page</strong>: Ranks well for broad, branded terms like "faes," "faes cases," and "faes packaging"</li><li><strong>Product Category Pages</strong>: Pages like <code>/producten/kunststof-kisten/</code>, <code>/producten/flightcases/</code>, and <code>/producten/aluminium-kisten/</code> rank for product-specific keywords but often outside the top 10</li><li><strong>Knowledge Center Articles</strong>: Articles in the <code>/kenniscentrum/</code> section rank well for informational keywords like "reach and rohs" and "wat is system integration"</li><li><strong>Customer Cases</strong>: Pages in the <code>/klantcases/</code> section rank for keywords like "team rembrandts" and "boels"</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Link high-performing Knowledge Center articles to underperforming product pages to boost internal authority and relevance.</li></ul><br><h3 id="keyword-gaps-and-opportunities">Keyword Gaps and Opportunities</h3><p>Based on our analysis, we've identified several key content and keyword gaps:</p><br><ol><li><strong>Custom Packaging Solutions</strong>: There's clear demand for custom packaging solutions ("op maat"), but Faes.nl's content doesn't fully address this opportunity</li><li><strong>High-Volume Product Keywords</strong>: Terms like "flightcases" (1900 searches) and "aluminium kist" (590 searches) represent significant traffic potential but currently rank outside the top 10</li><li><strong>Industry-Specific Packaging</strong>: Content targeting specific industries and their unique packaging needs is underdeveloped</li><li><strong>Sustainability Content</strong>: Given increasing importance of sustainability, eco-friendly packaging content represents an opportunity</li><li><strong>"Boels" Keyword</strong>: With 60,500 monthly searches, this represents a significant opportunity, potentially through a dedicated case study or partnership page</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Align content calendar with these gaps by scheduling topics on custom solutions, sustainability, and case studies around peak search seasons.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors-analysis">Key Competitors Analysis</h3><br><p>Based on our research, Faes.nl faces three primary competitors in the Dutch market:</p><br><ol><li><strong>Profipack.nl</strong></li></ol><ul><li><strong>Strengths</strong>: Strong performance for general packaging terms like "kartonnen verpakking" and "verpakkingsbedrijf"</li><li><strong>Content Strategy</strong>: Uses benefit-oriented titles and descriptions in SERP listings</li><li><strong>Top Keywords</strong>: "kartonnen verpakking" (390 searches), "verpakkingsbedrijf" (320 searches), "karton verpakking op maat" (170 searches)</li><li><strong>Content Approach</strong>: Combines product category pages with informational blog posts like "7 inpak tips voor het verzenden van je pakket"</li></ul><br><ol><li><strong>Rajapack.nl</strong></li></ol><ul><li><strong>Strengths</strong>: High estimated traffic volume indicating strong brand recognition and customer base</li><li><strong>Content Strategy</strong>: Emphasizes product range in meta descriptions</li><li><strong>Top Keywords</strong>: "kartonnen verpakking" (390 searches), "transport kisten" (170 searches), "verpakking en zo" (140 searches)</li><li><strong>Content Approach</strong>: Focuses on comprehensive product category pages with detailed specifications</li></ul><br><ol><li><strong>Koffersenkisten.nl</strong></li></ol><ul><li><strong>Strengths</strong>: Dominates rankings for "kisten" and "koffers" related keywords, particularly specialized types (aluminum, plastic, waterproof)</li><li><strong>Content Strategy</strong>: Uses keyword-rich titles and calls to action in SERP listings</li><li><strong>Top Keywords</strong>: "aluminium kist" (590 searches), "kunststof kisten" (320 searches), "waterdichte kist" (260 searches)</li><li><strong>Content Approach</strong>: Highly specialized product pages with detailed technical information</li></ul><br><h3 id="competitive-patterns-and-gaps">Competitive Patterns and Gaps</h3><br><ol><li><strong>Specialization vs. Generalization</strong>:</li></ol><ul><li>Profipack.nl and Rajapack.nl take a more generalized approach to packaging</li><li>Koffersenkisten.nl specializes in cases and chests</li><li>Faes.nl appears to be positioned between these approaches but isn't fully capitalizing on either strategy</li></ul><br><ol><li><strong>SERP Strategy Differences</strong>:</li></ol><ul><li>Competitors use more benefit-oriented titles and descriptions</li><li>Koffersenkisten.nl effectively uses calls to action in SERP elements</li><li>Faes.nl's SERP listings are more brand-focused and less benefit-oriented</li></ul><br><ol><li><strong>Content Strategy Gaps</strong>:</li></ol><ul><li>Faes.nl is underperforming in foam insert keywords compared to Koffersenkisten.nl</li><li>Competitors have more optimized product category pages</li><li>Faes.nl could better leverage its Knowledge Center to target informational queries</li><li>Competitors are ranking for "custom packaging solutions" while Faes.nl is not</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Differentiate by combining Faes.nl’s strong informational content with benefit-led product pages and clear CTAs in SERP snippets.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><p>Faes.nl has a modest backlink profile with 45 backlinks from 25 referring domains, indicating significant room for growth in their link building strategy. The company has a domain rank of 136, with a target spam score of 42 (medium range).</p><br><h3 id="backlink-quality-analysis">Backlink Quality Analysis</h3><ul><li><strong>Low Spam Score Domains (19)</strong>: The majority of Faes.nl's backlinks come from reputable sources with low spam scores, including:</li><li>brainportindustries.com (1% spam score)</li><li>stagemarkt.nl (0% spam score)</li><li>epicos.com (0% spam score)</li><li>made-in-brabant.nl (0% spam score)</li><li>werkenindekempen.nl (0% spam score)</li></ul><br><ul><li><strong>Medium Spam Score Domains (6)</strong>: A smaller portion comes from domains with medium spam scores:</li><li>seobacklinks.agency (45% spam score)</li><li>rankgrow.agency (45% spam score)</li><li>quero.party (50% spam score)</li><li>drjack.world (50% spam score)</li></ul><br><ul><li><strong>High Spam Score Domains</strong>: No high spam score referring domains were identified, suggesting a relatively clean backlink profile.</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><p>The majority of backlinks to Faes.nl use branded anchor text such as "www.faes.nl" or "Faes," with very few keyword-rich anchors. This indicates a missed opportunity to diversify anchor text with relevant keywords to improve SEO performance.</p><br><h3 id="competitor-backlink-comparison">Competitor Backlink Comparison</h3><p>Several competitors have overlapping backlinks with Faes.nl, including:</p><ul><li>regio-business.nl (rank: 20, 7 intersections)</li><li>kempenpackaging.nl (rank: 23, 1 intersection)</li><li>seasidesustainability.org (rank: 23, 1 intersection)</li></ul><br><p>This suggests potential opportunities for Faes.nl to acquire backlinks from sites that already link to competitors but not to them.</p><br><h3 id="backlink-opportunities">Backlink Opportunities</h3><p>Based on our analysis, we've identified several types of websites that could provide valuable backlinks:</p><ol><li><strong>Industry Directories</strong>: More comprehensive listings in Dutch business directories</li><li><strong>Industry Publications</strong>: Packaging and manufacturing industry publications</li><li><strong>Regional Business Networks</strong>: Additional Brabant and Limburg regional business networks</li><li><strong>Educational Institutions</strong>: Technical universities and vocational schools in the Netherlands</li><li><strong>Sustainability Organizations</strong>: Given the increasing focus on sustainable packaging</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft an outreach plan targeting 10 high-priority domains per month, focusing on industry publications and regional networks.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our comprehensive analysis, we recommend the following content strategy improvements:</p><br><ol><li><strong>Technical SEO Improvements</strong>:</li></ol><ul><li><strong>Page Title Optimization</strong>: Expand the homepage title from the current 11 characters to at least 50-60 characters, incorporating primary keywords</li><li><strong>Image Optimization</strong>: Add alt text to the 11 images currently missing it and compress the 8 large images exceeding 100KB</li><li><strong>Resource Minification</strong>: Minify the 5 CSS and 5 JS files to improve page load speed</li><li><strong>Structured Data Implementation</strong>: Add appropriate schema markup to enhance SERP listings</li></ul><br><ol><li><strong>Product Page Optimization</strong>:</li></ol><ul><li>Enhance product category pages with more detailed, keyword-rich content targeting high-value terms like "flightcases" (1900 searches) and "aluminium kist" (590 searches)</li><li>Develop dedicated landing pages for high-value product lines, particularly for custom packaging solutions ("op maat")</li><li>Create a specialized page for foam inserts to target keywords like "koffer schuim" (110 searches)</li><li>Implement structured data markup to enhance SERP snippets with rich results</li></ul><br><ol><li><strong>SERP Element Enhancement</strong>:</li></ol><ul><li>Rewrite meta descriptions to be more compelling with clear calls to action</li><li>Ensure meta descriptions accurately reflect page content and include relevant keywords</li><li>Implement schema markup to enhance SERP snippets with rich results (e.g., product ratings, pricing, availability)</li></ul><br><ol><li><strong>Knowledge Center Expansion</strong>:</li></ol><ul><li>Build on the success of the "REACH and RoHS" content by creating more in-depth articles on industry regulations</li><li>Develop content that specifically addresses custom packaging solutions, showcasing past projects and highlighting benefits</li><li>Create industry-specific packaging content targeting medical, defense, and high-tech sectors</li><li>Develop sustainability-focused content highlighting eco-friendly packaging options</li></ul><br><ol><li><strong>Custom Solutions Focus</strong>:</li></ol><ul><li>Create dedicated content for custom flightcases, wooden crates, and other packaging solutions</li><li>Showcase past custom projects with detailed case studies</li><li>Develop a comprehensive FAQ section addressing common customer questions about custom packaging</li><li>Target the high-value "custom packaging solutions" keyword with dedicated landing pages</li></ul><br><ol><li><strong>Seasonal Keyword Targeting</strong>:</li></ol><ul><li>Develop a content calendar that aligns with seasonal keyword trends identified in our analysis</li><li>Create targeted campaigns for "houten kisten" during peak search periods (October)</li><li>Optimize for "kunststof kratten" variations during February-April when search volume peaks</li></ul><br><ol><li><strong>Backlink Acquisition Strategy</strong>:</li></ol><ul><li>Develop industry partnerships to earn more relevant backlinks</li><li>Create linkable assets such as industry reports, infographics, or tools</li><li>Diversify anchor text profile with more keyword-rich anchors</li><li>Target high-authority industry websites that currently link to competitors</li><li>Monitor backlink profile regularly to identify and disavow any toxic links</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Assign internal owners for each content pillar and set monthly KPIs to track progress against these recommendations.</li></ul><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><br><p>Faes.nl has demonstrated impressive organic growth potential, with strong brand authority and a successful Knowledge Center. However, significant opportunities remain to improve their SEO performance in the Netherlands. Our comprehensive analysis reveals that while Faes.nl has established a solid foundation, they are being outperformed by competitors for high-value product keywords and have a relatively modest backlink profile that could be substantially strengthened.</p><br><p>By addressing the identified technical SEO issues, keyword gaps, optimizing underperforming product pages with a more benefit-oriented approach, implementing a strategic backlink acquisition plan, and enhancing their content strategy, Faes.nl can substantially increase their organic visibility and outrank competitors.</p><br><h3 id="prioritized-action-plan">Prioritized Action Plan</h3><br><ol><li><strong>Quick Wins (1-2 months)</strong>:</li></ol><ul><li>Fix critical technical SEO issues (page titles, image alt text, resource minification)</li><li>Optimize titles and meta descriptions for top product category pages</li><li>Focus on improving rankings for high-volume keywords currently in positions 11-30</li><li>Improve internal linking between Knowledge Center articles and product pages</li></ul><br><ol><li><strong>Medium-Term Improvements (3-6 months)</strong>:</li></ol><ul><li>Develop dedicated content for identified keyword gaps (foam inserts, custom packaging solutions)</li><li>Create content targeting seasonal keyword opportunities</li><li>Expand Knowledge Center with industry-specific packaging guides</li><li>Implement structured data markup across product pages</li></ul><br><ol><li><strong>Long-Term Strategy (6-12 months)</strong>:</li></ol><ul><li>Develop comprehensive content clusters around core product categories</li><li>Implement a systematic link building strategy to improve domain authority</li><li>Create dedicated landing pages for all high-value keywords</li><li>Build industry partnerships for sustained backlink growth</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Use cross-functional sprints to align dev, content, and outreach teams, ensuring quick execution of the prioritized action plan.</li></ul><br><h3 id="how-wp-seo-ai-can-help">How WP SEO AI Can Help</h3><br><p>WP SEO AI is uniquely positioned to help Faes.nl achieve these goals through our comprehensive AI-driven SEO toolset. Our platform can provide:</p><br><ol><li><strong>AI-powered keyword analysis</strong> to identify high-value targeting opportunities based on search volume and competition</li><li><strong>Content optimization recommendations</strong> for underperforming product pages</li><li><strong>Technical SEO audits</strong> to resolve potential indexing and site speed issues</li><li><strong>Competitor tracking</strong> to identify and capitalize on competitive gaps</li><li><strong>Automated content creation</strong> to efficiently expand their Knowledge Center</li><li><strong>Backlink monitoring and analysis</strong> to maintain a healthy link profile and identify new opportunities</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Integrate WP SEO AI into your monthly SEO workflow and schedule bi-weekly performance reviews to ensure continuous optimization and alignment with business objectives.</li></ul></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Faes',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

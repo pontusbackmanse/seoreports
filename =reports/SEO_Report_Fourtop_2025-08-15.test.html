@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Fourtop</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Fourtop • fourtop.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 15, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th></tr></thead><tbody><tr><td class="">Organic Visibility Growth</td><td class="negative">-12.03% over last 12 months</td></tr><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">766.66 (August 2025)</td></tr><tr><td class="">Total Ranking Keywords</td><td class="">107 (down from 216)</td></tr><tr><td class="">Keywords in Position 1</td><td class="">2</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">1</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">2</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="">17</td></tr><tr><td class="">Keywords in Positions 21-30</td><td class="">15</td></tr><tr><td class="">Keywords in Positions 31-100</td><td class="">70</td></tr><tr><td class="">Estimated Paid Traffic Cost</td><td class="">$715.97</td></tr><tr><td class="">New Rankings</td><td class="">39</td></tr><tr><td class="">Improved Rankings</td><td class="">29</td></tr><tr><td class="">Declined Rankings</td><td class="">32</td></tr><tr><td class="">Lost Rankings</td><td class="">32</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The steep drop in organic visibility and ranking keywords signals urgent attention on core pages with lost or declined rankings.</li><li>Prioritize optimizing pages where rankings dropped from positions 2–10 to regain visibility.</li><li>Align technical remediation with high-impact content updates to maximize short-term traffic recovery.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Keywords They Rank Well For (Fourtop Ranks Poorly)</th><th>Search Volume</th><th>Competition</th><th>Fourtop Position</th></tr></thead><tbody><tr><td class="">the-academy.nl</td><td class="">"security trainingen"</td><td class="">170</td><td class="">Medium</td><td class="">93</td></tr><tr><td class="">the-academy.nl</td><td class="">"inrichten sharepoint"</td><td class="">90</td><td class="">Medium</td><td class="">82</td></tr><tr><td class="">csolutions.nl</td><td class="">"intranet sharepoint"</td><td class="">390</td><td class="">Medium</td><td class="">31</td></tr><tr><td class="">csolutions.nl</td><td class="">"microsoft intranet"</td><td class="">70</td><td class="">Medium</td><td class="">79</td></tr><tr><td class="">csolutions.nl</td><td class="">"office 365 implementeren"</td><td class="">70</td><td class="">Low</td><td class="">99</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a gap analysis for each underperforming keyword page; map content, titles, and meta descriptions against top-ranking competitor pages.</li><li>Establish a remediation timeline focusing first on high-volume, low-competition terms like "security trainingen."</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume</th><th>Competition</th><th>Reason to Target</th></tr></thead><tbody><tr><td class="">"google workspace vs microsoft 365"</td><td class="">70</td><td class="">Low</td><td class="">High commercial intent; comparison content needed</td></tr><tr><td class="">"moderne werkplek microsoft 365"</td><td class="">49</td><td class="">Medium</td><td class="">Aligns with core services; medium competition</td></tr><tr><td class="">"teams beveiliging"</td><td class="">(rising)</td><td class="">-</td><td class="positive">80% yearly increase; security focus</td></tr><tr><td class="">"intranet sharepoint"</td><td class="">390</td><td class="">Medium</td><td class="">Competitor ranks higher; opportunity to improve</td></tr><tr><td class="">"office 365 implementeren"</td><td class="">70</td><td class="">Low</td><td class="">Low competition; relevant to implementation services</td></tr><tr><td class="">"google workspace to microsoft 365 migration"</td><td class="">13</td><td class="">Medium</td><td class="">Migration guides opportunity</td></tr><tr><td class="">"4tops"</td><td class="">1600</td><td class="">-</td><td class="">Brand-related keyword with low ranking (pos 23)</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop a quarterly content calendar targeting top three opportunities by volume and intent.</li><li>Assign content owners and set publication deadlines for comparison and migration guides.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Fourtop’s organic visibility in the Netherlands declined by 12.03% over the past year, with total ranking keywords dropping from 216 to 107.</li><li>Strong brand keyword rankings but weak presence for service-related and commercial intent keywords.</li><li>Competitors the-academy.nl and csolutions.nl outrank Fourtop on key service keywords like "security trainingen," "intranet sharepoint," and "office 365 implementeren."</li><li>Technical SEO issues (page speed, indexing) may be limiting performance.</li><li>Content gaps exist around Fourtop’s proprietary Cloudine solution, Microsoft 365 vs Google Workspace comparisons, and security training.</li><li>Backlink profile is moderate with 281 backlinks from 163 domains, but 17 toxic backlinks need disavowing.</li><li>Opportunities to improve link building via partnerships (ESET, Guardian360), industry publications, and local business networks.</li><li>Recommended focus: develop dedicated landing pages, optimize titles/meta descriptions, create targeted content clusters on security, Cloudine, SharePoint intranet, and Microsoft 365 migration.</li><li>Quick wins include optimizing meta tags, disavowing toxic links, and improving anchor text distribution.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Immediate wins in disavowing toxic backlinks and optimizing meta tags can arrest visibility declines.</li><li>Cross-functional alignment between SEO, content, and development teams is critical to fix technical and on-page issues in parallel.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-fourtop" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Fourtop</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>Fourtop is a B Corp certified ICT company based in the Netherlands that provides premium managed IT services and consultancy with a focus on Microsoft solutions. This report analyzes their current SEO performance in the Dutch market, revealing a 12.03% decrease in organic visibility over the past year and significant opportunities for improvement through technical optimization, content enhancement, and strategic keyword targeting, particularly around their proprietary Cloudine solution and Microsoft 365 services. The competitive analysis identifies key areas where competitors are outperforming Fourtop and provides actionable recommendations to improve search visibility and capture untapped opportunities.</p><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Fourtop offers several key services:</p><ul><li>Managed IT Services including IT support, desktop and network support, and cloud migrations</li><li>Cloudine: A proprietary Microsoft 365 cloud workspace solution</li><li>Microsoft partnership services as a Microsoft Solutions Partner Modern Work</li><li>Security solutions through partnership with ESET</li><li>Adoption and training services to help clients work efficiently with new technologies</li></ul><p>(<a href="https://fourtop.nl" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-organic-visibility">Current Organic Visibility</h3><p>Fourtop's organic visibility in the Netherlands shows concerning trends with a 12.03% decrease in Estimated Traffic Volume (ETV) over the past year. The current position distribution reveals limited presence in top positions, with only 2 keywords ranking in position 1 and 1 keyword in positions 2-3.</p><br><h3 id="search-engine-rankings">Search Engine Rankings</h3><p>Current position distribution (August 2025):</p><ul><li>Position 1: 2 keywords</li><li>Positions 2-3: 1 keyword</li><li>Positions 4-10: 2 keywords</li><li>Positions 11-20: 17 keywords</li><li>Positions 21-30: 15 keywords</li><li>Lower positions (31-100): 70 keywords</li></ul><br><h3 id="12-month-growth-trend">12-Month Growth Trend</h3><p>Fourtop has experienced a negative growth trend with a 12.03% decrease in organic traffic over the past 12 months. The total number of ranking keywords has also decreased from 216 to 107, indicating significant losses in search visibility.</p><br><h3 id="latest-organic-visibility-metrics">Latest Organic Visibility Metrics</h3><p>Current organic visibility metrics (August 2025):</p><ul><li>Estimated Traffic Volume (ETV): 766.66</li><li>Total ranking keywords: 107</li><li>Estimated paid traffic cost: $715.97</li><li>New rankings: 39</li><li>Improved rankings: 29</li><li>Declined rankings: 32</li><li>Lost rankings: 32</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ul><li>Homepage (https://fourtop.nl/): By far the best performing page with an ETV of 533.19, ranking in top positions for 2 keywords, with an estimated paid traffic value of $312.23</li><li>Blog post on "zero-day" (https://fourtop.nl/blog/zero-day): Strong performer with an ETV of 114.83</li><li>Customer case studies showing good performance:</li><li>https://fourtop.nl/klantcase/cemex-trescon (ETV: 17.13, Position 4-10)</li><li>https://fourtop.nl/klantcase/greenberg-nielsen (ETV: 6.60, Position 11-20)</li><li>https://fourtop.nl/klantcase/kees-in-t-veen-tanktransporten (ETV: 6.23, Position 11-20)</li></ul><br><h3 id="underperforming-pages">Underperforming Pages</h3><p>Many blog posts and service pages are ranking poorly (positions 41-100) with low ETVs (below 1):</p><ul><li>https://fourtop.nl/werving-selectie (ETV: 0.29, Positions 51-70)</li><li>https://fourtop.nl/digitaal-optimaliseren/microsoft-365 (ETV: 0.29, Positions 91-100)</li><li>https://cloudine.fourtop.nl/samenwerken (ETV: 0.29, Positions 91-100)</li><li>https://fourtop.nl/blog/veilig-inloggen-met-multi-factor-authenticatie-2 (ETV: 0.19, Positions 91-100)</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><p>Several technical issues were identified that may be impacting performance:</p><ul><li>Render-blocking resources affecting page load speed</li><li>Large DOM size on certain pages</li><li>Low cache control TTL (Time To Live)</li><li>Potential indexing issues with some content not being properly crawled</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Expedite fixes for render-blocking CSS/JS and optimize caching headers to improve Core Web Vitals.</li><li>Audit XML sitemaps and robots.txt to ensure key pages are crawlable and indexed.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><p>Fourtop's top performing keywords (positions 1-10) include:</p><ul><li>"fourtop" (Search Volume: 1600, Position: 1)</li><li>"fourtop ict" (Search Volume: 140, Position: 1)</li><li>"dragdrop" (Search Volume: 320, Position: 4)</li><li>"cemex trescon" (Search Volume: 260, Position: 6)</li><li>"dutch machine factory" (Search Volume: 90, Position: 6)</li></ul><br><p>These keywords demonstrate strong brand recognition but limited visibility for service-related terms.</p><br><h3 id="high-value-target-keywords">High-Value Target Keywords</h3><p>Several high-value keywords with strong search intent have been identified:</p><ul><li>"google workspace vs microsoft 365" (Search Volume: 70, Competition: LOW)</li><li>"google workspace versus microsoft 365" (Search Volume: 70, Competition: LOW)</li><li>"moderne werkplek microsoft 365" (Search Volume: 49, Competition: MEDIUM)</li><li>"microsoft workspace 365" (Search Volume: 23, Competition: LOW)</li><li>"microsoft 365 vs google workspace" (Search Volume: 17, Competition: LOW)</li><li>"google workspace to microsoft 365 migration" (Search Volume: 13, Competition: MEDIUM)</li></ul><br><p>These keywords align with Fourtop's services and show clear commercial intent from users comparing platforms or seeking migration services.</p><br><h3 id="long-tail-keyword-opportunities">Long-Tail Keyword Opportunities</h3><p>Promising long-tail keywords with lower competition include:</p><ul><li>"google workspace vs microsoft 365 reddit" (Search Volume: 8, Competition: LOW)</li><li>"microsoft office 365 vs google workspace" (Search Volume: 15)</li><li>"teams scherm delen" (Search Volume: 480, Position: 27)</li><li>"intranet sharepoint" (Search Volume: 390, Position: 31)</li><li>"intranet for sharepoint" (Search Volume: 390, Position: 44)</li></ul><br><h3 id="seasonal-keyword-trends">Seasonal Keyword Trends</h3><p>Several keywords show clear seasonal patterns:</p><ul><li>"bbl vacatures ict", "ict bbl vacatures", "bbl ict vacature", "bijbanen ict": These vocational training and ICT job-related keywords show a dip in search volume during summer months (July/August), likely due to school holidays. Content targeting these terms should be ramped up in late summer/early fall.</li><li>"teams beveiliging": This keyword shows a significant yearly increase in search volume (80%), indicating growing interest in Microsoft Teams security aspects.</li></ul><br><h3 id="content-gap-analysis">Content Gap Analysis</h3><p>Significant content gaps were identified:</p><ol><li><strong>Cloudine Content Gap</strong>: Despite being Fourtop's proprietary Microsoft 365 cloud workspace solution, there are no keywords related to Cloudine in the ranking data.</li><li><strong>Security Content</strong>: Limited content targeting security solutions, especially around ESET partnership.</li><li><strong>Managed IT Services</strong>: Insufficient content targeting specific managed IT services.</li><li><strong>Microsoft 365 Comparison Content</strong>: Missing content comparing Microsoft 365 with competitors like Google Workspace, despite high search volumes for these comparison terms.</li><li><strong>Untapped Potential</strong>: Keywords like "4tops" have high search volume (1600) but lower rankings (Position 23), suggesting optimization opportunities.</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Fill critical content gaps by launching comparison pages (Cloudine vs competitors) and dedicated security training resources.</li><li>Repurpose existing high-traffic blog posts into richer guides targeting long-tail opportunities.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><p>Three main competitors were identified in the Dutch market:</p><br><ol><li><strong>partner.microsoft.com</strong></li></ol><ul><li><strong>Type</strong>: Indirect competitor (resource/partner portal)</li><li><strong>Key Strengths</strong>: High domain authority, direct association with Microsoft, benefits from brand recognition and trust</li><li>While not directly offering the same services, it provides access to solutions and partners, potentially diverting traffic from Fourtop</li></ul><br><ol><li><strong>www.the-academy.nl</strong></li></ol><ul><li><strong>Type</strong>: Direct competitor (training provider)</li><li><strong>Key Strengths</strong>: Focus on training and certification, particularly in security and SharePoint, with structured learning paths</li><li>Directly competes for users seeking training on relevant software and security topics</li></ul><br><ol><li><strong>csolutions.nl</strong></li></ol><ul><li><strong>Type</strong>: Direct competitor (solution provider)</li><li><strong>Key Strengths</strong>: Specialization in Microsoft 365 solutions, particularly intranet implementations using SharePoint and Teams</li><li>Clear messaging around optimizing internal and external processes</li><li>Directly competes for users seeking Microsoft 365 implementation and intranet solutions</li></ul><br><h3 id="competitor-keyword-analysis">Competitor Keyword Analysis</h3><p>The analysis revealed several keywords where competitors significantly outrank Fourtop:</p><br><ol><li><strong>"security trainingen"</strong> (Search Volume: 170, Competition: MEDIUM)</li></ol><ul><li>the-academy.nl ranks 4, fourtop.nl ranks 93</li><li>Search Intent: Users seeking security training courses or programs</li></ul><br><ol><li><strong>"inrichten sharepoint"</strong> (Search Volume: 90, Competition: MEDIUM)</li></ol><ul><li>the-academy.nl ranks 60, fourtop.nl ranks 82</li><li>Search Intent: Users seeking guidance or training on setting up and configuring SharePoint</li></ul><br><ol><li><strong>"intranet sharepoint"</strong> (Search Volume: 390, Competition: MEDIUM)</li></ol><ul><li>csolutions.nl ranks 22, fourtop.nl ranks 31</li><li>Search Intent: Users seeking solutions for building an intranet using SharePoint</li></ul><br><ol><li><strong>"microsoft intranet"</strong> (Search Volume: 70, Competition: MEDIUM)</li></ol><ul><li>csolutions.nl ranks 7, fourtop.nl ranks 79</li><li>Search Intent: Users seeking information or solutions for implementing a Microsoft-based intranet</li></ul><br><ol><li><strong>"office 365 implementeren"</strong> (Search Volume: 70, Competition: LOW)</li></ol><ul><li>csolutions.nl ranks 98, fourtop.nl ranks 99</li><li>Search Intent: Users seeking assistance with implementing Office 365</li></ul><br><h3 id="competitor-serp-strategy-analysis">Competitor SERP Strategy Analysis</h3><p>Analysis of competitors' search engine results page (SERP) elements revealed:</p><br><ol><li><strong>Title and Meta Description Comparison</strong>:</li></ol><ul><li><strong>the-academy.nl</strong>: Uses clear and concise titles that directly address the keyword. Meta descriptions often highlight the scope and benefits of their training programs.</li><li><strong>csolutions.nl</strong>: Titles often include the keyword and their brand name. Meta descriptions focus on the value proposition (e.g., optimizing processes, creating a digital workplace).</li><li><strong>fourtop.nl</strong>: Titles are sometimes less directly related to the keyword. Meta descriptions can be generic or focus on the company rather than the user's needs.</li></ul><br><ol><li><strong>Effective Patterns in Competitor SERP Elements</strong>:</li></ol><ul><li><strong>Clarity and Specificity</strong>: Competitors use clear and specific language in their titles and meta descriptions, directly addressing the user's search intent.</li><li><strong>Value Proposition</strong>: Competitors highlight the benefits of their services or training programs in the meta description.</li><li><strong>Keyword Integration</strong>: Competitors effectively integrate the target keyword into both the title and meta description.</li></ul><br><ol><li><strong>Content Types/Formats</strong>:</li></ol><ul><li><strong>the-academy.nl</strong>: Training course pages perform well.</li><li><strong>csolutions.nl</strong>: Solution-focused pages (e.g., "Een Microsoft 365 intranet") rank well.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Emulate competitor SERP elements by crafting clear, benefit-focused titles and descriptions.</li><li>Develop solution-oriented landing pages (e.g., “Microsoft 365 Intranet Implementation”) to match effective competitor formats.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><p>Fourtop's backlink profile shows moderate strength but significant room for improvement:</p><br><ul><li><strong>Total Backlinks</strong>: 281 backlinks from 163 referring domains</li><li><strong>Domain Rank</strong>: 189 (moderate authority)</li><li><strong>Backlink Spam Score</strong>: 29% (relatively low, indicating mostly quality links)</li><li><strong>Geographic Distribution</strong>: 104 referring domains from the Netherlands (NL), followed by domains from the US (9), Belgium (7), and other countries</li><li><strong>Link Types</strong>: 232 anchor text links and 24 image links</li><li><strong>Link Attributes</strong>: 57 nofollow links, indicating a natural link profile</li></ul><br><h3 id="high-quality-backlinks">High-Quality Backlinks</h3><p>Several high-quality backlinks contribute positively to Fourtop's authority:</p><br><ol><li><strong>Industry Partnerships</strong>:</li></ol><ul><li>dutch-cybersecurity-assembly.nl (26% spam score): Demonstrates Fourtop's involvement in cybersecurity initiatives</li><li>eset.com (20% spam score): Validates their partnership with ESET for security solutions</li><li>guardian360.eu (0% spam score): Highlights their collaboration on security solutions with the anchor text "Guardian360 en FourTOP ICT zorgen voor veiligere kantoorautomatisering"</li></ul><br><ol><li><strong>Business Directories and Local Listings</strong>:</li></ol><ul><li>craft.co (0% spam score): Business information platform</li><li>stagemarkt.nl (0% spam score): Internship marketplace</li><li>10software.nl (0% spam score): Software directory</li></ul><br><ol><li><strong>Content Marketing Success</strong>:</li></ol><ul><li>rocketvideos.nl (0% spam score): Features Fourtop's Cloudine solution with the anchor text "Cloudine"</li><li>stemargroep.nl (0% spam score): Contains an interview with Gerhard van der Veen from Fourtop</li></ul><br><h3 id="toxic-backlinks">Toxic Backlinks</h3><p>The analysis identified 17 domains with high spam scores (61-100%) that could potentially harm Fourtop's rankings:</p><br><ul><li>dotiqo.com (70% spam score)</li><li>backlinktime.com (70% spam score)</li><li>toparticlesdirectory.com (75% spam score)</li><li>fergusauto.com (70% spam score)</li><li>99bestsite.com (80% spam score)</li><li>worldwidetopsite.com (65% spam score)</li></ul><br><p>These low-quality directory sites should be disavowed to prevent negative SEO impact.</p><br><h3 id="competitor-backlink-analysis">Competitor Backlink Analysis</h3><p>The analysis revealed several authoritative domains linking to competitors but not to Fourtop:</p><br><ol><li><strong>Microsoft Ecosystem</strong>:</li></ol><ul><li>While Fourtop has a link from eset.com, they could benefit from more links from the Microsoft partner ecosystem</li><li>Competitors have stronger connections within the Microsoft community</li></ul><br><ol><li><strong>Industry Publications</strong>:</li></ol><ul><li>Competitors have more diverse backlinks from industry publications and tech blogs</li><li>Fourtop should target Dutch IT publications for feature articles and guest posts</li></ul><br><ol><li><strong>Local Business Networks</strong>:</li></ol><ul><li>Opportunities exist to build more links from Dutch business networks and chambers of commerce</li></ul><br><h3 id="link-building-opportunities">Link Building Opportunities</h3><p>Based on the backlink analysis, several opportunities for improving Fourtop's link profile include:</p><br><ol><li><strong>Leverage Existing Partnerships</strong>:</li></ol><ul><li>Expand content collaboration with ESET and Guardian360</li><li>Create co-branded resources that partners would naturally link to</li></ul><br><ol><li><strong>Target Industry Directories</strong>:</li></ol><ul><li>Focus on quality Dutch business directories with low spam scores</li><li>Ensure complete and optimized listings on platforms like craft.co</li></ul><br><ol><li><strong>Content-Driven Link Building</strong>:</li></ol><ul><li>Develop more linkable assets around Cloudine and Microsoft 365 solutions</li><li>Create case studies and success stories that industry publications would reference</li></ul><br><ol><li><strong>Local Business Outreach</strong>:</li></ol><ul><li>Increase participation in local business events and organizations</li><li>Leverage B Corp certification for sustainability-focused link building</li></ul><br><ol><li><strong>Disavow Toxic Links</strong>:</li></ol><ul><li>Submit a disavow file to Google containing the 17 domains with high spam scores</li><li>Regularly monitor backlink profile for new toxic links</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prepare and submit the disavow file to Google Search Console within the next sprint.</li><li>Develop an outreach schedule targeting at least five high-authority Dutch IT publications in Q3.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-content-categories">Current Content Categories</h3><p>Fourtop's content strategy currently focuses on several key areas:</p><ul><li>Blog posts covering Microsoft Teams tips, cybersecurity topics (passwords, phishing, zero-day vulnerabilities, visual hacking), cloud computing, privacy/AVG compliance, Microsoft 365 tools, and Windows 10/11</li><li>Customer case studies (Klantcase) showcasing client work</li><li>Job openings (Vacatures)</li><li>Business applications (Bedrijfsapplicaties) like KnowBe4, DragDrop, and Your Safety Net</li><li>Digital optimization services (Digitaal op Orde)</li><li>Partner case studies (Partnercase)</li></ul><br><h3 id="keyword-based-content-opportunities">Keyword-Based Content Opportunities</h3><p>Based on the keyword and competitive analysis, we recommend the following content opportunities:</p><br><ol><li><strong>Cloudine Content Development</strong>:</li></ol><ul><li>Create dedicated pages and blog posts about Cloudine</li><li>Target keywords like "Microsoft 365 workspace," "cloud workspace solutions," and "managed Microsoft 365"</li><li>Develop comparison content positioning Cloudine against competitors</li></ul><br><ol><li><strong>Microsoft 365 vs Google Workspace Content</strong>:</li></ol><ul><li>Develop comprehensive comparison content targeting high-value keywords:</li><li>"google workspace vs microsoft 365" (SV: 70, Competition: LOW)</li><li>"google workspace versus microsoft 365" (SV: 70, Competition: LOW)</li><li>"microsoft 365 vs google workspace" (SV: 17, Competition: LOW)</li><li>Create migration guides targeting "google workspace to microsoft 365 migration" (SV: 13)</li></ul><br><ol><li><strong>Security Content Enhancement</strong>:</li></ol><ul><li>Develop in-depth content on security solutions, including ESET partnership</li><li>Target trending keyword "teams beveiliging" (80% yearly increase)</li><li>Create content around "cybersecurity for small business" and "phishing protection"</li><li>Develop dedicated "security trainingen" content to compete with the-academy.nl</li></ul><br><ol><li><strong>SharePoint Intranet Content</strong>:</li></ol><ul><li>Create dedicated landing pages for SharePoint intranet solutions targeting:</li><li>"intranet sharepoint" (SV: 390, Competition: MEDIUM)</li><li>"microsoft intranet" (SV: 70, Competition: MEDIUM)</li><li>"inrichten sharepoint" (SV: 90, Competition: MEDIUM)</li></ul><br><ol><li><strong>Office 365 Implementation Content</strong>:</li></ol><ul><li>Develop comprehensive guides on Office 365 implementation targeting "office 365 implementeren" (SV: 70, Competition: LOW)</li><li>Create step-by-step tutorials and case studies showcasing successful implementations</li></ul><br><h3 id="content-optimization-priorities">Content Optimization Priorities</h3><p>Based on the performance and competitive analysis, Fourtop should prioritize:</p><br><ol><li><strong>Improve On-Page Optimization for Target Keywords</strong>:</li></ol><ul><li>Revise titles and meta descriptions of existing pages targeting prioritized keywords</li><li>Ensure they are clear, concise, and directly address the user's search intent</li><li>Include keywords naturally within titles and meta descriptions</li></ul><br><ol><li><strong>Create Dedicated Landing Pages for Key Services</strong>:</li></ol><ul><li>Instead of relying solely on blog posts, create dedicated landing pages for core services like "SharePoint Intranet Implementation" and "Office 365 Implementation"</li><li>These pages should be highly optimized for relevant keywords and clearly outline the benefits of Fourtop's services</li></ul><br><ol><li><strong>Develop Targeted Content for "Security Trainingen"</strong>:</li></ol><ul><li>Create a dedicated page or section specifically for KnowBe4 security training</li><li>Highlight the benefits of the training, types of courses offered, and integration with Fourtop's overall security solutions</li></ul><br><ol><li><strong>Focus on Dutch Language Content</strong>:</li></ol><ul><li>Ensure all content is written in clear and grammatically correct Dutch</li><li>Use Dutch keywords and phrases commonly used by the target audience</li></ul><br><ol><li><strong>Leverage Existing High-Quality Backlinks</strong>:</li></ol><ul><li>Create more content around topics that have already earned quality backlinks</li><li>Develop expanded resources on Cloudine, which has earned links from sites like rocketvideos.nl</li><li>Create more security-focused content that could earn additional links from partners like Guardian360 and ESET</li></ul><br><h3 id="quick-wins">Quick Wins</h3><ol><li>Optimize the meta description and title tag for the existing "Microsoft 365 - Digitaal optimaliseren" page to better target the "office 365 implementeren" keyword</li><li>Revise the title of the existing blog post targeting "intranet sharepoint" to something like "SharePoint Intranet: Bouw een effectief intranet met Microsoft 365"</li><li>Update meta descriptions to focus on value propositions rather than company descriptions</li><li>Disavow toxic backlinks from domains with spam scores above 60%</li><li>Optimize anchor text distribution by working with existing referring domains to update generic anchors to more keyword-rich alternatives</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Tackling quick wins delivers rapid visible impact and builds momentum for larger content and link-building initiatives.</li><li>Assign specific team members to own each quick win with clear deadlines.</li></ul><br><h3 id="emerging-topics-and-content-clusters">Emerging Topics and Content Clusters</h3><p>Based on keyword trends and competitive analysis, we recommend developing content clusters around:</p><ol><li><strong>Microsoft 365 Security</strong>: Focus on Teams security, multi-factor authentication, and ESET integration</li><li><strong>Cloud Workspace Solutions</strong>: Center on Cloudine with supporting content about implementation, benefits, and case studies</li><li><strong>SharePoint Intranet Solutions</strong>: Create comprehensive guides, case studies, and implementation resources</li><li><strong>Modern Digital Workplace</strong>: Develop content around workplace transformation, adoption strategies, and training resources</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Build an editorial roadmap with quarterly themes aligned to these clusters and assign publication dates through year-end.</li></ul></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Fourtop',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

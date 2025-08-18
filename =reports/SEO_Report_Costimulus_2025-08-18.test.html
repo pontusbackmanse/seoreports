@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Costimulus</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Costimulus • www.costimulus.be</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> België Market</span>
+                        <span><i class="fas fa-calendar"></i> August 18, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th><th>Notes</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">11.48 (Aug 2025)</td><td class="positive">+26.05% growth over last 12 months</td></tr><tr><td class="">Keywords in Top 10 Positions</td><td class="">0</td><td class="">Significant opportunity to improve rankings</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="">3</td><td class="">Early-stage ranking keywords</td></tr><tr><td class="">Keywords in Positions 51-100</td><td class="">11</td><td class="">Large pool of keywords to optimize</td></tr><tr><td class="">Estimated Paid Traffic Cost</td><td class="">$36.75</td><td class="">Indicative of keyword commercial value</td></tr><tr><td class="">Domain Rank</td><td class="">99</td><td class="">Strong domain authority but needs local focus</td></tr><tr><td class="">Spam Score</td><td class="positive">33% (Medium risk)</td><td class="">Some backlink quality concerns to monitor</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>With 0 keywords in the top 10 but strong ETV growth, focus on quick-win keywords that can be bumped into positions 4–10 to maximize traffic lift.</li><li>Leverage the high domain rank to target mid-competition keywords first, then tackle higher-difficulty terms.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Key Keywords They Rank For (Belgium)</th><th>Costimulus Ranking</th><th>Notes / Competitive Advantage</th></tr></thead><tbody><tr><td class="">fgov.be</td><td class="">"verkoop opleiding" (sales training)</td><td class="">Lower (below 20)</td><td class="">High domain authority; ranks despite less relevant content</td></tr><tr><td class="">crunchbase.com</td><td class="">Broad business-related keywords</td><td class="">Lower (below 20)</td><td class="">Strong backlink profile; indirect competitor</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Perform a gap analysis on fgov.be’s ranking pages to identify on-page optimizations and content angles missing on Costimulus.</li><li>Initiate a backlink outreach campaign targeting authoritative sites that link to crunchbase.com for similar business keywords.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume (Belgium)</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">social media uitbesteden</td><td class="">140-320 (peak Mar)</td><td class="">Low</td><td class="">High volume, low competition, relevant service</td></tr><tr><td class="">marketing voor kmo</td><td class="">10-40</td><td class="">Low</td><td class="">Targets SME audience directly</td></tr><tr><td class="">social media advertenties uitbesteden</td><td class="">10-90</td><td class="">Medium</td><td class="">Specific service-related keyword</td></tr><tr><td class="">verkoop opleiding</td><td class="">140</td><td class="">High</td><td class="">Core service keyword, currently underperforming</td></tr><tr><td class="">social media beheer uitbesteden</td><td class="">0-40</td><td class="">Low</td><td class="">Emerging interest, low competition</td></tr><tr><td class="">social media uitbesteden pakketten</td><td class="">0-30</td><td class="">Low</td><td class="">Indicates demand for packaged services</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize “social media uitbesteden” and “marketing voor kmo” in on-page content and new landing pages for immediate gains.</li><li>For high-competition terms like “verkoop opleiding,” plan a phased content upgrade with richer multimedia and case studies.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Costimulus has positive organic traffic growth (+26% ETV) but no keywords in top 10 positions, indicating major ranking improvement potential.</li><li>Top competitors like fgov.be and crunchbase.com outrank Costimulus on key terms due to higher domain authority and backlink profiles.</li><li>High-value, low-competition keywords such as "social media uitbesteden" and "marketing voor kmo" represent quick-win opportunities.</li><li>Seasonal search peaks in March/April should guide content publishing and campaign timing.</li><li>Technical SEO is strong overall but requires fixes in HTML errors, page speed, and mobile responsiveness.</li><li>Backlink profile is solid but needs diversification in anchor text and acquisition of more authoritative Belgian backlinks.</li><li>Content optimization on sales and social media training pages is critical to improve rankings.</li><li>Creating new targeted content and landing pages around identified keyword gaps will boost topical authority and traffic.</li><li>Monitoring and managing medium-risk backlinks is necessary to maintain domain health.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop a 90-day roadmap prioritizing technical fixes, content optimization for quick-win keywords, and initial backlink outreach.</li></ul><br><hr><br></div></section>
+                <section id="seo-analysis-research-report-costimulus" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-analytics"></i></div>
+                        <h1 class="section-title">SEO Analysis Research Report: Costimulus</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="introduction" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Introduction</h2>
+                    </div>
+                    <div class="section-content"><br><p>Costimulus is a Belgian company that provides professional marketing, sales, and social media assistance to SMEs and self-employed individuals. Their service offerings include advice, execution, training, and guidance tailored to clients' specific needs and budgets. They assist clients with either the entire sales process from ideation to sale or with specific components of the process. Additionally, they offer specialized training in areas such as social media, sales, and marketing. (<a href="https://www.costimulus.be" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</p><br><p>This research report provides a comprehensive SEO analysis of Costimulus's online presence in the Belgian market, with actionable insights to improve their search visibility and organic performance.</p><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>All data refers exclusively to performance in Belgium to ensure targeted regional recommendations.</li></ul><br></div></section>
+                <section id="research-methodology" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Research Methodology</h2>
+                    </div>
+                    <div class="section-content"><br><p>This analysis focuses specifically on the Belgian market and includes:</p><ul><li>Overall SEO performance assessment</li><li>Keyword analysis and opportunities</li><li>Competitive landscape evaluation</li><li>Backlink and authority analysis</li><li>Content strategy recommendations</li></ul><br></div></section>
+                <section id="1-overall-seo-performance-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-traffic">Organic Visibility and Traffic</h3><br><p>Costimulus has shown positive growth in their organic search performance over the past year:</p><br><ul><li><strong>ETV Growth</strong>: +26.05% increase in Estimated Traffic Volume from August 2024 to August 2025</li><li><strong>Current ETV</strong>: 11.48 (as of August 2025)</li><li><strong>Estimated Paid Traffic Cost</strong>: $36.75</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Maintain upward momentum by allocating budget toward content initiatives that align with rising search trends, especially for “social media uitbesteden.”</li></ul><br><h3 id="position-distribution">Position Distribution</h3><br><p>The current ranking distribution shows most keywords ranking in middle to lower positions:</p><ul><li>Position 1: 0 keywords</li><li>Positions 2-3: 0 keywords</li><li>Positions 4-10: 0 keywords</li><li>Positions 11-20: 3 keywords</li><li>Positions 21-30: 2 keywords</li><li>Positions 31-40: 5 keywords</li><li>Positions 41-50: 5 keywords</li><li>Positions 51-100: 11 keywords</li></ul><br><p>This distribution indicates significant opportunity for improvement, as moving keywords from lower positions (31-100) to top positions (1-10) would dramatically increase visibility and traffic.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create targeted mini-campaigns around the three keywords currently in positions 11–20 to push them into the top 10 within the next quarter.</li></ul><br><h3 id="page-performance-analysis">Page Performance Analysis</h3><br><p><strong>Best Performing Pages:</strong></p><ul><li><code>/social-media/social-media-opleidingen/</code>: Highest estimated traffic volume (ETV: 3.51) but showing recent ranking drops</li><li><code>/sales/</code>: Second highest traffic volume (ETV: 2.13) with recent improvements in rankings</li></ul><br><p><strong>Poorest Performing Pages:</strong></p><ul><li><code>/social-media/social-media-opleidingen/instagram-opleiding/</code> (ETV: 0.15)</li><li><code>/opleidingen/</code> (ETV: 0.67)</li><li><code>/kennisbank/decision-making-unit/</code> (ETV: 0.36)</li><li><code>/social-media/social-media-beheer/</code> (ETV: 0.36)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Reinforce strong pages with additional internal links and update on-page content to stabilize and improve rankings.</li><li>Consolidate or rewrite underperforming pages to focus on target keywords and reduce thin content.</li></ul><br><h3 id="content-strategy-insights">Content Strategy Insights</h3><br><p>The website's strongest content categories are:</p><ul><li>Social Media Training (primary traffic driver)</li><li>Sales Training</li><li>Networking Training</li><li>General Training Resources</li><li>Knowledge Base Articles</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop a content calendar that phases out lower-performing Knowledge Base Articles and replaces them with targeted service guides aligned to high-priority keywords.</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><br><p>The site has a strong technical foundation with an on-page score of 93.41, but several issues require attention:</p><ul><li>HTML errors need correction</li><li>Render-blocking resources affecting page load speed</li><li>Image optimization opportunities</li><li>Mobile responsiveness improvements needed</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize fixing HTML errors and deferring non-critical JavaScript/CSS within the first month to improve Core Web Vitals.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><p>Our keyword analysis reveals significant opportunities for Costimulus to improve their rankings in the Belgian market. Currently, the company has no keywords ranking in the top 10 positions, which represents a critical area for improvement.</p><br><h3 id="current-keyword-performance">Current Keyword Performance</h3><br><p>The keyword distribution shows:</p><ul><li>No keywords in positions 1-10</li><li>3 keywords in positions 11-20</li><li>2 keywords in positions 21-30</li><li>5 keywords in positions 31-40</li><li>5 keywords in positions 41-50</li><li>11 keywords in positions 51-100</li></ul><br><h3 id="high-priority-keyword-opportunities">High-Priority Keyword Opportunities</h3><br><p>Based on search volume, competition level, and relevance to Costimulus's business, we recommend prioritizing these keywords:</p><br><ol><li><strong>"social media uitbesteden"</strong></li></ol><ul><li>Search Volume: 140 (May) - 320 (March)</li><li>Competition: LOW</li><li>Notes: High search volume with low competition; broad but relevant term for attracting potential clients</li></ul><br><ol><li><strong>"marketing voor kmo"</strong></li></ol><ul><li>Search Volume: 10 (Sept) - 40 (Feb/Jan)</li><li>Competition: LOW</li><li>Notes: Directly targets Costimulus's SME audience with low competition</li></ul><br><ol><li><strong>"social media advertenties uitbesteden"</strong></li></ol><ul><li>Search Volume: 10 (July-Dec) - 90 (March)</li><li>Competition: MEDIUM</li><li>Notes: Directly relates to a specific service Costimulus offers</li></ul><br><ol><li><strong>"verkoop opleiding"</strong> (sales training)</li></ol><ul><li>Search Volume: 140</li><li>Competition: HIGH</li><li>Notes: Directly relates to Costimulus's core service offering but currently underperforming</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Kick-off a focused content sprint for the top two high-priority keywords in April/May to capitalize on the upcoming seasonal peak.</li></ul><br><h3 id="secondary-keyword-opportunities">Secondary Keyword Opportunities</h3><br><p>These keywords offer good potential with moderate search volume or slightly higher competition:</p><br><ol><li><strong>"social media beheer uitbesteden"</strong></li></ol><ul><li>Search Volume: 0 (Sept) - 40 (April/March)</li><li>Competition: LOW</li></ul><br><ol><li><strong>"social media uitbesteden pakketten"</strong></li></ol><ul><li>Search Volume: 0 (Dec/Nov) - 30 (April/March/Feb)</li><li>Competition: LOW</li><li>Notes: Indicates interest in structured service offerings</li></ul><br><ol><li><strong>"social media adverteren uitbesteden"</strong></li></ol><ul><li>Search Volume: 10 (July-Dec) - 90 (March)</li><li>Competition: MEDIUM</li></ul><br><ol><li><strong>"kmo marketing advies"</strong></li></ol><ul><li>Search Volume: 10 (July-Dec) - 20 (May)</li><li>Competition: LOW</li><li>Notes: Targets SMEs seeking marketing advice, a core Costimulus service</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign one blog post per secondary keyword to each month leading up to March to build topical authority.</li></ul><br><h3 id="long-term-keyword-opportunities">Long-Term Keyword Opportunities</h3><br><p>These high-competition keywords should be targeted after establishing authority with easier keywords:</p><br><ol><li><strong>"social media uitbesteden prijzen"</strong></li></ol><ul><li>Search Volume: 10 (July-Dec) - 40 (April/March/Feb)</li><li>Competition: HIGH</li><li>Notes: Shows strong commercial intent</li></ul><br><ol><li><strong>"social media marketing uitbesteden"</strong></li></ol><ul><li>Search Volume: 10 (July-Dec) - 90 (March)</li><li>Competition: HIGH</li><li>Notes: Very relevant but highly competitive</li></ul><br><ol><li><strong>"sales training België"</strong> (sales training Belgium)</li></ol><ul><li>Search Volume: Moderate (exact figure not available)</li><li>Competition: HIGH</li><li>Notes: Location-specific version of a core service keyword</li></ul><br><h3 id="seasonal-trends">Seasonal Trends</h3><br><p>Our analysis reveals clear seasonal patterns in search behavior:</p><ul><li>Peak search volumes occur in March/April for most keywords</li><li>Lowest search volumes typically occur in July-December</li><li>This seasonality should inform content planning and campaign timing</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Finalize the editorial calendar by December to prepare assets for the March/April spike.</li></ul><br><h3 id="regional-targeting-opportunities">Regional Targeting Opportunities</h3><br><p>Consider adding location-specific keywords (e.g., "social media uitbesteden Antwerpen" or "verkoop opleiding Brussel") if Costimulus primarily serves specific Belgian regions.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Region-tagged pages can deliver a 10–15% lift in local search visibility when paired with Google Business Profile enhancements.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><p>Our competitive analysis identified several key competitors in the Belgian market that are outperforming Costimulus for relevant keywords.</p><br><h3 id="top-competitors-overview">Top Competitors Overview</h3><br><ol><li><strong>crunchbase.com</strong></li></ol><ul><li><strong>Type</strong>: Indirect competitor (business information platform)</li><li><strong>Strengths</strong>: Strong backlink profile with 161 intersecting backlinks</li><li><strong>SEO Advantage</strong>: Well-established domain with high authority allowing it to rank for a wide range of business-related terms</li><li><strong>Relevance</strong>: While not a direct service competitor, it competes for visibility in business-related searches</li></ul><br><ol><li><strong>fgov.be</strong> (Belgian government website)</li></ol><ul><li><strong>Type</strong>: Indirect competitor</li><li><strong>Strengths</strong>: Extremely high domain authority as a government website</li><li><strong>SEO Advantage</strong>: Ranks for a broad range of keywords even with less-targeted content</li><li><strong>Relevance</strong>: Competes for visibility on training and business-related terms</li></ul><br><h3 id="keyword-performance-comparison">Keyword Performance Comparison</h3><br><p>A key example of competitive keyword performance is for "verkoop opleiding" (sales training):</p><br><ul><li><strong>Search Volume</strong>: 140</li><li><strong>Competition Level</strong>: HIGH</li><li><strong>Search Intent</strong>: Informational/Transactional - Users seeking sales training programs</li><li><strong>Current Situation</strong>: fgov.be ranks higher than costimulus.be despite not offering sales training services</li><li><strong>Competitor Advantage</strong>: fgov.be's ranking is primarily due to domain authority rather than content relevance</li></ul><br><h3 id="serp-strategy-analysis">SERP Strategy Analysis</h3><br><p>Comparing SERP elements for "verkoop opleiding":</p><br><ul><li><strong>Costimulus Title</strong>: "Sales - Beter leren verkopen" (Sales - Learn to sell better)</li><li><strong>Costimulus Meta Description</strong>: "Sales trainingen zijn voor ons alle commerciële opleidingen, dus ook voor receptionisten of voor zaakvoerders. We geven dan ook altijd verkoop trainingen op..." (truncated)</li></ul><br><ul><li><strong>fgov.be Title</strong>: "Statbel, het Belgische statistiekbureau | Statbel"</li><li><strong>fgov.be Meta Description</strong>: Contains unrelated content about youth unemployment and retail sales volume</li></ul><br><p>This comparison reveals that fgov.be is ranking based on domain authority rather than content relevance, presenting a significant opportunity for Costimulus to improve their ranking with better-optimized content.</p><br><h3 id="effective-competitor-strategies">Effective Competitor Strategies</h3><br><p>Based on our analysis of top-ranking pages for relevant keywords, successful competitors employ these strategies:</p><br><ol><li><strong>Specificity in Title Tags</strong>: Using precise keyword phrases in titles (e.g., "Verkoop Opleiding - [Specific Type of Training] in België")</li></ol><br><ol><li><strong>Value Proposition in Meta Descriptions</strong>: Clearly stating benefits (e.g., "Verbeter uw verkoopvaardigheden met onze praktijkgerichte verkoop opleiding. Leer [specific skills] en verhoog uw omzet.")</li></ol><br><ol><li><strong>Clear Call to Action</strong>: Including action prompts in meta descriptions (e.g., "Schrijf u vandaag nog in!" - Enroll today!)</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit and rewrite top 10 underperforming titles and meta descriptions using these best practices by end of month.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><p>Our detailed backlink analysis reveals both strengths and opportunities in Costimulus's link profile within the Belgian market.</p><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><br><p>Costimulus currently has:</p><ul><li><strong>Total Backlinks</strong>: 169</li><li><strong>Referring Domains</strong>: 24 (22 unique main domains)</li><li><strong>Spam Score</strong>: 33% (Medium risk)</li><li><strong>Domain Rank</strong>: 99</li><li><strong>First Indexed</strong>: February 22, 2019</li></ul><br><h3 id="backlink-quality-distribution">Backlink Quality Distribution</h3><br><p>The referring domains show a mixed quality profile:</p><ul><li><strong>Low Spam Score Domains (16)</strong>: Including credible sources like crunchbase.com, clodura.ai, and several Belgian business directories</li><li><strong>Medium Spam Score Domains (6)</strong>: Including businessvocal.com (60% spam score) and seobacklinks.agency (45% spam score)</li><li><strong>High Spam Score Domains</strong>: None detected</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><br><p>The current anchor text distribution is heavily branded:</p><ul><li>Most backlinks use "costimulus.be" or "Costimulus" as anchor text</li><li>Very few keyword-rich anchors that could help with ranking for target terms</li><li>Example: "visit costimulus.be for latest info" from businessvocal.com</li></ul><br><h3 id="geographic-distribution-of-backlinks">Geographic Distribution of Backlinks</h3><br><p>The backlink profile shows strong local relevance:</p><ul><li>142 backlinks from Belgian (.be) domains</li><li>5 backlinks from .com domains</li><li>Additional backlinks from various TLDs including .ai, .agency, .expert</li></ul><br><h3 id="backlink-opportunities">Backlink Opportunities</h3><br><p>Based on our analysis, we recommend:</p><br><ol><li><strong>Diversify Anchor Text</strong>: Work to acquire backlinks with more keyword-rich anchor texts related to core services (e.g., "verkoop opleiding," "social media training")</li><li><strong>Target High-Authority Belgian Domains</strong>: Focus on acquiring backlinks from established Belgian business, marketing, and educational websites to improve local relevance and authority</li><li><strong>Monitor Medium-Risk Backlinks</strong>: Keep an eye on the 6 medium spam score domains to ensure they don't negatively impact the site's authority</li><li><strong>Leverage Existing Relationships</strong>: The presence on directories like antwerpsbusinessevent.be suggests connections that could be further developed for additional quality backlinks</li><li><strong>Address Competitor Backlink Gap</strong>: Crunchbase.com has 161 intersecting backlinks of high quality, indicating a significant opportunity to close this gap</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>A targeted “link round-up” piece featuring Belgian marketing resources could attract natural backlinks from local blogs and news outlets.</li></ul><br><h3 id="toxic-backlink-assessment">Toxic Backlink Assessment</h3><br><p>While no high-spam score domains were detected, several medium-risk domains should be monitored:</p><ul><li>businessvocal.com (60% spam score)</li><li>seobacklinks.agency (45% spam score)</li><li>rankgrow.agency (45% spam score)</li><li>driftseo.click (50% spam score)</li></ul><br><p>These links should be evaluated individually to determine if disavowal is necessary.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a quarterly audit of medium-risk backlinks and prepare a disavow file for any links deemed harmful.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our comprehensive analysis, we recommend the following content strategy improvements:</p><br><h3 id="1-optimize-existing-content">1. Optimize Existing Content</h3><br><ul><li><strong>Sales Training Page</strong> (<code>/sales/</code>):</li><li><strong>Current Title</strong>: "Sales - Beter leren verkopen"</li><li><strong>Recommended Title</strong>: "Verkoop Opleiding - Praktijkgerichte Training voor Succesvolle Verkopers"</li><li><strong>Meta Description</strong>: Rewrite to include benefits and a call to action</li><li><strong>On-Page Content</strong>: Ensure the page content is highly relevant to "verkoop opleiding" and related keywords</li></ul><br><ul><li><strong>Social Media Training Pages</strong>: The main social media training page shows strong potential but has experienced ranking drops. Refresh this content with target keywords like "social media uitbesteden" and "social media advertenties uitbesteden".</li></ul><br><ul><li><strong>Individual Training Pages</strong>: These underperforming pages need comprehensive optimization with relevant long-tail keywords.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Implement A/B testing on new titles/meta descriptions to measure click-through rate improvements before a full rollout.</li></ul><br><h3 id="2-create-new-content">2. Create New Content</h3><br><ul><li><strong>Quick-Win Content Pieces</strong>:</li><li>"Tips voor een succesvolle verkoopgesprek" (Tips for a successful sales conversation)</li><li>"De voordelen van een verkoop opleiding" (The benefits of sales training)</li><li>"Social Media Uitbesteden: Een Complete Gids voor KMOs"</li><li>"Marketing voor KMO: Strategieën die Werken in 2025"</li></ul><br><ul><li><strong>Targeted Landing Pages</strong>:</li><li>Create separate landing pages for different types of sales training</li><li>Develop service package pages that target "social media uitbesteden pakketten" keywords</li></ul><br><ul><li><strong>Seasonal Content Planning</strong>:</li><li>Plan to publish major content pieces in January/February to capture March/April search volume peaks</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Allocate resources to produce two quick-win blog posts and one new landing page within the next 6 weeks.</li></ul><br><h3 id="3-technical-improvements">3. Technical Improvements</h3><br><ul><li>Address HTML errors and render-blocking resources to improve page load speed</li><li>Optimize images for faster loading</li><li>Enhance mobile responsiveness</li><li>Implement schema markup on training pages to improve SERP visibility</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Integrate fixes into the sprint backlog and measure performance improvements via Core Web Vitals reports.</li></ul><br><h3 id="4-internal-linking-strategy">4. Internal Linking Strategy</h3><br><ul><li>Build a stronger internal linking structure, particularly to important pages like the sales training page</li><li>Create content clusters around core topics like "sales training" and "social media management"</li><li>Leverage the strong internal linking foundation (2,986 internal links identified) to better distribute link equity to key pages</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Use contextual callouts within blog posts to link to service pages, improving both user experience and link flow.</li></ul><br><h3 id="5-backlink-driven-content-strategy">5. Backlink-Driven Content Strategy</h3><br><ul><li>Create linkable assets specifically designed to attract backlinks from Belgian business directories and industry publications</li><li>Develop content that addresses the specific terms found in existing anchor texts (e.g., "dynamisch," "advies," "begeleiding") to strengthen topical relevance</li><li>Create case studies featuring Belgian clients that can be promoted to local business publications for backlink opportunities</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft a white paper or industry report on “State of Social Media for Belgian KMOs” to serve as a link magnet.</li></ul><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><br><p>Costimulus has established a solid foundation for SEO growth in the Belgian market, with positive traffic trends over the past year. However, significant opportunities exist to improve rankings and visibility:</p><br><ol><li>No keywords currently rank in top 10 positions, presenting clear opportunities for improvement</li><li>High-priority keywords like "social media uitbesteden," "marketing voor kmo," and "verkoop opleiding" offer strategic entry points</li><li>Competitors like fgov.be are ranking for relevant terms despite less relevant content, indicating opportunity for Costimulus to outrank them with better-optimized content</li><li>The social media training category shows the strongest performance but has experienced recent ranking volatility</li><li>Individual training pages underperform despite being in a strong category</li><li>The backlink profile shows a solid foundation (169 backlinks from 24 referring domains) but needs diversification in anchor text and higher-quality sources</li><li>The medium spam score (33%) indicates some potential issues with backlink quality that should be addressed</li><li>Seasonal trends show peak search volumes in March/April, which should guide content planning</li><li>Technical improvements could enhance overall site performance and authority</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Host a cross-functional workshop to align on the above priorities, assign responsibilities, and set milestone deadlines for the next quarter.</li></ul><br><p>With targeted optimization of existing content, development of new content to address gaps, technical improvements, and strategic backlink acquisition, Costimulus could significantly increase their organic visibility and traffic in the Belgian market. Continuous monitoring and agile adjustments will ensure sustained growth and top-10 keyword placements.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Costimulus',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

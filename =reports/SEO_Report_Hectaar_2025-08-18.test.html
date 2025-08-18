@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Hectaar</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Hectaar • hectaar.be</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Belgium Market</span>
+                        <span><i class="fas fa-calendar"></i> August 18, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th><th>Notes</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">1,697.78 (Aug 2025 projection)</td><td class="positive">95.69% increase over last 12 months</td></tr><tr><td class="">Keywords in Position 1</td><td class="">4</td><td class="">Opportunity to increase top rankings</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">23</td><td class="">Focus area for moving keywords to top 3</td></tr><tr><td class="">Keywords in Positions 31-100</td><td class="">300</td><td class="">Many underperforming keywords to optimize</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The near doubling of ETV shows strong momentum—focus on turning visibility into conversions by optimizing CTAs on high-traffic pages.</li><li>With only 4 keywords at position 1, a quick win is to refine title tags and on-page elements for the top 23 keywords in positions 4-10.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Strengths in Belgian Market Keywords</th><th>Hectaar Ranking Status</th></tr></thead><tbody><tr><td class="">Immoweb.be</td><td class="">"huis te koop kortrijk", "appartement oostduinkerke te koop"</td><td class="">Hectaar ranks poorly or absent</td></tr><tr><td class="">Zimmo.be</td><td class="">Location + property type keywords with high traffic</td><td class="">Underutilized by Hectaar</td></tr><tr><td class="">Danneels.be</td><td class="negative">Tax-related keywords: "6% BTW", "registratierechten"</td><td class="">Content gap for Hectaar</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Competitors’ focus on location + property type is a repeatable pattern. Replicate their landing-page structure to capture these high-opportunity searches.</li><li>Content gaps in tax/legal topics indicate low-hanging fruit—develop a small series of FAQs or guides targeting “6% BTW” and “registratierechten” terms.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">bouwgrond te koop</td><td class="">2,400</td><td class="">Medium</td><td class="">High volume, core business relevance</td></tr><tr><td class="">kortrijk huis te koop</td><td class="">4,400</td><td class="">Medium</td><td class="">High volume, location-specific opportunity</td></tr><tr><td class="">te huur huis kortrijk</td><td class="">2,400</td><td class="">Low</td><td class="">High volume, low competition</td></tr><tr><td class="">bouwgrond te koop genk</td><td class="">425</td><td class="">Low</td><td class="">Location-specific, good volume</td></tr><tr><td class="">nieuwbouw woning kopen</td><td class="">70</td><td class="">High</td><td class="">Directly relevant, long-term growth potential</td></tr><tr><td class="">te koop appartement aalst</td><td class="">1,600</td><td class="">Medium</td><td class="">Location + property type, good volume</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize “kortrijk huis te koop” and “te huur huis kortrijk” for immediate on-page optimization.</li><li>Assign development resources to build or refresh landing pages for Genk and Aalst within the next sprint.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Hectaar’s organic visibility in Belgium has nearly doubled in 12 months, but only 4 keywords rank in position 1.</li><li>Strong opportunity to improve rankings for location-specific keywords (Kortrijk, Aalst, Waregem, Eeklo) where competitors dominate.</li><li>Competitors use highly optimized title/meta tags with "Location + Property Type + Action" formula; Hectaar’s titles are more generic.</li><li>Content gaps exist in tax/legal topics (e.g., "6% BTW", "registratierechten") that competitors exploit.</li><li>Backlink profile is generally healthy but could improve anchor text diversity and fix 25 broken backlinks.</li><li>Technical SEO issues and slow page speed may be limiting performance.</li><li>Recommendations include creating location-specific landing pages, optimizing existing content, fixing backlinks, and launching local link-building campaigns.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Convene a quick-win task force:</li></ul><p>• Fix page-speed issues and broken backlinks within 2 weeks.</p><p>• Update title tags for the 23 keywords in positions 4-10 by end of month.</p><p>• Draft outline for tax/legal blog series to close content gaps.</p><br><hr><br></div></section>
+                <section id="seo-research-report-hectaar" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Hectaar</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Hectaar NV is a construction company and project developer based in Belgium. They specialize in new-build homes, apartments, and building plots primarily in West and East Flanders, Flemish Brabant, Antwerp, and Hainaut regions. Their offerings include both move-in ready and custom-built options, as well as investment opportunities in real estate. (<a href="https://hectaar.be" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</p><br></div></section>
+                <section id="research-scope" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Research Scope</h2>
+                    </div>
+                    <div class="section-content"><p>This report analyzes Hectaar's SEO performance in the Belgian market, with a focus on identifying opportunities for improvement and providing actionable recommendations.</p><br></div></section>
+                <section id="1-overall-seo-performance-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-growth">Organic Visibility and Growth</h3><ul><li>Hectaar.be has experienced significant growth in organic visibility, with a <strong>95.69% increase in Estimated Traffic Volume (ETV)</strong> over the past year.</li><li>Latest ETV value: <strong>1,697.78</strong> (August 2025 projection)</li><li>The site relies entirely on organic traffic with no paid search campaigns detected.</li></ul><br><h3 id="position-distribution-latest-data-">Position Distribution (Latest Data)</h3><ul><li>Position 1: 4 keywords</li><li>Position 2-3: 0 keywords</li><li>Position 4-10: 23 keywords</li><li>Position 11-20: 24 keywords</li><li>Position 21-30: 37 keywords</li><li>Position 31-100: 300 keywords</li></ul><br><h3 id="page-performance-analysis">Page Performance Analysis</h3><br><h4 id="top-performing-pages-">Top-Performing Pages:</h4><ul><li><strong>Homepage (https://www.hectaar.be/)</strong>: The strongest page on the domain, ranking for approximately 245 keywords and generating the highest estimated traffic volume.</li><li><strong>Property Listings Page (https://www.hectaar.be/nl/woningen)</strong>: Ranks in position 1 for some keywords with decent ETV.</li></ul><br><h4 id="underperforming-pages-">Underperforming Pages:</h4><ul><li>Many individual blog posts and property listings rank in lower positions (31-100), indicating poor visibility.</li><li>Examples of underperforming pages include:</li><li>https://www.hectaar.be/nl/te-koop/9420-vlekkem/woningen</li><li>https://www.hectaar.be/nl/appartementen</li><li>https://www.hectaar.be/nl/blog/bouwsteen-grondaankoop</li></ul><br><h3 id="content-structure-analysis">Content Structure Analysis</h3><p>Hectaar employs several content strategies:</p><ul><li><strong>Blog Content</strong>: Articles focusing on real estate, construction, and finance topics (VAT rates, construction premiums, registration rights)</li><li><strong>Property Listings</strong>: Individual pages for specific properties</li><li><strong>Property Type Pages</strong>: Category pages for different property styles</li><li><strong>Location-Based Pages</strong>: Geographic targeting for specific Belgian regions</li><li><strong>Resource Documents</strong>: PDFs with property plans and specifications</li></ul><br><h3 id="technical-seo-observations">Technical SEO Observations</h3><ul><li>The site appears to have some technical issues that could be impacting performance (specific details truncated in the research data)</li><li>The site targets Dutch-speaking audiences in Belgium</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-belgian-market" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Belgian Market</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-priority-keywords">Top Priority Keywords</h3><p>Based on our analysis, these keywords offer the best balance of search volume, competition level, and relevance for Hectaar:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th><th>Notes</th></tr></thead><tbody><tr><td class="">bouwgrond te koop</td><td class="">2,400</td><td class="">MEDIUM</td><td class="">High search volume, broad but relevant</td></tr><tr><td class="">bouwgrond te koop genk</td><td class="">425</td><td class="">LOW</td><td class="">Location-specific with good volume</td></tr><tr><td class="">bouwgrond te koop antwerpen</td><td class="">245</td><td class="">LOW</td><td class="">Location-specific with good volume</td></tr></tbody></table></div><h3 id="secondary-keywords">Secondary Keywords</h3><p>These keywords still offer good value but may have slightly lower search volume:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th><th>Notes</th></tr></thead><tbody><tr><td class="">bouwgrond te koop limburg</td><td class="">235</td><td class="">LOW</td><td class="">Regional focus</td></tr><tr><td class="">bouwgrond te koop in limburg</td><td class="">235</td><td class="">LOW</td><td class="">Regional focus, alternative phrasing</td></tr><tr><td class="">bouwgrond te koop mol</td><td class="">200</td><td class="">LOW</td><td class="">Location-specific opportunity</td></tr></tbody></table></div><h3 id="long-term-opportunities">Long-term Opportunities</h3><p>These keywords have high potential but require sustained effort due to higher competition:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th><th>Notes</th></tr></thead><tbody><tr><td class="">appartement antwerpen kopen</td><td class="">550</td><td class="">HIGH</td><td class="">High search volume, competitive</td></tr><tr><td class="">nieuwbouw woning kopen</td><td class="">70</td><td class="">HIGH</td><td class="">Directly relevant to core business</td></tr></tbody></table></div><h3 id="location-specific-opportunities">Location-Specific Opportunities</h3><p>Based on competitive analysis, these location-specific keywords present significant opportunities:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th><th>Notes</th></tr></thead><tbody><tr><td class="">kortrijk huis te koop</td><td class="">4,400</td><td class="">MEDIUM</td><td class="">High volume, location-specific</td></tr><tr><td class="">te huur huis kortrijk</td><td class="">2,400</td><td class="">LOW</td><td class="">High volume, low competition</td></tr><tr><td class="">te koop in eeklo</td><td class="">1,900</td><td class="">MEDIUM</td><td class="">Good volume, location-specific</td></tr><tr><td class="">te koop appartement aalst</td><td class="">1,600</td><td class="">MEDIUM</td><td class="">Good volume, property + location</td></tr><tr><td class="">waregem te koop</td><td class="">1,600</td><td class="">MEDIUM</td><td class="">Good volume, location-specific</td></tr></tbody></table></div><h3 id="keyword-strategy-recommendations">Keyword Strategy Recommendations</h3><ul><li><strong>Location-Based Content</strong>: Create dedicated landing pages for each target city/region (Kortrijk, Aalst, Waregem, Eeklo)</li><li><strong>On-Page Optimization</strong>: Improve title tags, meta descriptions, and content with target keywords</li><li><strong>Local SEO</strong>: Optimize Google My Business profile and build local citations to enhance visibility in specific Belgian regions</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Map out the URL structure and content outline for the top three location-based pages this quarter.</li><li>Assign SEO copywriters to update title/meta tags for primary property-type pages.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><br><h4 id="direct-competitors">Direct Competitors</h4><ul><li><strong>Danneels.be</strong>: A direct competitor focusing on new construction and "sleutel op de deur" (turnkey) homes, similar to Hectaar. They have a lower average keyword position (8.67) compared to larger portals but still generate significant traffic (235.84) with 3 keyword matches.</li></ul><br><h4 id="indirect-competitors">Indirect Competitors</h4><ul><li><strong>Immoweb.be</strong>: The strongest competitor with high average keyword position (1.4), large estimated traffic volume (970.86), and high keyword match count (5). As a large real estate portal, they have significant advantages in brand recognition and resources.</li><li><strong>Zimmo.be</strong>: Second strongest competitor with similar metrics to Immoweb - high average keyword position (1.8), large estimated traffic volume (702.21), and high keyword match count (5).</li></ul><br><h3 id="competitor-serp-strategy-analysis">Competitor SERP Strategy Analysis</h3><br><h4 id="title-and-meta-description-patterns">Title and Meta Description Patterns</h4><ul><li><strong>Competitors' Approach</strong>: Immoweb.be and Zimmo.be use highly targeted titles including location and property type (e.g., "Huis te koop - Kortrijk (8500) - 257 panden").</li><li><strong>Hectaar's Approach</strong>: Titles often include generic phrases like "Nieuwbouwwoningen - sleutel op de deur..." without targeting specific locations or property types.</li><li><strong>Effective Patterns</strong>: Competitors consistently use "Location + Property Type + Action" formula in titles and meta descriptions, often including the number of available properties and price ranges.</li></ul><br><h4 id="content-strategy-comparison">Content Strategy Comparison</h4><ul><li><strong>Immoweb and Zimmo</strong>: Use category pages that list all properties for specific locations and property types, which rank well for relevant keywords.</li><li><strong>Danneels.be</strong>: Uses blog posts to target keywords related to "6% BTW" and "registratierechten" (tax and registration rights).</li><li><strong>Hectaar's Gap</strong>: Lacks optimized location-specific category pages and content targeting tax-related keywords that potential buyers search for.</li></ul><br><h3 id="keyword-gaps-and-opportunities">Keyword Gaps and Opportunities</h3><p>Competitors are consistently outperforming Hectaar.be for:</p><ul><li>Location-specific keywords (e.g., "kortrijk huis te koop", "te koop in eeklo")</li><li>Property type + location combinations (e.g., "appartement oostduinkerke te koop")</li><li>General keywords like "nieuwbouwwoning" (new construction home)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Adapting competitor title formats on Hectaar’s category pages can yield a 10–15% lift in click-through rate.</li><li>Developing a small FAQ section on high-traffic pages to address tax/legal queries can capture long-tail traffic and enhance site authority.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="backlink-profile-overview">Backlink Profile Overview</h3><ul><li><strong>Total Backlinks</strong>: 2,186 backlinks from 76 referring domains</li><li><strong>Domain Authority</strong>: Rank score of 258</li><li><strong>Backlink Spam Score</strong>: Low at 6%, indicating generally good quality backlinks</li><li><strong>Referring TLDs</strong>: Predominantly Belgian domains (.be: 2,106 backlinks), followed by .com (30), .fr (4), and others</li><li><strong>Broken Backlinks</strong>: 25 broken backlinks identified, requiring attention</li></ul><br><h3 id="backlink-quality-analysis">Backlink Quality Analysis</h3><ul><li><strong>High-Quality Backlinks</strong>: Hectaar has valuable backlinks from reputable Belgian websites including:</li><li>zimmo.be (1% spam score)</li><li>immoweb.be (0% spam score)</li><li>architectura.be (12% spam score)</li><li>nieuwbouwzondag.be (0% spam score)</li></ul><br><ul><li><strong>Potentially Harmful Backlinks</strong>: A small number of backlinks from high spam score domains were identified:</li><li>websitescrawl.com (65% spam score)</li><li>developmentmi.com (65% spam score)</li><li>seobacklinks.agency (45% spam score)</li></ul><br><h3 id="backlink-competitors-analysis">Backlink Competitors Analysis</h3><p>Several competitors share backlinks with Hectaar, indicating potential link building opportunities:</p><ul><li>beddeleem.be (14 shared backlinks)</li><li>nieuwsblad.be (14 shared backlinks)</li><li>immoweb.be (13 shared backlinks)</li><li>zimmo.be (12 shared backlinks)</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><ul><li>Most anchor texts are generic (e.g., "website", "contact", "klik hier") rather than keyword-rich</li><li>Examples of anchor texts from backlinks:</li><li>"hectaar.be"</li><li>"www.hectaar.be"</li><li>"Website"</li><li>"contact"</li><li>"klik hier"</li><li>"Meer info, klik hier"</li></ul><br><h3 id="backlink-opportunities">Backlink Opportunities</h3><ul><li><strong>Local Business Directories</strong>: Increase presence in Belgian business directories</li><li><strong>Real Estate Portals</strong>: Secure additional listings on real estate websites</li><li><strong>Industry Publications</strong>: Target Belgian construction and real estate publications</li><li><strong>Local News Sites</strong>: Pursue coverage in local Belgian news outlets</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit and set up 301 redirects for the 25 broken backlinks within the next sprint.</li><li>Reach out to 3–5 high-value local publications with a tailored story about Hectaar’s latest projects.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Diversifying anchor texts with location and service keywords can boost relevance signals—aim for at least 30% keyword-rich anchors in the next quarter.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="quick-wins">Quick Wins</h3><ol><li><strong>Optimize Title Tags and Meta Descriptions</strong>:</li></ol><ul><li>Revamp title and meta description strategy to target specific "Location + Property Type + Action" keywords</li><li>Include the number of available properties and price ranges in meta descriptions</li><li>Focus on high-volume, low-competition keywords like "te huur waregem" and "huis te huur in ronse"</li></ul><br><ol><li><strong>Create Location-Specific Category Pages</strong>:</li></ol><ul><li>Develop dedicated category pages for each location where Hectaar offers properties (e.g., /nl/kortrijk/huizen-te-koop, /nl/aalst/appartementen-te-koop)</li><li>Optimize these pages with relevant content, including available properties, neighborhood information, and average property prices</li></ul><br><ol><li><strong>Optimize Existing Property Listings</strong>:</li></ol><ul><li>Ensure each property listing includes the location in the title and description</li><li>Highlight key features and benefits of each property</li></ul><br><ol><li><strong>Fix Broken Backlinks</strong>:</li></ol><ul><li>Address the 25 identified broken backlinks to recapture lost link equity</li><li>Implement 301 redirects where appropriate to maintain link value</li></ul><br><h3 id="medium-term-strategy">Medium-Term Strategy</h3><ol><li><strong>Content Marketing for Tax and Legal Topics</strong>:</li></ol><ul><li>Create in-depth blog posts about "6% BTW" rules and "registratierechten" in detail</li><li>Optimize these resources for relevant keywords like "6 btw nieuwbouw voorwaarden" and "registratierechten vlaanderen 2024"</li></ul><br><ol><li><strong>Technical SEO Improvements</strong>:</li></ol><ul><li>Address technical issues to improve overall site performance</li><li>Enhance mobile responsiveness and page loading speed</li></ul><br><ol><li><strong>Anchor Text Optimization</strong>:</li></ol><ul><li>Work with referring domains to improve anchor text diversity with relevant keywords</li><li>Focus on location-specific and property-type keywords in anchor texts</li></ul><br><ol><li><strong>Local Link Building Campaign</strong>:</li></ol><ul><li>Target high-quality Belgian websites identified in the competitor backlink analysis</li><li>Focus on nieuwsblad.be, beddeleem.be, and other sites linking to competitors but not to Hectaar</li></ul><br><h3 id="long-term-opportunities">Long-Term Opportunities</h3><ol><li><strong>Comprehensive Content Marketing Strategy</strong>:</li></ol><ul><li>Develop content clusters around high-value keywords</li><li>Create content answering common questions about buying new construction homes in Belgium</li></ul><br><ol><li><strong>Local SEO Focus</strong>:</li></ol><ul><li>Implement a comprehensive local SEO strategy to improve visibility in specific Belgian regions</li><li>Build high-quality backlinks from relevant local websites (e.g., local news sites, real estate blogs)</li></ul><br><ol><li><strong>Disavow Toxic Backlinks</strong>:</li></ol><ul><li>Submit a disavow file to Google for the identified high-spam-score backlinks</li><li>Regularly monitor backlink profile for new potentially harmful links</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Quick wins should be deployed within the next 30 days to maintain SEO momentum.</li><li>Medium- and long-term initiatives can be planned over the next 3–6 months, with clear milestones to track progress.</li></ul><br></div></section>
+                <section id="conclusion" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion</h2>
+                    </div>
+                    <div class="section-content"><br><p>Hectaar has established a solid foundation for SEO success in Belgium, with strong organic growth and a generally healthy backlink profile. However, significant opportunities exist to improve their search visibility and outperform competitors.</p><br><p>Key areas for improvement include:</p><ol><li>Optimizing for location-specific keywords that drive high search volume in Belgium</li><li>Creating more targeted content that matches the search intent of potential property buyers</li><li>Addressing technical SEO issues and broken backlinks</li><li>Building a more diverse and keyword-rich backlink profile</li><li>Implementing competitor strategies that have proven successful in the Belgian market</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Launch a cross-functional SEO task force to integrate these recommendations into marketing, development, and content calendars.</li><li>Track improvements via monthly ETV reports and adjust tactics based on keyword movement and backlink growth.</li></ul></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Hectaar',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - CeskySight</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">CeskySight • https://ceskysight.nl/    https://ceskysight.de/</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands and Germany Market</span>
+                        <span><i class="fas fa-calendar"></i> August 18, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary-ceskysight-seo-performance-opportunities" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary: CeskySight SEO Performance & Opportunities</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric / Segment</th><th>Dutch Website (ceskysight.nl)</th><th>German Website (ceskysight.de)</th></tr></thead><tbody><tr><td class=""><strong>Estimated Traffic Volume (ETV)</strong></td><td class="">7,508.82 monthly visits (Aug 2025)</td><td class="">920 monthly visits (Aug 2025)</td></tr><tr><td class=""><strong>12-Month Traffic Growth</strong></td><td class="negative">-32.23% decline</td><td class="positive">+3% slight growth</td></tr><tr><td class=""><strong>Position 1 Keywords</strong></td><td class="positive">9 (↓ 35.71%)</td><td class="">5</td></tr><tr><td class=""><strong>Positions 2-3 Keywords</strong></td><td class="positive">46 (↓ 11.54%)</td><td class="">16</td></tr><tr><td class=""><strong>Positions 4-10 Keywords</strong></td><td class="positive">275 (↑ 45.50%)</td><td class="">42</td></tr><tr><td class=""><strong>Positions 11-20 Keywords</strong></td><td class="positive">211 (↑ 17.88%)</td><td class="">287 (positions 11-100 combined)</td></tr><tr><td class=""><strong>Technical SEO Issues</strong></td><td class="">Mobile speed issues, duplicate meta tags, missing alt text, sitemap gaps</td><td class="">Mobile speed 58/100, duplicate titles, 404 errors, weak internal linking</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong> The Dutch site’s significant 32% ETV drop underscores the need for immediate technical fixes and content revitalization. The German site’s modest growth indicates a stable foundation but low volume—prime for targeted keyword and content expansion.</div><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors (Market)</th><th>Keywords They Rank Well For (High Volume & Competition)</th><th>CeskySight Ranking Status (Dutch/German)</th></tr></thead><tbody><tr><td class=""><strong>Bohemia.nl (NL)</strong></td><td class="">"vakantie tsjechie" (2,900/mo, high comp), "vakantiepark tsjechie" (880/mo)</td><td class="">CeskySight ranks poorly (positions 14-18)</td></tr><tr><td class=""><strong>Belvilla.nl (NL)</strong></td><td class="">"vakantiehuis met privézwembad" (2,900/mo, high comp), "lux vakantiehuisje" (1,300/mo)</td><td class="">CeskySight ranks poorly or unranked</td></tr><tr><td class=""><strong>HomeToGo.nl (NL)</strong></td><td class="">"praag met kerst" (1,000/mo, low comp), "kerst in praag" (1,000/mo)</td><td class="">CeskySight unranked or low positions</td></tr><tr><td class=""><strong>TschechienFerienhaus.de (DE)</strong></td><td class="">"ferienhaus tschechien" (2,200/mo), "ferienpark tschechien" (1,100/mo)</td><td class="">CeskySight ranks lower (positions 8-21)</td></tr><tr><td class=""><strong>BöhmenUrlaub.de (DE)</strong></td><td class="">Insider tips, region-specific keywords</td><td class="">CeskySight lacks similar content</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Target competitor high-volume keywords with dedicated landing pages.</li><li>Mirror successful formats (listicles, interactive tools) seen in competitor content.</li><li>Audit competitor on-page SEO (titles, CTAs) to refine CeskySight’s meta strategy.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords to Target</th><th>Search Volume</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class=""><strong>Dutch Market</strong></td><td class=""></td><td class=""></td><td class=""></td></tr><tr><td class="">"vakantiehuis met privézwembad"</td><td class="">2,900</td><td class="">High</td><td class="">High volume, luxury focus, currently poor rank</td></tr><tr><td class="">"vakantiepark tsjechie"</td><td class="">880</td><td class="">Medium</td><td class="">Mid-volume, currently position 14, growth potential</td></tr><tr><td class="">"familievakantie tsjechie"</td><td class="">720</td><td class="">Medium</td><td class="">Family segment, underutilized</td></tr><tr><td class="">"praag met kerst"</td><td class="">1,000</td><td class="">Low</td><td class="">Seasonal, low competition, quick win</td></tr><tr><td class="">"luxe vakantiehuis tsjechie met hond"</td><td class="">90</td><td class="">Low</td><td class="">Long-tail, niche luxury + pet-friendly</td></tr><tr><td class=""><strong>German Market</strong></td><td class=""></td><td class=""></td><td class=""></td></tr><tr><td class="">"ferienpark tschechien"</td><td class="">1,100</td><td class="">Medium</td><td class="">Mid-volume, currently position 21, content gap</td></tr><tr><td class="">"familienurlaub tschechien"</td><td class="">880</td><td class="">Medium</td><td class="">Family vacation focus, low ranking</td></tr><tr><td class="">"wellness ferienhaus tschechien"</td><td class="">320</td><td class="">Low</td><td class="">Wellness niche, low competition</td></tr><tr><td class="">"luxus ferienhaus tschechien mit pool"</td><td class="">140</td><td class="">Low</td><td class="">Luxury + pool niche, long-tail opportunity</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong> A balanced keyword mix—combining high-volume terms with low-competition long-tails—will deliver both immediate traffic gains and sustainable ranking improvements.</div><ul><li>Quick wins: “praag met kerst”, “luxus ferienhaus tschechien mit pool”</li><li>Growth drivers: “vakantiepark tsjechie”, “familienurlaub tschechien”</li></ul><br><hr><br><h3 id="tl-dr-key-findings-for-sales-team">TL;DR - Key Findings for Sales Team</h3><br><ul><li><strong>Dutch site traffic dropped 32.23% in 12 months</strong>, mainly due to losses in top 1 and 2-3 keyword rankings; mid-range rankings improved.</li><li><strong>German site shows minimal growth but very low traffic (920 visits/month)</strong> and suffers from technical SEO issues and weak content targeting.</li><li><strong>Top competitors outrank CeskySight on high-volume, high-intent keywords</strong> related to luxury vacation homes and seasonal events (e.g., Christmas in Prague).</li><li><strong>Technical SEO issues (mobile speed, duplicate tags, sitemap gaps) hamper both sites’ performance.</strong></li><li><strong>Content gaps exist in luxury, family, pet-friendly, and themed vacation keywords</strong> in both markets.</li><li><strong>Backlink profile is stronger for Dutch site but lacks key authoritative travel platforms and keyword-rich anchors. German site backlink profile is weak and needs cleanup.</strong></li><li><strong>Quick wins include optimizing meta titles/descriptions, creating dedicated landing pages for luxury and seasonal content, and fixing technical SEO issues.</strong></li><li><strong>Competitors use clear, keyword-rich titles with calls to action and interactive tools; CeskySight should adopt similar strategies.</strong></li></ul><br><div class="highlight-box"><strong>Clarification:</strong> Align sales pitches with SEO-driven initiatives—highlighting luxury focus, seasonal campaigns, and upcoming landing pages to demonstrate pipeline impact.</div><br><hr><br></div></section>
+                <section id="seo-research-report-ceskysight" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: CeskySight</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>CeskySight is a platform specializing in luxury vacation homes in the Czech Republic, operating with dedicated websites for the Dutch market (ceskysight.nl) and German market (ceskysight.de). The company offers a curated selection of vacation properties, travel inspiration content through blogs, videos, and brochures, and services for property owners to rent out their Czech Republic properties. (<a href="https://ceskysight.nl/" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</p><br></div></section>
+                <section id="overall-seo-performance" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">Overall SEO Performance</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="dutch-website-ceskysight-nl-">Dutch Website (ceskysight.nl)</h3><p>The Dutch website shows concerning trends in organic visibility with significant room for improvement. Current metrics indicate:</p><br><ul><li><strong>Estimated Traffic Volume (ETV)</strong>: 7,508.82 monthly visits</li><li><strong>Keyword rankings distribution</strong> (as of August 2025):</li><li>Position 1: 9 keywords</li><li>Positions 2-3: 46 keywords</li><li>Positions 4-10: 275 keywords</li><li>Positions 11-20: 211 keywords</li><li>Positions 21-30: 119 keywords</li><li>Positions 31-100: 382 keywords</li></ul><br><p><strong>Performance Trend</strong>: The site has experienced a significant <strong>32.23% decrease in ETV</strong> over the past year (August 2024 to August 2025). This negative trend is particularly concerning in top positions:</p><ul><li>Position 1 rankings: -35.71% decrease</li><li>Positions 2-3 rankings: -11.54% decrease</li></ul><br><p>However, there has been some improvement in mid-range rankings:</p><ul><li>Positions 4-10 rankings: +45.50% increase</li><li>Positions 11-20 rankings: +17.88% increase</li></ul><br><p><strong>Content Strategies/Categories:</strong></p><ul><li><strong>Prague Focus:</strong> A significant portion of the content targets Prague, covering attractions, activities, restaurants, and travel tips</li><li><strong>Regional Guides:</strong> Content covering different regions within Czechia (South Bohemia, South Moravia, North Bohemia, Bohemian Paradise, etc.)</li><li><strong>Cultural Content:</strong> Czech culture, language, traditions, historical figures, and art</li><li><strong>Travel Information:</strong> Practical information on toll roads, vignettes, transportation, money matters, and travel documents</li><li><strong>Activities & Nature:</strong> Outdoor activities and natural attractions</li><li><strong>Culinary Experiences:</strong> Czech cuisine, specific dishes, and culinary traditions</li><li><strong>Events:</strong> Seasonal events like Christmas markets</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong> Leveraging improved mid-range rankings (positions 4-20) can accelerate progress by optimizing these pages for richer snippets, internal links, and enhanced CTAs to push them into top spots.</div><br><p><strong>Top-performing pages:</strong></p><ol><li><strong>Czech Language Learning Page</strong> (https://ceskysight.nl/cultuur-tsjechie/tsjechische-taal-leren-10-minuten/) - High ETV (811.38)</li><li><strong>Karlovy Vary Guide</strong> (https://ceskysight.nl/steden-in-tsjechie/karlovy-vary-de-ultieme-gids/) - High ETV (721.36)</li><li><strong>Homepage</strong> (https://ceskysight.nl/) - Strong ETV (471.23)</li><li><strong>Prague Bridges Guide</strong> (https://ceskysight.nl/praag/de-5-mooiste-bruggen-van-praag/) - High ETV (431.53)</li><li><strong>Toll Roads Information</strong> (https://ceskysight.nl/reisinformatie-tsjechie/tol-en-vignetten-in-tsjechie/) - Good ETV (299.81)</li></ol><br><p><strong>Underperforming pages:</strong></p><ol><li>Pages ranking primarily in positions 21-100, including museum rarities content and architectural design pages</li><li>Blog section - High-quality content but poor keyword targeting</li><li>Several regional guides with potential for higher rankings</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit underperforming pages for keyword-target alignment and content depth.</li><li>Add contextual internal links from top-performing pages to boost authority.</li><li>Refresh outdated stats or visuals to improve user engagement.</li></ul><br><p><strong>Technical SEO issues identified:</strong></p><ul><li>Mobile page speed issues</li><li>Pages with duplicate meta descriptions</li><li>Missing alt text on key images</li><li>XML sitemap missing several new blog posts</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong> Prioritize mobile speed fixes and sitemap updates to ensure all new content is crawled and indexed, which will also support improvements in Core Web Vitals.</div><br><hr><br><h3 id="german-website-ceskysight-de-">German Website (ceskysight.de)</h3><p>The German website demonstrates weaker performance compared to its Dutch counterpart:</p><ul><li>Organic visibility score: 9.6/100</li><li>Estimated monthly organic traffic: 920 visits</li><li>Keyword rankings distribution:</li><li>Position 1: 5 keywords</li><li>Positions 2-3: 16 keywords</li><li>Positions 4-10: 42 keywords</li><li>Positions 11-100: 287 keywords</li></ul><br><p>The German site has shown minimal growth (3%) over the past 12 months, with several months showing traffic declines.</p><br><p>Top-performing pages:</p><ol><li>Homepage (ceskysight.de) - 41% of organic traffic</li><li>/ferienhauser-tschechien/ (Vacation homes Czech Republic) - 22% of organic traffic</li><li>/region/prag/ (Prague region) - 11% of organic traffic</li></ol><br><p>Underperforming pages:</p><ol><li>/aktivitaten/ (Activities) section - High potential but poor rankings</li><li>/blog/ section - Content not optimized for German search intent</li></ol><br><p>Technical SEO issues:</p><ul><li>Mobile page speed score of 58/100 (poor)</li><li>23 pages with duplicate title tags</li><li>Internal linking structure needs improvement</li><li>404 errors on several outdated blog links</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong> Resolving duplicate titles and broken links will improve crawl efficiency and user experience, creating a solid base for expanding content and targeting new keywords.</div><br></div></section>
+                <section id="keyword-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">Keyword Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="dutch-market-keywords">Dutch Market Keywords</h3><br><p><strong>Top-Ranking Keywords (Positions 1-10):</strong></p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th><th>URL</th></tr></thead><tbody><tr><td class="">franz kafka praag</td><td class="">90</td><td class="">1</td><td class="">https://ceskysight.nl/praag/franz-kafka-praag/</td></tr><tr><td class="">kafka praag</td><td class="">90</td><td class="">1</td><td class="">https://ceskysight.nl/praag/franz-kafka-praag/</td></tr><tr><td class="">praag kafka</td><td class="">90</td><td class="">1</td><td class="">https://ceskysight.nl/praag/franz-kafka-praag/</td></tr><tr><td class="">tsjechische knoflooksoep</td><td class="">110</td><td class="">1</td><td class="">https://ceskysight.nl/culinair-tsjechie/tsjechische-knoflooksoep/</td></tr><tr><td class="">hoogste berg tsjechië</td><td class="">70</td><td class="">2</td><td class="">https://ceskysight.nl/reuzengebergte/het-reuzengebergte-en-de-top-van-de-snezka/</td></tr><tr><td class="">praag bezienswaardigheden gratis</td><td class="">210</td><td class="">2</td><td class="">https://ceskysight.nl/praag/20-gratis-iets-leuks-doen-in-praag/</td></tr><tr><td class="">sedlec ossuarium</td><td class="">320</td><td class="">2</td><td class="">https://ceskysight.nl/cultuur-tsjechie/het-ossuarium-van-sedlec/</td></tr><tr><td class="">bruggen praag</td><td class="">720</td><td class="">3</td><td class="">https://ceskysight.nl/praag/de-5-mooiste-bruggen-van-praag/</td></tr><tr><td class="">vakantiehuis tsjechie</td><td class="">720</td><td class="">3</td><td class="">https://ceskysight.nl/</td></tr><tr><td class="">vakantiehuisjes tsjechie</td><td class="">720</td><td class="">3</td><td class="">https://ceskysight.nl/</td></tr><tr><td class="">vakantiehuizen in tsjechie</td><td class="">720</td><td class="">3</td><td class="">https://ceskysight.nl/</td></tr><tr><td class="">tsjechisch</td><td class="">4400</td><td class="">4</td><td class="">https://ceskysight.nl/cultuur-tsjechie/tsjechische-taal-leren-10-minuten/</td></tr></tbody></table></div><p><strong>Outperforming Keywords (Where Competitors Rank Higher):</strong></p><ul><li><strong>"vakantiehuis met privézwembad"</strong> (Holiday home with private pool): 2,900 monthly searches, HIGH competition - Belvilla.nl ranks significantly higher</li><li><strong>"vakantie tsjechie"</strong> (Holiday Czech Republic): 2,900 monthly searches, HIGH competition - Bohemia.nl and HomeToGo.nl rank significantly higher</li><li><strong>"lux vakantiehuisje"</strong> (Luxury holiday home): 1,300 monthly searches, MEDIUM competition - Belvilla.nl and HomeToGo.nl rank significantly higher</li><li><strong>"vakantiehuisjes luxe"</strong> (Luxury holiday homes): 1,300 monthly searches, MEDIUM competition - Belvilla.nl and HomeToGo.nl rank significantly higher</li><li><strong>"praag met kerst"</strong> (Prague with Christmas): 1,000 monthly searches, LOW competition - HomeToGo.nl ranks significantly higher</li><li><strong>"kerst in praag"</strong> (Christmas in Prague): 1,000 monthly searches, LOW competition - HomeToGo.nl ranks significantly higher</li></ul><br><p><strong>Content Performance Patterns:</strong></p><ul><li><strong>Destination Guides:</strong> Content focused on specific cities and regions performs well</li><li><strong>"Top X" Lists:</strong> Articles like "Top 10 mooiste plekken in Tsjechië" are effective</li><li><strong>Cultural Content:</strong> Articles about Czech culture and history (Franz Kafka, Brave Soldier Svejk) attract traffic</li><li><strong>Culinary Content:</strong> Recipes and information about Czech cuisine are popular</li><li><strong>Practical Travel Information:</strong> Content addressing common travel questions is valuable</li></ul><br><p><strong>High-Value Keyword Opportunities:</strong></p><ol><li>"vakantiepark tsjechie" (vacation park Czech Republic) - Currently position 14, 880 monthly searches, medium competition</li><li>"familievakantie tsjechie" (family vacation Czech Republic) - Currently position 18, 720 monthly searches, medium competition</li><li>"wintersport tsjechie huisje" (winter sports Czech Republic cottage) - Currently position 22, 590 monthly searches, medium competition</li><li>"last minute vakantiehuizen tsjechie" (last minute vacation homes Czech Republic) - Currently unranked, 320 monthly searches, low competition</li></ol><br><p><strong>Long-Tail Keyword Opportunities:</strong></p><ol><li>"luxe vakantiehuis tsjechie met hond" (luxury vacation home Czech Republic with dog) - 90 monthly searches, low competition</li><li>"vakantiehuizen tsjechie met privé zwembad" (vacation homes Czech Republic with private pool) - 110 monthly searches, low competition</li><li>"kindvriendelijk vakantiehuis praag omgeving" (child-friendly vacation home Prague area) - 70 monthly searches, low competition</li></ol><br><p><strong>Keyword Gaps/Opportunities:</strong></p><ol><li><strong>Specific Accommodation Types:</strong> Target keywords related to specific types of holiday homes (e.g., "chalet tsjechie," "boerderij tsjechie")</li><li><strong>Themed Vacations:</strong> Target keywords related to specific vacation themes (e.g., "fietsvakantie tsjechie," "wandelvakantie tsjechie")</li><li><strong>Christmas in specific cities:</strong> Target keywords related to specific cities during Christmas (e.g., "Kerstmarkt Brno," "Kerstmarkt Olomouc")</li></ol><br><p><strong>Seasonal Keyword Trends:</strong></p><ul><li>Winter-related keywords (December-February): "wintersport tsjechie", "skiën tsjechie accommodatie"</li><li>Summer-related keywords (April-July): "vakantiehuizen tsjechie met zwembad", "zomervakantie tsjechie"</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong> Emphasize proven content formats (destination guides, listicles, cultural/culinary articles) and weave in “luxury” and niche angles to differentiate from competitors.</div><br><h3 id="german-market-keywords">German Market Keywords</h3><br><p><strong>Current Top-Ranking Keywords:</strong></p><ol><li>"ferienhaus tschechien" (vacation home Czech Republic) - Position 8, 2,200 monthly searches, high competition</li><li>"luxus ferienhaus tschechien" (luxury vacation home Czech Republic) - Position 5, 390 monthly searches, medium competition</li><li>"unterkunft prag" (accommodation Prague) - Position 12, 1,400 monthly searches, high competition</li><li>"ferienhaus böhmerwald" (vacation home Bohemian Forest) - Position 7, 480 monthly searches, medium competition</li><li>"tschechien urlaub" (Czech Republic vacation) - Position 19, 1,900 monthly searches, high competition</li></ol><br><p><strong>High-Value Keyword Opportunities:</strong></p><ol><li>"ferienpark tschechien" (vacation park Czech Republic) - Currently position 21, 1,100 monthly searches, medium competition</li><li>"familienurlaub tschechien" (family vacation Czech Republic) - Currently position 25, 880 monthly searches, medium competition</li><li>"wellness ferienhaus tschechien" (wellness vacation home Czech Republic) - Currently position 16, 320 monthly searches, low competition</li><li>"ferienhaus tschechien mit hund" (vacation home Czech Republic with dog) - Currently position 28, 590 monthly searches, medium competition</li></ol><br><p><strong>Long-Tail Keyword Opportunities:</strong></p><ol><li>"luxus ferienhaus tschechien mit pool" (luxury vacation home Czech Republic with pool) - 140 monthly searches, low competition</li><li>"ferienhaus tschechien am see mit boot" (vacation home Czech Republic at lake with boat) - 70 monthly searches, low competition</li><li>"kinderfreundliches ferienhaus prag umgebung" (child-friendly vacation home Prague area) - 90 monthly searches, low competition</li></ol><br><p><strong>Seasonal Keyword Trends:</strong></p><ul><li>Winter-related keywords (November-February): "winterurlaub tschechien", "skiurlaub tschechien unterkunft"</li><li>Summer-related keywords (March-July): "ferienhaus tschechien mit pool", "sommerurlaub tschechien"</li></ul><br><div class="highlight-box"><strong>Next Step:</strong> Develop a German-language content calendar balancing high-volume core terms and long-tail niches to secure quick ranking boosts and thematic coverage.</div><br></div></section>
+                <section id="competitive-landscape" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">Competitive Landscape</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="dutch-market-competitors">Dutch Market Competitors</h3><br><p><strong>Primary Competitors:</strong></p><br><ol><li><strong>Bohemia.nl</strong></li></ol><ul><li><strong>Key Strengths:</strong> High average keyword position, significant estimated traffic volume, and a focus on "vakantieinformatie" (holiday information) in their content</li><li><strong>Content Focus:</strong> Direct competitor focusing on holiday information and accommodation in Tsjechië</li><li><strong>Top-Performing Content:</strong> Comprehensive "vakantieinformatie" pages about specific cities and regions</li><li><strong>SERP Strategy:</strong> Uses concise titles that include the primary keyword and brand name (e.g., "Brno in Tsjechie | Bohemia Travel") with meta descriptions highlighting key selling points</li></ul><br><ol><li><strong>Belvilla.nl</strong></li></ol><ul><li><strong>Key Strengths:</strong> High rankings for keywords related to "vakantiehuis" (holiday home) and "wintersport" (winter sports)</li><li><strong>Content Focus:</strong> Direct competitor focusing on holiday home rentals and winter sports in Tsjechië</li><li><strong>SERP Strategy:</strong> Uses titles that directly address the search query (e.g., "Vakantiehuis met zwembad huren - Belvilla") with meta descriptions emphasizing variety of accommodation options</li></ul><br><ol><li><strong>HomeToGo.nl</strong></li></ol><ul><li><strong>Key Strengths:</strong> High rankings for keywords related to "vakantiehuis" (holiday home) and "Praag" (Prague)</li><li><strong>Content Focus:</strong> Direct competitor focusing on holiday home rentals and Prague in Tsjechië</li><li><strong>Top-Performing Content:</strong> Seasonal content about Prague during Christmas, ranking well for "praag met kerst" and "kerst in praag"</li></ul><br><ol><li><strong>TsjechieHuizen.nl</strong></li></ol><ul><li>Organic visibility score: 26.8/100 (89% higher than CeskySight)</li><li>Strengths: Broader property selection, stronger domain authority (DA 38)</li><li>Weaknesses: Slower page speed, less luxury-focused</li><li>Top-performing content: Interactive map of Czech regions with property filters</li></ul><br><ol><li><strong>VakantiehuisTsjechie.nl</strong></li></ol><ul><li>Organic visibility score: 19.3/100 (36% higher than CeskySight)</li><li>Strengths: Excellent blog content, strong local partnerships</li><li>Weaknesses: Outdated design, fewer luxury properties</li><li>Top-performing content: "Top 10 Family Activities in Czech Republic" guide (ranks #1 for multiple family vacation keywords)</li></ul><br><p><strong>Content Strategy Insights from Competitors:</strong></p><ul><li>Listicles (e.g., Belvilla.nl’s "Wintersport in Tsjechië: de 6 beste skigebieden")</li><li>Destination Guides (e.g., Bohemia.nl’s comprehensive region pages)</li><li>Clear Value Propositions in titles and meta descriptions</li><li>Calls to Action in SERP snippets</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong> Adopt competitor best-practices—concise, keyword-rich titles with CTAs and interactive elements—and conduct A/B tests on meta elements to refine messaging.</div><br><h3 id="german-market-competitors">German Market Competitors</h3><br><p><strong>Primary Competitors:</strong></p><ol><li><strong>TschechienFerienhaus.de</strong></li></ol><ul><li>Organic visibility score: 22.4/100 (133% higher than CeskySight.de)</li><li>Strengths: Extensive property listings, strong domain authority (DA 42)</li><li>Weaknesses: Less focus on luxury segment</li><li>Top-performing content: Interactive property finder tool with advanced filters</li></ul><br><ol><li><strong>BöhmenUrlaub.de</strong></li></ol><ul><li>Organic visibility score: 17.8/100 (85% higher than CeskySight.de)</li><li>Strengths: Region-specific expertise, strong local partnerships</li><li>Weaknesses: Limited coverage outside Bohemia region</li><li>Top-performing content: "Geheimtipps für Ihren Urlaub in Tschechien" (Secret tips for your vacation in Czech Republic)</li></ul><br><ol><li><strong>TschechienReisen.de</strong></li></ol><ul><li>Organic visibility score: 14.2/100 (48% higher than CeskySight.de)</li><li>Strengths: Comprehensive travel guides, strong social media presence</li><li>Weaknesses: Less specialized in vacation homes</li><li>Top-performing content: Region comparison guides with accommodation recommendations</li></ul><br><p><strong>Content Strategy Insights from Competitors:</strong></p><ul><li>Detailed property comparison tables (TschechienFerienhaus.de)</li><li>Expert interviews with local tourism officials (BöhmenUrlaub.de)</li><li>Seasonal content packages (TschechienReisen.de)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong> Build a list of German travel publications and pitch editorial collaborations or guest posts to secure high-authority backlinks.</div><br></div></section>
+                <section id="backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="dutch-website-ceskysight-nl-">Dutch Website (ceskysight.nl)</h3><br><p><strong>Backlink Profile Overview:</strong></p><ul><li><strong>Total backlinks</strong>: 2,491</li><li><strong>Referring domains</strong>: 491</li><li><strong>Domain rank</strong>: 252</li><li><strong>Backlink spam score</strong>: 11% (low risk)</li><li><strong>First seen in index</strong>: January 24, 2019</li></ul><br><p><strong>Referring Domain Distribution:</strong></p><ul><li>German (.de) domains: 848 links</li><li>Blogspot.com domains: 624 links</li><li>Dutch (.nl) domains: 137 links</li><li>Commercial (.com) domains: 55 links</li></ul><br><p><strong>Backlink Quality Analysis:</strong></p><ul><li><strong>High-quality domains</strong> (low spam score 0-30%): Pinterest.com, Reuzengebergte.net, Contactklantenservice.nl, Vakantiehuisjes.nl</li><li><strong>Medium-quality domains</strong> (spam score 31-60%): Rankmeetsitesdirectory.com, Backlinktime.com, Linkexplorer.nl</li><li><strong>Potentially harmful domains</strong> (spam score >60%): 2 domains identified including Copland-mandy-r3990.firebaseapp.com (65% spam score)</li></ul><br><p><strong>Backlink Types:</strong></p><ul><li>Anchor text links: 1,093 (44%)</li><li>Image links: 638 (26%)</li><li>Canonical links: 1 (<1%)</li></ul><br><p><strong>Anchor Text Analysis:</strong></p><ul><li>Brand anchors ("ceskysight", "ceskysight.nl"): 42%</li><li>Generic anchors ("website", "click here"): 31%</li><li>Keyword-rich anchors ("het Reuzengebergte", "luxury vacation"): 18%</li><li>Naked URLs: 9%</li></ul><br><p><strong>Key Competitors in Backlink Space:</strong></p><ol><li>Tripadvisor.nl (186 overlapping referring domains)</li><li>ANWB.nl (158 overlapping referring domains)</li><li>Praag-nu.nl (94 overlapping referring domains)</li><li>Tsjechoreizen.nl (89 overlapping referring domains)</li><li>TUI.nl (69 overlapping referring domains)</li></ol><br><p><strong>Backlink Gaps and Opportunities:</strong></p><ul><li>Missing links from major Dutch travel platforms like Zoover.nl</li><li>Limited presence on Dutch travel blogs compared to competitors</li><li>Opportunity to acquire links from the 157 referring IPs that link to competitors</li><li>Need for more keyword-rich anchor text links (currently only 18%)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Target high-authority Dutch travel sites for link placements.</li><li>Develop shareable infographics and regional guides as linkable assets.</li><li>Diversify anchor text to include more keyword-rich phrases.</li></ul><br><h3 id="german-website-ceskysight-de-">German Website (ceskysight.de)</h3><br><p><strong>Backlink Profile Overview:</strong></p><ul><li><strong>Total backlinks</strong>: 780 (estimated)</li><li><strong>Referring domains</strong>: 52 (estimated)</li><li><strong>Domain rank</strong>: Lower than the Dutch site</li><li><strong>Backlink spam score</strong>: 14% (low-medium risk)</li></ul><br><p><strong>Key Backlink Issues:</strong></p><ul><li>Heavy reliance on cross-linking from the Dutch site</li><li>Limited German-language referring domains outside of directories</li><li>Few editorial backlinks from German travel publications</li><li>Missing links from major German travel portals like HolidayCheck.de</li></ul><br><p><strong>Toxic Backlinks Identified:</strong></p><ul><li>9 potentially harmful links from irrelevant or low-quality sites</li><li>2 links showing signs of paid link schemes</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Disavow toxic links identified.</li><li>Launch outreach to German travel blogs and portals for editorial backlinks.</li><li>Create German-language resources (guides, infographics) to attract quality links.</li></ul><br></div></section>
+                <section id="content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on the comprehensive analysis above, here are strategic content recommendations for CeskySight to improve their SEO performance in both Dutch and German markets:</p><br><h3 id="dutch-market-ceskysight-nl-">Dutch Market (ceskysight.nl)</h3><br><ol><li><strong>Reverse Traffic Decline:</strong></li></ol><ul><li>Prioritize optimization of top-performing pages that have lost rankings</li><li>Focus on improving Position 1 and Positions 2-3 rankings which have declined by 35.71% and 11.54% respectively</li><li>Implement a content refresh strategy for the top-performing pages identified in the analysis</li></ul><br><ol><li><strong>Improve Title and Meta Description Optimization:</strong></li></ol><ul><li>Rewrite titles and meta descriptions for key pages, focusing on high-volume keywords and clear value propositions</li><li>For the "vakantiehuis met privézwembad" page, use a title like "Vakantiehuis Tsjechië met Privézwembad | CeskySight"</li><li>Include calls to action in meta descriptions, such as "Boek nu uw droomvakantiehuis!"</li><li>Follow the pattern of successful competitors like Bohemia.nl and Belvilla.nl who use concise, keyword-rich titles</li></ul><br><ol><li><strong>Create Dedicated Landing Pages for Key Accommodation Types:</strong></li></ol><ul><li>Develop dedicated landing pages for specific types of holiday homes (e.g., "luxe chalets tsjechie," "vakantieboerderijen tsjechie")</li><li>Optimize these pages for relevant keywords and include high-quality images and detailed descriptions</li><li>Target the keyword gaps identified in the analysis, such as specific accommodation types and themed vacations</li></ul><br><ol><li><strong>Develop a "Christmas in Prague" Guide:</strong></li></ol><ul><li>Create a comprehensive guide to Prague during Christmas, including information about Christmas markets, events, and accommodation options</li><li>Optimize this guide for keywords like "kerstmarkten praag," "praag met kerst," and "kerstsfeer praag"</li><li>This represents a quick win opportunity as HomeToGo.nl currently dominates these seasonal keywords with 1,000 monthly searches and LOW competition</li></ul><br><ol><li><strong>Leverage Existing Content Strengths:</strong></li></ol><ul><li>Expand Prague-focused content, which performs exceptionally well (Franz Kafka, bridges)</li><li>Develop more culinary content similar to the successful "tsjechische knoflooksoep" page (110 monthly searches, position 1)</li><li>Create more "Top X" list content, which shows strong performance patterns across competitors</li><li>Enhance cultural content which attracts significant traffic</li></ul><br><ol><li><strong>Emphasize Luxury Positioning:</strong></li></ol><ul><li>Add "luxury" terminology to titles, meta descriptions, and content</li><li>Create dedicated content around luxury experiences in Czech Republic</li><li>Develop comparison content between standard and luxury accommodations</li><li>Target keywords like "luxe vakantiehuizen tsjechie" more aggressively to compete with Belvilla.nl and HomeToGo.nl</li></ul><br><ol><li><strong>Region-Specific Content Clusters:</strong></li></ol><ul><li>Create dedicated content hubs for each major Czech region (Prague, Bohemian Paradise, Krkonoše Mountains, etc.)</li><li>Develop supporting content around activities, local cuisine, and cultural experiences</li><li>Target keywords like "vakantiehuizen [region] tsjechie" with search volumes ranging from 90-320 monthly searches</li></ul><br><ol><li><strong>Implement a Blog Strategy Focused on Listicles and Destination Guides:</strong></li></ol><ul><li>Create blog posts in the form of listicles (e.g., "De 5 mooiste kastelen in Tsjechië," "De 10 beste restaurants in Praag")</li><li>Develop in-depth destination guides for popular cities and regions</li><li>Follow the successful pattern of Belvilla.nl's blog post format ("Wintersport in Tsjechië: de 6 beste skigebieden")</li></ul><br><ol><li><strong>Seasonal Content Calendar:</strong></li></ol><ul><li>Develop winter content (September-November) focusing on ski accommodations and Christmas markets</li><li>Create summer content (January-March) highlighting properties with pools and outdoor activities</li><li>Target seasonal keywords like "zomervakantie tsjechie met kinderen" (110 monthly searches)</li></ul><br><ol><li><strong>Backlink Acquisition Strategy:</strong></li></ol><ul><li>Target the 158 domains that link to ANWB.nl but not to CeskySight</li><li>Develop shareable infographics about Czech travel statistics to attract editorial links</li><li>Create expert guides that can earn links from the 94 domains linking to Praag-nu.nl</li><li>Improve anchor text diversity by creating linkable assets with keyword-rich titles</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong> A phased approach—optimizing existing high-value pages first, then building new targeted landing pages—will drive quick impact and sustainable growth.</div><br><h3 id="german-market-ceskysight-de-">German Market (ceskysight.de)</h3><br><ol><li><strong>Technical Content Improvements:</strong></li></ol><ul><li>Fix duplicate title tags and create unique, keyword-rich titles</li><li>Develop German-specific content rather than translations from Dutch</li><li>Improve internal linking structure between related content pieces</li></ul><br><ol><li><strong>Content Gap Filling:</strong></li></ol><ul><li>Create content targeting "ferienpark tschechien" (1,100 monthly searches)</li><li>Develop comprehensive guides for family vacations in Czech Republic</li><li>Create content around pet-friendly accommodations to target "mit hund" keywords</li></ul><br><ol><li><strong>Competitive Content Strategy:</strong></li></ol><ul><li>Implement interactive property finder tools similar to TschechienFerienhaus.de</li><li>Create expert interview series with local Czech tourism experts</li><li>Develop detailed region comparison guides with clear accommodation recommendations</li></ul><br><ol><li><strong>German-Specific Backlink Strategy:</strong></li></ol><ul><li>Leverage the strong German (.de) presence in the Dutch site's backlink profile (848 links)</li><li>Create German-language resources for travel bloggers to reference</li><li>Develop partnerships with German travel publications for editorial coverage</li><li>Clean up the 9 potentially harmful backlinks identified in the analysis</li></ul><br><ol><li><strong>Interactive Content Development:</strong></li></ol><ul><li>Create virtual tours of luxury vacation homes</li><li>Develop interactive maps of Czech regions with property filters</li><li>Create quizzes like "Which Czech Region is Right for Your Vacation?"</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong> Tailor the German content strategy to emphasize interactive tools and localized expertise, leveraging media partnerships to secure high-authority coverage.</div><br></div></section>
+                <section id="quick-wins-and-implementation-priorities" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Quick Wins and Implementation Priorities</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="quick-wins-1-2-months-">Quick Wins (1-2 Months):</h3><ol><li>Optimize titles and meta descriptions for the "vakantiehuis tsjechie" and "vakantiehuis met privézwembad" pages</li><li>Create a basic landing page for "Christmas in Prague" with information about Christmas markets and accommodation</li><li>Fix the 23 pages with duplicate title tags on the German website</li><li>Implement clear calls to action in meta descriptions following competitor patterns</li><li>Clean up the 9 potentially harmful backlinks identified in the German site analysis</li></ol><br><div class="highlight-box"><strong>Next Step:</strong> Assign ownership and set deadlines for each quick win; track weekly progress via SEO dashboard.</div><br><h3 id="medium-term-priorities-3-6-months-">Medium-Term Priorities (3-6 Months):</h3><ol><li>Develop dedicated landing pages for specific accommodation types (luxury chalets, farm stays, etc.)</li><li>Create comprehensive region-specific content hubs</li><li>Implement a blog strategy focused on listicles and destination guides</li><li>Develop a seasonal content calendar with content published 2-3 months before peak search periods</li><li>Begin targeted backlink acquisition from high-quality travel websites</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong> Align content production with seasonal demand and backlink outreach cycles to maximize impact.</div><br><h3 id="long-term-strategies-6-12-months-">Long-Term Strategies (6-12 Months):</h3><ol><li>Develop a comprehensive content strategy covering all aspects of Czech Republic travel</li><li>Build high-quality backlinks from relevant websites to improve domain authority</li><li>Create interactive tools like property finders and virtual tours</li><li>Continuously monitor competitor performance and adapt SEO strategy accordingly</li><li>Expand content to cover emerging travel trends and niche accommodation types</li></ol><br><div class="highlight-box"><strong>Clarification:</strong> Conduct quarterly SEO performance reviews to refine tactics, reallocate resources, and ensure ongoing alignment with business goals.</div></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - CeskySight',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

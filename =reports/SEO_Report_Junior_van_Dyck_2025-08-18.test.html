@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Junior van Dyck</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Junior van Dyck • www.camber.be</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Belgium Market</span>
+                        <span><i class="fas fa-calendar"></i> August 18, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>SEO Performance Metric</strong></th><th><strong>Value / Change (Belgium, Last 12 Months)</strong></th></tr></thead><tbody><tr><td class="">Organic Traffic Growth (ETV)</td><td class="positive">+37.41%</td></tr><tr><td class="">Keywords in Position 1</td><td class="positive">50 (+8.70%)</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="positive">111 (+48.00%)</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="positive">369 (+135.03%)</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="positive">227 (+40.99%)</td></tr><tr><td class="">Total Estimated Traffic Volume (ETV)</td><td class="">14,554</td></tr><tr><td class="">Estimated Paid Traffic Cost Equivalent</td><td class="">€20,121</td></tr></tbody></table></div><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Top Competitors</strong></th><th><strong>Keywords They Rank Well For (Camber Ranks Poorly)</strong></th></tr></thead><tbody><tr><td class="">maatkastenonline.be</td><td class="">maatkasten online (14,800 SV), tv meubel (9,900 SV), dressing (6,600 SV), maatkasten (2,400 SV)</td></tr><tr><td class="">dm-line.be</td><td class="">tv-meubel, dressings, inbouwkasten</td></tr><tr><td class="">ikea.com</td><td class="">tv-meubel, boekenkast, slaapkamer</td></tr></tbody></table></div><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Opportunity Keywords to Target</strong></th><th><strong>Search Volume (Belgium)</strong></th><th><strong>Competition</strong></th><th><strong>Why Important</strong></th></tr></thead><tbody><tr><td class="">maatkasten online</td><td class="">14,800</td><td class="">High</td><td class="">High volume, competitor stronghold, online intent</td></tr><tr><td class="">tv-meubel op maat</td><td class="">9,900</td><td class="">High</td><td class="">High commercial intent, competitor ranks well</td></tr><tr><td class="">dressing op maat</td><td class="">480</td><td class="">High</td><td class="">Strong commercial intent, pricing-related opportunities</td></tr><tr><td class="">dressing op maat prix</td><td class="">20-140</td><td class="">High</td><td class="">Seasonal peak in spring, high buyer intent</td></tr><tr><td class="">kast onder schuine wand</td><td class="">50-110</td><td class="">High</td><td class="">Niche long-tail, less competition</td></tr><tr><td class="">kast onder schuine wand zelf maken</td><td class="">0-10</td><td class="">Low</td><td class="">Low competition, DIY audience</td></tr><tr><td class="">bureau op maat prix</td><td class="">0-10</td><td class="">High</td><td class="">Pricing content opportunity</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize content around high-volume, high-intent keywords like “maatkasten online” and “tv-meubel op maat.”</li><li>Balance effort with niche long-tail keywords (e.g., “kast onder schuine wand”) for quicker ranking wins.</li><li>Address seasonal keyword peaks by aligning content publishing schedules (spring push for dressing pricing).</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Camber’s organic visibility in Belgium has grown strongly (+37.41% ETV), with solid rankings for branded and Dutch-language keywords.</li><li>The Dutch site outperforms the French version; French content needs expansion and optimization.</li><li>Top competitors (maatkastenonline.be, dm-line.be, ikea.com) dominate high-volume, high-intent keywords, especially with online configurators and clear calls to action.</li><li>Technical SEO issues include short homepage title tags, missing image alt texts, and some large images affecting page speed.</li><li>Backlink profile is healthy but heavily weighted toward Luxembourg; Belgian backlinks are underrepresented.</li><li>Content gaps exist in “Mood” category pages, pricing content, and French-language content.</li><li>Strong opportunity to develop an online configuration tool and expand content marketing with practical, budget-focused, and long-tail keyword content.</li><li>Seasonal keyword trends (e.g., dressing pricing) suggest timing content campaigns in spring.</li><li>Backlink building should focus on Belgian industry publications, local directories, and design platforms.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Convene an internal task force this week to assign owners for quick-win tasks (title tags, image alt text, French content translation).</li><li>Develop a 30-day roadmap for keyword-targeted content production based on opportunity keywords.</li><li>Initiate outreach planning for Belgian backlink targets.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-camber-www-camber-be-" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Camber (www.camber.be)</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Camber is a Belgian company with 30 years of experience specializing in the design and creation of custom storage solutions and furniture. They offer personalized services with an emphasis on Belgian craftsmanship. Their product range includes custom wardrobes and furniture for living rooms, bedrooms, laundry rooms, children's rooms, and offices. The company focuses on providing personalized solutions that adapt to each client's space and requirements. <a href="https://www.camber.be" class="link-reference" target="_blank" rel="noopener">Company Website</a></p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Emphasize the ‘30 years of Belgian craftsmanship’ in on-site banners and meta descriptions to strengthen trust signals.</li><li>Consider a customer testimonial slider on the homepage to showcase legacy and expertise.</li></ul><br></div></section>
+                <section id="1-overall-seo-performance-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-organic-visibility">Current Organic Visibility</h3><p>Our analysis shows that Camber has experienced significant growth in organic visibility in the Belgian market:</p><br><ul><li><strong>Organic Traffic Growth</strong>: +37.41% increase in Estimated Traffic Volume (ETV) from August 2024 to August 2025</li><li><strong>Current Organic Visibility (August 2025)</strong>:</li><li>Position 1: 50 keywords</li><li>Positions 2-3: 111 keywords</li><li>Positions 4-10: 369 keywords</li><li>Positions 11-20: 227 keywords</li><li>Total ETV: 14,554</li><li>Estimated paid traffic cost equivalent: €20,121</li></ul><br><h3 id="position-changes-year-over-year-">Position Changes (Year-over-Year)</h3><ul><li>Position 1: +8.70% increase</li><li>Positions 2-3: +48.00% increase</li><li>Positions 4-10: +135.03% increase</li><li>Positions 11-20: +40.99% increase</li><li>Lower positions (61-100): Notable decreases, indicating improved rankings overall</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ol><li><strong>Homepage (Dutch)</strong>: https://www.camber.be/nl/</li></ol><ul><li>Highest ETV (4,469.11)</li><li>Estimated paid traffic cost: €6,850.76</li><li>Ranks for 165 keywords with 8 in position 1</li></ul><br><ol><li><strong>Pricing Page</strong>: https://www.camber.be/nl/prijs-kast-op-maat-camber/</li></ol><ul><li>ETV: 559.88</li><li>Estimated paid traffic cost: €1,349.39</li><li>Strong top positions (2 in position 1, 6 in positions 2-3)</li></ul><br><ol><li><strong>TV Furniture Category</strong>: https://www.camber.be/nl/realisaties/categorie-woonkamer/tv-meubel-op-maat/</li></ol><ul><li>High keyword count (141)</li><li>ETV: 492.68</li></ul><br><h3 id="underperforming-pages">Underperforming Pages</h3><ol><li><strong>"Mood" Category Pages</strong>: Pages showcasing different interior design styles (e.g., "landelijke-mood," "scandinavische-mood") have lower ETVs and rankings compared to other categories.</li></ol><br><ol><li><strong>French Language Pages</strong>: The French version of the website significantly underperforms compared to the Dutch version, indicating a potential opportunity for optimization.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit and enrich “Mood” pages with additional visuals, style guides, and internal links to category pages.</li><li>Create a priority list of top 5 Dutch pages to translate and optimize in French, starting with the homepage and pricing.</li></ul><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><p>Several technical issues were identified that may be affecting performance:</p><br><ul><li><strong>Title Tag Issues</strong>: The homepage title is only 28 characters ("Armoires sur mesure | Camber"), well below the recommended minimum of 50 characters, limiting keyword targeting potential</li><li><strong>Image Optimization Problems</strong>:</li><li>11 images without alt text, reducing accessibility and missing SEO opportunities</li><li>6 large images exceeding 100KB that should be compressed for better page speed</li><li><strong>HTML Errors</strong>: Various HTML validation issues detected</li><li><strong>Render-blocking Resources</strong>: Scripts and stylesheets that delay page rendering</li><li><strong>Multilingual Content Structure</strong>: Blog content (16 articles) is split between French and Dutch, potentially diluting SEO focus</li></ul><br><p><strong>Positive Technical Factors</strong>:</p><ul><li>Very fast page load time (0.414 seconds)</li><li>Good internal linking structure (87 internal links)</li><li>Proper H1 tag implementation (1 per page)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Address title tag and image issues within the next sprint to maximize immediate technical gains.</li><li>Schedule a weekly check of HTML validation reports to catch new errors early.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-belgian-market" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Belgian Market</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-keyword-rankings">Current Keyword Rankings</h3><p>Camber currently ranks for 1,671 keywords in Belgium, with the following distribution:</p><ul><li>Top 3 positions: 161 keywords</li><li>Positions 4-10: 369 keywords</li><li>Positions 11-20: 227 keywords</li></ul><br><h3 id="top-performing-keywords-positions-1-10-">Top Performing Keywords (Positions 1-10)</h3><p>Camber dominates search results for numerous valuable keywords:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">boekenkast op maat</td><td class="">260</td><td class="">1</td></tr><tr><td class="">bureau in woonkamer integreren</td><td class="">90</td><td class="">1</td></tr><tr><td class="">camber</td><td class="">8100</td><td class="">1</td></tr><tr><td class="">camber kasten</td><td class="">1900</td><td class="">1</td></tr><tr><td class="">inbouwkast slaapkamer</td><td class="">170</td><td class="">2</td></tr><tr><td class="">inbouwkasten slaapkamer</td><td class="">170</td><td class="">6</td></tr><tr><td class="">opklapbaar bureau</td><td class="">140</td><td class="">6</td></tr><tr><td class="">vestiairekast inkomhal</td><td class="">140</td><td class="">2</td></tr></tbody></table></div><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Consider adding city modifiers (e.g., “boekenkast op maat antwerpen”) to further capitalize on location-based searches.</li></ul><br><h3 id="keyword-performance-patterns">Keyword Performance Patterns</h3><br><ol><li><strong>Strong Brand Presence</strong>: Camber dominates search results for branded keywords (e.g., "camber kasten," "camber [location]"), indicating strong brand recognition and effective brand SEO.</li></ol><br><ol><li><strong>Location-Based Keywords</strong>: The site ranks #1 for numerous location-specific keywords (e.g., "camber antwerpen," "camber brugge," "camber gent"), supporting their showroom-focused business model.</li></ol><br><ol><li><strong>Core Service Keywords</strong>: Strong rankings for key service terms like "boekenkast op maat" (custom bookcase), "dressing op maat" (custom dressing room), and "inbouwkasten slaapkamer" (built-in bedroom closets).</li></ol><br><ol><li><strong>Content Marketing Success</strong>: The keyword "bureau in woonkamer integreren" (integrating a desk in living room) ranks #1 and leads to a magazine article, highlighting the effectiveness of their content marketing strategy.</li></ol><br><h3 id="high-value-keyword-opportunities">High-Value Keyword Opportunities</h3><p>Based on our analysis, these keywords represent significant opportunities:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th></tr></thead><tbody><tr><td class="">custom storage solutions</td><td class="">1,000+</td><td class="">HIGH</td></tr><tr><td class="">Belgian furniture design</td><td class="">500+</td><td class="">MEDIUM</td></tr><tr><td class="">kast onder schuine wand</td><td class="">50-110</td><td class="">HIGH</td></tr><tr><td class="">dressing op maat prijs</td><td class="">20-140</td><td class="">HIGH</td></tr><tr><td class="">prijs dressing op maat</td><td class="">20-140</td><td class="">HIGH</td></tr><tr><td class="">kast onder schuine wand zelf maken</td><td class="">0-10</td><td class="">LOW</td></tr><tr><td class="">bureau op maat prijs</td><td class="">0-10</td><td class="">HIGH</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop dedicated landing pages for each high-value keyword cluster within the next 60 days.</li><li>Include clear pricing tables and comparison charts on pricing-focused pages to boost conversions.</li></ul><br><h3 id="keyword-gaps-vs-competitors">Keyword Gaps vs. Competitors</h3><p>Our competitive analysis identified several high-volume keywords where competitors outperform Camber:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th></tr></thead><tbody><tr><td class="">maatkasten online</td><td class="">14,800</td><td class="">HIGH</td></tr><tr><td class="">tv-meubel</td><td class="">9,900</td><td class="">HIGH</td></tr><tr><td class="">tv meubel</td><td class="">9,900</td><td class="">HIGH</td></tr><tr><td class="">dressing</td><td class="">6,600</td><td class="">HIGH</td></tr><tr><td class="">kasten op maat</td><td class="">4,400</td><td class="">HIGH</td></tr><tr><td class="">kast op maat</td><td class="">4,400</td><td class="">HIGH</td></tr><tr><td class="">maatkasten</td><td class="">2,400</td><td class="">HIGH</td></tr><tr><td class="">dressing op maat</td><td class="">480</td><td class="">HIGH</td></tr><tr><td class="">inbouwkast op maat</td><td class="">880</td><td class="">HIGH</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Close the gap on “maatkasten online” and “tv-meubel” by creating comparison content and in-depth product configurator demos.</li><li>Monitor competitor SERP features weekly to adapt content formats accordingly.</li></ul><br><h3 id="seasonal-trends">Seasonal Trends</h3><p>Our analysis shows seasonal patterns for certain keywords:</p><ul><li>"Dressing op maat prijs" and "prijs dressing op maat" show higher search volume in spring</li><li>This suggests timing promotional content and campaigns accordingly</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Schedule a content push in late winter (February–March) for dressing price guides and promotional offers.</li><li>Plan paid campaigns to coincide with organic content launches in spring.</li></ul><br><h3 id="global-competitors-for-key-terms">Global Competitors for Key Terms</h3><p>Our analysis identified major global competitors ranking for key terms that Camber should monitor:</p><br><ol><li><strong>IKEA</strong> (Storage Solution Systems)</li></ol><ul><li>Ranks #1 for "custom storage solutions"</li><li>Meta description emphasizes "full range of storage solution systems"</li></ul><br><ol><li><strong>The Container Store</strong> (Custom Spaces)</li></ol><ul><li>Ranks #3 for "custom storage solutions"</li><li>Highlights "custom cabinets, custom shelving, or tailored closet solutions"</li></ul><br><ol><li><strong>California Closets</strong></li></ol><ul><li>Ranks #4 for "custom storage solutions" and #7 for specific term "custom storage solutions for any room"</li><li>Emphasizes "custom closets, closet systems, and home storage solutions"</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Monitor global competitor meta descriptions for new value propositions (e.g., sustainability angles).</li><li>Test small budget campaigns targeting “Belgian furniture design” to gauge international interest.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><p>Our analysis identified three main competitors in the Belgian custom furniture market:</p><br><ol><li><strong>www.maatkastenonline.be</strong> (Direct Competitor)</li></ol><ul><li><strong>Strengths</strong>: Highest keyword match count, significantly higher estimated traffic volume</li><li><strong>Key Differentiator</strong>: Strong online design and configuration tools</li><li><strong>Top Keywords</strong>: "maatkasten online," "tv meubel," "dressing"</li><li><strong>SERP Strategy</strong>: Titles include exact keywords with clear calls to action (e.g., "Ontwerp je maatkast" - Design your custom cabinet)</li></ul><br><ol><li><strong>www.dm-line.be</strong> (Direct Competitor)</li></ol><ul><li><strong>Strengths</strong>: Strong rankings for "tv-meubel," "dressings," and "inbouwkasten"</li><li><strong>Key Differentiator</strong>: Emphasis on Belgian design and craftsmanship</li><li><strong>SERP Strategy</strong>: Highlights "100% Belgisch maatwerk" (100% Belgian custom work) and "10 jaar garantie" (10-year guarantee)</li></ul><br><ol><li><strong>www.ikea.com</strong> (Indirect Competitor)</li></ol><ul><li><strong>Strengths</strong>: High brand recognition, vast product range</li><li><strong>Key Differentiator</strong>: Affordability and wide selection</li><li><strong>Top Keywords</strong>: "tv-meubel," "boekenkast," "slaapkamer"</li><li><strong>SERP Strategy</strong>: Titles include "kopen" (buy) and meta descriptions emphasize Scandinavian design and low prices</li></ul><br><h3 id="successful-competitor-strategies">Successful Competitor Strategies</h3><br><ol><li><strong>Online Configuration Tools</strong>: Maatkastenonline.be's success is largely driven by their online configuration tool, allowing customers to design custom cabinets without visiting a showroom.</li></ol><br><ol><li><strong>Clear Calls to Action</strong>: Competitors use strong calls to action in titles and meta descriptions (e.g., "Ontwerp je maatkast," "Configureer je ontwerp!").</li></ol><br><ol><li><strong>Value Proposition Emphasis</strong>: Competitors clearly communicate their unique value propositions in SERP elements:</li></ol><ul><li>DM-Line: Belgian craftsmanship and 10-year guarantee</li><li>Ikea: Scandinavian design at affordable prices</li><li>Maatkastenonline: Online design and configuration</li></ul><br><ol><li><strong>Successful Content Types</strong>:</li></ol><ul><li>Product category pages (Ikea)</li><li>Configuration tools (Maatkastenonline)</li><li>Inspiration galleries (all competitors)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Ideate a simple MVP of an online configurator to test user engagement within 3 months.</li><li>Revise top 5 meta titles across key pages to include stronger CTAs by month-end.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><p>Our detailed backlink analysis reveals:</p><br><ul><li><strong>Total Backlinks</strong>: 8,920 backlinks with a low spam score of 11%</li><li><strong>Referring Domains</strong>: 620 unique domains (612 main domains)</li><li><strong>Domain Authority</strong>: Camber has a domain rank of 327</li><li><strong>Geographic Distribution</strong>:</li><li>Luxembourg: 4,806 backlinks (54%)</li><li>Belgium: 429 backlinks (4.8%)</li><li>France: 182 backlinks (2%)</li><li>Netherlands: 70 backlinks (0.8%)</li></ul><br><h3 id="backlink-quality-analysis">Backlink Quality Analysis</h3><p>The majority of Camber's backlinks come from domains with low spam scores, indicating a healthy backlink profile:</p><ul><li>Low spam score (0-30%): Majority of backlinks</li><li>Medium spam score (31-60%): Limited presence</li><li>High spam score (61-100%): Only 9 domains identified</li></ul><br><h3 id="key-referring-domains">Key Referring Domains</h3><p>Several types of websites contribute to Camber's backlink profile:</p><br><ol><li><strong>Job Listing Sites</strong>: Jobify.be provides multiple backlinks with "SOLLICITEER NU" (Apply Now) anchor text, indicating strong recruitment-focused link building.</li></ol><br><ol><li><strong>Business Directories</strong>: Sites like be-klantenservices.be, contactklantenservice.nl, and heures-douverture.com provide NAP citations and website links.</li></ol><br><ol><li><strong>Social Platforms</strong>: Pinterest.com backlinks with branded anchor text support visual content distribution.</li></ol><br><h3 id="backlink-competitors">Backlink Competitors</h3><p>Our analysis identified several competitors with overlapping backlink profiles:</p><br><ol><li><strong>Dribbble.com</strong>: 269 shared backlinks, suggesting design-focused content opportunities</li><li><strong>Heures-douverture.com</strong>: 164 shared backlinks, indicating business directory presence</li><li><strong>Europages.com</strong>: 56 shared backlinks, showing B2B directory importance</li><li><strong>Ikea.com</strong>: 22 shared backlinks, revealing furniture industry connections</li><li><strong>DM-line.be</strong>: 17 shared backlinks, confirming direct competitor overlap</li></ol><br><h3 id="link-building-opportunities">Link Building Opportunities</h3><br><ol><li><strong>Industry Publications</strong>: Belgian interior design magazines and blogs that currently link to competitors but not to Camber</li></ol><br><ol><li><strong>Local Business Directories</strong>: Ensure consistent NAP (Name, Address, Phone) information across all Belgian business directories</li></ol><br><ol><li><strong>Recruitment Platforms</strong>: Expand presence on job sites beyond Jobify.be to leverage recruitment as a link building strategy</li></ol><br><ol><li><strong>Design Platforms</strong>: Given the overlap with Dribbble.com, creating more design-focused content could attract similar backlinks</li></ol><br><ol><li><strong>Geographic Expansion</strong>: While Luxembourg provides the majority of backlinks, there's significant opportunity to build more Belgian-specific backlinks</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Focus outreach on top Belgian design blogs and local news outlets to rebalance geographic distribution.</li><li>Develop a downloadable industry report or trend guide as a linkable asset for magazines and directories.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="content-gap-analysis">Content Gap Analysis</h3><p>Based on our keyword and competitive analysis, we recommend:</p><br><ol><li><strong>Enhance "Mood" Category Pages</strong>: These pages are currently underperforming despite targeting valuable design aesthetic keywords. They should be optimized with more comprehensive content and better internal linking.</li></ol><br><ol><li><strong>French Language Content Expansion</strong>: The French version of the site is performing well for some keywords (e.g., "meuble sur mesure tv"), but there's significant opportunity to translate more top-performing Dutch content to capture a wider Belgian audience.</li></ol><br><ol><li><strong>Expand Magazine/Blog Content</strong>: The success of articles like "bureau in woonkamer integreren" suggests expanding the magazine section with more practical design advice, storage solutions, and integration ideas.</li></ol><br><ol><li><strong>Price-Related Content</strong>: Keywords like "dressing op maat prijs" show strong commercial intent. Creating more detailed pricing information or guides could attract qualified leads.</li></ol><br><ol><li><strong>Address Keyword Cannibalization</strong>: For keywords like "inbouwkasten slaapkamer" that have multiple ranking positions (2 and 6), review content and internal linking to ensure consistent targeting.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Map existing content against the above gaps in a spreadsheet and assign writers to each priority by next week.</li><li>Launch a translation project plan for French content with milestone check-ins.</li></ul><br><h3 id="serp-element-optimization">SERP Element Optimization</h3><p>Based on competitor analysis, we recommend:</p><br><ol><li><strong>Improve Title Tags</strong>:</li></ol><ul><li>Current homepage title is only 28 characters ("Armoires sur mesure | Camber")</li><li>Expand to include key services and value proposition (e.g., "Armoires & Meubles Sur Mesure | Design Belge & Qualité | Camber")</li><li>Add stronger calls to action in titles (e.g., "Ontwerp uw droomkast online" - Design your dream cabinet online)</li></ul><br><ol><li><strong>Enhance Meta Descriptions</strong>:</li></ol><ul><li>Current meta description (148 characters) is good but could be optimized</li><li>Highlight key benefits like Belgian craftsmanship, personalized service, and quality guarantees</li><li>Include clear calls to action</li></ul><br><ol><li><strong>Featured Snippet Optimization</strong>: Structure content to capture featured snippets for informational queries (e.g., "how to design a custom wardrobe")</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>A/B test two variations of homepage title and meta description over a 4-week period to identify best CTR drivers.</li><li>Use structured FAQ schema on key pages to boost chances for rich results.</li></ul><br><h3 id="technical-optimization-recommendations">Technical Optimization Recommendations</h3><br><ol><li><strong>Image Optimization</strong>:</li></ol><ul><li>Add alt text to the 11 images currently missing this attribute</li><li>Compress the 6 large images exceeding 100KB to improve page load speed</li><li>Implement lazy loading for images below the fold</li></ul><br><ol><li><strong>Multilingual SEO</strong>:</li></ol><ul><li>Ensure proper hreflang implementation between Dutch and French versions</li><li>Create content parity between language versions, focusing on translating top-performing Dutch pages to French</li><li>Consider language-specific keyword research to capture nuances in search behavior</li></ul><br><ol><li><strong>Blog Structure Optimization</strong>:</li></ol><ul><li>Organize the 16 existing articles into clear topic clusters</li><li>Implement consistent internal linking between related articles</li><li>Create a content calendar balancing Dutch and French content creation</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Schedule a technical audit call with development team to assign fixes within the next sprint.</li><li>Implement hreflang tags site-wide and verify via Google Search Console.</li></ul><br><h3 id="content-format-recommendations">Content Format Recommendations</h3><br><ol><li><strong>Online Configuration Tool</strong>: Develop an online configuration tool similar to maatkastenonline.be to compete for "online" keywords and provide a better user experience</li></ol><br><ol><li><strong>Video Content</strong>: SERP analysis shows video results appear for some keywords. Creating video content showcasing Camber's custom solutions could improve visibility.</li></ol><br><ol><li><strong>Long-Tail Content Strategy</strong>: Develop content targeting specific long-tail keywords like "boekenkast op maat met schuifdeuren" (custom bookcase with sliding doors) or "dressing op maat kleine ruimte" (custom dressing room for small spaces).</li></ol><br><ol><li><strong>Budget-Focused Content</strong>: Create content that addresses different budget levels while highlighting Camber's value proposition (durability, design expertise)</li></ol><br><ol><li><strong>Career Content Hub</strong>: Given the strong backlink profile from job sites, creating a dedicated careers section with rich content about working at Camber could attract more quality backlinks</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Pilot 2–3 short “how-to” videos for top-performing pages to test engagement and track video search impressions.</li><li>Launch a quarterly budget-guide series to capture budget-focused search queries.</li></ul><br><h3 id="backlink-strategy-recommendations">Backlink Strategy Recommendations</h3><br><ol><li><strong>Diversify Anchor Text</strong>: Current anchor text is heavily focused on basic website links and recruitment calls-to-action. Diversifying anchor text with more keyword-rich variations would improve relevancy signals.</li></ol><br><ol><li><strong>Internal Page Link Building</strong>: Focus on building links to key service pages rather than just the homepage to distribute link equity more effectively.</li></ol><br><ol><li><strong>Geographic Link Building</strong>: Target more Belgian websites for backlinks, as the current profile is heavily weighted toward Luxembourg sources.</li></ol><br><ol><li><strong>Content-Driven Link Building</strong>: Create linkable assets such as industry reports, design guides, or interactive tools that naturally attract backlinks from design and home improvement websites.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Compile a list of 20 Belgian design and lifestyle blogs for outreach next quarter.</li><li>Draft an outline for an annual “Belgian Furniture Trends” report as a flagship linkable asset.</li></ul><br></div></section>
+                <section id="conclusion-and-next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion and Next Steps</h2>
+                    </div>
+                    <div class="section-content"><br><p>Camber has shown strong organic growth in the Belgian market (+37.41% ETV year-over-year), with particularly strong performance for branded and Dutch-language keywords. Their content marketing strategy is working well, especially for the magazine section and project showcases.</p><br><p>However, direct competitors like maatkastenonline.be are outperforming Camber for high-volume keywords, particularly those with "online" intent. The competitive analysis reveals several strategic opportunities:</p><br><h3 id="short-term-recommendations-quick-wins-">Short-Term Recommendations (Quick Wins)</h3><br><ol><li><strong>Fix Technical SEO Issues</strong>:</li></ol><ul><li>Expand the homepage title from 28 characters to 50+ characters with targeted keywords</li><li>Add alt text to the 11 images currently missing this attribute</li><li>Compress the 6 large images exceeding 100KB</li></ul><br><ol><li><strong>Optimize SERP Elements</strong>: Revise titles and meta descriptions for top 10-20 pages based on keyword performance and competitor analysis</li></ol><br><ol><li><strong>Add Clear Calls to Action</strong>: Implement stronger calls to action on key landing pages (e.g., "Vraag een gratis offerte aan" - Request a free quote)</li></ol><br><ol><li><strong>Expand French Content</strong>: Translate top-performing Dutch content to capture more of the French-speaking Belgian market</li></ol><br><ol><li><strong>Target High-Value Keywords</strong>: Create dedicated landing pages for high-volume keywords like "maatkasten online," "tv-meubel op maat," and "dressing op maat"</li></ol><br><ol><li><strong>Clean Up Backlink Profile</strong>: While the overall spam score is low (11%), addressing the 9 high-spam domains could further improve domain authority</li></ol><br><h3 id="long-term-strategic-initiatives">Long-Term Strategic Initiatives</h3><br><ol><li><strong>Develop an Online Configuration Tool</strong>: Invest in an online tool that allows users to design custom cabinets, directly competing with maatkastenonline.be's key differentiator</li></ol><br><ol><li><strong>Comprehensive Content Marketing Strategy</strong>: Expand the magazine section with more in-depth content addressing user needs and questions</li></ol><br><ol><li><strong>Build Backlinks to Internal Pages</strong>: Focus link building efforts on key service pages rather than just the homepage</li></ol><br><ol><li><strong>Target Global Keywords</strong>: Develop content targeting international terms like "custom storage solutions" and "Belgian furniture design" to compete with global brands like IKEA and California Closets</li></ol><br><ol><li><strong>Geographic Backlink Expansion</strong>: Develop a targeted outreach campaign to increase Belgian-specific backlinks, balancing the current Luxembourg-heavy profile</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize quick-win technical fixes and content translations in the first 30 days.</li><li>Allocate a cross-functional team for long-term projects (configurator, global content) with quarterly milestones to track progress.</li></ul><br><p>By implementing these recommendations, Camber can further strengthen their position in the Belgian custom furniture market, capture more qualified leads, and drive business growth through organic search. Their strong foundation of quality backlinks and growing organic visibility provides an excellent platform for continued SEO success.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Junior van Dyck',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

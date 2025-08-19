@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - .</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">. • https://crowdaboutnow.nl/</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 19, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>SEO Performance Overview (Last 12 Months)</strong></th><th><strong>Value / Change</strong></th></tr></thead><tbody><tr><td class="">Estimated Monthly Organic Traffic (ETV)</td><td class="">31,543.77 visits</td></tr><tr><td class="">Organic Traffic Growth</td><td class="negative">-2.22% YoY</td></tr><tr><td class="">Total Ranking Keywords</td><td class="">2,042</td></tr><tr><td class="">Keywords in Position 1</td><td class="positive">8 (-11.11% YoY)</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="positive">73 (-12.05% YoY)</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="positive">616 (+21.98% YoY)</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="positive">609 (+6.10% YoY)</td></tr><tr><td class="">Keywords in Positions 21-30</td><td class="positive">287 (-28.96% YoY)</td></tr><tr><td class="">Lost Keywords</td><td class="">498</td></tr><tr><td class="">New Keywords</td><td class="">453</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The drop in top‐1 to top‐3 rankings combined with growth in positions 4‐10 highlights low‐hanging fruit: optimize mid‐tier pages (positions 4–10) to push them into the top 3 for immediate traffic gains.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Top Competitors & Keywords They Rank Well For</strong></th><th><strong>Search Volume</strong></th><th><strong>CrowdAboutNow Position</strong></th></tr></thead><tbody><tr><td class="">investeerders.nl</td><td class=""></td><td class=""></td></tr><tr><td class="">- crowdfunding</td><td class="">14,800</td><td class="">Not top 3</td></tr><tr><td class="">- crowdfunding starten</td><td class="">1,300</td><td class="">Not top 3</td></tr><tr><td class="">- crowdfunding platforms</td><td class="">590</td><td class="">Not top 3</td></tr><tr><td class="">- crowdfunding investeren</td><td class="">480</td><td class="">Not top 3</td></tr><tr><td class="">geldvoorelkaar.nl</td><td class=""></td><td class=""></td></tr><tr><td class="">- crowdfunding</td><td class="">14,800</td><td class="">Not top 3</td></tr><tr><td class="">- crowdfunding projecten</td><td class="">110</td><td class="">Not top 3</td></tr><tr><td class="">- crowdfunding bedrijven</td><td class="">110</td><td class="">Not top 3</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Competitors dominate high‐volume generic queries; develop targeted pillar content around “crowdfunding platforms” and related themes to claw back visibility.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Opportunity Keywords to Target</strong></th><th><strong>Monthly Search Volume</strong></th><th><strong>Competition</strong></th><th><strong>Why Target?</strong></th></tr></thead><tbody><tr><td class="">crowdfunding platforms nederland</td><td class="">70</td><td class="">Medium</td><td class="">High intent, relevant to platform comparison</td></tr><tr><td class="">horeca crowdfunding nederland</td><td class="">40</td><td class="">Low</td><td class="">Niche focus, aligns with hospitality campaigns</td></tr><tr><td class="">is crowdfunding een lening</td><td class="">20</td><td class="">Low</td><td class="">Informational query, good for educational content</td></tr><tr><td class="">crowdfunding lening</td><td class="">130</td><td class="">High</td><td class="">High volume, competitive but valuable</td></tr><tr><td class="">top 10 crowdfunding nederland</td><td class="">450</td><td class="">High</td><td class="">Popular list format, competitor content success</td></tr><tr><td class="">succesvol investeren in startups</td><td class="">20</td><td class="">Medium</td><td class="">Long-tail, investment-focused</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Map each opportunity keyword to a dedicated landing or blog page</li><li>Craft intent-driven outlines and assign CTAs before publishing</li><li>Schedule content production in line with editorial calendar</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li><strong>Organic traffic slightly declined (-2.22%)</strong> over the past year, with a drop in top 3 keyword rankings.</li><li><strong>Strong brand keyword rankings (#1 for "crowdaboutnow")</strong>, but weak presence on high-volume generic keywords like "crowdfunding."</li><li><strong>Competitors investeerders.nl and geldvoorelkaar.nl dominate high-volume, high-competition keywords</strong> that CrowdAboutNow ranks poorly for.</li><li><strong>Campaign pages drive significant traffic but suffer from technical SEO issues</strong> (missing H1s, slow page speed, indexing problems).</li><li><strong>Backlink profile is solid with 7,072 backlinks, mostly from Dutch domains, but several high-authority domains link only to competitors.</strong></li><li><strong>Content gaps exist in comparison content, educational guides, and local SEO targeting.</strong></li><li><strong>Technical SEO improvements and optimized meta tags can yield quick wins.</strong></li><li><strong>Backlink acquisition opportunities include Dutch financial news sites and local business directories.</strong></li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Parallelize technical fixes with new content creation: quick technical wins on campaign pages and launch educational/comparison assets to regain visibility on generic queries.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-crowdaboutnow" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: CrowdAboutNow</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>CrowdAboutNow is a crowdfunding platform operating in the Netherlands (<a href="https://crowdaboutnow.nl/" class="link-reference" target="_blank" rel="noopener">Company Website</a>). This report provides a comprehensive SEO analysis of CrowdAboutNow's online presence in the Dutch market, with actionable recommendations to improve their search visibility and outrank competitors.</p><br></div></section>
+                <section id="1-company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">1. Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>CrowdAboutNow operates as a crowdfunding platform in the Netherlands, helping businesses and entrepreneurs raise capital through their online platform. Their website (crowdaboutnow.nl) serves the Dutch market, focusing on connecting project creators with potential investors.</p><br></div></section>
+                <section id="2-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">2. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-traffic">Organic Visibility and Traffic</h3><ul><li><strong>Current Estimated Traffic Volume (ETV)</strong>: 31,543.77 monthly visits</li><li><strong>12-Month Trend</strong>: 2.22% decrease in organic traffic from August 2024 to August 2025</li><li><strong>Estimated Paid Traffic Cost</strong>: €17,653.94 (value of organic traffic if purchased through paid channels)</li></ul><br><h3 id="position-distribution-august-2025-">Position Distribution (August 2025)</h3><ul><li>Position 1: 8 keywords (-11.11% year-over-year)</li><li>Positions 2-3: 73 keywords (-12.05% year-over-year)</li><li>Positions 4-10: 616 keywords (+21.98% year-over-year)</li><li>Positions 11-20: 609 keywords (+6.10% year-over-year)</li><li>Positions 21-30: 287 keywords (-28.96% year-over-year)</li><li>Lower positions (31-100): Significant decreases across all ranges, indicating potential issues with long-tail keyword performance</li></ul><br><h3 id="keyword-movement-trends">Keyword Movement Trends</h3><ul><li>New rankings: 453 keywords</li><li>Improved rankings: 564 keywords</li><li>Declining rankings: 778 keywords</li><li>Lost rankings: 498 keywords</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ul><li><strong>Homepage</strong> (https://crowdaboutnow.nl/): Highest traffic performer (ETV: 1,293.71) but shows ranking volatility</li><li><strong>Campaign Pages</strong>: Several high-performing campaign pages including:</li><li>/campagnes/oedipus (ETV: 636.01)</li><li>/campagnes/papiscomfortkitchen (ETV: 595.84)</li><li>/campagnes/dukeoftokyoutrecht (ETV: 599.34)</li><li>/campagnes/taman-indonesia (ETV: 488.40)</li></ul><br><h3 id="technical-seo-issues-identified">Technical SEO Issues Identified</h3><ul><li>Missing H1 tags on key pages</li><li>Render-blocking resources affecting page load speed</li><li>Low content rates on some campaign pages</li><li>Potential indexing issues with campaign pages</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize fixing missing H1s and deferring non-critical scripts in the next development sprint</li><li>Audit a sample of 20 campaign pages for indexing issues and low content depth</li></ul><br></div></section>
+                <section id="3-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">3. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-keyword-performance">Current Keyword Performance</h3><ul><li>Total ranking keywords: 2,042 (as of August 2025)</li><li>Strong performance in mid-range positions (4-20)</li><li>Weakness in top positions (1-3) with only 81 keywords ranking</li><li>Significant decline in long-tail keyword rankings (positions 31-100)</li></ul><br><h3 id="top-performing-keywords-positions-1-10-">Top Performing Keywords (Positions 1-10)</h3><p>CrowdAboutNow ranks well for the following high-value keywords:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">Birdie's Play Café</td><td class="">390</td><td class="">1</td></tr><tr><td class="">crowd about now</td><td class="">590</td><td class="">1</td></tr><tr><td class="">crowdaboutnow</td><td class="">1600</td><td class="">1</td></tr><tr><td class="">crowdaboutnow inloggen</td><td class="">90</td><td class="">1</td></tr><tr><td class="">duetz crowdfunding</td><td class="">50</td><td class="">1</td></tr><tr><td class="">no social waste arnhem</td><td class="">90</td><td class="">1</td></tr><tr><td class="">pim duetz</td><td class="">210</td><td class="">1</td></tr><tr><td class="">crowdfunding horeca</td><td class="">720</td><td class="">3</td></tr><tr><td class="">crowdfunding nederland</td><td class="">390</td><td class="">3</td></tr><tr><td class="">startup crowdfunding</td><td class="">70</td><td class="">2</td></tr></tbody></table></div><h3 id="keyword-opportunities">Keyword Opportunities</h3><p>Based on our analysis, we've identified these high-potential keywords to target:</p><br><p><strong>Top Priority Keywords:</strong></p><ul><li>crowdfunding platforms nederland (70 monthly searches, MEDIUM competition)</li><li>horeca crowdfunding nederland (40 monthly searches, LOW competition)</li><li>is crowdfunding een lening (20 monthly searches, LOW competition)</li></ul><br><p><strong>Secondary Keywords:</strong></p><ul><li>crowdfunding lening (130 monthly searches, HIGH competition)</li><li>lening crowdfunding (130 monthly searches, HIGH competition)</li><li>hoe moet je investeren in startups (20 monthly searches, LOW competition)</li><li>succesvol investeren in startups (20 monthly searches, MEDIUM competition)</li></ul><br><p><strong>Long-term Opportunities:</strong></p><ul><li>top 10 crowdfunding nederland (450 monthly searches, HIGH competition)</li><li>investeren in startups crowdfunding (80 monthly searches, HIGH competition)</li></ul><br><h3 id="key-keyword-insights">Key Keyword Insights</h3><ul><li><strong>Strong Brand Recognition</strong>: The site ranks #1 for branded terms like "crowdaboutnow" (1,600 monthly searches)</li><li><strong>Campaign Page Focus</strong>: Most top-ranking keywords lead to specific campaign pages</li><li><strong>Local SEO Importance</strong>: Many top keywords include location names (Rotterdam, Utrecht, Arnhem, etc.)</li><li><strong>Question-Based Keywords</strong>: Opportunity to target informational queries like "is crowdfunding een lening"</li><li><strong>Niche Focus</strong>: Strong performance in hospitality crowdfunding ("horeca crowdfunding")</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Leverage brand authority by interlinking high‐authority campaign pages to new informational posts, boosting topical relevance for question-based searches.</li></ul><br></div></section>
+                <section id="4-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">4. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-competitors-overview">Top Competitors Overview</h3><br><h4 id="1-www-investeerders-nl">1. www.investeerders.nl</h4><ul><li><strong>Type</strong>: Indirect competitor (comparison website)</li><li><strong>Strengths</strong>: Consistently ranks higher for a large number of relevant keywords</li><li><strong>Content Focus</strong>: Provides overview information, comparisons, and lists related to crowdfunding platforms</li><li><strong>Target Audience</strong>: Both investors and businesses seeking funding</li><li><strong>Key Content Strategy</strong>: "Top-10 overzicht" format for crowdfunding platforms</li></ul><br><h4 id="2-www-geldvoorelkaar-nl">2. www.geldvoorelkaar.nl</h4><ul><li><strong>Type</strong>: Direct competitor (crowdfunding platform)</li><li><strong>Strengths</strong>: Outperforming CrowdAboutNow for many key terms</li><li><strong>Positioning</strong>: Markets itself as the largest crowdfunding platform in the Netherlands</li><li><strong>Focus</strong>: Sustainable financing and business investment</li><li><strong>Key Content Strategy</strong>: Emphasizes platform size and sustainability in meta descriptions</li></ul><br><h4 id="3-venturecapital-nl">3. venturecapital.nl</h4><ul><li><strong>Type</strong>: Indirect competitor (venture capital platform)</li><li><strong>Strengths</strong>: High ranking for specific niche terms</li><li><strong>Notable Keyword</strong>: "the green table" (70 monthly searches, LOW competition)</li></ul><br><h3 id="competitor-keyword-analysis">Competitor Keyword Analysis</h3><br><h4 id="high-value-keywords-where-competitors-outrank-crowdaboutnow-">High-Value Keywords Where Competitors Outrank CrowdAboutNow:</h4><br><p><strong>Investeerders.nl Rankings:</strong></p><ul><li>"crowdfunding" (14,800 monthly searches, HIGH competition)</li><li>"crowdfunding starten" (1,300 monthly searches, HIGH competition)</li><li>"crowdfunding platforms" (590 monthly searches, HIGH competition)</li><li>"crowdfundingplatform" (590 monthly searches, HIGH competition)</li><li>"crowdfunding investeren" (480 monthly searches, HIGH competition)</li><li>"investeren in crowdfunding" (480 monthly searches, HIGH competition)</li><li>"wat is crowdfunding" (480 monthly searches, LOW competition)</li><li>"crowdfunding nederland" (390 monthly searches, HIGH competition)</li><li>"hoe werkt crowdfunding" (210 monthly searches, HIGH competition)</li></ul><br><p><strong>Geldvoorelkaar.nl Rankings:</strong></p><ul><li>"crowdfunding" (14,800 monthly searches, HIGH competition)</li><li>"crowdfunding platforms" (590 monthly searches, HIGH competition)</li><li>"crowdfunding investeren" (480 monthly searches, HIGH competition)</li><li>"crowdfunding nederland" (390 monthly searches, HIGH competition)</li><li>"crowdfunding projecten" (110 monthly searches, HIGH competition)</li><li>"crowdfunding bedrijven" (110 monthly searches, MEDIUM competition)</li></ul><br><h3 id="serp-strategy-analysis">SERP Strategy Analysis</h3><br><h4 id="title-and-meta-description-comparison-">Title and Meta Description Comparison:</h4><ul><li><strong>CrowdAboutNow</strong>: Uses consistent but generic title format: "CrowdAboutNow: Crowdfunding Nederland." Meta descriptions often repeat the platform's purpose without clear differentiation.</li><li><strong>Investeerders.nl</strong>: Uses keyword-rich titles that clearly indicate content purpose (e.g., "Crowdfunding-platforms in Nederland | Top-10 overzicht"). Meta descriptions provide concise content summaries with calls to action.</li><li><strong>Geldvoorelkaar.nl</strong>: Includes brand name and value proposition: "Crowdfunding platform Geldvoorelkaar sinds 2011 in Nederland." Meta descriptions highlight their position as the largest platform and mention sustainable financing.</li></ul><br><h4 id="successful-content-types-">Successful Content Types:</h4><ul><li><strong>Platform Comparisons</strong>: Investeerders.nl's "Top-10 overzicht" format performs exceptionally well</li><li><strong>Informational Guides</strong>: Content explaining "wat is crowdfunding," "hoe werkt crowdfunding," etc.</li><li><strong>Project Listings</strong>: Geldvoorelkaar.nl's "Crowdfunding projecten" page ranks well, indicating user interest in browsing available investment opportunities</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Model new title/meta templates on investeerders.nl’s structure, injecting USPs and calls to action</li><li>Run A/B tests on 3–5 top landing pages to measure CTR improvements</li></ul><br></div></section>
+                <section id="5-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">5. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li><strong>Total Backlinks</strong>: 7,072 backlinks pointing to crowdaboutnow.nl</li><li><strong>Referring Domains</strong>: 1,521 unique domains linking to the site</li><li><strong>Domain Spam Score</strong>: 12% (considered low/healthy)</li><li><strong>Domain Rank</strong>: 353</li><li><strong>Geographic Distribution</strong>: Majority of backlinks (3,799) come from .nl domains, followed by .com domains (1,678)</li><li><strong>Link Types</strong>: 5,309 anchor text links, 812 image links, 44 redirects</li><li><strong>Link Attributes</strong>: 1,021 nofollow links, 2,025 with noopener attribute</li></ul><br><h3 id="backlink-quality-analysis">Backlink Quality Analysis</h3><ul><li><strong>High-Quality Referring Domains</strong>: The site has backlinks from reputable Dutch websites including:</li><li>deondernemer.nl (2% spam score)</li><li>bartsboekje.com (0% spam score)</li><li>horecatrends.com (0% spam score)</li><li>fok.nl (4% spam score)</li><li>mtsprout.nl (0% spam score)</li></ul><br><ul><li><strong>Anchor Text Distribution</strong>: Most backlinks use relevant anchor text related to crowdfunding:</li><li>"crowdfunding campagne via CrowdAboutNow"</li><li>"CROWDFUND CAMPAGNE"</li><li>"CrowdAboutNow"</li><li>"crowdfunding op CrowdAboutNow.nl"</li></ul><br><ul><li><strong>Toxic Backlinks</strong>: Analysis shows very few potentially harmful backlinks, with only 2 medium spam score domains identified:</li><li>ecodorpboekel.nl (32% spam score)</li><li>gratisforums.com (40% spam score)</li></ul><br><h3 id="competitor-backlink-comparison">Competitor Backlink Comparison</h3><ul><li><strong>Key Backlink Competitors</strong>:</li><li>crunchbase.com (rank: 64, 257 shared backlinks)</li><li>oneplanetcrowd.com (rank: 63, 141 shared backlinks)</li><li>geldvoorelkaar.nl (rank: 94, 51 shared backlinks)</li><li>kickstarter.com (rank: 131, 56 shared backlinks)</li></ul><br><ul><li><strong>Backlink Gap Analysis</strong>: Several high-authority domains link to competitors but not to CrowdAboutNow:</li><li>ing.nl (rank: 28)</li><li>nrc.nl (rank: 44)</li><li>ivn.nl (rank: 46)</li><li>tweakers.net (rank: 49)</li></ul><br><h3 id="backlink-acquisition-opportunities">Backlink Acquisition Opportunities</h3><ol><li><strong>Financial News Sites</strong>: Target Dutch financial news platforms like nrc.nl and iex.nl</li><li><strong>Local Business Directories</strong>: Increase presence on Dutch business directories</li><li><strong>Success Stories</strong>: Leverage successful campaign stories for backlinks from local news outlets</li><li><strong>Industry Partnerships</strong>: Develop relationships with complementary financial services platforms</li><li><strong>Educational Content</strong>: Create shareable educational content about crowdfunding to attract natural backlinks</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Build a 90-day outreach calendar focusing on one new high-authority domain per week</li><li>Track link acquisition rates and refine outreach messaging based on early wins</li></ul><br></div></section>
+                <section id="6-content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">6. Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="based-on-keyword-and-competitor-analysis">Based on Keyword and Competitor Analysis</h3><ol><li><strong>Improve Title and Meta Description Optimization</strong></li></ol><ul><li>Rewrite title tags to be more keyword-rich and specific</li><li>Example: Instead of "CrowdAboutNow: Crowdfunding Nederland," use "CrowdAboutNow: Crowdfunding Platform for Sustainable Businesses in the Netherlands"</li><li>Create more compelling meta descriptions with clear calls to action</li></ul><br><ol><li><strong>Create Comparison Content</strong></li></ol><ul><li>Develop a comprehensive comparison page evaluating CrowdAboutNow against other crowdfunding platforms</li><li>Target keywords like "crowdfunding platforms vergelijken" and "beste crowdfunding platform nederland"</li><li>Highlight CrowdAboutNow's unique strengths and differentiators</li></ul><br><ol><li><strong>Expand Informational Content</strong></li></ol><ul><li>Create in-depth guides addressing common questions:</li><li>"Wat is crowdfunding?"</li><li>"Hoe werkt crowdfunding?"</li><li>"Moet je crowdfunding terugbetalen?"</li><li>"Hoe start je crowdfunding?"</li><li>Optimize existing informational pages to be more comprehensive</li></ul><br><ol><li><strong>Optimize Campaign Pages</strong></li></ol><ul><li>Ensure campaign pages are easily accessible and well-optimized</li><li>Improve filtering and search functionality to help users find relevant investment opportunities</li><li>Add more detailed information to campaign pages:</li><li>The problem the business is solving</li><li>Team background information</li><li>Financial projections</li><li>Use cases</li><li>Incorporate high-quality images and videos to increase engagement</li></ul><br><ol><li><strong>Target Niche Industries</strong></li></ol><ul><li>Create dedicated landing pages for industries where CrowdAboutNow specializes</li><li>Example: If focusing on hospitality, create a "horeca crowdfunding" page showcasing successful restaurant projects</li><li>Optimize these pages with relevant keywords and case studies</li></ul><br><ol><li><strong>Develop Local SEO Strategy</strong></li></ol><ul><li>Create dedicated location pages for cities where CrowdAboutNow has a strong presence</li><li>Optimize Google Business Profile with accurate information and regular updates</li><li>Build citations on relevant Dutch business directories</li></ul><br><h3 id="backlink-strategy-recommendations">Backlink Strategy Recommendations</h3><ol><li><strong>Target High-Authority Dutch Websites</strong></li></ol><ul><li>Reach out to financial news sites like nrc.nl and iex.nl for coverage</li><li>Develop relationships with business publications like deondernemer.nl for feature articles</li></ul><br><ol><li><strong>Leverage Successful Campaigns</strong></li></ol><ul><li>Create case studies of successful crowdfunding campaigns</li><li>Reach out to local news outlets to cover success stories</li><li>Encourage funded businesses to link back to their campaign pages</li></ul><br><ol><li><strong>Content Partnerships</strong></li></ol><ul><li>Collaborate with complementary financial services platforms</li><li>Create co-branded educational content about crowdfunding and investment</li><li>Develop relationships with Dutch business influencers and bloggers</li></ul><br><ol><li><strong>Reclaim Unlinked Brand Mentions</strong></li></ol><ul><li>Identify websites mentioning CrowdAboutNow without linking</li><li>Request backlinks for existing brand mentions</li><li>Monitor new brand mentions for link building opportunities</li></ul><br><ol><li><strong>Competitor Backlink Analysis</strong></li></ol><ul><li>Target websites linking to competitors like oneplanetcrowd.com and geldvoorelkaar.nl</li><li>Analyze high-authority backlinks from sites like ing.nl and tweakers.net</li><li>Create superior content to attract links from these sources</li></ul><br><h3 id="technical-improvements">Technical Improvements</h3><ul><li>Address missing H1 tags on key pages</li><li>Optimize render-blocking resources to improve page load speed</li><li>Increase content depth on campaign pages with low content rates</li><li>Resolve potential indexing issues with campaign pages</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>All new content and structural updates should align with the identified keyword clusters and user intent stages to maximize topical authority.</li></ul><br></div></section>
+                <section id="7-conclusion-action-plan" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tasks"></i></div>
+                        <h2 class="section-title">7. Conclusion & Action Plan</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-seo-status">Current SEO Status</h3><ul><li>CrowdAboutNow shows moderate organic search performance with 31,543 monthly visits</li><li>The site is experiencing a slight decline in overall visibility (-2.22% year-over-year)</li><li>Strong performance in mid-range positions (4-20) but weakness in top positions (1-3)</li><li>Campaign pages represent significant traffic potential but show inconsistent performance</li><li>Strong brand recognition with high rankings for branded keywords</li><li>Solid backlink profile with 7,072 backlinks from 1,521 referring domains</li><li>Facing strong competition from both direct competitors (geldvoorelkaar.nl) and indirect competitors (investeerders.nl)</li></ul><br><h3 id="priority-recommendations">Priority Recommendations</h3><br><h4 id="quick-wins-">Quick Wins:</h4><ol><li><strong>Optimize title tags and meta descriptions</strong> for the homepage and key landing pages</li><li><strong>Create a basic comparison page</strong> highlighting CrowdAboutNow's strengths against competitors</li><li><strong>Improve the user experience and SEO</strong> of the project listing page</li><li><strong>Reach out to Investeerders.nl</strong> to include CrowdAboutNow in their platform comparisons</li><li><strong>Reclaim unlinked brand mentions</strong> by contacting sites that mention CrowdAboutNow without linking</li></ol><br><h4 id="medium-term-strategy-">Medium-Term Strategy:</h4><ol><li><strong>Keyword Optimization Strategy</strong></li></ol><ul><li>Target identified high-potential keywords with dedicated content</li><li>Optimize existing campaign pages for broader keyword sets</li><li>Create content addressing question-based keywords</li></ul><br><ol><li><strong>Technical SEO Improvements</strong></li></ol><ul><li>Address technical issues to improve overall site health</li><li>Optimize page speed and mobile responsiveness</li><li>Ensure proper indexing of all campaign pages</li></ul><br><ol><li><strong>Content Development</strong></li></ol><ul><li>Create educational content around crowdfunding topics</li><li>Develop location-specific content to capitalize on local search intent</li><li>Expand campaign page content with more comprehensive information</li></ul><br><ol><li><strong>Backlink Acquisition</strong></li></ol><ul><li>Target high-authority Dutch websites for backlinks</li><li>Leverage successful campaigns for media coverage</li><li>Develop content partnerships with complementary platforms</li></ul><br><h4 id="long-term-opportunities-">Long-Term Opportunities:</h4><ol><li><strong>Develop a comprehensive content strategy</strong> focused on creating high-quality informational guides and resources</li><li><strong>Build relationships with industry influencers and bloggers</strong> to earn backlinks and increase brand awareness</li><li><strong>Continuously monitor competitor performance</strong> and adapt the SEO strategy accordingly</li><li><strong>Expand into new keyword territories</strong> by targeting emerging crowdfunding trends and niches</li><li><strong>Develop a systematic approach to earning backlinks</strong> from high-authority Dutch websites</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign each quick-win item to a specific owner with clear deadlines</li><li>Schedule a cross-functional SEO review meeting within the next two weeks to align on responsibilities and timelines</li></ul><br><p>By implementing these recommendations, CrowdAboutNow can improve its search visibility in the Netherlands, capture more targeted traffic, and ultimately help more businesses and entrepreneurs raise capital through their platform while effectively competing against both direct and indirect competitors in the Dutch crowdfunding market.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - .',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

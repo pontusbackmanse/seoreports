@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Ruben Boerhof</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Ruben Boerhof • www.uxwork.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 20, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="1-overall-seo-performance-growth-last-12-months-" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance & Growth (Last 12 Months)</h2>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Month (2025)</th><th>Estimated Traffic Volume (ETV)</th><th>Keywords Ranked (Top 1-10)</th><th>Keywords Ranked (Positions 11-30)</th></tr></thead><tbody><tr><td class="">February</td><td class="">6.15</td><td class="">0</td><td class="">3</td></tr><tr><td class="">March</td><td class="">76.55</td><td class="">1</td><td class="">25</td></tr><tr><td class="">April</td><td class="">159.13</td><td class="">11</td><td class="">60</td></tr><tr><td class="">May</td><td class="">324.08</td><td class="">16</td><td class="">72</td></tr><tr><td class="">June</td><td class="">861.52</td><td class="">29</td><td class="">117</td></tr><tr><td class="">July</td><td class="">1,108.60</td><td class="">32</td><td class="">133</td></tr><tr><td class="">August</td><td class="">1,187.51</td><td class="">38</td><td class="">145</td></tr></tbody></table></div><ul><li><strong>Current Keyword Ranking Breakdown (August 2025):</strong></li><li>Position 1: 3 keywords</li><li>Positions 2-3: 4 keywords</li><li>Positions 4-10: 31 keywords</li><li>Positions 11-20: 68 keywords</li><li>Positions 21-30: 77 keywords</li><li>Positions 31-100: 90 keywords</li><li><strong>Estimated Paid Traffic Cost Equivalent:</strong> $1,708.06</li><li><strong>Remarkable Growth:</strong> 19,199.72% increase in ETV over six months (Feb-Aug 2025)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Leverage this momentum by identifying which content updates in July–August drove the highest gains, and replicate those tactics across underperforming pages.</li><li>Set up a monthly dashboard to track ETV drivers and spot new growth opportunities early.</li></ul><br><hr><br></div></section>
+                <section id="2-top-competitors-keywords-they-outrank-uxwork-nl-on" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Top Competitors & Keywords They Outrank UXWork.nl On</h2>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Notable Keywords They Rank Well For (UXWork.nl Ranks Poorly)</th><th>Search Volume</th><th>Competition Level</th></tr></thead><tbody><tr><td class="">nl.indeed.com</td><td class="">ux designer, vacature user experience, ux designer vacature, vacatures ux designer, ux vacature</td><td class="">1900-2400</td><td class="">Low to Medium</td></tr><tr><td class="">nl.linkedin.com</td><td class="">ux designer, vacatures webdesign, ux/ui designer, product designer, ux researcher</td><td class="">260-2400</td><td class="">Medium</td></tr><tr><td class="">uiuxjobsboard.com</td><td class="">ux design job, ux designer rotterdam</td><td class="">110-390</td><td class="">Medium</td></tr><tr><td class="">ownidentity.nl</td><td class="">Various UX-related keywords with stronger backlink profile</td><td class="">N/A</td><td class="">N/A</td></tr></tbody></table></div><ul><li>Competitors emphasize <strong>job quantity</strong> and <strong>location specificity</strong> in titles and meta descriptions.</li><li>They leverage <strong>strong backlink profiles</strong> and <strong>comprehensive job listings</strong>.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a backlink gap analysis against each competitor to identify high-value domains for outreach.</li><li>Audit competitor SERP snippets for job quantity and location patterns, then apply similar structures to high-priority UXWork.nl pages.</li></ul><br><hr><br></div></section>
+                <section id="3-opportunity-keywords-to-target-why" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">3. Opportunity Keywords to Target & Why</h2>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th><th>Current UXWork.nl Position</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">junior ux designer vacature</td><td class="">260</td><td class="">Low</td><td class="">11</td><td class="">High search volume, low competition, near top 10</td></tr><tr><td class="">traineeship ux design</td><td class="">210</td><td class="">Medium</td><td class="">11</td><td class="">Good volume, relevant for entry-level seekers</td></tr><tr><td class="">ux design job</td><td class="">110</td><td class="">Medium</td><td class="">11</td><td class="">Strong intent, just outside top 10</td></tr><tr><td class="">vacature digital designer</td><td class="">210-390</td><td class="">Low</td><td class="">Not ranking well</td><td class="">Low competition, niche role with growth potential</td></tr><tr><td class="">interaction designer vacature</td><td class="">40-110</td><td class="">Low</td><td class="">Not ranking well</td><td class="">Low competition, untapped niche</td></tr><tr><td class="">product design vacature</td><td class="">70-110</td><td class="">Low</td><td class="">14</td><td class="">Moderate volume, low competition</td></tr><tr><td class="">ux jobs amsterdam</td><td class="">10-110</td><td class="">Medium</td><td class="">Not ranking well</td><td class="">Location-specific, missing dedicated pages</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize high-volume, low-competition terms like “junior ux designer vacature” by building targeted pillar pages and linking related job listings back to them.</li></ul><br><hr><br></div></section>
+                <section id="4-tl-dr-key-findings" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-lightbulb"></i></div>
+                        <h2 class="section-title">4. TL;DR - Key Findings</h2>
+                    </div>
+                    <div class="section-content"><br><ul><li>UXWork.nl has shown <strong>exceptional organic growth</strong> (19,199.72% ETV increase in 6 months) but still ranks mostly outside top 3 for high-volume keywords.</li><li><strong>Top-performing pages</strong> are the general Dutch jobs page and English jobs page; <strong>individual job listings and some category pages underperform</strong>.</li><li>Technical SEO is generally strong (score 93.41) but needs fixes on <strong>missing image alt attributes, render-blocking CSS, and content-to-code ratio</strong>.</li><li><strong>Keyword gaps</strong> exist in location-specific pages (Amsterdam, Rotterdam), junior/trainee roles, and branded keywords.</li><li>Competitors like Indeed and LinkedIn dominate with <strong>strong backlink profiles, optimized SERP snippets emphasizing job quantity and location</strong>, and broader job databases.</li><li>UXWork.nl’s <strong>backlink profile is extremely limited</strong> (only 2 backlinks), representing a critical growth opportunity.</li><li>Content strategy should focus on <strong>location-specific pages, junior/trainee content, and role-specific pages</strong> with optimized meta tags and schema markup.</li><li>Backlink acquisition should target <strong>Dutch UX education providers, tech companies, UX communities, and industry directories</strong>.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop a 90-day roadmap focusing on:</li><li>Technical SEO fixes (alt tags, CSS).</li><li>Content creation for top opportunity keywords.</li><li>Initial backlink outreach campaigns.</li></ul><br><hr><br><hr><br></div></section>
+                <section id="seo-research-report-for-uxwork-nl" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report for UXWork.nl</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for UXWork.nl, a specialized job board connecting UX professionals with companies in the Netherlands. The analysis reveals extraordinary organic growth of 19,199.72% over a six-month period, while identifying significant opportunities to improve technical SEO, content strategy, backlink profile, and competitive positioning in the Dutch market.</p><br></div></section>
+                <section id="1-company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">1. Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>UXWork is a niche job board platform that serves as a marketplace connecting UX professionals with employers in the Netherlands. The platform specializes in UX-related positions including UX Design, UI Design, UX/UI Design, Product Design, and UX Research roles. They offer job posting services for employers and job alert features for candidates to receive the latest UX job openings via email.</p><br></div></section>
+                <section id="2-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">2. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-growth">Organic Visibility Growth</h3><p>UXWork.nl has experienced remarkable organic growth, with Estimated Traffic Volume (ETV) increasing by 19,199.72% from February to August 2025. This growth trajectory shows consistent month-over-month improvements:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Month (2025)</th><th>ETV</th><th>Keyword Count</th><th>Position 1-10</th><th>Position 11-30</th></tr></thead><tbody><tr><td class="">February</td><td class="">6.15</td><td class="">8</td><td class="">0</td><td class="">3</td></tr><tr><td class="">March</td><td class="">76.55</td><td class="">43</td><td class="">1</td><td class="">25</td></tr><tr><td class="">April</td><td class="">159.13</td><td class="">113</td><td class="">11</td><td class="">60</td></tr><tr><td class="">May</td><td class="">324.08</td><td class="">138</td><td class="">16</td><td class="">72</td></tr><tr><td class="">June</td><td class="">861.52</td><td class="">230</td><td class="">29</td><td class="">117</td></tr><tr><td class="">July</td><td class="">1,108.60</td><td class="">254</td><td class="">32</td><td class="">133</td></tr><tr><td class="">August</td><td class="">1,187.51</td><td class="">273</td><td class="">38</td><td class="">145</td></tr></tbody></table></div><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>The substantial jump from May to June aligns with targeted category page updates—consider a similar rollout for other underperforming segments.</li></ul><br><h3 id="current-organic-visibility-breakdown-august-2025-">Current Organic Visibility Breakdown (August 2025)</h3><ul><li>Position 1: 3 keywords</li><li>Positions 2-3: 4 keywords</li><li>Positions 4-10: 31 keywords</li><li>Positions 11-20: 68 keywords</li><li>Positions 21-30: 77 keywords</li><li>Positions 31-100: 90 keywords</li><li>Total ETV: 1,187.51</li><li>Estimated paid traffic cost equivalent: $1,708.06</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>With 68 keywords in positions 11-20, optimizing on-page elements (titles, headers, internal links) can quickly push these into the top 10.</li></ul><br><h3 id="top-performing-pages">Top-Performing Pages</h3><ol><li><strong>Dutch Jobs Page</strong> (<code>https://uxwork.nl/nl/vacatures/</code>): ETV 861.87; paid traffic equivalent $1,245.23.</li><li><strong>English Jobs Page</strong> (<code>https://uxwork.nl/en/jobs/</code>): ETV 71.71; paid traffic equivalent $122.18.</li><li><strong>Role-Specific Category Pages</strong>: Service Design, Product Design, UX Research show moderate performance with room to grow.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit these pages’ content depth and user engagement metrics, then apply winning elements (e.g., keyword placement, CTAs) to category pages.</li></ul><br><h3 id="underperforming-pages">Underperforming Pages</h3><ol><li><strong>Individual Job Listings</strong> (<code>/vacature/</code> URLs) rank between positions 11-80 with ETVs of 0.15-10.32.</li><li><strong>Category Pages</strong> for specific roles have lower ETVs despite targeting valuable keywords.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Standardize job listing templates to include richer descriptions (≥300 words), relevant keywords, and schema markup.</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><p>The site received a technical SEO audit score of 93.41, indicating generally good technical health with some specific areas for improvement:</p><br><p>Strengths:</p><ul><li>HTTPS implementation</li><li>Proper canonical tags</li><li>Appropriate title and meta description implementation</li><li>Social media tags (Open Graph and Twitter)</li><li>No duplicate content issues</li><li>No use of outdated technologies (Flash, Frames)</li></ul><br><p>Issues to Address:</p><ul><li>Missing image <code>alt</code> attributes affecting accessibility and SEO</li><li>Render-blocking stylesheets impacting page load speed</li><li>Low content-to-code ratio</li><li>Sub-optimal URL structure</li><li>Low character count in content</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Fixing alt tags and CSS issues can yield a 10–20% faster page load time, improving both rankings and user satisfaction.</li></ul><br></div></section>
+                <section id="3-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">3. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-ranking-keywords">Top Ranking Keywords</h3><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">ux research jobs netherlands</td><td class="">90</td><td class="">1</td></tr><tr><td class="">ux jobs</td><td class="">110</td><td class="">3</td></tr><tr><td class="">ux job</td><td class="">110</td><td class="">4</td></tr><tr><td class="">user experience jobs</td><td class="">110</td><td class="">4</td></tr><tr><td class="">ux vacature</td><td class="">1900</td><td class="">5</td></tr><tr><td class="">ux design vacature</td><td class="">390</td><td class="">5</td></tr><tr><td class="">vacature ux</td><td class="">1900</td><td class="">6</td></tr><tr><td class="">vacatures ux designer</td><td class="">1900</td><td class="">6</td></tr><tr><td class="">ux design jobs</td><td class="">110</td><td class="">7</td></tr></tbody></table></div><h3 id="high-value-target-keywords">High-Value Target Keywords</h3><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">ux design job</td><td class="">110</td><td class="">11</td></tr><tr><td class="">junior ux designer vacature</td><td class="">260</td><td class="">11</td></tr><tr><td class="">traineeship ux design</td><td class="">210</td><td class="">11</td></tr><tr><td class="">ux trainee</td><td class="">210</td><td class="">11</td></tr><tr><td class="">online department</td><td class="">390</td><td class="">12</td></tr><tr><td class="">product designer vacatures</td><td class="">320</td><td class="">14</td></tr></tbody></table></div><h3 id="long-tail-opportunities">Long-Tail Opportunities</h3><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th></tr></thead><tbody><tr><td class="">vacature digital designer</td><td class="">210-390</td><td class="">LOW</td></tr><tr><td class="">interaction designer vacature</td><td class="">40-110</td><td class="">LOW</td></tr><tr><td class="">product design vacature</td><td class="">70-110</td><td class="">LOW</td></tr><tr><td class="">ux jobs amsterdam</td><td class="">10-110</td><td class="">MEDIUM</td></tr><tr><td class="">ux designer jobs amsterdam</td><td class="">10-110</td><td class="">MEDIUM</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Build a quarterly content calendar to publish and promote these long-tail topics when competition is lowest.</li></ul><br><h3 id="seasonal-trends">Seasonal Trends</h3><p>Analysis shows some keywords with declining search volume trends, suggesting the need to diversify keyword targeting and monitor industry trends.</p><br><h3 id="content-gaps">Content Gaps</h3><ol><li>Location-specific pages: While the site ranks well for "UX role + Netherlands," dedicated location pages for major cities like Amsterdam and Rotterdam are missing.</li><li>Limited content targeting traineeship and junior positions despite good search volume for these terms.</li><li>No dedicated content for branded keywords ranking in positions 10–15 (e.g., "podimo vacatures", "mywheels vacatures").</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft outlines for missing location-specific and entry-level pages, assign to the content team with clear keyword and deadline targets.</li></ul><br></div></section>
+                <section id="4-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">4. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><ol><li>General Job Boards</li></ol><ul><li><strong>nl.indeed.com</strong></li><li>Key Strengths: High keyword match count, very high traffic, strong for core UX job terms.</li><li>Strategy: Aggregates job listings, extensive database.</li><li>Type: Indirect competitor.</li><li><strong>nl.linkedin.com</strong></li><li>Key Strengths: High traffic and keyword match, professional network integration.</li><li>Strategy: Leverages network effects for job listings.</li><li>Type: Indirect competitor.</li></ul><br><ol><li>UX-Specific Competitors</li></ol><ul><li><strong>uiuxjobsboard.com</strong></li><li>Key Strengths: Niche focus on UI/UX roles, strong for “ux design job” and “ux designer rotterdam.”</li><li>Type: Direct competitor.</li><li><strong>ownidentity.nl</strong></li><li>Key Strengths: Higher domain rank, more backlink intersections.</li><li>Type: Potential direct competitor.</li></ul><br><h3 id="keywords-where-competitors-outperform-uxwork-nl">Keywords Where Competitors Outperform UXWork.nl</h3><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th></tr></thead><tbody><tr><td class="">ux designer</td><td class="">2400</td><td class="">Medium</td></tr><tr><td class="">vacature user experience</td><td class="">1900</td><td class="">Low</td></tr><tr><td class="">vacatures user experience designer</td><td class="">1900</td><td class="">Low</td></tr><tr><td class="">ux designer vacature</td><td class="">1900</td><td class="">Low</td></tr><tr><td class="">vacature ux</td><td class="">1900</td><td class="">Low</td></tr><tr><td class="">user experience designer vacature</td><td class="">1900</td><td class="">Low</td></tr><tr><td class="">vacatures ux designer</td><td class="">1900</td><td class="">Low</td></tr><tr><td class="">ux designer vacatures</td><td class="">1900</td><td class="">Low</td></tr><tr><td class="">ux vacature</td><td class="">1900</td><td class="">Low</td></tr><tr><td class="">vacatures webdesign</td><td class="">480</td><td class="">Medium</td></tr><tr><td class="">ux/ui designer</td><td class="">390</td><td class="">Medium</td></tr><tr><td class="">ui/ux designer</td><td class="">390</td><td class="">Medium</td></tr><tr><td class="">ux ui designer</td><td class="">390</td><td class="">Medium</td></tr><tr><td class="">product designer</td><td class="">390</td><td class="">Medium</td></tr><tr><td class="">ui designer</td><td class="">390</td><td class="">Medium</td></tr><tr><td class="">product designer vacatures</td><td class="">320</td><td class="">Low</td></tr><tr><td class="">ux researcher</td><td class="">260</td><td class="">Medium</td></tr><tr><td class="">digital designer vacature</td><td class="">260</td><td class="">Low</td></tr><tr><td class="">jr ux designer</td><td class="">260</td><td class="">Low</td></tr><tr><td class="">traineeship ux design</td><td class="">210</td><td class="">Medium</td></tr><tr><td class="">ux trainee</td><td class="">210</td><td class="">Medium</td></tr><tr><td class="">traineeship ux</td><td class="">210</td><td class="">Medium</td></tr><tr><td class="">ui ux designer vacature</td><td class="">170</td><td class="">Medium</td></tr></tbody></table></div><h3 id="competitor-serp-strategies">Competitor SERP Strategies</h3><ol><li>Title and Meta Description Optimization</li></ol><ul><li><strong>Indeed:</strong> Includes keywords and job counts (e.g., "100+ vacatures voor Ux Design en werk").</li><li><strong>LinkedIn:</strong> Shows keyword and total jobs (e.g., "158 vacatures voor User Experience Designer in...").</li><li><strong>uiuxjobsboard.com:</strong> Clearly states job type and location in titles.</li></ul><br><ol><li>Effective Patterns in Competitor SERP Elements</li></ol><ul><li><strong>Job Quantity Emphasis:</strong> Highlights number of openings.</li><li><strong>Specific Details:</strong> Mentions job titles and locations.</li><li><strong>Clear Value Proposition:</strong> Communicates unique selling points.</li></ul><br><ol><li>Content Types/Formats</li></ol><ul><li>Indeed and LinkedIn focus on job listings.</li><li>uiuxjobsboard.com supplements listings with blog posts and UX resources.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Experiment with dynamic job count snippets in titles (e.g., “120+ UX Jobs Amsterdam”) to boost CTR and align with competitor best practices.</li></ul><br></div></section>
+                <section id="5-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">5. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><ul><li>Total backlinks: Only 2 backlinks</li><li>Referring domains: 1 domain (mooistewebsites.nl)</li><li>Backlink spam score: 0%</li><li>Anchor text: Generic "Bezoek website"</li><li>Referring domain TLD: .nl</li></ul><br><p>This limited profile is a major growth opportunity given the existing traffic traction.</p><br><h3 id="backlink-competitors">Backlink Competitors</h3><ul><li><strong>ownidentity.nl:</strong> Higher rank (14) with 2 shared backlink intersections.</li></ul><br><h3 id="backlink-acquisition-opportunities">Backlink Acquisition Opportunities</h3><ol><li><strong>UX Education Providers</strong></li></ol><ul><li>Dutch design schools and universities offering UX programs</li><li>Design academies and bootcamps in the Netherlands</li></ul><ol><li><strong>Tech Companies</strong></li></ol><ul><li>Employers posting UX roles</li><li>Dutch tech startups and established firms</li></ul><ol><li><strong>UX Communities</strong></li></ol><ul><li>Meetups, conferences, professional groups</li><li>UX blogs and forums in the Netherlands</li></ul><ol><li><strong>Industry Directories</strong></li></ol><ul><li>Dutch business directories and job board listings</li><li>Design and tech associations</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize outreach to UX education providers by creating co-branded resource pages and guest post opportunities.</li></ul><br></div></section>
+                <section id="6-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">6. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="new-content-topics">New Content Topics</h3><ol><li><strong>Location-Specific Pages</strong></li></ol><ul><li>Create pages for "UX jobs Amsterdam", "UX jobs Rotterdam", etc.</li></ul><ol><li><strong>Role-Specific Content</strong></li></ol><ul><li>Optimize content for "vacature digital designer" and "interaction designer vacature".</li></ul><ol><li><strong>Experience-Level Content</strong></li></ol><ul><li>Develop junior- and trainee-focused pages: "junior ux designer vacature", "traineeship ux design".</li></ul><br><h3 id="content-optimization">Content Optimization</h3><ol><li><strong>Optimize Existing Pages</strong></li></ol><ul><li>Enhance pages ranking in positions 11-15 with richer content, updated meta descriptions, and stronger internal linking.</li></ul><ol><li><strong>SERP Snippet Enhancement</strong></li></ol><ul><li>Include role variations, clear calls to action ("Bekijk ze nu!"), and location details in meta descriptions.</li></ul><ol><li><strong>Technical Enhancements</strong></li></ol><ul><li>Implement JobPosting schema markup.</li><li>Add all missing image <code>alt</code> attributes.</li><li>Reduce render-blocking CSS.</li><li>Increase content-to-code ratio.</li><li>Ensure correct hreflang tags for Dutch and English versions.</li></ul><br></div></section>
+                <section id="7-conclusion-and-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tasks"></i></div>
+                        <h2 class="section-title">7. Conclusion and Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><p>UXWork.nl has demonstrated exceptional organic growth (19,199.72% increase in ETV over six months) and established itself as a specialized job board for UX professionals in the Netherlands. However, significant opportunities exist to improve search visibility and traffic, particularly when compared to competitors like Indeed, LinkedIn, and uiuxjobsboard.com.</p><br><h3 id="quick-wins-1-3-months-">Quick Wins (1-3 months)</h3><ol><li><strong>Technical SEO Improvements</strong></li></ol><ul><li>Add missing <code>alt</code> attributes to all images</li><li>Optimize render-blocking stylesheets</li><li>Improve content-to-code ratio on key pages</li></ul><ol><li><strong>Improve SERP Elements</strong></li></ol><ul><li>Revise title tags to include job counts (e.g., "150+ UX Designer Vacatures in Nederland – UX Work")</li><li>Rewrite meta descriptions to highlight roles, locations, and CTAs</li></ul><ol><li><strong>Optimize High-Potential Pages</strong></li></ol><ul><li>Focus on keywords in positions 11-20 to push into top 10</li><li>Implement JobPosting schema on listings</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Quick technical fixes can be completed within 4 weeks and tracked weekly for immediate impact on organic traffic.</li></ul><br><h3 id="medium-term-strategy-3-6-months-">Medium-Term Strategy (3-6 months)</h3><ol><li><strong>Create Dedicated Landing Pages</strong></li></ol><ul><li>Pages for UX specializations like UX Writing and Conversation Design</li><li>Location pages for Amsterdam and Rotterdam</li></ul><ol><li><strong>Content Development</strong></li></ol><ul><li>"Hoe word je een UX Designer in Nederland?"</li><li>"Salaris voor UX Designers in Amsterdam"</li><li>"Top UX Design Agencies in Rotterdam"</li></ul><ol><li><strong>Leverage Niche Focus</strong></li></ol><ul><li>Emphasize UXWork.nl’s specialization vs. general job boards</li><li>Promote quality and relevance of listings</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Time new page launches around UX conferences and events to leverage search interest and backlink opportunities.</li></ul><br><h3 id="long-term-growth-6-12-months-">Long-Term Growth (6-12 months)</h3><ol><li><strong>Strategic Backlink Acquisition</strong> (Critical Priority)</li></ol><ul><li>Build a comprehensive backlink strategy to expand beyond 2 existing links</li><li>Target high-authority Dutch UX sites with keyword-rich anchor texts</li><li>Develop shareable UX resources to attract natural links</li><li>Partner with UX communities and education providers</li></ul><ol><li><strong>Continuous Keyword Optimization</strong></li></ol><ul><li>Ongoing research to capture emerging trends</li><li>Adjust content strategy using performance data</li></ul><ol><li><strong>Thought Leadership Development</strong></li></ol><ul><li>Publish UX case studies and designer spotlights</li><li>Create guides on portfolios and interview prep</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Implement quarterly backlink sprints to maintain momentum, diversify referring domains, and strengthen domain authority.</li></ul></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Ruben Boerhof',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

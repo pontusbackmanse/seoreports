@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - DB Keukens</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">DB Keukens • https://www.dbkeukens.nl/</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> August 21, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>12-Month Change</th><th>Current Value</th><th>Notes</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="negative">-32.13%</td><td class="">18,080 monthly visits</td><td class="">Significant traffic loss due to ranking drops</td></tr><tr><td class="">Position 1 Keywords</td><td class="negative">-26.03%</td><td class="">54 keywords</td><td class="">Decline in top rankings impacting CTR</td></tr><tr><td class="">Positions 2-3 Keywords</td><td class="negative">-22.75%</td><td class="">129 keywords</td><td class="">Moderate decline in high-value positions</td></tr><tr><td class="">Positions 4-10 Keywords</td><td class="positive">+47.83%</td><td class="">612 keywords</td><td class="">Rankings shifted downward but still visible</td></tr><tr><td class="">Positions 11-20 Keywords</td><td class="positive">+21.31%</td><td class="">649 keywords</td><td class="">Increased lower rankings, opportunity to improve</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Focus initial efforts on reclaiming top 1-3 positions for high-volume terms; a 26% drop in Position 1 keywords signals immediate priority.</p><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Top Keywords They Rank For (High Volume & Relevant)</th><th>DB Keukens Ranking Status</th><th>Competitor Strengths / Notes</th></tr></thead><tbody><tr><td class="">Keukenwarenhuis.nl</td><td class="">"modern kitchens" (1,200), "kitchen sale" (880)</td><td class="">Not ranking</td><td class="">English content, total kitchen solutions, English advisors</td></tr><tr><td class="">Kitsch Kitchen</td><td class="">"kitchen retailer Netherlands" (720), "kitchen stores Netherlands" (880)</td><td class="">Not ranking</td><td class="">Free shipping, physical store presence</td></tr><tr><td class="">Keukenloods.nl</td><td class="">"keukens" (60,500), "keuken" (60,500), "magnetrons" (27,100)</td><td class="">Not ranking or low ranking</td><td class="">Affordability focus, local presence, installation guides</td></tr><tr><td class="">Bruynzeelkeukens.nl</td><td class="">"keukens" (60,500), "keuken" (60,500), "keukenkast" (12,100)</td><td class="">Not ranking or low ranking</td><td class="">Design inspiration, 3D planner tool</td></tr><tr><td class="">Keuken-renoveren.nl</td><td class="">"keuken renovatie" (2,900), "keukendeuren vervangen" (1,900)</td><td class="">Not ranking</td><td class="">Renovation niche, cost guides, before/after examples</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Competitors leverage English-language content and renovation niches; developing targeted expat pages and renovation hubs could differentiate DB Keukens.</p><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Monthly Search Volume</th><th>Competition Level</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">kitchen retailer Netherlands</td><td class="">720</td><td class="">High</td><td class="">High intent, currently not ranking</td></tr><tr><td class="">kitchen stores Netherlands</td><td class="">880</td><td class="">Medium</td><td class="">High intent, competitor strength, untapped</td></tr><tr><td class="">kitchen design Netherlands</td><td class="">590</td><td class="">High</td><td class="">High-value design queries, content gap</td></tr><tr><td class="">op maat keukens</td><td class="">1,300</td><td class="">High</td><td class="">Strong local intent, no current ranking</td></tr><tr><td class="">keukens op maat</td><td class="">320</td><td class="">High</td><td class="">Important for custom kitchen market</td></tr><tr><td class="">exclusieve keukens op maat</td><td class="">170</td><td class="">Medium</td><td class="">Niche luxury segment, medium competition</td></tr><tr><td class="">landelijke keukens op maat</td><td class="">70</td><td class="">Medium</td><td class="">Trending style, low competition</td></tr><tr><td class="">by sensa keukens handgemaakte keukens op maat</td><td class="">170</td><td class="">Low</td><td class="">Long-tail, low competition, high conversion potential</td></tr><tr><td class="">de groene keuken</td><td class="">110</td><td class="">Low</td><td class="">Trending sustainable kitchen style, content gap</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><p>Prioritize creation of dedicated pages for "op maat keukens" and "kitchen retailer Netherlands" to capture high-intent traffic. Use these as cornerstone content.</p><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>DB Keukens’ organic traffic and top keyword rankings have declined significantly over the past year, with a 32.13% drop in estimated traffic volume.</li><li>Rankings have shifted from top positions (1-3) to lower positions (4-20), reducing click-through rates.</li><li>Technical SEO issues include short title tags, missing image alt texts, unminified JS, HTML errors, and poor mobile experience.</li><li>Competitors dominate high-volume, high-intent keywords, especially in English-language content and renovation niches.</li><li>Significant keyword gaps exist in kitchen renovation, pricing, affordability, and trending kitchen styles like "groene keuken" and "industriële keuken."</li><li>Backlink profile is moderate but with a 20% spam score; opportunities exist to target authoritative Dutch home and kitchen sites.</li><li>Content strategy should focus on comprehensive guides, renovation hubs, affordability, and English content for expats.</li><li>Interactive tools (3D planner, budget calculator) and schema markup can improve user engagement and SERP presence.</li><li>Immediate technical fixes and content optimization are critical to reversing the downward trend.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Tackle foundational technical and on-page SEO issues first to create a stable base for content and linking initiatives—this prevents new content from underperforming due to site health constraints.</p><br><hr><br></div></section>
+                <section id="seo-analysis-report-db-keukens-netherlands-" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-analytics"></i></div>
+                        <h1 class="section-title">SEO Analysis Report: DB Keukens (Netherlands)</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><br><p>DB Keukens, a kitchen retailer in the Netherlands, is facing significant challenges in organic search visibility. Our analysis reveals a 32.13% decrease in Estimated Traffic Volume (ETV) over the past year, with notable declines in top-ranking positions. However, there are substantial opportunities for improvement through targeted keyword optimization, technical fixes, and strategic content development focused on high-value kitchen-related topics.</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-rankings">Organic Visibility and Rankings</h3><br><p>DB Keukens has experienced a concerning downward trend in organic visibility over the past 12 months:</p><br><ul><li><strong>ETV Decline</strong>: 32.13% decrease from August 2023 to August 2024</li><li><strong>Current ETV</strong>: 18,080 monthly visits (August 2024)</li><li><strong>Position Distribution Changes</strong>:</li><li>Position 1: -26.03% decrease</li><li>Positions 2-3: -22.75% decrease</li><li>Positions 4-10: +47.83% increase</li><li>Positions 11-20: +21.31% increase</li></ul><br><p>This shift indicates a migration of rankings from top positions (1-3) to lower positions (4-20), resulting in reduced click-through rates and overall traffic.</p><br><h3 id="top-performing-pages-and-keywords">Top-Performing Pages and Keywords</h3><br><ol><li>Blue Kitchens: Ranking #2 for "blauwe keuken" (1,000 monthly searches)</li><li>Kitchen Islands: Ranking #2 for "keuken met eiland en tafel" (480 monthly searches)</li><li>Sink Dimensions: Ranking #1 for "afmeting spoelbak" (110 monthly searches)</li><li>Kitchen Styles: Ranking #1 for "keuken stijlen" (210 monthly searches)</li></ol><br><h3 id="underperforming-pages">Underperforming Pages</h3><br><ol><li>Nunspeet Showroom: Ranking #106 for "keuken nunspeet" (210 monthly searches)</li><li>Appliance Pages: Not ranking for high-volume terms like "keukenapparatuur"</li></ol><br><h3 id="technical-seo-issues">Technical SEO Issues</h3><br><ol><li><strong>Title Tag Optimization</strong>: Current title length is only 35 characters ("Ontdek de keuken die u laat stralen"), well below the recommended minimum of 50 characters.</li><li><strong>Image Optimization</strong>: 8 images without alt text, missing accessibility and SEO opportunities</li><li><strong>Resource Optimization</strong>: 1 unminified JS file affecting page performance</li><li><strong>HTML Errors</strong>: Multiple validation errors impacting crawlability</li><li><strong>Render-Blocking Resources</strong>: JavaScript and CSS files delaying page rendering</li><li><strong>Mobile Responsiveness</strong>: Suboptimal experience on mobile devices</li><li><strong>Core Web Vitals</strong>: Poor scores on Largest Contentful Paint (LCP) and Cumulative Layout Shift (CLS)</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><p>Address critical website health issues—optimize title tags, add missing alt texts, and minify resources within the next sprint to prevent further ranking erosion.</p><br><h3 id="positive-technical-aspects">Positive Technical Aspects</h3><br><ol><li><strong>Page Speed</strong>: Excellent page load time of 0.156 seconds</li><li><strong>Internal Linking</strong>: Strong internal link structure with 147 internal links</li><li><strong>Blog Presence</strong>: Active blog with 153 articles, providing a foundation for content strategy</li></ol><br></div></section>
+                <section id="2-keyword-analysis-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><br><p>DB Keukens currently ranks for approximately 3,429 keywords in the Netherlands, with the following distribution:</p><br><ul><li><strong>Position 1</strong>: 54 keywords</li><li><strong>Positions 2-3</strong>: 129 keywords</li><li><strong>Positions 4-10</strong>: 612 keywords</li><li><strong>Positions 11-20</strong>: 649 keywords</li></ul><br><h3 id="high-value-target-keywords">High-Value Target Keywords</h3><br><p>Based on search intent and competition analysis, we recommend focusing on these high-value keywords:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Monthly Search Volume</th><th>Current Position</th><th>Competition Level</th></tr></thead><tbody><tr><td class="">kitchen retailer Netherlands</td><td class="">720</td><td class="">Not ranking</td><td class="">High</td></tr><tr><td class="">kitchen stores Netherlands</td><td class="">880</td><td class="">Not ranking</td><td class="">Medium</td></tr><tr><td class="">kitchen design Netherlands</td><td class="">590</td><td class="">Not ranking</td><td class="">High</td></tr><tr><td class="">op maat keukens</td><td class="">1,300</td><td class="">Not ranking</td><td class="">High</td></tr><tr><td class="">keukens op maat</td><td class="">320</td><td class="">Not ranking</td><td class="">High</td></tr><tr><td class="">exclusieve keukens op maat</td><td class="">170</td><td class="">Not ranking</td><td class="">Medium</td></tr><tr><td class="">landelijke keukens op maat</td><td class="">70</td><td class="">Not ranking</td><td class="">Medium</td></tr></tbody></table></div><h3 id="long-tail-opportunities">Long-Tail Opportunities</h3><br><p>We identified several low-competition long-tail keywords with strong conversion potential:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Long-Tail Keyword</th><th>Monthly Search Volume</th><th>Current Position</th><th>Competition Level</th></tr></thead><tbody><tr><td class="">by sensa keukens handgemaakte keukens op maat</td><td class="">170</td><td class="">Not ranking</td><td class="">Low</td></tr><tr><td class="">de groene keuken</td><td class="">110</td><td class="">Not ranking</td><td class="">Low</td></tr></tbody></table></div><h3 id="seasonal-trends">Seasonal Trends</h3><br><p>Kitchen-related searches in the Netherlands show clear seasonal patterns:</p><br><ul><li><strong>Peak Periods</strong>: January-February and September-October</li><li><strong>Low Periods</strong>: July-August and December</li><li><strong>Growing Trends</strong>: Sustainable kitchens, smart kitchen appliances, and space-saving designs</li></ul><br><h3 id="content-gaps">Content Gaps</h3><br><p>Significant keyword gaps exist in the following areas:</p><br><ol><li><strong>Kitchen Pricing & Budgeting</strong>: Limited content addressing cost-related queries</li><li><strong>Kitchen Renovation</strong>: Missing content targeting "keuken renovatie" and related terms</li><li><strong>Specific Kitchen Styles</strong>: Insufficient coverage of trending styles like "groene keuken" and "industriële keuken"</li><li><strong>Affordability Content</strong>: No clear targeting of "goedkoop" (cheap/affordable) related keywords</li><li><strong>English-Language Content</strong>: Missing opportunity to target expats with English search terms like "kitchen retailer Netherlands"</li></ol><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><br><ol><li><strong>Keukenwarenhuis.nl</strong></li></ol><ul><li><strong>Strengths</strong>: Strong rankings for "kitchen sale" and "modern kitchens", English-language content targeting expats</li><li><strong>Top Keywords</strong>: "modern kitchens" (1,200), "kitchen sale" (880)</li><li><strong>Content Strategy</strong>: Emphasizes "total kitchen solutions and care-free kitchendeals", promotes English-speaking advisors</li><li><strong>SERP Snippet</strong>: "At Keukenwarenhuis.nl we specialise in total kitchen solutions and care-free kitchendeals. Make an appointment now to see our English-speaking advisors!"</li></ul><br><ol><li><strong>Kitsch Kitchen</strong></li></ol><ul><li><strong>Strengths</strong>: Ranks #1 for "kitchen retailer Netherlands", strong e-commerce presence</li><li><strong>Top Keywords</strong>: "kitchen retailer Netherlands" (720), "kitchen stores Netherlands" (880)</li><li><strong>Content Strategy</strong>: Emphasizes free shipping and physical store presence</li><li><strong>SERP Snippet</strong>: "Free shipping in the Netherlands from € 75,- in Germany & Belgium from € 100,-. Our store is open from Tuesday to Saturday from 11:00 am to 6:00 pm..."</li></ul><br><ol><li><strong>Keukenloods.nl</strong></li></ol><ul><li><strong>Strengths</strong>: Focus on affordability, strong local presence, helpful installation guides</li><li><strong>Top Keywords</strong>: "keukens" (60,500), "keuken" (60,500), "magnetrons" (27,100)</li><li><strong>Content Strategy</strong>: Practical guides, affordability-focused content, strong local store presence</li></ul><br><ol><li><strong>Bruynzeelkeukens.nl</strong></li></ol><ul><li><strong>Strengths</strong>: Strong brand recognition, focus on design and inspiration, interactive 3D kitchen planner tool</li><li><strong>Top Keywords</strong>: "keukens" (60,500), "keuken" (60,500), "keukenkast" (12,100)</li><li><strong>Content Strategy</strong>: Design inspiration galleries, visual content, interactive planning tools</li></ul><br><ol><li><strong>Keuken-renoveren.nl</strong></li></ol><ul><li><strong>Strengths</strong>: Niche focus on kitchen renovation, cost-effective solutions</li><li><strong>Top Keywords</strong>: "keuken renovatie" (2,900), "keukendeuren vervangen" (1,900)</li><li><strong>Content Strategy</strong>: Before-and-after examples, renovation cost guides, specific solutions</li></ul><br><h3 id="competitor-serp-strategies">Competitor SERP Strategies</h3><br><ol><li><strong>Keukenwarenhuis.nl</strong>: Targets English-speaking audience, emphasizes "total kitchen solutions", promotes English-speaking advisors</li><li><strong>Kitsch Kitchen</strong>: Emphasizes free shipping thresholds, highlights physical store locations and hours</li><li><strong>Keukenloods.nl</strong>: Emphasizes affordability, displays customer ratings, highlights physical store locations</li><li><strong>Bruynzeelkeukens.nl</strong>: Focuses on inspiration and design, promotes interactive tools, uses numbers in SERP elements</li><li><strong>Keuken-renoveren.nl</strong>: Clear renovation focus, highlights cost-effectiveness, features before-and-after examples</li></ol><br></div></section>
+                <section id="4-backlink-authority-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><br><ul><li><strong>Total Backlinks</strong>: 17,435</li><li><strong>Referring Domains</strong>: 834</li><li><strong>Domain Rank</strong>: 336</li><li><strong>Backlink Spam Score</strong>: 20% (Medium)</li></ul><br><h3 id="link-building-opportunities">Link Building Opportunities</h3><br><ol><li><strong>High-Authority Domains to Target</strong>:</li></ol><ul><li>vtwonen.nl (rank: 61)</li><li>gamma.nl (rank: 15)</li><li>marktplaats.nl (rank: 10)</li></ul><br><ol><li><strong>Industry-Specific Websites</strong>:</li></ol><ul><li>keukenervaringen.nl (0% spam score)</li><li>wonen.nl (0% spam score)</li><li>interieurinspiratie.nl (0% spam score)</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="priority-content-topics">Priority Content Topics</h3><br><ol><li><strong>Kitchen Design Guides</strong>:</li></ol><ul><li>"Complete Guide to Kitchen Islands: Dimensions, Styles, and Functionality"</li><li>"Small Kitchen Design: Maximizing Space in Dutch Homes"</li></ul><br><ol><li><strong>Kitchen Style Pages</strong>:</li></ol><ul><li>"Groene Keukens: Inspiratie en Tips voor een Natuurlijke Uitstraling" (Green Kitchens)</li><li>"Industriële Keukens: Robuust en Stijlvol Design" (Industrial Kitchens)</li></ul><br><ol><li><strong>Renovation Content Hub</strong>:</li></ol><ul><li>"Keuken Renovatie: Kosten, Tijdlijn en Mogelijkheden" (Kitchen Renovation)</li><li>"Voor en Na: Inspirerende Keuken Renovatie Voorbeelden" (Before and After Examples)</li></ul><br><ol><li><strong>Affordability Content</strong>:</li></ol><ul><li>"Betaalbare Keukens: Kwaliteit voor Elke Budget" (Affordable Kitchens)</li><li>"Keuken Kopen: Prijzen en Kosten Uitgelegd" (Buying a Kitchen: Prices Explained)</li></ul><br><ol><li><strong>English-Language Content Hub</strong>:</li></ol><ul><li>"Kitchen Design in the Netherlands: A Complete Guide for Expats"</li><li>"Finding the Perfect Kitchen Retailer in the Netherlands"</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><p>Launch high-value kitchen design and renovation guides first to build topical authority and feed internal linking.</p><br><h3 id="blog-content-optimization">Blog Content Optimization</h3><br><ol><li><strong>Improve Existing Blog Content</strong>:</li></ol><ul><li>Replace generic "Lees deze blog" CTAs with descriptive, keyword-rich text</li><li>Add proper alt text to all blog images</li><li>Develop comprehensive articles rather than short posts</li><li>Create content clusters around key topics like kitchen islands, colors, and styles</li></ul><br><ol><li><strong>Blog Content Calendar</strong>:</li></ol><ul><li>Seasonal content aligned with peak search periods (January-February and September-October)</li><li>Trending topics like sustainable kitchens and smart kitchen technology</li><li>Local content targeting specific Dutch regions</li></ul><br><h3 id="serp-optimization-recommendations">SERP Optimization Recommendations</h3><br><ol><li><strong>Title and Meta Description Improvements</strong>:</li></ol><ul><li>Extend title tag from current 35 characters to optimal 50-60 characters</li><li>Include primary keywords in title tags</li><li>Clearly state value proposition</li><li>Include clear CTAs in meta descriptions</li><li>Display ratings prominently (leverage the 9.7 customer rating mentioned in meta description)</li><li>Incorporate numbers to attract attention</li></ul><br><ol><li><strong>Rich Results Opportunities</strong>:</li></ol><ul><li>Implement FAQ schema for kitchen-related questions</li><li>Add HowTo schema for installation and maintenance guides</li><li>Use Product schema for kitchen displays and appliances</li></ul><br><h3 id="interactive-content-development">Interactive Content Development</h3><br><ol><li><strong>3D Kitchen Planner Tool</strong>: Develop an interactive planner to compete with Bruynzeelkeukens.nl</li><li><strong>Budget Calculator</strong>: Create a tool to estimate kitchen costs</li><li><strong>Style Quiz</strong>: Develop an interactive quiz to help users identify their preferred kitchen style</li></ol><br></div></section>
+                <section id="conclusion-roadmap" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion & Roadmap</h2>
+                    </div>
+                    <div class="section-content"><br><p>DB Keukens faces significant SEO challenges, but there are substantial opportunities for improvement through strategic content development, technical optimization, and competitive positioning.</p><br><h3 id="immediate-actions-1-3-months-">Immediate Actions (1-3 Months)</h3><br><ol><li><strong>Technical SEO Fixes</strong>:</li></ol><ul><li>Optimize title tags to meet minimum 50-character requirement</li><li>Add alt text to all images</li><li>Minify all JS files</li><li>Resolve HTML errors</li><li>Improve mobile responsiveness</li></ul><br><ol><li><strong>SERP Optimization</strong>:</li></ol><ul><li>Revise titles and meta descriptions</li><li>Implement schema markup</li><li>Highlight customer ratings (9.7 score)</li></ul><br><ol><li><strong>Content Development</strong>:</li></ol><ul><li>Create pages for high-volume kitchen styles</li><li>Develop initial renovation content</li><li>Optimize existing blog content with proper CTAs and alt text</li></ul><br><h3 id="medium-term-strategy-3-6-months-">Medium-Term Strategy (3-6 Months)</h3><br><ol><li><strong>Interactive Tool Development</strong>: Launch a basic 3D kitchen planner and budget calculator</li><li><strong>Content Expansion</strong>: Build comprehensive content clusters, develop affordability-focused content</li><li><strong>Link Building Campaign</strong>: Recover broken backlinks, target high-authority domains</li><li><strong>English-Language Content</strong>: Develop content targeting expats searching in English</li></ol><br><h3 id="long-term-strategy-6-12-months-">Long-Term Strategy (6-12 Months)</h3><br><ol><li><strong>Market Positioning</strong>: Develop a unique value proposition, consider expanding into underserved niches</li><li><strong>Advanced User Experience</strong>: Implement personalization, develop advanced interactive tools</li><li><strong>Measurement & Optimization</strong>: Implement advanced analytics, develop conversion optimization strategy</li></ol><br><p>By implementing this roadmap, DB Keukens can reverse the current negative trend and establish a strong foundation for sustainable organic growth in the competitive Dutch kitchen retail market.</p><br><hr><br><p>This analysis was prepared by WP SEO AI, leveraging our proprietary AI-driven SEO toolset to deliver actionable insights and data-driven recommendations. Our platform can help DB Keukens implement these strategies through automated content creation, keyword tracking, and ongoing technical audits to ensure continuous improvement in search visibility and organic performance. (Company Website: https://wpseoai.com)</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - DB Keukens',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - SEOnline</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">SEOnline • Misdaadboek.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Nederland Market</span>
+                        <span><i class="fas fa-calendar"></i> August 25, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">56.63 monthly (latest)</td></tr><tr><td class="">ETV Growth (last 12 months)</td><td class="positive">+332.16%</td></tr><tr><td class="">Total Ranking Keywords</td><td class="">60</td></tr><tr><td class="">Keywords in Top 1 Position</td><td class="">0</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">0</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">5</td></tr><tr><td class="">Keywords in Positions 11-20</td><td class="">9</td></tr><tr><td class="">Keywords in Positions 21-30</td><td class="">7</td></tr><tr><td class="">Keywords in Positions 31-100</td><td class="">39</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Despite a 332% year-over-year traffic surge, zero keywords in positions 1–3 highlight a gap between volume growth and ranking authority.</li><li>Prioritize pushing the 5 keywords in positions 4–10 into the top 3 with targeted on-page enhancements and internal linking.</li><li>Leverage the homepage’s strong ETV to cross-link high-potential underperforming pages.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>Strong Ranking Keywords (High Volume & Relevance)</th><th>Misdaadboek.nl Ranking Status</th></tr></thead><tbody><tr><td class=""><strong>Bruna.nl</strong></td><td class="">"mocro maffia boeken" (880 SV), "misdaad boeken" (480 SV), "true crime boeken" (390 SV)</td><td class="">Underperforming or no ranking in top 10</td></tr><tr><td class=""><strong>Boekenkraam.nl</strong></td><td class="">"true crime boeken" (390 SV), "goedkope misdaad boeken" (price-focused)</td><td class="">No strong presence</td></tr><tr><td class=""><strong>Boekenwereld.com</strong></td><td class="">"misdaad boeken", "true crime boeken", "waargebeurde misdaad boeken" (110 SV)</td><td class="">Low rankings, content gaps</td></tr></tbody></table></div><p><em>SV = Search Volume (monthly searches in the Netherlands)</em></p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Competitors dominate “top 10” list formats and clear value propositions (e.g., fast shipping, low prices).</li><li>Mirror their approach by crafting rich listicles with compelling visuals and CTAs.</li><li>Audit competitor meta descriptions for tonal and structural cues to refine your own snippets.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class=""><strong>mocro maffia boeken</strong></td><td class="">880</td><td class="">High</td><td class="">Highest volume in niche; existing content underoptimized</td></tr><tr><td class=""><strong>misdaad boeken</strong></td><td class="">480</td><td class="">High</td><td class="">Core niche keyword; essential for visibility</td></tr><tr><td class=""><strong>true crime boeken</strong></td><td class="">390</td><td class="">High</td><td class="">Popular alternative term; competitor stronghold</td></tr><tr><td class=""><strong>waargebeurde misdaad boeken</strong></td><td class="">110</td><td class="">Medium</td><td class="">Growing interest in true stories; content gap</td></tr><tr><td class=""><strong>misdaad boeken top 10</strong></td><td class="">90</td><td class="">Medium</td><td class="">Existing page underperforming; easy optimization</td></tr><tr><td class=""><strong>nederlandse misdaad boeken</strong></td><td class="">70</td><td class="">Medium</td><td class="">Currently #10 ranking; room for improvement</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Map each opportunity keyword to a dedicated or optimized page.</li><li>Group related terms into content silos (e.g., “true crime” vs. “top 10” vs. “waargebeurde”).</li><li>Assign on-page tasks: headings, image alt tags, internal links, and schema markup per cluster.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li><strong>Strong organic growth:</strong> +332% ETV increase in 12 months but still low keyword rankings in top positions.</li><li><strong>No keywords in top 3 positions; only 5 in top 10</strong>, indicating urgent need for content and SEO optimization.</li><li><strong>Top competitors dominate high-volume keywords</strong> like "mocro maffia boeken" and "misdaad boeken" with strong content and SERP strategies.</li><li><strong>Technical SEO is generally good</strong> but needs fixes for duplicate meta tags, missing image titles, and broken backlinks.</li><li><strong>Backlink profile is weak and contains toxic links; major Dutch news sites link to competitors but not to Misdaadboek.nl.</strong></li><li><strong>Content gaps exist in high-intent keywords and "top 10" style content, which competitors leverage effectively.</strong></li><li><strong>Seasonal trends suggest spikes in interest around months 4-5; content calendar should align with these trends.</strong></li><li><strong>Clear opportunities for backlink outreach to authoritative Dutch sites and news outlets.</strong></li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>A coordinated push combining quick on-page fixes, targeted content expansion, and proactive link outreach will unlock the next performance tier.</li><li>Align editorial and outreach calendars to the seasonal peaks (months 4–5) to maximize visibility during high-interest periods.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-misdaadboek-nl-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Misdaadboek.nl in the Netherlands</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for Misdaadboek.nl, a Dutch website specializing in true crime books and podcasts. The analysis reveals significant growth potential with a 332.16% increase in estimated traffic volume over the past year, yet identifies several opportunities for optimization, particularly in keyword targeting, content strategy, technical SEO, and backlink profile. Our findings suggest that with strategic improvements, Misdaadboek.nl could substantially increase its organic visibility and search engine rankings in the competitive Dutch true crime content market, particularly against key competitors like Bruna.nl, Boekenkraam.nl, and Boekenwereld.com.</p><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Misdaadboek.nl is a Dutch website dedicated to true crime content, offering curated selections of books covering organized crime, drug trafficking, extortion, and murder cases. The site features a blog with true crime articles and a section for true crime podcasts. The website appears to be associated with SEOnline, though the exact relationship requires clarification.</p><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p><strong>Current Status:</strong></p><ul><li><strong>Organic Growth</strong>: Impressive 332.16% increase in Estimated Traffic Volume (ETV) year-over-year</li><li><strong>Current Position Distribution</strong> (latest data):</li><li>Position 1: 0 keywords</li><li>Positions 2-3: 0 keywords</li><li>Positions 4-10: 5 keywords</li><li>Positions 11-20: 9 keywords</li><li>Positions 21-30: 7 keywords</li><li>Positions 31-100: 39 keywords</li><li><strong>Current ETV</strong>: 56.63 (estimated monthly organic traffic)</li><li><strong>Keyword Count</strong>: 60 ranking keywords</li></ul><br><p><strong>Top-Performing Pages:</strong></p><ul><li>Homepage (https://www.misdaadboek.nl/): Highest ETV (27.12), ranking in top 10 for 4 keywords and positions 11-20 for 6 keywords</li></ul><br><p><strong>Underperforming Pages:</strong></p><ul><li>Top 10 Misdaad Boeken section (https://www.misdaadboek.nl/top-10-misdaad-boeken/): Despite ranking for 6 keywords, has low ETV (4.86) with most rankings in positions 31-40</li><li>Individual book pages within the "Top 10" section show very poor performance with low ETV values</li><li>Blog page on Mocro Maffia books (https://www.misdaadboek.nl/blog/mocro-maffia-boeken/): Lowest ETV (0.23), ranking for only 1 keyword despite high search volume potential (880 monthly searches)</li></ul><br><p><strong>Technical SEO Issues:</strong></p><ul><li>Generally healthy site with an on-page score of 98.17</li><li>Using HTTPS and has proper canonical URLs</li><li>Issues identified:</li><li>Duplicate meta tags</li><li>Missing image titles</li><li>Node with excessive child elements</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p><strong>Current Keyword Performance:</strong></p><ul><li>Top performing keywords:</li><li>"misdaad boek top 10" - Rank 8, Search Volume: 90</li><li>"nederlandse misdaad boeken" - Rank 10, Search Volume: 70</li><li>No keywords ranking in positions 1-3</li><li>Only 5 keywords ranking in positions 4-10</li><li>Majority of keywords (39 out of 60) ranking in positions 31-100</li></ul><br><p><strong>Competitor Keyword Analysis:</strong></p><p>Based on competitor performance, these high-value keywords represent significant opportunities:</p><ul><li><strong>"misdaad boeken"</strong> - Search Volume: 480 (competitors ranking well, Misdaadboek.nl underperforming)</li><li><strong>"true crime boeken"</strong> - Search Volume: 390 (strong competitor presence)</li><li><strong>"mocro maffia boeken"</strong> - Search Volume: 880 (highest search volume in the niche, dominated by Bruna.nl)</li><li><strong>"misdaad boeken top 10"</strong> - Search Volume: 90 (competitors using effective list-based content)</li><li><strong>"waargebeurde misdaad boeken"</strong> - Search Volume: 110 (growing interest in true stories)</li></ul><br><p><strong>Prioritized Keyword Recommendations:</strong></p><br><p><strong>Top Priority Keywords:</strong></p><ul><li><strong>mocro maffia boeken:</strong> 880 monthly searches | HIGH competition</li></ul><p><em>Opportunity: Highest search volume in the niche with existing but underoptimized content</em></p><ul><li><strong>misdaad boeken:</strong> 480 monthly searches | HIGH competition</li></ul><p><em>Opportunity: Core term essential for the site's primary focus</em></p><ul><li><strong>true crime boeken:</strong> 390 monthly searches | HIGH competition</li></ul><p><em>Opportunity: Popular alternative term for the same content category</em></p><br><p><strong>Secondary Keywords:</strong></p><ul><li><strong>waargebeurde misdaad boeken:</strong> 110 monthly searches | MEDIUM competition</li></ul><p><em>Opportunity: Specific interest in true stories that aligns with site content</em></p><ul><li><strong>misdaad boeken top 10:</strong> 90 monthly searches | MEDIUM competition</li></ul><p><em>Opportunity: Existing content that needs optimization</em></p><ul><li><strong>nederlandse misdaad boeken:</strong> 70 monthly searches | MEDIUM competition</li></ul><p><em>Opportunity: Already ranking #10, can be improved further</em></p><br><p><strong>Long-term Opportunities:</strong></p><ul><li><strong>crime boeken/crime boek:</strong> 170 monthly searches | HIGH competition</li></ul><p><em>Opportunity: Alternative phrasing that captures additional audience</em></p><ul><li><strong>boek criminaliteit/boek over criminaliteit:</strong> 70 monthly searches | MEDIUM competition</li></ul><p><em>Opportunity: Broader terms that can expand audience reach</em></p><br><p><strong>Seasonal Trends:</strong></p><ul><li>Monthly ETV fluctuations indicate potential seasonal interest in true crime content:</li><li>Highest recent ETV: 84.95 (months 4-5 of 2025)</li><li>Lowest recent ETV: 13.10 (month 8 of 2024)</li><li>Further analysis needed to correlate with Dutch true crime interest patterns</li></ul><br><p><strong>Content Gaps:</strong></p><ul><li>Current keyword distribution suggests insufficient targeting of high-intent search queries</li><li>Lack of rankings for high-volume keywords indicates content gaps that need to be addressed</li><li>Missing dedicated content for "top 10" lists that competitors are successfully leveraging</li><li>Underutilization of "waargebeurde" (true story) angle that resonates with Dutch audiences</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p><strong>Key Competitors:</strong></p><ol><li><strong>Bruna.nl</strong></li></ol><ul><li>Strengths: Strongest competitor with broad product range, established brand recognition, and dominant rankings for high-volume keywords</li><li>Content Strategy: Effective use of "top 10" lists, well-optimized individual book pages, and clear value propositions in meta descriptions</li><li>Key Differentiator: Emphasizes fast shipping ("Voor 23:00 besteld, morgen in huis!") and free returns</li></ul><br><ol><li><strong>Boekenkraam.nl</strong></li></ol><ul><li>Strengths: Strong rankings for "true crime boeken" and related terms</li><li>Content Strategy: Focuses on "goedkope" (cheap) books as a key differentiator</li><li>Key Differentiator: Price-conscious positioning that appeals to budget-minded readers</li></ul><br><ol><li><strong>Boekenwereld.com</strong></li></ol><ul><li>Strengths: Strong rankings for broad "misdaad boeken" and "true crime boeken" keywords</li><li>Content Strategy: Emphasis on "waargebeurde" (true) stories</li><li>Key Differentiator: Focus on authenticity and real crime stories</li></ul><br><p><strong>SERP Strategy Analysis:</strong></p><ul><li><strong>Title and Meta Description Patterns:</strong></li><li>Competitors consistently use keyword-rich titles that directly address search intent</li><li>Value propositions are clearly stated in meta descriptions (fast shipping, free returns, low prices)</li><li>Clear calls to action encourage clicks from search results</li></ul><br><ul><li><strong>Successful Content Types:</strong></li><li>"Top 10" lists perform exceptionally well across competitors</li><li>Category pages with clear organization of true crime books</li><li>Well-optimized individual book pages with detailed descriptions</li></ul><br><ul><li><strong>Competitor Snippet Example (Bruna.nl):</strong></li><pre><code>  Title: Misdaad Boeken Top 10 | Bruna.nl
+  Meta: Bekijk de top 10 misdaad boeken. Voor 23:00 besteld, morgen in huis! Gratis retourneren binnen 14 dagen.
+</code></pre></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p><strong>Current Backlink Profile:</strong></p><ul><li><strong>Overall Metrics:</strong></li><li>40 total backlinks with a moderate spam score of 34%</li><li>22 referring domains (16 referring main domains)</li><li>35 broken backlinks and 25 broken pages (critical issue)</li><li>Site rank: 17</li></ul><br><p><strong>Domain Distribution:</strong></p><ul><li>30 backlinks from .nl domains (75% of total)</li><li>4 from pages.dev domains</li><li>3 from .com domains</li><li>Other TLDs include .agency and .fyi</li></ul><br><p><strong>Referring Domain Quality:</strong></p><ul><li><strong>Low spam score domains (beneficial):</strong></li><li>boekenkrant.com (0% spam score) - Authoritative book review site</li><li>links.nl (27% spam score) - Directory site</li><li>onderde.nl (28% spam score) - Dutch directory with relevant keyword categories</li></ul><br><ul><li><strong>Medium spam score domains (monitor):</strong></li><li>allepaginas.nl (40% spam score) - Directory site with multiple backlinks</li><li>seobacklinks.agency (45% spam score) - Potentially problematic SEO service</li><li>rankgrow.agency (45% spam score) - Potentially problematic SEO service</li><li>eigenoverzicht.nl (60% spam score) - Directory site</li></ul><br><ul><li><strong>No high spam score domains detected</strong></li></ul><br><p><strong>Anchor Text Analysis:</strong></p><ul><li>Most anchor texts are relevant to the niche: "Misdaad boeken", "True crime boeken kopen", "De beste misdaad boeken"</li><li>Some generic anchors: "misdaadboek.nl" or URL as anchor text</li><li>Potential for more keyword-rich anchor text diversity</li></ul><br><p><strong>Backlink Competitors:</strong></p><ul><li>allepaginas.nl (rank: 108, intersections: 42)</li><li>om.nl (rank: 65, intersections: 16) - Official Dutch Public Prosecution Service</li><li>nrc.nl (rank: 23, intersections: 6) - Major Dutch news outlet</li><li>nu.nl (rank: 32, intersections: 4) - Popular Dutch news site</li><li>ad.nl (rank: 2, intersections: 3) - Major Dutch newspaper</li><li>telegraaf.nl (rank: 2, intersections: 2) - Major Dutch newspaper</li></ul><br><p><strong>Backlink Opportunities:</strong></p><ul><li>Major news sites (nrc.nl, nu.nl, ad.nl, telegraaf.nl) link to competitors but not to Misdaadboek.nl</li><li>Potential for outreach to Dutch crime journalists and news outlets</li><li>Opportunity to fix 35 broken backlinks to reclaim lost link equity</li></ul><br><p><strong>Toxic Backlink Concerns:</strong></p><ul><li>Several suspicious backlinks from SEO service providers with promotional anchor text</li><li>Example: "https://misdaadboek.nl – You need to Skyrocket your Ahrefs DR, Moz DA, and Majestic TF with real PBN, Guest posts, and premium backlinks..."</li><li>These links may trigger Google's spam detection and should be disavowed</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on the comprehensive analysis, we recommend:</p><br><ol><li><strong>Optimize Top-Performing Content:</strong></li></ol><ul><li>Enhance the homepage with additional relevant keywords and improved on-page SEO</li><li>Create more comprehensive content around topics that are already performing well</li><li>Revise title and meta description to include primary keywords and clear value proposition</li></ul><br><ol><li><strong>Improve Underperforming Pages:</strong></li></ol><ul><li><strong>Revamp the "Top 10 Misdaad Boeken" section:</strong></li><li>Create a more comprehensive, visually appealing page with detailed book descriptions</li><li>Optimize for "misdaad boeken top 10" (90 searches) and related terms</li><li>Include high-quality images, customer reviews, and clear purchase options</li><li><strong>Enhance Mocro Maffia content:</strong></li><li>Develop a comprehensive guide targeting "mocro maffia boeken" (880 searches)</li><li>Include book reviews, author information, and related content</li><li><strong>Optimize individual book pages:</strong></li><li>Improve product descriptions with keyword-rich content</li><li>Add structured data for books to enhance SERP appearance</li></ul><br><ol><li><strong>Create New Strategic Content:</strong></li></ol><ul><li>Develop dedicated category pages for:</li><li>"Waargebeurde misdaad boeken" (110 searches)</li><li>"Nederlandse misdaad boeken" (70 searches)</li><li>"Goedkope misdaad boeken" (if price competitiveness is possible)</li><li>Create content around specific cases or criminals popular in the Netherlands</li><li>Develop a blog content calendar targeting seasonal trends in true crime interest</li></ul><br><ol><li><strong>SERP Optimization Strategy:</strong></li></ol><ul><li>Rewrite all titles and meta descriptions following competitor best practices:</li><li>Include primary keywords at the beginning of titles</li><li>Add clear value propositions in meta descriptions</li><li>Include calls to action where appropriate</li><li>Example improved title: "Misdaad Boeken Top 10: Nederlandse True Crime Verhalen | Misdaadboek.nl"</li><li>Example improved meta: "Ontdek de beste waargebeurde misdaad boeken van Nederland. Exclusieve selectie van top true crime verhalen. Direct leverbaar."</li></ul><br><ol><li><strong>Backlink Strategy:</strong></li></ol><ul><li><strong>Clean up toxic backlinks:</strong></li><li>Create a disavow file for suspicious SEO service backlinks</li><li>Monitor spam score regularly</li></ul><br><ul><li><strong>Fix broken backlinks:</strong></li><li>Implement 301 redirects for the 25 broken pages</li><li>Reach out to referring domains to update broken links</li></ul><br><ul><li><strong>Strategic link building:</strong></li><li>Develop relationships with Dutch crime authors and publishers</li><li>Create linkable assets like infographics on famous Dutch crime cases</li><li>Outreach to Dutch news sites that link to competitors (nrc.nl, nu.nl, ad.nl)</li><li>Explore guest posting opportunities on authoritative book review sites like boekenkrant.com</li></ul><br><ul><li><strong>Anchor text optimization:</strong></li><li>Work towards a more natural and diverse anchor text profile</li><li>Focus on relevant keywords without over-optimization</li></ul><br><ol><li><strong>Technical SEO Improvements:</strong></li></ol><ul><li>Fix duplicate meta tags</li><li>Add missing image titles</li><li>Address the node with excessive child elements</li><li>Improve overall site speed and mobile experience</li><li>Implement structured data for books and podcasts</li></ul><br></div></section>
+                <section id="next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-arrow-right"></i></div>
+                        <h2 class="section-title">Next Steps</h2>
+                    </div>
+                    <div class="section-content"><br><p>To implement these recommendations effectively, we propose:</p><br><ol><li><strong>Immediate Actions (Quick Wins):</strong></li></ol><ul><li>Optimize titles and meta descriptions for the homepage and "top 10" page</li><li>Enhance the Mocro Maffia content to target the high-volume keyword (880 searches)</li><li>Fix identified technical SEO issues</li><li>Create and submit a disavow file for toxic backlinks</li><li>Implement 301 redirects for broken pages with valuable backlinks</li></ul><br><ol><li><strong>Short-Term Strategy (1-3 months):</strong></li></ol><ul><li>Develop and launch the recommended category pages</li><li>Optimize individual book pages with enhanced descriptions and structured data</li><li>Begin implementing the revised content strategy with focus on top-priority keywords</li><li>Start outreach to Dutch news sites and book review platforms</li></ul><br><ol><li><strong>Long-Term Strategy (3-6 months):</strong></li></ol><ul><li>Develop a comprehensive backlink acquisition plan</li><li>Create a content calendar addressing seasonal trends</li><li>Expand content to target neighboring markets (Belgium) where appropriate</li><li>Build relationships with Dutch crime authors for content collaboration and link building</li></ul><br><p>With WP SEO AI's comprehensive toolset, we can help Misdaadboek.nl implement these recommendations efficiently, leveraging our AI-powered keyword analysis, content generation, and technical SEO audit capabilities to significantly improve organic visibility and search engine rankings in the Netherlands. Our platform's competitor tracking features will be particularly valuable in monitoring the performance of Bruna.nl, Boekenkraam.nl, and Boekenwereld.com, allowing for strategic adjustments to outperform these competitors over time.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - SEOnline',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

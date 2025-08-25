@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Reason</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Reason • Reason.nl</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Nederland Market</span>
+                        <span><i class="fas fa-calendar"></i> August 25, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="seo-research-report-reason-nl" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Reason.nl</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">27,971.63 (August 2025 projection)</td></tr><tr><td class="">ETV Growth (Last 12 months)</td><td class="positive">+31.43%</td></tr><tr><td class="">Keywords Ranking Position 1</td><td class="">0 (100% decrease YoY)</td></tr><tr><td class="">Keywords Ranking Positions 2-3</td><td class="positive">16 (+128.57% YoY)</td></tr><tr><td class="">Keywords Ranking Positions 4-10</td><td class="positive">56 (+80.65% YoY)</td></tr><tr><td class="">Keywords Ranking Positions 11-20</td><td class="positive">76 (+49.02% YoY)</td></tr><tr><td class="">Keywords Ranking Positions 21-30</td><td class="positive">79 (+16.18% YoY)</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>A homepage audit is critical since it currently drives zero ETV; address SEO fundamentals first.</li><li>Leverage high-growth keywords like “Google E-A-T” to push some into position 1 by refining on-page signals.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Keywords They Rank Well For (Reason.nl Ranks Poorly)</th></tr></thead><tbody><tr><td class="">Frankwatching</td><td class="">"Online marketing trends 2025", "Instagram adverteren", "Contentmarketing"</td></tr><tr><td class="">Doublesmart</td><td class="">"Wat is Google E-A-T?", "Leadgeneratie", "SEO voor website"</td></tr><tr><td class="">Reasonwebdevelopment.nl</td><td class="">Shared backlink domains but less content focus</td></tr><tr><td class="">Redkiwi.nl</td><td class="">Strong backlink profile, overlapping keywords</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Map competitor content formats (e.g., Frankwatching’s trend reports, Doublesmart’s “What is…” articles) into a content brief for Reason.nl.</li><li>Identify 3–5 opportunities to repurpose existing high-performing assets with a fresh angle.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume (NL)</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">Google E-A-T / Google Eat</td><td class="">201,000</td><td class="">Low</td><td class="">High volume, low competition, strong existing content theme</td></tr><tr><td class="">Contentmarketing</td><td class="">2,900</td><td class="">Low</td><td class="">Core service keyword, underutilized</td></tr><tr><td class="">Instagram Adverteren</td><td class="">1,600</td><td class="">Medium</td><td class="">Growing social media marketing interest</td></tr><tr><td class="">Zoekwoorden Onderzoek</td><td class="">1,300</td><td class="">Medium</td><td class="">Important for SEO services</td></tr><tr><td class="">Advertenties LinkedIn</td><td class="">1,000</td><td class="">Medium</td><td class="">B2B marketing focus</td></tr><tr><td class="">SEO voor website</td><td class="">880</td><td class="">Medium</td><td class="">Directly related to core SEO services</td></tr><tr><td class="">Leadgeneratie</td><td class="">720</td><td class="">Medium</td><td class="">High commercial intent</td></tr><tr><td class="">Zoekwoorden</td><td class="">720</td><td class="">Low</td><td class="">Foundational SEO term</td></tr><tr><td class="">Social Media Adverteren</td><td class="">480</td><td class="">Low</td><td class="">Expanding social media marketing</td></tr><tr><td class="">B2B Leadgeneratie</td><td class="">480</td><td class="">Low</td><td class="">Niche B2B focus</td></tr><tr><td class="">Wat is Contentmarketing</td><td class="">320</td><td class="">Low</td><td class="">Informational, good for content marketing</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Immediately schedule content production for “Google E-A-T / Google Eat” and “Contentmarketing” pillars.</li><li>Assign writers to draft “Zoekwoorden Onderzoek” and “SEO voor website” pages with focused CTAs.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li><strong>Organic visibility grew 31.43% in 12 months</strong>, but no keywords rank in position 1; homepage and service pages underperform.</li><li><strong>Top-performing pages</strong> focus on Google E-A-T, GA4, and marketing psychology; homepage has zero ETV.</li><li><strong>Technical SEO issues</strong> include large DOM size, missing cache headers, and homepage indexing problems.</li><li><strong>Keyword gaps</strong> exist in core service terms and local Dutch SEO keywords; strong opportunities in "Google E-A-T" and "Contentmarketing."</li><li><strong>Competitors Frankwatching and Doublesmart outperform Reason.nl</strong> on informational and trend-related content with engaging SERP elements.</li><li><strong>Backlink profile is healthy but limited in keyword-rich anchors; some toxic backlinks identified.</strong></li><li><strong>Content strategy should focus on "What is..." and "How to..." articles, trend reports, and actionable checklists.</strong></li><li><strong>Backlink outreach should target high-authority Dutch sites linking to competitors but not Reason.nl.</strong></li><li><strong>Technical fixes and content optimization on homepage and service pages are urgent priorities.</strong></li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Tackling technical fixes on the homepage and boosting service pages will likely yield the fastest SEO ROI.</li><li>Use high-performing posts as templates for new “What is…” and “How to…” articles to streamline content creation.</li></ul><br><hr><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Reason is a full-service digital marketing agency operating in the Netherlands. Their service offerings include:</p><ul><li>Online marketing (SEO, SEA, social media marketing, lead generation, and conversion optimization)</li><li>Website and app development (WordPress website building and maintenance, web design, app development, and AI models)</li><li>Content creation (content strategy, design, brand identity, and campaign material)</li><li>Data & automation (GA4, GTM, Looker Studio dashboards, CRM, personalization, and email workflows)</li><li>Strategy (target group analysis, branding, KPIs, growth plans, and channel mix)</li></ul><br><p>Their focus is on helping businesses achieve increased visibility, higher conversions, and data-driven decisions. (<a href="https://reason.nl" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</p><br><p><strong>Current Technology Stack:</strong></p><ul><li>Google Search Console (verified through Google Site Verification)</li><li>Google Workspace (indicated by Google SPF records)</li><li>HubSpot for email marketing campaigns</li><li>WordPress for website management</li></ul><br><p>This technology stack indicates Reason has already invested in some fundamental SEO and marketing tools, providing a foundation that can be enhanced with more specialized SEO solutions.</p><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Integrate Google Search Console data into HubSpot dashboards to directly attribute SEO improvements to lead generation efforts.</li></ul><br></div></section>
+                <section id="research-findings" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-lightbulb"></i></div>
+                        <h2 class="section-title">Research Findings</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="1-overall-seo-performance-in-the-netherlands">1. Overall SEO Performance in the Netherlands</h3><br><p><strong>Organic Visibility and Traffic Growth:</strong></p><ul><li>31.43% increase in Estimated Traffic Volume (ETV) over the past 12 months</li><li>Current ETV: 27,971.63 (as of August 2025 projection)</li><li>Estimated paid traffic cost equivalent: €12,581.76</li></ul><br><p><strong>Position Distribution (Current):</strong></p><ul><li>Position 1: 0 keywords (100% decrease year-over-year)</li><li>Positions 2-3: 16 keywords (128.57% increase year-over-year)</li><li>Positions 4-10: 56 keywords (80.65% increase year-over-year)</li><li>Positions 11-20: 76 keywords (49.02% increase year-over-year)</li><li>Positions 21-30: 79 keywords (16.18% increase year-over-year)</li></ul><br><p><strong>Top-Performing Pages:</strong></p><ul><li><code>/wat-is-google-eat-en-wat-betekent-het-voor-jou/</code>: Exceptional performance with ETV of 26,608.43</li><li><code>/blog/wat-is-ga4-en-hoe-werkt-het/</code>: Strong performer with ETV of 263.53</li><li><code>/cialdini-7-principes-hoe-kan-jij-ze-inzetten-in-jouw-bedrijf/</code>: High ETV of 135.84</li><li><code>/dit-zijn-de-online-marketing-trends-2025/</code>: High ETV of 132.91</li></ul><br><p><strong>Underperforming Pages:</strong></p><ul><li>Homepage (www.reason.nl): Surprisingly low ETV of 0, indicating it's not ranking for any keywords</li><li>Service pages under <code>/diensten/</code>: Generally low ETV and rankings in positions 21-100</li><li><code>/diensten/online-marketing/</code>: Very low ETV despite being a core service offering</li></ul><br><p><strong>Technical SEO Issues:</strong></p><ul><li>Large DOM size affecting page performance</li><li>Lack of cache control headers</li><li>Potential indexing issues with the homepage</li><li>While Google Search Console is implemented (as indicated by site verification), the data suggests optimization opportunities are not being fully leveraged</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Execute a full crawl audit to identify and fix homepage indexing issues.</li><li>Implement cache control headers and optimize DOM structure to boost page speed.</li></ul><br><h3 id="2-keyword-analysis-for-the-netherlands">2. Keyword Analysis for the Netherlands</h3><br><p><strong>Current Keyword Performance:</strong></p><ul><li>Total ranking keywords: 461</li><li>New rankings: 219 keywords</li><li>Improved rankings: 125 keywords</li><li>Declining rankings: 93 keywords</li><li>Lost rankings: 226 keywords</li></ul><br><p><strong>High-Value Keywords with Strong Performance:</strong></p><ul><li>"Google EAT" related terms (high ETV and competitive positioning)</li><li>"GA4" and Google Analytics 4 related terms</li><li>"Cialdini principles" in marketing context</li><li>"Online marketing trends 2025"</li></ul><br><p><strong>Keyword Opportunities:</strong></p><ul><li>Service-specific keywords for core offerings (SEO, content marketing, website development)</li><li>Long-tail variations of successful content topics</li><li>Local SEO terms for Dutch market targeting</li><li>Industry-specific terms for target verticals</li></ul><br><p><strong>Keyword Gaps and Opportunities:</strong></p><p>Based on competitive analysis, the following high-value keywords show significant opportunity:</p><ul><li>"Google E-A-T" / "Google Eat" (201,000 search volume, low competition)</li><li>"Contentmarketing" (2,900 search volume, low competition)</li><li>"Instagram Adverteren" (1,600 search volume, medium competition)</li><li>"Zoekwoorden Onderzoek" (1,300 search volume, medium competition)</li><li>"Advertenties LinkedIn" (1,000 search volume, medium competition)</li><li>"SEO voor website" (880 search volume, medium competition)</li><li>"Leadgeneratie" (720 search volume, medium competition)</li><li>"Zoekwoorden" (720 search volume, low competition)</li><li>"Social Media Adverteren" (480 search volume, low competition)</li><li>"B2B Leadgeneratie" (480 search volume, low competition)</li><li>"Wat is Contentmarketing" (320 search volume, low competition)</li></ul><br><p><strong>Seasonal Trends:</strong></p><ul><li>Fluctuating ETV throughout the year with peaks in months 3-5 of 2025 (March-May)</li><li>Significant drop in ETV during months 6-8 (June-August)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Align content calendar to peak seasons (March–May) for trend-based articles and fill off-peak months with evergreen “What is…” guides.</li></ul><br><h3 id="3-competitive-landscape-in-the-netherlands">3. Competitive Landscape in the Netherlands</h3><br><p><strong>Key Competitors:</strong></p><br><ol><li><strong>Frankwatching (www.frankwatching.com)</strong></li></ol><ul><li><strong>Key Strengths:</strong> High estimated traffic volume, strong keyword rankings across digital marketing topics, consistent content production, and practical guides. Particularly strong with "trends" related keywords.</li><li><strong>Type:</strong> Direct competitor targeting the same keywords and audience (marketers, business owners).</li><li><strong>Content Strategy:</strong> Uses question-based titles to directly address user queries (e.g., "Adverteren op Instagram? Dit is hoe het werkt"). Meta descriptions summarize key takeaways or promise practical advice.</li></ul><br><ol><li><strong>Doublesmart (www.doublesmart.nl)</strong></li></ol><ul><li><strong>Key Strengths:</strong> Strong rankings for "what is..." type queries, focus on providing foundational knowledge. Emphasizes lead generation with a "growth scan" lead magnet.</li><li><strong>Type:</strong> Direct competitor for online marketing services and information.</li><li><strong>Content Strategy:</strong> Frequently uses "What is..." or "How to..." titles (e.g., "Wat is Google E-A-T? Heldere uitleg + praktische tips"). Meta descriptions highlight benefits of reading the article and often mention "Gratis groeiscan!"</li></ul><br><ol><li><strong>Reasonwebdevelopment.nl</strong></li></ol><ul><li><strong>Key Strengths:</strong> High number of backlink intersections with Reason.nl (29 shared referring domains).</li><li><strong>Type:</strong> Indirect competitor with shared backlinks indicating potential audience overlap.</li></ul><br><ol><li><strong>Redkiwi.nl</strong></li></ol><ul><li><strong>Key Strengths:</strong> Strong backlink profile with 28 shared referring domains with Reason.nl.</li><li><strong>Type:</strong> Direct competitor in the digital agency space.</li></ul><br><p><strong>Competitive Content Gap Analysis:</strong></p><ul><li>Reason.nl is consistently underperforming for informational queries compared to competitors</li><li>Competitors are dominating "What is..." and "How to..." content formats</li><li>Frankwatching has strong performance for trend-related content</li><li>Competitors use more engaging SERP elements (titles and meta descriptions)</li></ul><br><p><strong>Successful Competitor Content Types:</strong></p><ul><li>How-To Guides: Step-by-step instructions for specific marketing tasks</li><li>Definition Articles: Clear explanations of key marketing concepts</li><li>Checklists: Actionable lists of steps or considerations</li><li>Trend Reports: Analysis of current and future marketing trends</li></ul><br><p><strong>Effective Patterns in Competitor SERP Elements:</strong></p><ul><li>Question-Based Titles: Directly addressing user queries</li><li>Benefit-Oriented Meta Descriptions: Highlighting what users will gain</li><li>Use of Numbers: Titles like "7 SEO tips" or "5 stappen"</li><li>Year Inclusion: Including current/upcoming year for trend topics</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Refresh titles and meta descriptions for top 10 underperforming pages to match competitor formats.</li><li>Create a mini style guide for SEO titles/meta descriptions based on these patterns.</li></ul><br><h3 id="4-backlink-authority-analysis-for-the-netherlands">4. Backlink & Authority Analysis for the Netherlands</h3><br><p><strong>Current Backlink Profile:</strong></p><ul><li>Total backlinks: 3,350</li><li>Referring domains: 233</li><li>Domain rank: 188</li><li>Backlink spam score: 4% (relatively clean profile)</li><li>First seen in backlink index: January 17, 2019</li></ul><br><p><strong>Backlink Quality Distribution:</strong></p><ul><li>Low spam score domains (0-30%): Majority of referring domains, including high-quality sites like crunchbase.com (0%), linkedin.com (15%), and provenexpert.com (0%)</li><li>Medium spam score domains (31-60%): Significant number of directory sites with 40% spam scores</li><li>High spam score domains (61-100%): Small number of potentially toxic links from wiki sites with 75% spam scores</li></ul><br><p><strong>Anchor Text Analysis:</strong></p><ul><li>Primary anchor text: "Reason" and "Developed by Reason" (brand-focused)</li><li>Limited keyword-rich anchor text: Few instances of keyword-focused anchors like "SEA-strategie," "SEO-pijlers," "zoekmachine-optimalisatie," "WordPress website," and "online strategie"</li><li>Most backlinks appear in footer sections with "Developed by Reason" attribution from client websites</li></ul><br><p><strong>Backlink Competitors:</strong></p><ul><li>reasonwebdevelopment.nl (rank: 215, shared referring domains: 29)</li><li>redkiwi.nl (rank: 101, shared referring domains: 28)</li><li>backlinks.live (rank: 152, shared referring domains: 26)</li><li>shopify.com (rank: 69, shared referring domains: 23)</li><li>leadinfo.com (rank: 72, shared referring domains: 19)</li><li>crunchbase.com (rank: 59, shared referring domains: 15)</li><li>emerce.nl (rank: 13, shared referring domains: 12)</li></ul><br><p><strong>Backlink Opportunities:</strong></p><ul><li>High-authority Dutch websites linking to competitors but not to Reason.nl:</li><li>shopify.dev (rank: 4, shared referring domains with competitors: 4)</li><li>trustpilot.com (rank: 22, shared referring domains with competitors: 2)</li><li>bing.com (rank: 8, shared referring domains with competitors: 2)</li><li>cedeo.nl (rank: 1, shared referring domains with competitors: 1)</li><li>crkbo.nl (rank: 1, shared referring domains with competitors: 1)</li></ul><br><p><strong>Toxic Backlink Concerns:</strong></p><ul><li>Several high spam score domains (75%) including wikiworldstock.com, wikikali.com, eveowiki.com, ouyawiki.com, and mysticwiki.com</li><li>Multiple directory sites with medium spam scores (40%) that provide limited SEO value</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Compile and submit a disavow file for all high-spam domains.</li><li>Develop an outreach campaign to acquire contextual backlinks from shopify.dev, trustpilot.com, and cedeo.nl.</li></ul><br><h3 id="5-content-strategy-recommendations-for-the-netherlands">5. Content Strategy Recommendations for the Netherlands</h3><br><p><strong>Content Optimization Priorities:</strong></p><ol><li>Homepage optimization to improve rankings and visibility</li><li>Service page enhancement, particularly for core offerings</li><li>Expansion of successful content themes (Google E-A-T, GA4, marketing psychology)</li><li>Development of local case studies and success stories</li></ol><br><p><strong>Content Gap Opportunities Based on Competitive Analysis:</strong></p><ol><li><strong>Improve Informational Content:</strong></li></ol><ul><li>Create a series of "What is..." and "How to..." articles targeting key marketing concepts</li><li>Focus on high-volume, low-competition keywords like "Wat is Google Analytics en hoe werkt het?"</li><li>Study Doublesmart's "Wat is..." articles for best practices</li></ul><br><ol><li><strong>Optimize SERP Elements:</strong></li></ol><ul><li>Rewrite titles and meta descriptions to be more engaging and benefit-oriented</li><li>Use question-based titles and highlight value propositions in meta descriptions</li><li>Emulate Frankwatching's approach to SERP elements</li></ul><br><ol><li><strong>Create More Actionable Content:</strong></li></ol><ul><li>Develop checklists, templates, and case studies related to online marketing tasks</li><li>Position Reason.nl as a helpful resource with practical value</li></ul><br><ol><li><strong>Update and Repurpose Existing Content:</strong></li></ol><ul><li>Review and refresh existing blog posts with new information and visuals</li><li>Repurpose content into different formats (infographics, videos)</li></ul><br><ol><li><strong>Leverage "Trends" Keywords:</strong></li></ol><ul><li>Create content specifically targeting "trends 2025" and similar keywords</li><li>Study Frankwatching's trends content for successful formats</li></ul><br><p><strong>Quick Wins:</strong></p><ul><li>Optimize titles and meta descriptions for the "Google E-A-T" and "Google Eat" pages</li><li>Create a more comprehensive "What is Google E-A-T?" article</li><li>Address homepage indexing issues to improve visibility</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Assign dedicated owners for quick-win tasks to ensure homepage and “Google E-A-T” optimizations are live within two weeks.</li><li>Leverage case studies to quickly build authority and support backlink outreach efforts.</li></ul><br></div></section>
+                <section id="recommended-next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-arrow-right"></i></div>
+                        <h2 class="section-title">Recommended Next Steps</h2>
+                    </div>
+                    <div class="section-content"><br><ol><li><strong>Technical SEO Optimization:</strong></li></ol><ul><li>Address homepage indexing and visibility issues</li><li>Implement cache control headers</li><li>Optimize DOM size and page speed</li><li>Better leverage existing Google Search Console implementation for monitoring and optimization</li></ul><br><ol><li><strong>Content Enhancement:</strong></li></ol><ul><li>Revitalize service pages with expanded, keyword-rich content</li><li>Create supporting content for high-performing topics</li><li>Develop case studies showcasing Dutch client successes</li><li>Implement question-based titles and benefit-oriented meta descriptions</li></ul><br><ol><li><strong>Keyword Targeting:</strong></li></ol><ul><li>Focus on improving rankings for positions 2-10 keywords</li><li>Target identified keyword gaps, especially high-volume, low-competition terms</li><li>Develop content for "What is..." and "How to..." informational queries</li><li>Create trend-focused content to compete with Frankwatching</li></ul><br><ol><li><strong>Competitive Strategy:</strong></li></ol><ul><li>Emulate successful content formats from Frankwatching and Doublesmart</li><li>Improve SERP elements to increase click-through rates</li><li>Create more actionable content (checklists, templates, guides)</li><li>Develop a lead magnet similar to Doublesmart's "growth scan"</li></ul><br><ol><li><strong>Backlink Development:</strong></li></ol><ul><li>Implement a disavowal strategy for toxic backlinks with 75% spam scores</li><li>Diversify anchor text beyond "Developed by Reason" to include more keyword-rich anchors</li><li>Target high-authority sites that link to competitors but not to Reason.nl (shopify.dev, trustpilot.com, bing.com)</li><li>Create outreach strategy for Dutch industry publications and directories with low spam scores</li><li>Develop shareable content assets to attract natural backlinks</li><li>Leverage client relationships to obtain more contextual backlinks rather than footer credits</li></ul><br><ol><li><strong>Marketing Technology Integration:</strong></li></ol><ul><li>Integrate WP SEO AI with existing Google Search Console for enhanced keyword tracking and optimization</li><li>Leverage HubSpot email marketing capabilities to promote new SEO-optimized content</li><li>Develop workflows that connect SEO insights with email marketing campaigns</li><li>Implement more advanced SEO tracking and reporting to complement basic Google Search Console functionality</li></ul><br><p>This SEO analysis provides a foundation for improving Reason's search visibility and competitive positioning in the Dutch market. By addressing the identified opportunities and building on current strengths, Reason can significantly enhance its organic search performance and attract more qualified leads. The competitive analysis reveals clear strategies that can be implemented to outperform key competitors like Frankwatching and Doublesmart, while the backlink analysis highlights opportunities to strengthen Reason's authority through strategic link building and toxic link removal.</p><br><p>Given Reason's existing technology stack (Google Search Console, Google Workspace, and HubSpot), implementing WP SEO AI would provide complementary advanced SEO capabilities without disrupting their current workflow, allowing them to better leverage their existing tools while adding powerful new optimization features.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Reason',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

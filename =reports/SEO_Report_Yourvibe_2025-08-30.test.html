@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Yourvibe</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Yourvibe • https://yourvibe.be</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> belgie Market</span>
+                        <span><i class="fas fa-calendar"></i> August 30, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Value / Change</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">27.57 (Aug 2025)</td></tr><tr><td class="">ETV Growth (Last 12 months)</td><td class="positive">+93.76% (from 14.23 in Aug 2024)</td></tr><tr><td class="">Keywords in Position 1</td><td class="">0</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">0</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">2</td></tr><tr><td class="">Keywords in Positions 11-30</td><td class="">10</td></tr><tr><td class="">Estimated Paid Traffic Cost</td><td class="">€37.32</td></tr><tr><td class="">On-Page SEO Score</td><td class="">87.75 (needs improvement)</td></tr><tr><td class="">Backlinks</td><td class="positive">52 backlinks from 16 referring domains (medium spam score 45%)</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Leverage the strong ETV growth by creating targeted content for the top-priority keywords to move into positions 1–3.</li><li>Align on 3–5 high-impact pages that can be optimized first for quick wins.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Finalize the list of target keywords and assign content owners; set deadlines for on-page updates.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Keywords They Rank Well For (Yourvibe Ranks Poorly)</th></tr></thead><tbody><tr><td class="">moederthuis.be</td><td class="">"zwangerschap yoga" (pregnancy yoga)</td></tr><tr><td class="">davidlloyd.be</td><td class="">"yogales in de buurt", "yogalessen in de buurt"</td></tr><tr><td class="">move-me.be</td><td class="">"pilates tessenderlo"</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a monthly SERP audit for these competitors to capture changes in their titles, meta descriptions, and landing pages.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume</th><th>Competition</th><th>Why Important for Yourvibe</th></tr></thead><tbody><tr><td class="">zwangerschap yoga</td><td class="">880</td><td class="">LOW</td><td class="">High volume, low competition, niche specialization</td></tr><tr><td class="">pilates in de buurt</td><td class="">320-720</td><td class="">MEDIUM</td><td class="">Local intent, aligns with pilates services</td></tr><tr><td class="">yogales in de buurt</td><td class="">70</td><td class="">MEDIUM</td><td class="">Local search, currently low ranking</td></tr><tr><td class="">yogalessen in de buurt</td><td class="">70</td><td class="">MEDIUM</td><td class="">Local search, opportunity for content expansion</td></tr><tr><td class="">reformer pilates in de buurt</td><td class="">0-140</td><td class="">LOW</td><td class="">Long-tail, low competition</td></tr><tr><td class="">trauma release therapie opleiding</td><td class="">0-10</td><td class="">MEDIUM</td><td class="">Specialized service, underutilized keyword</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize “zwangerschap yoga” and “pilates in de buurt” to maximize traffic uplift with minimal competition.</li><li>Use dedicated landing pages to capture local intent for “yogales in de buurt” and “yogalessen in de buurt.”</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>Yourvibe’s organic visibility and traffic nearly doubled (+93.76%) in 12 months but lacks top 3 keyword rankings.</li><li>Homepage dominates rankings but lacks targeted content; many service pages underperform or rank poorly.</li><li>Critical technical SEO issues (missing DOCTYPE, no title/meta tags, no H1) hinder performance.</li><li>Strong local SEO potential with keywords like "pilates tessenderlo" and "yoga tessenderlo," but broader local and niche keywords are under-targeted.</li><li>Competitors dominate key high-volume keywords, especially in pregnancy yoga and local yoga classes.</li><li>Backlink profile is modest with some medium-spam-score links; opportunities exist to build authoritative, local, and niche-relevant backlinks.</li><li>Content gaps exist in local, service-specific, and niche keywords (e.g., pregnancy yoga, trauma therapy).</li><li>Recommended roadmap includes fixing technical SEO, optimizing for local and niche keywords, creating dedicated landing pages, improving meta descriptions, and strategic link building.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop a timeline mapping out immediate, short-term, and long-term actions with clear owners and milestones.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-yourvibe" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Yourvibe</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This report provides a comprehensive SEO analysis for Yourvibe, a yoga service provider in Belgium. Based on our research, Yourvibe has experienced significant growth in organic visibility (+93.76% increase in Estimated Traffic Volume) over the past year, but faces several technical SEO challenges and content optimization opportunities. This analysis focuses on their current SEO performance in the Belgian market, keyword opportunities, competitive landscape, and backlink profile, with the goal of providing actionable recommendations to improve their search visibility and organic traffic.</p><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Yourvibe is a yoga service provider led by Miep, offering various yoga styles including Yin Yang Gentle Yoga, Yogalates, Yin To Vin, Chill Yoga flow, and Ashtanga Yoga. They also provide specialized services such as Trauma Transformational Release using Body Remembers Trauma Therapy (BRTT), Acceptance and Commitment Therapy, online prenatal yoga, and meditation classes. The company appears to focus on both in-person and online yoga services, with a particular emphasis on trauma healing and wellness. <a href="https://yourvibe.be" class="link-reference" target="_blank" rel="noopener">Company Website</a></p><br></div></section>
+                <section id="1-overall-seo-performance-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-organic-visibility">Current Organic Visibility</h3><p>Yourvibe has shown impressive growth in organic visibility over the past year, with a 93.76% increase in Estimated Traffic Volume (ETV). The latest data shows an ETV of 27.57, indicating growing visibility in search results. However, the site currently has no keywords ranking in position 1 and positions 2-3, revealing significant room for improvement in achieving top rankings.</p><br><p>Current position distribution:</p><ul><li>Position 1: 0 keywords</li><li>Positions 2-3: 0 keywords</li><li>Positions 4-10: 2 keywords</li><li>Positions 11-20: 3 keywords</li><li>Positions 21-30: 7 keywords</li><li>Positions 31-40: 3 keywords</li><li>Positions 41-50: 3 keywords</li><li>Positions 51-60: 4 keywords</li><li>Positions 61-70: 0 keywords</li><li>Positions 71-80: 2 keywords</li><li>Positions 81-90: 1 keyword</li><li>Positions 91-100: 3 keywords</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Address the “zero in top 3” gap by optimizing the two keywords already in positions 4-10 for improved CTR and backlink support.</li><li>Consider targeted internal linking from high-authority pages to these mid-ranking pages to boost their positions.</li></ul><br><h3 id="search-engine-traffic">Search Engine Traffic</h3><p>The site's organic traffic has shown consistent growth over the past 12 months, with the ETV increasing from 14.23 in August 2024 to 27.57 in August 2025, representing a 93.76% increase. The estimated paid traffic cost (the equivalent value if this traffic were purchased through PPC) is €37.32, indicating the growing value of the site's organic presence.</p><br><h3 id="top-performing-pages">Top Performing Pages</h3><ul><li><strong>Best Performing</strong>: The homepage (https://yourvibe.be/) is the strongest performer with the highest ETV (16.25) and ranks for 23 keywords. However, these rankings are spread across positions 4-100, indicating significant room for improvement.</li><li><strong>Good Performance</strong>: The "About" page (https://yourvibe.be/about/) has a decent ETV (7.83) and ranks for one keyword in positions 11-20.</li><li><strong>Underperforming Pages</strong>:</li><li>https://yourvibe.be/zwangerschapsyoga/ (ETV: 1.85, position 71-80)</li><li>https://yourvibe.be/prijzen/ (ETV: 0.15, position 21-30)</li><li>https://yourvibe.be/event/cacao-ceremonie/ (ETV: 1.01, position 91-100)</li><li>https://yourvibe.be/waar-en-wanneer/ (ETV: 0.48, position 21-30)</li><li><strong>No Ranking</strong>: The page http://www.yourvibe.be/ has no ranking keywords, suggesting a potential duplicate content issue.</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><p>The technical SEO audit revealed several critical issues that need immediate attention:</p><br><ul><li><strong>Missing DOCTYPE</strong>: The HTML document lacks a DOCTYPE declaration, affecting proper rendering.</li><li><strong>HTML Errors</strong>: There are structural HTML errors indicating malformed markup.</li><li><strong>Missing Title and Meta Description</strong>: These critical SEO elements are missing, significantly impacting search visibility.</li><li><strong>No H1 Tag</strong>: The page lacks proper heading structure, affecting content hierarchy signals.</li><li><strong>Encoding Issues</strong>: No encoding meta tag is specified.</li><li><strong>Low Content</strong>: The page has very little plain text content (170 bytes), which is insufficient for proper indexing.</li><li><strong>Homepage Over-Reliance</strong>: The homepage is ranking for a wide variety of keywords, suggesting a lack of targeted content for specific keywords, which dilutes SEO efforts.</li><li><strong>Generic Snippets</strong>: The generic descriptions on the homepage are not optimized for specific keywords, negatively impacting click-through rates.</li></ul><br><p>Positive aspects include:</p><ul><li>The site uses HTTPS</li><li>The site uses Nginx server</li><li>Page loading time is fast</li></ul><br><p>The overall on-page score is 87.75, indicating room for improvement.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize fixing on-page elements (title, meta, H1) before expanding content to ensure new pages inherit a strong technical foundation.</li><li>Use schema markup for local business details to enhance SERP real estate.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-ranking-keywords">Current Ranking Keywords</h3><p>Our analysis reveals that Yourvibe has only two keywords ranking in the top 10 positions:</p><br><ol><li><strong>pilates tessenderlo</strong> - Search Volume: 90, Position: 8</li><li><strong>yoga tessenderlo</strong> - Search Volume: 50, Position: 9</li></ol><br><p>Both of these are location-specific keywords, indicating strong local SEO potential but limited broader visibility.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Refine on-page elements for these two pages to push them into positions 5 and above, using optimized titles, internal links, and local schema.</li></ul><br><h3 id="keywords-in-positions-11-30">Keywords in Positions 11-30</h3><p>Several keywords show potential for improvement:</p><br><ul><li><strong>pilates vibe</strong> - Search Volume: 110, Position: 18</li><li><strong>vibe</strong> - Search Volume: 2900, Position: 19</li><li><strong>yogales in de buurt</strong> - Search Volume: 70, Position: 29</li></ul><br><p>The keyword "vibe" has significant search volume (2900) but is very generic, while "yogales in de buurt" (yoga classes nearby) represents a valuable opportunity for local traffic.</p><br><h3 id="high-value-keyword-opportunities">High-Value Keyword Opportunities</h3><p>Based on our research, these keywords represent the best opportunities for Yourvibe:</p><br><p><strong>Top Priority Keywords:</strong></p><ul><li><strong>zwangerschap yoga</strong> - Search Volume: 880 | Competition: LOW</li><li><strong>pilates in de buurt</strong> - Search Volume: 320-720 | Competition: MEDIUM</li><li><strong>yogales in de buurt</strong> - Search Volume: 70 | Competition: MEDIUM</li><li><strong>yogalessen in de buurt</strong> - Search Volume: 70 | Competition: MEDIUM</li><li><strong>pilates tessenderlo</strong> - Search Volume: 90 | Competition: LOW</li></ul><br><p><strong>Secondary Keywords:</strong></p><ul><li><strong>reformer pilates in de buurt</strong> - Search Volume: 0-140 | Competition: LOW</li><li><strong>body release trauma therapie</strong> - Search Volume: 0-10 | Competition: MEDIUM</li><li><strong>trauma release therapie opleiding</strong> - Search Volume: 0-10 | Competition: MEDIUM</li></ul><br><p><strong>Long-term Opportunities:</strong></p><ul><li><strong>hot pilates in de buurt</strong> - Search Volume: 0-50 | Competition: MEDIUM</li><li><strong>pilates reformer in de buurt</strong> - Search Volume: 0-20 | Competition: MEDIUM</li><li><strong>yin yoga [location]</strong> - Search Volume: Varies | Competition: LOW-MEDIUM</li><li><strong>ashtanga yoga [location]</strong> - Search Volume: Varies | Competition: LOW-MEDIUM</li></ul><br><h3 id="seasonal-trends">Seasonal Trends</h3><p><em>Note: Additional research needed on seasonal keyword trends relevant to yoga services in Belgium</em></p><br><h3 id="content-gaps">Content Gaps</h3><p>The current keyword distribution reveals significant content gaps:</p><br><ol><li><strong>Local Search Terms</strong>: Despite ranking well for "pilates tessenderlo" and "yoga tessenderlo," the site lacks optimized content for broader local search terms like "yogales in de buurt" (yoga classes nearby).</li></ol><br><ol><li><strong>Service-Specific Keywords</strong>: The site is not effectively targeting keywords related to specific services like "reformer pilates" or "hot pilates."</li></ol><br><ol><li><strong>Specialized Services</strong>: Keywords related to trauma therapy and specialized yoga practices show potential but are currently underutilized.</li></ol><br><ol><li><strong>Niche-Specific Keywords</strong>: The site is missing out on niche-specific keywords like "zwangerschap yoga" (pregnancy yoga) which has high search volume (880) and low competition.</li></ol><br><ol><li><strong>Irrelevant Rankings</strong>: The site is ranking for "tattooshop tessenderlo," which is completely unrelated to yoga and pilates, suggesting issues with keyword association.</li></ol><br></div></section>
+                <section id="3-competitive-landscape-in-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="key-competitors">Key Competitors</h3><p>Our analysis has identified three main competitors in the Belgian market:</p><br><ol><li><strong>www.moederthuis.be</strong></li></ol><ul><li><strong>Strengths</strong>: High estimated traffic volume, strong rankings for "zwangerschap yoga" (pregnancy yoga)</li><li><strong>Type</strong>: Direct competitor focusing on specific yoga niches (pregnancy)</li><li><strong>Key Differentiator</strong>: Specialized focus on pregnancy-related yoga services</li></ul><br><ol><li><strong>www.davidlloyd.be</strong></li></ol><ul><li><strong>Strengths</strong>: High estimated traffic volume, excellent rankings for location-based yoga searches</li><li><strong>Type</strong>: Indirect competitor, a larger fitness chain offering yoga among other services</li><li><strong>Key Differentiator</strong>: Broader service offering with strong local SEO</li></ul><br><ol><li><strong>www.move-me.be</strong></li></ol><ul><li><strong>Strengths</strong>: Strong rankings for "pilates tessenderlo"</li><li><strong>Type</strong>: Direct competitor focusing on pilates and potentially other movement-based activities</li><li><strong>Key Differentiator</strong>: Strong local SEO for pilates in specific locations</li></ul><br><h3 id="competitor-seo-strengths-and-weaknesses">Competitor SEO Strengths and Weaknesses</h3><br><h4 id="keyword-performance-analysis">Keyword Performance Analysis</h4><ul><li><strong>Keywords Where Competitors Outperform Yourvibe</strong>:</li><li>"zwangerschap yoga" (moederthuis.be)</li><li>"yogales in de buurt" (davidlloyd.be)</li><li>"yogalessen in de buurt" (davidlloyd.be)</li><li>"pilates tessenderlo" (move-me.be)</li></ul><br><h4 id="serp-strategy-analysis">SERP Strategy Analysis</h4><ul><li><strong>Title and Meta Description Comparison</strong>:</li><li><strong>moederthuis.be</strong>: Simple, direct title "Zwangerschapsyoga" with description focusing on pregnancy week and instructor</li><li><strong>davidlloyd.be</strong>: Comprehensive title "Yogalessen Bij Jou in de Buurt | Vinyasa, Hatha & Yin" with description highlighting well-being, all levels, and expert instructors</li><li><strong>move-me.be</strong>: Location-focused title "Pilates Diest - Move-Me" with description mentioning location and authentic Pilates method</li><li><strong>yourvibe.be</strong>: Generic titles (e.g., "Your Vibe: Home") with descriptions often cut off or not directly addressing search queries</li></ul><br><ul><li><strong>Effective Patterns in Competitor SERP Elements</strong>:</li></ul><ol><li>Clear keyword targeting in both title and description</li><li>Prominent location emphasis for local searches</li><li>Strong value propositions highlighting key benefits</li><li>Implied calls to action that entice users to click</li></ol><br><h4 id="successful-content-types-formats">Successful Content Types/Formats</h4><ul><li><strong>Dedicated Landing Pages</strong>: Competitors use specific pages for individual services</li><li><strong>Location Pages</strong>: move-me.be effectively uses location-specific pages to target local searches</li></ul><br><h3 id="competitor-content-strategies">Competitor Content Strategies</h3><p>The competitors are employing several effective content strategies:</p><br><ol><li><strong>Niche Specialization</strong>: moederthuis.be focuses deeply on pregnancy yoga, allowing them to dominate this specific niche</li></ol><br><ol><li><strong>Location-Based Content</strong>: Competitors are creating location-specific content that ranks well for local searches</li></ol><br><ol><li><strong>Clear Service Differentiation</strong>: davidlloyd.be clearly differentiates between yoga styles (Vinyasa, Hatha & Yin) in their titles and content</li></ol><br><ol><li><strong>Value-Focused Descriptions</strong>: Competitors highlight benefits and unique selling points in their meta descriptions</li></ol><br></div></section>
+                <section id="4-backlink-authority-analysis-for-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><p>Yourvibe currently has 52 backlinks from 16 referring domains, with a medium spam score of 45%. This indicates a modest backlink profile with some potential quality concerns. The site has a rank of 175, suggesting room for improvement in domain authority.</p><br><p><strong>Backlink Quality Distribution:</strong></p><ul><li>9 referring domains with low spam scores (0-30%)</li><li>7 referring domains with medium spam scores (31-60%)</li><li>0 referring domains with high spam scores (61-100%)</li></ul><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Spam score thresholds: 0-30% (low), 31-60% (medium), 61-100% (high). Disavow only when scores exceed 60% or if manual actions arise.</li></ul><br><p><strong>Top Referring Domains:</strong></p><ul><li>petervde.be (0% spam score)</li><li>bloom.be (0% spam score)</li><li>feminbalans.be (0% spam score)</li><li>innerjourney-opleidingen.nl (5% spam score)</li><li>inner-journey.nl (5% spam score)</li></ul><br><p><strong>Anchor Text Analysis:</strong></p><p>Most anchor texts are branded or generic (e.g., "Bekijk website," "yourvibe.be"), with very few keyword-rich anchors. This represents a missed opportunity for improving keyword rankings through strategic anchor text.</p><br><h3 id="link-building-opportunities">Link Building Opportunities</h3><p>Our analysis identified several opportunities for improving Yourvibe's backlink profile:</p><br><ol><li><strong>Leverage Existing Relationships</strong>: The backlinks from bloom.be show potential for deeper collaboration, as they already mention Yourvibe in the context of the Summer Bloom Fest. This relationship could be expanded for more comprehensive coverage.</li></ol><br><ol><li><strong>Competitor Backlink Acquisition</strong>: We identified backlink intersections with vectorgalaxy.be and all-print.be, suggesting potential link-building opportunities from the same sources.</li></ol><br><ol><li><strong>Industry-Specific Directories</strong>: While Yourvibe appears in some directories like onderde.be, there are opportunities to be listed in more authoritative yoga and wellness directories in Belgium.</li></ol><br><ol><li><strong>Local Business Partnerships</strong>: Develop relationships with complementary local businesses in Tessenderlo and surrounding areas for mutual link-building opportunities.</li></ol><br><ol><li><strong>Content-Based Link Building</strong>: Create shareable content resources about yoga, pilates, and wellness that would naturally attract links from Belgian health and wellness websites.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Launch an outreach sequence targeting bloom.be, local directories, and 5 new high-authority yoga/wellness sites; aim for 3–5 contextual links per quarter.</li></ul><br><h3 id="toxic-backlink-assessment">Toxic Backlink Assessment</h3><p>While no high spam score backlinks were identified, several medium spam score backlinks warrant attention:</p><br><ul><li>seobacklinks.agency (45% spam score)</li><li>rankgrow.agency (45% spam score)</li><li>prolinkbox.com (50% spam score)</li><li>onderde.be (58% spam score)</li><li>driftseo.click (50% spam score)</li><li>quero.party (50% spam score)</li><li>global-website.pages.dev (35% spam score)</li></ul><br><p>These links appear to be from SEO-focused websites rather than natural, relevant sources. While they're not immediately harmful, they could potentially trigger spam signals if their number increases. We recommend monitoring these links and considering disavowal if Google Search Console shows any manual actions or if the spam scores increase.</p><br></div></section>
+                <section id="5-content-strategy-recommendations-for-belgium" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for Belgium</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our findings, we recommend the following content strategy improvements:</p><br><h3 id="content-topic-suggestions">Content Topic Suggestions</h3><ol><li><strong>Local SEO Content</strong>: Create dedicated location pages optimized for each area served (e.g., yourvibe.be/yoga-tessenderlo/, yourvibe.be/pilates-tessenderlo/).</li></ol><br><ol><li><strong>Service-Specific Pages</strong>: Develop dedicated landing pages for each yoga style (Yin Yang, Ashtanga, etc.) and service (Trauma Release, Prenatal Yoga) to allow for more targeted keyword optimization.</li></ol><br><ol><li><strong>Niche-Specific Content</strong>: Create comprehensive content around "zwangerschap yoga" (pregnancy yoga) to compete with moederthuis.be for this high-volume, low-competition keyword.</li></ol><br><ol><li><strong>Blog Development</strong>: Start a blog with content around relevant topics such as:</li></ol><ul><li>"Benefits of Yin Yoga"</li><li>"Yoga for Beginners in Tessenderlo"</li><li>"How to Choose the Right Yoga Style"</li><li>"What to Expect in Your First Pilates Class"</li></ul><br><ol><li><strong>Classes/Schedule Page</strong>: Create a dedicated page with clear schedule and booking information to improve user experience and target "in de buurt" keywords.</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Implement a content cluster approach around each primary service area to boost topical authority and enhance internal linking.</li></ul><br><h3 id="content-optimization-opportunities">Content Optimization Opportunities</h3><ol><li><strong>Homepage Optimization</strong>:</li></ol><ul><li>Add proper HTML structure, title tags, meta descriptions, and H1 headings</li><li>Write unique and compelling meta descriptions incorporating relevant keywords</li><li>Highlight the unique benefits of Yourvibe's offerings in the snippets</li></ul><br><ol><li><strong>Service Pages Enhancement</strong>:</li></ol><ul><li>Expand content on pages like /zwangerschapsyoga/ to improve rankings from position 71-80</li><li>Optimize the title tag to be more specific and keyword-rich (e.g., "Zwangerschapsyoga Tessenderlo | Your Vibe")</li><li>Add comprehensive content addressing common questions about pregnancy yoga</li></ul><br><ol><li><strong>Meta Description Optimization</strong>:</li></ol><ul><li>Rewrite meta descriptions for all key pages following the patterns used by successful competitors</li><li>Include location mentions (Tessenderlo and surrounding areas) in meta descriptions</li><li>Highlight unique value propositions and include implied calls to action</li></ul><br><ol><li><strong>Internal Linking Improvement</strong>:</li></ol><ul><li>Improve internal linking to guide users and search engines to relevant content</li><li>Link from the homepage to dedicated landing pages for each yoga style and service</li></ul><br><h3 id="content-cluster-strategy">Content Cluster Strategy</h3><p>Develop content clusters around key service areas:</p><br><ol><li><strong>Yoga Styles Cluster</strong>: Create comprehensive content around each yoga style offered, with the main pillar page linking to specific style pages.</li></ol><br><ol><li><strong>Wellness & Healing Cluster</strong>: Develop content around trauma therapy, meditation, and mental wellness, focusing on keywords like "body release trauma therapie."</li></ol><br><ol><li><strong>Local Services Cluster</strong>: Build content targeting "in de buurt" keywords, with location-specific pages linked to a main "Locations" pillar page.</li></ol><br><ol><li><strong>Pilates Cluster</strong>: Create dedicated content for different types of pilates (reformer, hot pilates) to target the high-value pilates-related keywords.</li></ol><br><ol><li><strong>Pregnancy Yoga Cluster</strong>: Develop a comprehensive content cluster around pregnancy yoga to compete for the high-value "zwangerschap yoga" keyword.</li></ol><br></div></section>
+                <section id="conclusion-and-seo-roadmap" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion and SEO Roadmap</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our analysis, we recommend the following SEO roadmap for Yourvibe to improve their visibility in the Belgian market:</p><br><h3 id="immediate-actions-1-2-months-">Immediate Actions (1-2 months)</h3><ol><li><strong>Fix critical technical SEO issues</strong>:</li></ol><ul><li>Add proper DOCTYPE declaration</li><li>Correct HTML errors</li><li>Implement title tags and meta descriptions on all pages</li><li>Add proper H1 headings</li><li>Fix www vs non-www canonicalization</li></ul><br><ol><li><strong>Local SEO optimization</strong>:</li></ol><ul><li>Optimize Google Business Profile with accurate information, photos, and regular updates</li><li>Build local citations in online directories</li><li>Encourage customer reviews</li><li>Create location-specific content targeting "in de buurt" keywords</li></ul><br><ol><li><strong>Snippet optimization</strong>:</li></ol><ul><li>Write unique and compelling meta descriptions for each page</li><li>Incorporate relevant keywords and clear calls to action</li><li>Highlight unique benefits of Yourvibe's offerings</li><li>Add location mentions to meta descriptions for relevant service pages</li></ul><br><ol><li><strong>Quick wins for "zwangerschap yoga"</strong>:</li></ol><ul><li>Optimize the title tag of the <code>/zwangerschapsyoga/</code> page to be more specific and keyword-rich</li><li>Expand the content on this page to be more comprehensive and address common questions</li></ul><br><ol><li><strong>Backlink profile cleanup</strong>:</li></ol><ul><li>Monitor medium-spam-score backlinks for potential negative impact</li><li>Consider disavowing any links that appear manipulative or irrelevant</li></ul><br><h3 id="short-term-actions-3-6-months-">Short-term Actions (3-6 months)</h3><ol><li><strong>Keyword optimization</strong>:</li></ol><ul><li>Target high-value keywords in positions 11-30 to push them into the top 10</li><li>Focus on "pilates vibe" (position 18) and "yogales in de buurt" (position 29)</li><li>Create new content targeting identified keyword opportunities</li></ul><br><ol><li><strong>Content development</strong>:</li></ol><ul><li>Create dedicated landing pages for each yoga style and service</li><li>Develop location-specific landing pages (e.g., <code>/yoga-tessenderlo/</code>, <code>/pilates-tessenderlo/</code>)</li><li>Develop a blog with regular posts targeting long-tail keywords</li><li>Implement proper internal linking structure</li></ul><br><ol><li><strong>User experience improvements</strong>:</li></ol><ul><li>Improve site navigation</li><li>Enhance mobile responsiveness</li><li>Create a dedicated "Classes" or "Schedule" page</li></ul><br><ol><li><strong>Competitor strategy monitoring</strong>:</li></ol><ul><li>Regularly monitor the SERPs for target keywords to see how competitors are adapting</li><li>Track keyword rankings and identify new opportunities</li></ul><br><ol><li><strong>Strategic link building</strong>:</li></ol><ul><li>Leverage existing relationships with bloom.be and other quality referring domains</li><li>Reach out to local wellness businesses for partnership opportunities</li><li>Create shareable content resources to attract natural backlinks</li></ul><br><h3 id="long-term-strategy-6-12-months-">Long-term Strategy (6-12 months)</h3><ol><li><strong>Content expansion</strong>:</li></ol><ul><li>Implement the content cluster strategy</li><li>Create comprehensive guides and resources</li><li>Target emerging keywords like "hot pilates in de buurt"</li></ul><br><ol><li><strong>Authority building</strong>:</li></ol><ul><li>Develop a backlink acquisition strategy targeting relevant Belgian wellness websites</li><li>Establish partnerships with complementary wellness businesses</li><li>Focus on acquiring links with keyword-rich anchor text rather than generic anchors</li></ul><br><ol><li><strong>Monitoring and refinement</strong>:</li></ol><ul><li>Track keyword rankings and traffic regularly</li><li>Measure the effectiveness of SEO efforts</li><li>Identify new opportunities and adjust strategy accordingly</li></ul><br><ol><li><strong>Diversify backlink profile</strong>:</li></ol><ul><li>Reduce reliance on directory-style links (like onderde.be)`</li><li>Increase the proportion of editorial links from relevant content</li><li>Target authoritative domains in the yoga, wellness, and local business sectors</li></ul><br><p>By implementing this roadmap, Yourvibe can build on their impressive 93.76% growth in organic visibility, address the technical and content issues currently limiting their search performance, and capitalize on the significant keyword opportunities identified in the Belgian market. The strategic focus on competing with identified competitors through improved on-page SEO, location-specific content, and niche specialization will help Yourvibe capture more organic traffic and improve their market position in Belgium.</p><br><p>Additionally, by cleaning up potentially problematic backlinks and implementing a strategic link-building campaign focused on quality rather than quantity, Yourvibe can improve their domain authority and achieve more sustainable long-term rankings in the competitive yoga and wellness space.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Schedule a kickoff workshop in Week 1 to review immediate actions, assign owners, and confirm timelines.</li></ul></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Yourvibe',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

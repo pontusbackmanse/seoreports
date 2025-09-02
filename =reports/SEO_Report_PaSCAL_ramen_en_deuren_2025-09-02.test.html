@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - PaSCAL ramen en deuren</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">PaSCAL ramen en deuren • https://www.pascalbouwprofessional.nl/</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> September 2, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary-pascal-ramen-en-deuren-seo-insights-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary: PaSCAL ramen en deuren SEO Insights for the Netherlands</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Current Value</th><th>12-Month Change</th><th>Notes</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">122.49</td><td class="negative">-31.90%</td><td class="">Significant traffic decline; urgent action needed</td></tr><tr><td class="">Total Ranking Keywords</td><td class="">129</td><td class="">N/A</td><td class="">Majority rank beyond position 30 (72%)</td></tr><tr><td class="">Keywords in Top 10 Positions</td><td class="">9</td><td class="">N/A</td><td class="">0 in position 1; 1 in positions 2-3; 8 in 4-10</td></tr><tr><td class="">Domain Rank</td><td class="">170</td><td class="">N/A</td><td class="">Moderate authority; backlink profile needs improvement</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>A 31.9% drop in traffic is a red flag—prioritize content refreshes on pages that historically drove visits.</li><li>With 72% of keywords outside the top 30, a focused keyword migration plan (targeting pages to move from positions 30+ into the top 20) can deliver quick wins.</li><li>Consider reallocating budget from low-impact product pages to high-potential informational clusters.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Keywords They Rank Well For (High Volume & Competition)</th><th>PaSCAL Ranking for These Keywords</th><th>Competitor Strategy Highlights</th></tr></thead><tbody><tr><td class="">Creon-kozijnen.nl</td><td class="">onderdorpels kozijnen (720), aluminium kozijnen detail (590), roeden in het glas (140)</td><td class="">31-40+ (poor)</td><td class="">Detailed technical guides, FAQ pages, comprehensive content</td></tr><tr><td class="">Houtenkozijnenloods.nl</td><td class="">houten schuifpui (1300), houten pui (170)</td><td class="">31-40+ (poor)</td><td class="">Clear product specs, pricing info, strong calls-to-action</td></tr><tr><td class="">Venstershop.nl</td><td class="">ventilatieroosters (medium volume)</td><td class="">Not ranking</td><td class="">Generalist approach, product category focus</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Creon’s FAQ-driven approach is lifting long-tail traffic—introduce similar Q&A blocks on key product pages.</li><li>Houtenkozijnenloods.nl leverages pricing tables; adding transparent starting prices can boost click-through rates.</li><li>Venstershop’s category focus suggests potential for PaSCAL to build dedicated “ventilatie” landing pages.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume</th><th>Competition</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">kunststof schuifpui</td><td class="">1,900</td><td class="">High</td><td class="">Core product keyword with high traffic potential</td></tr><tr><td class="">plaatsen van kunststof kozijnen</td><td class="">1,600</td><td class="">High</td><td class="">Installation-focused; strong commercial intent</td></tr><tr><td class="">aluminium kozijnen</td><td class="">1,300</td><td class="">High</td><td class="">Core product; currently ranking poorly</td></tr><tr><td class="">kunststof schuifpui inclusief montage</td><td class="">720</td><td class="">Medium</td><td class="">Purchase intent; medium competition</td></tr><tr><td class="">aluminium kozijnen prijs</td><td class="">480</td><td class="">Medium</td><td class="">Pricing-related; decision phase keyword</td></tr><tr><td class="">hout-aluminium vliesgevel</td><td class="">170</td><td class="">Low</td><td class="">Niche, low competition; opportunity for content</td></tr><tr><td class="">schuifpui kunststof zwart</td><td class="">140</td><td class="">Low</td><td class="">Specific product variation; low competition</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize creating/optimizing landing pages for the top three keywords, ensuring clear CTAs and pricing cues.</li><li>Use “incl. montage” variations in H2s and meta descriptions to capture buyers in decision mode.</li><li>For low-competition terms (e.g., hout-aluminium vliesgevel), build deep-dive content to establish topical authority.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>PaSCAL’s organic traffic and keyword rankings have declined significantly (-31.9% ETV), with most keywords ranking beyond position 30.</li><li>Top-performing pages are informational; product pages underperform, indicating a need for better product-focused content.</li><li>High-value keywords related to core products (kunststof schuifpui, aluminium kozijnen) have high search volumes but poor rankings.</li><li>Competitors excel with detailed technical content, FAQ pages, and clear pricing/value propositions.</li><li>Backlink profile is modest with limited authoritative industry links and some medium-risk backlinks from SEO service sites.</li><li>Seasonal trends suggest content campaigns should align with spring (kozijnen), summer (schuifpui), and fall (insulation) search peaks.</li><li>Immediate content opportunities include dedicated landing pages, installation guides, and comparison content.</li><li>Link building should focus on industry directories, trade associations, and local partnerships.</li><li>Technical SEO is generally solid but can improve with page speed optimization and HTML validation fixes.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Host a cross-functional workshop (SEO, content, dev) to assign ownership and timelines for each key initiative.</li><li>Implement a bi-weekly dashboard to track ETV and position changes for top 20 priority keywords.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-pascal-ramen-en-deuren" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: PaSCAL ramen en deuren</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>PaSCAL ramen en deuren is a Dutch supplier of facade elements for construction professionals. Their product range includes windows (kozijnen), doors (deuren), sliding doors (schuifpuien), folding walls (vouwwanden), and curtain walls (vliesgevels) in wood, plastic, and aluminum materials. The company positions itself as a partner for construction professionals by providing expertise, project support, and knowledge sharing through services like advice, detailing, and delivery. (<a href="https://www.pascalbouwprofessional.nl/" class="link-reference" target="_blank" rel="noopener">Company Website</a>)</p><br></div></section>
+                <section id="research-scope" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Research Scope</h2>
+                    </div>
+                    <div class="section-content"><p>This report analyzes PaSCAL ramen en deuren's SEO performance in the Netherlands, focusing on:</p><ol><li>Overall SEO performance</li><li>Keyword analysis</li><li>Competitive landscape</li><li>Backlink and authority analysis</li><li>Content strategy recommendations</li></ol><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="organic-visibility-and-traffic">Organic Visibility and Traffic</h3><p>Our analysis reveals a concerning 31.90% decrease in Estimated Traffic Volume (ETV) over the analyzed period, now at 122.49 with 129 ranking keywords in the Netherlands.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Reassess recent algorithm impact or site changes around the drop period to isolate causes.</li><li>Identify top-10 keywords that lost positions and develop targeted on-page refreshes.</li></ul><br><h3 id="current-ranking-distribution">Current Ranking Distribution</h3><p>The current distribution of rankings shows:</p><ul><li>Position 1: 0 keywords</li><li>Positions 2-3: 1 keyword</li><li>Positions 4-10: 8 keywords</li><li>Positions 11-20: 11 keywords</li><li>Positions 21-30: 16 keywords</li><li>Positions 31-100: 93 keywords</li></ul><br><p>This distribution indicates that most keywords (72%) rank beyond position 30, suggesting significant room for improvement in search visibility.</p><br><h3 id="top-performing-pages">Top-Performing Pages</h3><p>The following pages demonstrate the strongest performance:</p><ol><li><strong>Aluminum Advantages/Disadvantages</strong> (ETV: 26.49) - Ranks in positions 2-10</li><li><strong>About Us</strong> (ETV: 31.77) - Ranks in positions 4-40</li><li><strong>Steel-look Aluminum Windows</strong> (ETV: 6.90) - Ranks in positions 4-80</li><li><strong>Wooden Sliding Doors</strong> (ETV: 6.23) - Ranks in positions 4-40</li><li><strong>Overview of Wood Types</strong> (ETV: 5.86) - Ranks in positions 11-100</li></ol><br><p>Informational content appears to perform better than product pages, indicating user preference for educational material during the research phase.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Expand top-performing “advantages/disadvantages” formats to other product categories (e.g., schuifpuien, vliesgevels).</li><li>Internally link from product pages to these informational pillars to distribute authority.</li></ul><br><h3 id="underperforming-pages">Underperforming Pages</h3><p>Several key product category pages show poor performance:</p><ul><li>General product pages (/producten)</li><li>Insect screens (/insectenwering)</li><li>Roller shutters (/rolluiken)</li><li>Custom folding walls (/vouwwanden-op-maat)</li><li>Project showcase pages</li></ul><br><p>These pages typically rank beyond position 50 with minimal traffic contribution.</p><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Performance issues on these pages stem from thin content and lack of targeted keyword focus; a content audit is recommended.</li></ul><br><h3 id="technical-seo-assessment">Technical SEO Assessment</h3><p>The site demonstrates several technical strengths:</p><ul><li>Mobile-friendly design</li><li>Secure HTTPS implementation</li><li>Proper canonical tags</li><li>SEO-friendly URL structure</li><li>Appropriate social media tags</li></ul><br><p>However, we identified these technical issues:</p><ul><li>HTML validation errors</li><li>Large DOM size affecting page performance</li><li>Potential for improved page speed optimization</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Run Google Lighthouse audits on core pages and fix critical HTML/CSS errors.</li><li>Compress and defer non-critical JS/CSS to reduce initial load by 20-30%.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-keyword-performance">Current Keyword Performance</h3><p>Our analysis reveals a significant gap in PaSCAL's keyword strategy, with no keywords ranking in the top 10 positions. This represents a major opportunity for improvement in organic visibility.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Map existing pages to target keywords and identify “orphan” terms to assign new content assets.</li></ul><br><h3 id="high-priority-keywords">High-Priority Keywords</h3><p>These high-value keywords offer substantial traffic potential despite high competition:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Current Position</th><th>Competition</th></tr></thead><tbody><tr><td class="">kunststof schuifpui</td><td class="">1,900</td><td class="">21-30</td><td class="">High</td></tr><tr><td class="">plaatsen van kunststof kozijnen</td><td class="">1,600</td><td class="">11-20</td><td class="">High</td></tr><tr><td class="">aluminium kozijnen</td><td class="">1,300</td><td class="">21-30</td><td class="">High</td></tr><tr><td class="">houten schuifpui</td><td class="">1,300</td><td class="">31-40</td><td class="">High</td></tr><tr><td class="">houten kozijnen</td><td class="">1,200</td><td class="">31-40</td><td class="">High</td></tr></tbody></table></div><p>These keywords align directly with PaSCAL's core products and services, making them ideal targets for optimization.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign a dedicated page owner to each of these five keywords and update on-page elements (H1, H2, meta) for clarity and focus.</li><li>Introduce internal linking from high-authority blog posts to these target pages.</li></ul><br><h3 id="secondary-keywords-with-strong-commercial-intent">Secondary Keywords with Strong Commercial Intent</h3><p>These keywords show strong purchase intent and should be targeted with dedicated content:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Current Position</th><th>Competition</th></tr></thead><tbody><tr><td class="">kunststof schuifpui inclusief montage</td><td class="">720</td><td class="">21-30</td><td class="">Medium</td></tr><tr><td class="">onderdorpels kozijnen</td><td class="">720</td><td class="">31-40</td><td class="">High</td></tr><tr><td class="">onderdorpel kozijn</td><td class="">720</td><td class="">31-40</td><td class="">High</td></tr><tr><td class="">kosten schuifpui kunststof</td><td class="">590</td><td class="">11-20</td><td class="">Medium</td></tr><tr><td class="">aluminium kozijnen detail</td><td class="">590</td><td class="">31-40</td><td class="">Medium</td></tr><tr><td class="">aluminium kozijnen prijs</td><td class="">480</td><td class="">21-30</td><td class="">Medium</td></tr><tr><td class="">houten kozijnen prijzen</td><td class="">390</td><td class="">31-40</td><td class="">Medium</td></tr></tbody></table></div><p>These terms indicate users in the consideration or decision phase of the buying journey.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Create clear comparison tables for pricing and specifications to shorten the buyer journey.</li><li>Use schema markup for FAQs and price to enhance SERP real estate.</li></ul><br><h3 id="long-tail-keyword-opportunities">Long-Tail Keyword Opportunities</h3><p>These niche keywords offer lower competition with specific targeting potential:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Current Position</th><th>Competition</th></tr></thead><tbody><tr><td class="">hout-aluminium vliesgevel</td><td class="">170</td><td class="">11-20</td><td class="">Low</td></tr><tr><td class="">houten pui</td><td class="">170</td><td class="">31-40</td><td class="">High</td></tr><tr><td class="">schuifpui kunststof zwart</td><td class="">140</td><td class="">21-30</td><td class="">Low</td></tr><tr><td class="">roeden in het glas</td><td class="">140</td><td class="">31-40</td><td class="">High</td></tr><tr><td class="">aluminium kozijnen met houtlook</td><td class="">130</td><td class="">31-40</td><td class="">Low</td></tr><tr><td class="">houten kozijnen met aluminium bekleding</td><td class="">110</td><td class="">21-30</td><td class="">Low</td></tr><tr><td class="">schuifpui detail</td><td class="">70</td><td class="">31-40</td><td class="">Low</td></tr></tbody></table></div><p>These long-tail terms represent specific product variations that could be targeted with specialized content.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop mini landing pages or blog posts for each variant, linking back to cornerstone product pages.</li><li>Incorporate customer photos and case study excerpts to boost engagement.</li></ul><br><h3 id="seasonal-trends">Seasonal Trends</h3><p>Our analysis identified seasonal patterns in search behavior:</p><ul><li>Increased searches for "kunststof kozijnen" and "aluminium kozijnen" in spring (March-May)</li><li>Higher interest in "schuifpui" terms during summer months (June-August)</li><li>Increased searches for insulation-related terms ("isolatie kozijnen") in fall (September-November)</li></ul><br><p>These patterns suggest opportunities for seasonal content campaigns.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Build a 3-month editorial calendar aligned with these peaks.</li><li>Schedule email newsletters and paid promotions to coincide with peak search interest.</li></ul><br><h3 id="content-gaps-and-underutilized-keywords">Content Gaps and Underutilized Keywords</h3><p>We identified several keyword categories where PaSCAL lacks visibility:</p><br><ol><li><strong>Installation-focused terms</strong>: Keywords like "kozijnen plaatsen" and "montage schuifpui" have significant search volume but poor rankings.</li><li><strong>Technical specifications</strong>: Terms like "aluminium vliesgevel detail" and "u-waarde kunststof kozijnen" attract specialized audiences but lack dedicated content.</li><li><strong>Regional targeting</strong>: Location-specific terms like "kozijnen [city name]" show potential for local SEO but are currently underutilized.</li><li><strong>Comparison keywords</strong>: Terms like "kunststof vs aluminium kozijnen" and "houten kozijnen voordelen nadelen" indicate research-phase users seeking educational content.</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Launch a “Region” subfolder structure (e.g., /kozijnen-amsterdam/) and populate with tailored local content.</li><li>Integrate a dynamic filter on product pages to compare materials side-by-side.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="top-competitors-overview">Top Competitors Overview</h3><p>Our competitive analysis identified three main competitors in the Dutch market:</p><br><ol><li><strong>Creon-kozijnen.nl</strong>: The strongest competitor based on keyword matches and estimated traffic volume. Their primary strength lies in providing detailed information and comprehensive FAQ content related to kozijnen, particularly kunststof kozijnen. They effectively target long-tail keywords with informational content.</li><li><strong>Venstershop.nl</strong>: A significant competitor with slightly lower traffic volume than Creon. They focus on specific product categories like "ventilatieroosters" and take a more generalist approach to the market.</li><li><strong>Houtenkozijnenloods.nl</strong>: This competitor specializes specifically in wooden products (houten kozijnen and schuifpuien). Their strength is ranking for high-volume keywords related to houten schuifpuien by providing detailed product specifications and emphasizing low prices in their marketing.</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Craft an FAQ hub on the main site mirroring Creon’s success but with a distinct “PaSCAL professional tips” angle.</li><li>Model a “quick quote” widget like Houtenkozijnenloods.nl to capture leads directly on high-intent pages.</li></ul><br><h3 id="keyword-performance-comparison">Keyword Performance Comparison</h3><p>Our analysis revealed several keywords where competitors significantly outperform PaSCAL:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Volume</th><th>Competition</th><th>Top Competitor</th><th>Competitor Strategy</th></tr></thead><tbody><tr><td class="">onderdorpels kozijnen</td><td class="">720</td><td class="">HIGH</td><td class="">Creon-kozijnen.nl</td><td class="">Comprehensive guide to different types of onderdorpels</td></tr><tr><td class="">onderdorpel kozijn</td><td class="">720</td><td class="">HIGH</td><td class="">Creon-kozijnen.nl</td><td class="">Detailed comparison of materials and applications</td></tr><tr><td class="">aluminium kozijnen detail</td><td class="">590</td><td class="">MEDIUM</td><td class="">Creon-kozijnen.nl</td><td class="">Technical specifications about Aluprof profiles</td></tr><tr><td class="">houten schuifpui</td><td class="">1300</td><td class="">HIGH</td><td class="">Houtenkozijnenloods.nl</td><td class="">Direct product promotion with pricing information</td></tr><tr><td class="">houten pui</td><td class="">170</td><td class="">HIGH</td><td class="">Houtenkozijnenloods.nl</td><td class="">Clear product offerings with calls to action</td></tr><tr><td class="">roeden in het glas</td><td class="">140</td><td class="">HIGH</td><td class="">Creon-kozijnen.nl</td><td class="">Dedicated FAQ page about different types of roeden</td></tr><tr><td class="">schuifpui detail</td><td class="">70</td><td class="">LOW</td><td class="">Creon-kozijnen.nl</td><td class="">Technical information about schuifpui profiles</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Adopt a hybrid content model: blend Creon’s deep-dive specs with Houtenkozijnenloods.nl’s pricing CTAs.</li><li>Monitor competitor snippet changes monthly and adjust our meta titles/descriptions accordingly.</li></ul><br><h3 id="serp-strategy-analysis">SERP Strategy Analysis</h3><p>Our analysis of competitors' search engine results page (SERP) elements revealed these effective strategies:</p><br><ol><li><strong>Meta Titles and Descriptions</strong>:</li></ol><ul><li>Houtenkozijnenloods.nl uses clear value propositions in meta descriptions (e.g., "Houten kozijnen bestellen tegen de laagste prijs? Dat doe je bij ons.")</li><li>PaSCAL's meta descriptions are often generic or simply excerpts from page content</li><li>Creon-kozijnen.nl lacks optimized meta titles and descriptions but ranks well due to content quality</li></ul><br><ol><li><strong>Effective SERP Patterns</strong>:</li></ol><ul><li>Value propositions highlighting low prices (Houtenkozijnenloods.nl)</li><li>Question-based titles for FAQ pages (Creon-kozijnen.nl)</li><li>Detailed technical information in SERP snippets for "detail" keywords</li></ul><br><ol><li><strong>High-Performing Content Types</strong>:</li></ol><ul><li>FAQ pages (Creon-kozijnen.nl)</li><li>Product pages with detailed specifications (Houtenkozijnenloods.nl)</li><li>Comprehensive guides covering topics in depth</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Rewrite PaSCAL meta descriptions to include power words (“exclusief,” “advies”) and numeric benefits.</li><li>Test question-based title tags for FAQ sections (e.g., “Hoe kies je de juiste kunststof schuifpui?”).</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="current-backlink-profile">Current Backlink Profile</h3><p>Our analysis of PaSCAL's backlink profile reveals a relatively modest foundation with room for strategic improvement:</p><br><ul><li><strong>Total Backlinks</strong>: 60 backlinks from 19 referring domains</li><li><strong>Backlink Spam Score</strong>: Medium (31%)</li><li><strong>Referring Domains</strong>: 19 unique domains (7 with nofollow attributes)</li><li><strong>Geographic Distribution</strong>: Primarily Dutch domains (.nl - 40 backlinks)</li><li><strong>Domain Rank</strong>: 170 (moderate authority)</li></ul><br><p>The backlink profile shows limited diversity, with most links coming from a small number of domains.</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Secure 3–5 high-authority links per quarter from industry associations to diversify the profile.</li><li>Prioritize outreach to .edu/.gov equivalents (architecture schools, certification bodies).</li></ul><br><h3 id="backlink-quality-assessment">Backlink Quality Assessment</h3><p>The quality of PaSCAL's backlink profile shows concerning patterns:</p><br><ol><li><strong>Low-Quality SEO Service Links</strong>: Several backlinks come from obvious SEO service providers with generic anchor text, potentially harming the site's authority.</li><li><strong>Limited Industry Authority</strong>: The profile lacks backlinks from authoritative industry sources such as construction associations, architectural publications, or building material directories.</li><li><strong>Anchor Text Distribution</strong>: Most anchor text is either branded (pascalbouwprofessional.nl) or uses generic product terms ("ALUMINIUM KOZIJNEN"). There's limited use of keyword-rich anchor text that could help boost rankings for target terms.</li><li><strong>Internal Link Structure</strong>: The site has 2,194 internal links but only 562 external links, suggesting a relatively closed link ecosystem.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Disavow or outreach-remove medium-risk links from generic SEO agencies within the next 30 days.</li><li>Develop a keyword-rich anchor text plan and aim for at least 30% of new backlinks using priority terms.</li></ul><br><h3 id="competitor-backlink-comparison">Competitor Backlink Comparison</h3><p>Our analysis identified key backlink competitors:</p><br><ol><li><strong>pascalramenendeuren.nl</strong>: This appears to be PaSCAL's consumer-facing site, with 2 overlapping backlinks. This suggests potential for cross-linking strategies between the B2B and B2C properties.</li><li><strong>klantenvertellen.nl</strong>: A Dutch review platform with 2 overlapping backlinks, indicating potential for leveraging customer reviews for link building.</li><li><strong>appointlet.com and obuk.de</strong>: Each has 1 overlapping backlink, suggesting potential partnerships or industry connections.</li></ol><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Overlapping links present low-hanging fruit—formalize a co-marketing plan to swap testimonials or case studies.</li></ul><br><h3 id="link-building-opportunities">Link Building Opportunities</h3><p>Based on our analysis, we've identified several high-potential link building opportunities:</p><br><ol><li><strong>Industry Directories</strong>: Dutch construction and building material directories that currently link to competitors but not to PaSCAL.</li><li><strong>Trade Associations</strong>: Organizations like Bouwend Nederland and Nederlandse Branchevereniging voor de Timmerindustrie (NBvT) offer potential for authoritative backlinks.</li><li><strong>Local Business Partnerships</strong>: Collaborations with complementary businesses in the construction sector (architects, contractors, interior designers) for mutual link exchanges.</li><li><strong>Content-Based Opportunities</strong>: Creating shareable resources like industry guides, technical specifications, or case studies that naturally attract links from industry publications.</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Craft a quarterly “State of Dutch Kozijnen” report, distribute via press releases and partner newsletters to earn high-quality editorial links.</li><li>Pitch “expert roundup” interviews featuring PaSCAL’s CPAs to architecture blogs for natural mentions.</li></ul><br><h3 id="toxic-backlink-assessment">Toxic Backlink Assessment</h3><p>While no high-spam score (61%+) backlinks were identified, several medium-risk backlinks warrant attention:</p><br><ul><li>Links from SEO service sites (seobacklinks.agency, rankgrow.agency)</li><li>Generic directory listings with questionable relevance</li><li>Links from potentially unrelated domains (quero.party, ohiostateshoponline.com)</li></ul><br><p>These links should be monitored and potentially disavowed if they begin to negatively impact the site's authority.</p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Initiate a monthly toxic link review and add suspect URLs to a disavow file as needed.</li><li>Monitor backlink profile health metrics and flag any upward spam-score trends.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><p>Based on our comprehensive analysis, we recommend these content initiatives:</p><br><h3 id="immediate-opportunities">Immediate Opportunities</h3><ol><li><strong>Create Dedicated Landing Pages</strong> for high-priority keywords like "kunststof schuifpui" and "aluminium kozijnen" with comprehensive information, pricing details, and clear calls-to-action.</li><li><strong>Develop Comparison Content</strong> addressing "vs" keywords (e.g., "kunststof vs aluminium kozijnen") to capture research-phase traffic.</li><li><strong>Optimize Existing Product Pages</strong> with targeted keywords, enhanced content depth, and improved technical elements to boost rankings for core product terms.</li><li><strong>Create Installation Guides</strong> targeting keywords like "plaatsen van kunststof kozijnen" to address the significant search volume for installation-related terms.</li><li><strong>Improve Meta Titles and Descriptions</strong> for key pages, highlighting value propositions (quality, local production, expert advice) and including relevant keywords.</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Assign content sprints to a cross-functional team to produce at least two new landing pages per month.</li><li>Use A/B testing for meta descriptions to measure uplift in click-through rates within 4 weeks.</li></ul><br><h3 id="medium-term-strategy">Medium-Term Strategy</h3><ol><li><strong>Create a Comprehensive Onderdorpel Guide</strong> comparing different onderdorpel types (aluminium, kunststof, Isostone), their benefits, and applications. This directly addresses a gap where Creon-kozijnen.nl currently dominates.</li><li><strong>Develop Technical Specification Pages</strong> with detailed drawings, material information, and specifications for aluminium kozijnen and schuifpuien to compete with Creon-kozijnen.nl's technical content.</li><li><strong>Implement an FAQ Section</strong> on key product pages, addressing common questions about kozijnen, roeden, and other components, following Creon-kozijnen.nl's successful FAQ strategy.</li><li><strong>Optimize the Houten Schuifpui Page</strong> with clear product offerings, pricing information, and calls-to-action to better compete with Houtenkozijnenloods.nl.</li><li><strong>Implement Local SEO Strategy</strong> targeting region-specific keywords to capture location-based searches.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop a project brief and timeline for each medium-term initiative, assigning deliverables over a 3–6 month horizon.</li><li>Integrate keyword tracking alerts to detect ranking changes for newly published specification pages.</li></ul><br><h3 id="backlink-strategy">Backlink Strategy</h3><p>Based on our backlink analysis, we recommend these link-building initiatives:</p><br><ol><li><strong>Industry Directory Submissions</strong>: Submit the site to relevant Dutch construction and building material directories that currently link to competitors.</li><li><strong>Create Linkable Assets</strong>: Develop comprehensive guides, technical resources, or industry reports that naturally attract backlinks from industry publications.</li><li><strong>Leverage Business Relationships</strong>: Reach out to suppliers, partners, and clients for natural backlink opportunities through testimonials, case studies, or partner directories.</li><li><strong>Clean Up Low-Quality Backlinks</strong>: Consider disavowing suspicious backlinks from SEO services and irrelevant domains to improve overall link profile quality.</li><li><strong>Cross-Link with Consumer Site</strong>: Implement a strategic internal linking strategy between pascalbouwprofessional.nl and pascalramenendeuren.nl to strengthen both domains' authority.</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Track referral traffic from newly acquired backlinks and highlight top-performers in monthly reports to optimize outreach efforts.</li></ul><br><h3 id="long-term-content-development">Long-Term Content Development</h3><ol><li><strong>Develop a Content Calendar Focused on Informational Content</strong> prioritizing comprehensive guides, FAQ pages, and technical specification pages.</li><li><strong>Build Project Showcase Portfolio</strong> with optimized case studies highlighting specific product applications and benefits.</li><li><strong>Create Interactive Tools</strong> such as product configurators or price calculators to engage users searching for pricing and specification information.</li><li><strong>Develop Video Content</strong> demonstrating installation processes and product features to capture additional search visibility.</li><li><strong>Monitor Competitor Strategies</strong> continuously to identify new opportunities and adapt your approach as the competitive landscape evolves.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Establish a quarterly review to assess content performance (traffic, engagement, backlinks) and recalibrate the editorial plan.</li></ul><br></div></section>
+                <section id="conclusion-and-next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-flag-checkered"></i></div>
+                        <h2 class="section-title">Conclusion and Next Steps</h2>
+                    </div>
+                    <div class="section-content"><br><p>Our comprehensive analysis reveals significant opportunities for PaSCAL ramen en deuren to improve their SEO performance in the Netherlands. With a strategic approach focusing on content optimization, technical improvements, and backlink development, PaSCAL can substantially increase their organic visibility and traffic.</p><br><p>With our WP SEO AI platform, we can help PaSCAL implement these recommendations efficiently through our AI-powered keyword analysis, content generation, and technical SEO audit tools. Our solution would enable PaSCAL to:</p><br><ol><li><strong>Quickly Address Content Gaps</strong> with AI-generated, SEO-optimized content targeting high-priority keywords</li><li><strong>Streamline Technical SEO Improvements</strong> through automated audits and recommendations</li><li><strong>Monitor Competitor Strategies</strong> with our competitor tracking features</li><li><strong>Develop a Sustainable Content Strategy</strong> using our AI-powered content idea generation</li><li><strong>Track Progress and ROI</strong> with comprehensive rank tracking and performance monitoring</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Schedule a consultation call this week to align on priorities, timelines, and KPIs, and kick off the implementation roadmap.</li></ul></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - PaSCAL ramen en deuren',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

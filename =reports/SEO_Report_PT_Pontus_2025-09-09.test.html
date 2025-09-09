@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - PT Pontus</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">PT Pontus • pontusbackman.com</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Sweden Market</span>
+                        <span><i class="fas fa-calendar"></i> September 9, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>September 2024</th><th>September 2025</th><th>Change (%)</th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="">Baseline (100%)</td><td class="positive">50.47% of baseline</td><td class="negative">-49.53%</td></tr><tr><td class="">Keywords in Position 1</td><td class="">X (100%)</td><td class="">0 (0%)</td><td class="negative">-100%</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="">Y (100%)</td><td class="positive">38.89% of Y</td><td class="negative">-61.11%</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="">Z (100%)</td><td class="positive">39.08% of Z</td><td class="negative">-60.92%</td></tr><tr><td class="">Keywords in Positions 11-30</td><td class="">—</td><td class="positive">16.7% of total rankings</td><td class="">—</td></tr><tr><td class="">Keywords in Positions 31-100</td><td class="">—</td><td class="positive">78.6% of total rankings</td><td class="">—</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The steep 49.53% traffic drop is a red flag—prioritize auditing top-performing landing pages and restoring lost position 1 rankings.</li><li>Focus initial recovery efforts on pages that previously held positions 2–10 to regain visibility quickly.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Top Competitors</th><th>Keywords They Rank Well For (Where PT Pontus Ranks Poorly)</th></tr></thead><tbody><tr><td class=""><strong>iform.se</strong></td><td class="">"kaloriräknare", "träning", "nutrition", "weight loss"</td></tr><tr><td class=""><strong>halsoliv.expressen.se</strong></td><td class="">"smal utan att banta", "health tips", "quick weight loss"</td></tr><tr><td class=""><strong>viktvaktarna.se</strong></td><td class="">"weight loss programs", "healthy recipes", "diet plans"</td></tr><tr><td class=""><strong>muscleandstrength.com</strong></td><td class="">"fitness training programs", "workout routines", "muscle building"</td></tr><tr><td class=""><strong>muscleandfitness.com</strong></td><td class="">"expert workout routines", "fitness plans"</td></tr><tr><td class=""><strong>fitnessblender.com</strong></td><td class="">"free workout videos", "fitness training programs"</td></tr><tr><td class=""><strong>Umeå University (umu.se)</strong></td><td class="">"nutrition advice Umeå", "academic nutrition information"</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Competitors leverage tools (e.g., iform.se’s calorie calculator) and strong clusters—develop similar interactive assets to compete.</li><li>Identify gaps in competitors’ content clusters to find quick-win topics for PT Pontus.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume (Monthly)</th><th>Competition</th><th>Reason to Target</th></tr></thead><tbody><tr><td class="">hälsosamma recept</td><td class="">880</td><td class="">Low</td><td class="">High volume, low competition, aligns with content</td></tr><tr><td class="">träna hemma mage</td><td class="">720</td><td class="">Medium</td><td class="">Strong local interest, medium competition</td></tr><tr><td class="">träna mage hemma</td><td class="">720</td><td class="">Medium</td><td class="">Similar to above, good for home workout cluster</td></tr><tr><td class="">fitness training programs</td><td class="">High</td><td class="">High</td><td class="">High volume, international competition, gap to fill</td></tr><tr><td class="">nutrition advice Umeå</td><td class="">Localized</td><td class="">Medium</td><td class="">Local intent, opportunity to compete with university</td></tr><tr><td class="">träningsprogram online</td><td class="">70</td><td class="">Medium</td><td class="">Long-tail, growing interest</td></tr><tr><td class="">enkla hälsosamma recept</td><td class="">40</td><td class="">Low</td><td class="">Niche, low competition</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop targeted landing pages or blog posts for each opportunity keyword, starting with “hälsosamma recept” and “träna hemma mage.”</li><li>Create localized content for “nutrition advice Umeå” to challenge the university’s authority.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li><strong>Organic Visibility Decline</strong>: Nearly 50% drop in estimated traffic volume over 12 months; complete loss of position 1 rankings.</li><li><strong>Keyword Ranking Shift</strong>: Majority of keywords now rank beyond position 30, indicating urgent need for optimization.</li><li><strong>Content Strengths</strong>: Cooking guides (especially air fryer recipes) and specific exercise content outperform general fitness advice.</li><li><strong>Content Gaps</strong>: Lack of beginner-friendly workout plans, muscle group-specific guides, and localized nutrition advice for Umeå.</li><li><strong>Technical SEO Issues</strong>: DOM size, meta tags, alt text, and heading structure need improvement.</li><li><strong>Competitor Advantages</strong>: Competitors leverage interactive tools, comprehensive content clusters, and strong brand authority.</li><li><strong>Backlink Profile Concerns</strong>: High spam score (65%), toxic backlinks, and very limited Swedish domain backlinks.</li><li><strong>Local SEO Opportunity</strong>: Umeå-specific content and Google My Business optimization are underutilized.</li><li><strong>Seasonal Keyword Trends</strong>: December and January show spikes in recipe and weight loss-related searches.</li><li><strong>Actionable Recommendations</strong>: Content optimization, interactive tools, backlink cleanup, technical SEO fixes, and local SEO enhancements.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize technical fixes and content updates in parallel—addressing either alone will not reverse the current downward trend.</li><li>Align seasonal content planning now to capture spikes later this year.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-pt-pontus-sweden-" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: PT Pontus (Sweden)</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h2 class="section-title">Executive Summary</h2>
+                    </div>
+                    <div class="section-content"><p>This research report presents our comprehensive SEO analysis for PT Pontus, based in Umeå, Sweden (<a href="https://pontusbackman.com/en/hem-english/" class="link-reference" target="_blank" rel="noopener">Company Website</a>). Our research provides PT Pontus with a data-driven SEO roadmap specifically tailored for the Swedish market to improve organic visibility, reverse concerning ranking trends, outrank competitors, and capture untapped keyword opportunities.</p><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>PT Pontus operates from Umeå, Sweden (<a href="https://pontusbackman.com/en/hem-english/" class="link-reference" target="_blank" rel="noopener">Company Website</a>), which establishes the geographical context for our SEO analysis. This location verification is essential for ensuring all subsequent research and recommendations are properly aligned with the Swedish market and local search behaviors.</p><br></div></section>
+                <section id="seo-performance-assessment" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">SEO Performance Assessment</h2>
+                    </div>
+                    <div class="section-content"><p>Our analysis reveals concerning trends in PT Pontus's organic search performance:</p><br><h3 id="organic-visibility-metrics">Organic Visibility Metrics</h3><ul><li><strong>Significant Traffic Decline</strong>: 49.53% decrease in Estimated Traffic Volume (ETV) from September 2024 to September 2025</li><li><strong>Loss of Top Positions</strong>:</li><li>100% decrease in position 1 rankings</li><li>61.11% decrease in positions 2-3</li><li>60.92% decrease in positions 4-10</li><li><strong>Increase in Lower Rankings</strong>: Notable increases in positions 21-100, indicating content is being pushed down in search results</li><li><strong>Current Traffic Distribution</strong> (September 2025):</li><li>Positions 1-10: Only 41 keywords (4.7% of total rankings)</li><li>Positions 11-30: 147 keywords (16.7% of total rankings)</li><li>Positions 31-100: 690 keywords (78.6% of total rankings)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>With nearly 80% of keywords ranking beyond position 30, immediate keyword pruning and content refreshes for mid-tier pages (positions 11–30) can deliver the fastest uplift.</li></ul><br><h3 id="content-performance-analysis">Content Performance Analysis</h3><p>PT Pontus's content focuses on several key categories:</p><br><ol><li><strong>Weight Loss</strong>: Articles on calorie intake, diet plans, and weight loss strategies</li><li><strong>Training Programs</strong>: Workout routines categorized by location, duration, and target audience</li><li><strong>Calorie Information</strong>: Content about calorie content in foods and calorie expenditure</li><li><strong>Exercise Guides</strong>: Specific exercise instructions for various muscle groups</li><li><strong>Nutrition and Diet</strong>: Information on specific diets and nutritional approaches</li><li><strong>Air Fryer Recipes</strong>: Growing content area focused on healthy cooking methods</li><li><strong>Knowledge Base</strong>: Educational content on training and nutrition</li><li><strong>Friskvårdsbidrag (Wellness Benefit)</strong>: Sweden-specific content on wellness benefits</li></ol><br><h4 id="high-performing-pages-">High-Performing Pages:</h4><ul><li>Chicken preparation guides (ETV: 131.29)</li><li>Air fryer cooking guides (ETV: 82.19)</li><li>Effective abdominal training content (ETV: 70.22)</li><li>Calorie intake guides for women (ETV: 51.17)</li></ul><br><h4 id="underperforming-pages-">Underperforming Pages:</h4><ul><li>Multiple pages with ETVs under 5, ranking beyond position 30</li><li>Content about specific diets (e.g., 5:2 diet)</li><li>Weight loss tips and training programs</li><li>Knowledge base articles</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit underperformers with ETV < 5 to determine if content consolidation or expansion is required.</li><li>Repurpose high-performing formats (e.g., expand air fryer recipes) into new topics with similar search intent.</li></ul><br></div></section>
+                <section id="technical-seo-audit" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-cogs"></i></div>
+                        <h2 class="section-title">Technical SEO Audit</h2>
+                    </div>
+                    <div class="section-content"><p>Our technical SEO analysis revealed several important findings about PT Pontus's website structure and content:</p><br><h3 id="blog-structure-and-content">Blog Structure and Content</h3><ul><li><strong>Blog Presence</strong>: The site includes a blog section with 10 popular articles</li><li><strong>Content Focus</strong>: Blog articles primarily cover calorie intake, weight loss, nutrition, and fitness topics</li><li><strong>Content Format</strong>: Articles provide practical advice and information to help readers achieve health and fitness goals</li><li><strong>Internal Linking</strong>: The blog includes links to other resources like a calorie calculator and health/fitness glossary</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Strengthen the blog’s silo structure by linking articles within each content cluster (e.g., all “air fryer” posts).</li></ul><br><h3 id="keyword-targeting-gaps">Keyword Targeting Gaps</h3><p>Our analysis identified several high-value keywords where PT Pontus is not currently ranking in top positions:</p><br><h4 id="fitness-training-programs-keywords-">Fitness Training Programs Keywords:</h4><ul><li>Top competitors for this term include muscleandstrength.com, muscleandfitness.com, and fitnessblender.com</li><li>These competitors offer comprehensive workout databases, beginner-friendly plans, and expert-designed programs</li><li>PT Pontus lacks visibility for terms like "beginner workout plan" and "fitness program steps"</li></ul><br><h4 id="nutrition-advice-ume-keywords-">Nutrition Advice Umeå Keywords:</h4><ul><li>Local competition includes Umeå University's Department of Food, Nutrition and Culinary Science</li><li>Opportunity to create location-specific nutrition content targeting the Umeå market</li><li>Limited local content addressing "nutrition advice" specifically for the Umeå region</li></ul><br><h3 id="technical-issues">Technical Issues</h3><ul><li><strong>DOM Size Issues</strong>: Potential problems with document object model size affecting page performance</li><li><strong>Meta Tag Optimization</strong>: Opportunities to improve title tags and meta descriptions</li><li><strong>Alt Text Implementation</strong>: Image optimization issues affecting accessibility and SEO</li><li><strong>Content Structure</strong>: Need for better heading hierarchy and content organization</li></ul><br></div></section>
+                <section id="keyword-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">Keyword Analysis</h2>
+                    </div>
+                    <div class="section-content"><p>Our detailed keyword analysis reveals valuable insights into PT Pontus's current rankings and opportunities:</p><br><h3 id="current-keyword-performance">Current Keyword Performance</h3><h4 id="top-performing-keywords-positions-4-10-">Top Performing Keywords (Positions 4-10):</h4><ul><li>Weight loss keywords: "gå ner 5 kg på 1 vecka" (210 searches/month, position 4)</li><li>Training keywords: "träna mage varje dag" (260 searches/month, position 4)</li><li>Calorie-related: "1000 kalorier per dag" (170 searches/month, position 5)</li><li>Recipe content: "brysselkål i airfryer" (480 searches/month, position 10)</li><li>Training programs: "4 veckors träningsprogram hemma" (590 searches/month, position 10)</li></ul><br><h4 id="opportunity-keywords-positions-11-30-">Opportunity Keywords (Positions 11-30):</h4><ul><li>"brysselkål airfryer" (390 searches/month, position 11)</li><li>"träningsprogram gym 4 dagar" (170 searches/month, position 11)</li><li>"leptinresistens" (170 searches/month, position 11)</li><li>"myo reps" (320 searches/month, position 14)</li><li>"viktplatå" (260 searches/month, position 14)</li></ul><br><h3 id="seasonal-keyword-opportunities">Seasonal Keyword Opportunities</h3><ul><li><strong>December Peak</strong>: "brysselkål i airfryer" and related keywords show significant search volume increases during December (Christmas season)</li><li><strong>January Peak</strong>: "gå ner [X] kg" keywords experience higher search volumes in January, aligning with New Year's resolutions</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Build a seasonal content calendar now to ensure readiness for December and January peaks, including asset creation and promotions.</li></ul><br><h3 id="high-value-keyword-recommendations">High-Value Keyword Recommendations</h3><h4 id="top-priority-keywords-">Top Priority Keywords:</h4><ul><li>"hälsosamma recept" (880 searches/month, LOW competition)</li><li>"träna hemma mage" (720 searches/month, MEDIUM competition)</li><li>"träna mage hemma" (720 searches/month, MEDIUM competition)</li><li>"fitness training programs" (high search volume, currently dominated by international sites)</li><li>"nutrition advice Umeå" (local intent keyword with university competition)</li></ul><br><h4 id="secondary-keywords-">Secondary Keywords:</h4><ul><li>"träna mage hemma utan redskap" (50 searches/month, MEDIUM competition)</li><li>"träna rygg och mage hemma" (50 searches/month, LOW competition)</li><li>"snabba recept middag" (45 searches/month, LOW competition)</li><li>"health and wellness content" (trending topic with growing search interest)</li></ul><br><h4 id="long-term-opportunities-">Long-term Opportunities:</h4><ul><li>"träningsprogram online" (70 searches/month, MEDIUM competition)</li><li>"enkla hälsosamma recept" (40 searches/month, LOW competition)</li></ul><br></div></section>
+                <section id="competitive-landscape-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">Competitive Landscape Analysis</h2>
+                    </div>
+                    <div class="section-content"><p>Our analysis identified key competitors and their strategies in the Swedish fitness and nutrition market:</p><br><h3 id="top-competitors-overview">Top Competitors Overview</h3><ol><li><strong>iform.se</strong> (Direct competitor)</li></ol><ul><li><strong>Key Strengths</strong>: High keyword match count, strong average keyword position, significant estimated traffic volume</li><li><strong>Winning Strategy</strong>: Comprehensive tools (especially their calorie calculator) and strong internal linking structure</li><li><strong>Content Focus</strong>: Training, nutrition, and weight loss information</li></ul><br><ol><li><strong>halsoliv.expressen.se</strong> (Indirect competitor)</li></ol><ul><li><strong>Key Strengths</strong>: High keyword match count, decent average keyword position, large estimated traffic volume</li><li><strong>Winning Strategy</strong>: Leveraging the Expressen brand authority and focusing on quick, actionable health tips</li><li><strong>Content Focus</strong>: Broader health and lifestyle topics</li></ul><br><ol><li><strong>viktvaktarna.se</strong> (Direct competitor)</li></ol><ul><li><strong>Key Strengths</strong>: Strong brand recognition, dedicated weight loss programs, high estimated traffic volume</li><li><strong>Winning Strategy</strong>: Comprehensive recipe section and established weight loss methodology</li><li><strong>Content Focus</strong>: Weight loss programs and healthy eating</li></ul><br><h3 id="international-competitors-for-key-terms">International Competitors for Key Terms</h3><p>For "fitness training programs" keywords, PT Pontus faces competition from:</p><ol><li><strong>muscleandstrength.com</strong></li></ol><ul><li><strong>Ranking Position</strong>: #1 for "fitness training programs"</li><li><strong>Winning Strategy</strong>: Extensive database of 1000+ free workout routines</li><li><strong>Content Approach</strong>: Categorized workouts by goal (muscle building, fat loss, etc.)</li></ul><br><ol><li><strong>muscleandfitness.com</strong></li></ol><ul><li><strong>Ranking Position</strong>: #2 for "fitness training programs"</li><li><strong>Winning Strategy</strong>: Expert-designed workout routines for different fitness levels</li><li><strong>Content Approach</strong>: Segmented content by fitness goal and experience level</li></ul><br><ol><li><strong>fitnessblender.com</strong></li></ol><ul><li><strong>Ranking Position</strong>: #3 for "fitness training programs"</li><li><strong>Winning Strategy</strong>: Free, professional-quality workout videos</li><li><strong>Content Approach</strong>: Subscription model with free and premium content</li></ul><br><h3 id="local-competitors-for-nutrition-keywords">Local Competitors for Nutrition Keywords</h3><p>For "nutrition advice Umeå" keywords, PT Pontus faces competition from:</p><ol><li><strong>Umeå University</strong> (umu.se)</li></ol><ul><li><strong>Ranking Position</strong>: #1 for "nutrition advice Umeå"</li><li><strong>Winning Strategy</strong>: Academic authority on food and nutrition science</li><li><strong>Content Approach</strong>: Research-based nutrition information</li></ul><br><h3 id="keyword-performance-gaps">Keyword Performance Gaps</h3><p>Our analysis revealed several areas where competitors consistently outrank PT Pontus:</p><br><ol><li><strong>Informational Keywords</strong> (3,600-4,400 searches/month):</li></ol><ul><li>"hur många kalorier ska jag äta"</li><li>"vad är kreatin"</li><li>"kreatin biverkningar"</li></ul><br><ol><li><strong>Exercise-Related Keywords</strong> (390-4,400 searches/month):</li></ol><ul><li>"knäböj"</li><li>"magövningar gym"</li><li>"core träning"</li></ul><br><ol><li><strong>Weight Loss Keywords</strong> (320-1,300 searches/month):</li></ol><ul><li>"gå ner i vikt"</li><li>"bli smal"</li><li>"kaloriunderskott"</li></ul><br><ol><li><strong>Calorie-Related Keywords</strong> (720-3,600 searches/month):</li></ol><ul><li>"kalorier per dag"</li><li>"hur många kcal per dag"</li></ul><br><h3 id="competitor-serp-strategies">Competitor SERP Strategies</h3><p>Analysis of competitor search listings revealed effective patterns:</p><br><ol><li><strong>Title Optimization</strong>:</li></ol><ul><li><strong>iform.se</strong>: Concise titles including keywords and benefits (e.g., "Kaloriräknare – hur många kalorier behöver jag?")</li><li><strong>halsoliv.expressen.se</strong>: Catchy titles focusing on specific outcomes (e.g., "Smal utan att banta – 12 smarta genvägar")</li><li><strong>muscleandstrength.com</strong>: Clear value proposition in titles (e.g., "Workout Routines Database: 1000+ Free Workout Plans")</li></ul><br><ol><li><strong>Meta Description Patterns</strong>:</li></ol><ul><li>Benefit-oriented descriptions highlighting key takeaways</li><li>Summary-style descriptions that preview content value</li><li>Experience-level indicators (e.g., "for all fitness levels")</li></ul><br><ol><li><strong>Successful Content Formats</strong>:</li></ol><ul><li><strong>Calculators/Tools</strong>: iform.se's calorie calculator drives significant traffic</li><li><strong>Listicles</strong>: halsoliv.expressen.se effectively uses numbered lists (e.g., "11 sätt att bränna fler kalorier")</li><li><strong>Recipe Collections</strong>: viktvaktarna.se's dedicated recipe section performs well</li><li><strong>Workout Databases</strong>: muscleandstrength.com's comprehensive workout library</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Emulate best-performing content formats: introduce listicles and tool-based pages to capture featured snippets.</li></ul><br></div></section>
+                <section id="backlink-and-authority-profile" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">Backlink and Authority Profile</h2>
+                    </div>
+                    <div class="section-content"><p>Our backlink analysis reveals significant issues that likely contribute to PT Pontus's declining SEO performance:</p><br><h3 id="backlink-quality-assessment">Backlink Quality Assessment</h3><ul><li><strong>High Spam Score</strong>: pontusbackman.com has a concerning 65% spam score, indicating potential toxic backlinks</li><li><strong>Backlink Quantity</strong>: Only 29 backlinks from 21 referring domains, indicating limited link building efforts</li><li><strong>Backlink Quality Distribution</strong>:</li><li>Low spam score domains (0-30%): 4 referring domains</li><li>Medium spam score domains (31-60%): 10 referring domains</li><li>High spam score domains (61-100%): 7 referring domains</li></ul><br><h3 id="backlink-attributes-analysis">Backlink Attributes Analysis</h3><ul><li><strong>Nofollow vs. Dofollow Ratio</strong>: 17 out of 28 referring pages use nofollow links (60.7%), creating an imbalanced link profile</li><li><strong>Geographic Distribution</strong>: Only 1 identified backlink from a Swedish domain (legendarygym.se), limiting local SEO impact</li><li><strong>Link Attributes</strong>: Many links use noopener (10) and noreferrer (3) attributes, potentially reducing SEO value</li></ul><br><h3 id="anchor-text-analysis">Anchor Text Analysis</h3><ul><li><strong>Branded Anchors</strong>: Most links use the domain name "pontusbackman.com" as anchor text</li><li><strong>URL Anchors</strong>: Several quality backlinks use full URLs as anchor text (e.g., "https://pontusbackman.com/en/training-program-gym-beginner-definitive-approach-for-success/")</li><li><strong>Limited Keyword-Rich Anchors</strong>: Few backlinks use descriptive, keyword-rich anchor text</li></ul><br><h3 id="toxic-backlink-sources">Toxic Backlink Sources</h3><p>Several potentially harmful backlinks were identified from domains with high spam scores:</p><ul><li>australianwebdirectory.pro (70% spam score)</li><li>australianwebdirectory.shop (65% spam score)</li><li>belonnanotservice.ga (85% spam score)</li><li>thebestbacklinksavailable.click (65% spam score)</li><li>what-happens-next.xyz (85% spam score)</li><li>browseallexpireddomains.us (65% spam score)</li><li>mundotecnologia.info (65% spam score)</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prepare and submit a disavow file targeting the listed toxic domains.</li><li>Initiate outreach to secure dofollow links from high-authority Swedish health and fitness sites.</li></ul><br></div></section>
+                <section id="research-methodology" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Research Methodology</h2>
+                    </div>
+                    <div class="section-content"><p>Our SEO analysis follows a structured approach addressing these key areas:</p><br><ol><li><strong>Verification of Company Details</strong>: ✓ Confirmed location in Umeå, Sweden</li><li><strong>SEO Performance Assessment</strong>: ✓ Analyzed organic visibility metrics and search engine traffic (ETV)</li><li><strong>Keyword Analysis</strong>: ✓ Completed analysis of high-value, long-tail, and seasonal keywords</li><li><strong>Competitive Landscape Analysis</strong>: ✓ Evaluated competitor strategies and identified opportunities</li><li><strong>Backlink and Authority Profile</strong>: ✓ Examined backlink quality, spam score, and link attributes</li><li><strong>Technical SEO Audit</strong>: ✓ Analyzed blog structure, content focus, and technical issues</li></ol><br></div></section>
+                <section id="key-insights" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Key Insights</h2>
+                    </div>
+                    <div class="section-content"><ol><li><strong>Declining Organic Visibility</strong>: The significant drop in high-ranking positions suggests algorithm updates, increased competition, or content quality issues</li><li><strong>Content Category Performance</strong>: Cooking guides and specific exercise content perform better than general fitness advice</li><li><strong>Position Distribution</strong>: The majority of keywords rank beyond position 30, indicating opportunities for optimization</li><li><strong>Technical Issues</strong>: The technical audit revealed DOM size issues, meta tag optimization needs, and alt text implementation problems</li><li><strong>Blog Structure</strong>: The site has a blog with 10 popular articles on health and fitness topics that could be better optimized</li><li><strong>Seasonal Opportunities</strong>: Clear seasonal patterns in keyword searches (December for recipes, January for weight loss)</li><li><strong>Content Gaps</strong>: Identified opportunities for specific muscle group workouts, beginner-friendly content, and weight loss plateau strategies</li><li><strong>Competitor Advantages</strong>: Competitors are leveraging interactive tools, comprehensive guides, and specific content formats (listicles, calculators) to gain ranking advantages</li><li><strong>Toxic Backlink Profile</strong>: The high spam score (65%) and numerous low-quality backlinks are likely contributing to ranking declines</li><li><strong>Limited Local Backlinks</strong>: Insufficient backlinks from Swedish domains is limiting local SEO potential</li><li><strong>Imbalanced Link Attributes</strong>: The high proportion of nofollow links (60.7%) creates an unfavorable backlink profile</li><li><strong>Local Competition</strong>: For Umeå-specific nutrition keywords, academic institutions provide strong competition</li></ol><br></div></section>
+                <section id="strategic-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tasks"></i></div>
+                        <h2 class="section-title">Strategic Recommendations</h2>
+                    </div>
+                    <div class="section-content"><p>Based on our comprehensive findings, we recommend:</p><br><h3 id="1-content-optimization-strategy">1. Content Optimization Strategy</h3><ul><li><strong>Prioritize High-Potential Content</strong>: Focus on pages ranking in positions 4-10 to push them into top 3 positions</li><li><strong>Seasonal Content Calendar</strong>:</li><li>Prepare and publish Brussels sprouts and air fryer recipes by October/November to capture December traffic</li><li>Refresh weight loss content in December to capitalize on January resolution searches</li><li><strong>Content Clusters</strong>: Develop comprehensive content clusters around:</li><li>Home workout routines (especially abdominal training)</li><li>Healthy recipes (particularly air fryer recipes)</li><li>Weight loss strategies and realistic timelines</li><li><strong>Content Gaps to Address</strong>:</li><li>Create specific muscle group workout guides (e.g., "Lats övningar")</li><li>Develop more beginner-friendly content (e.g., "bänkpress nybörjare")</li><li>Create comprehensive content on overcoming weight loss plateaus</li><li>Develop Umeå-specific nutrition advice content to compete with local institutions</li><li><strong>Content Format Diversification</strong>:</li><li>Implement listicle formats for exercise and weight loss content</li><li>Create more video content for exercise demonstrations</li><li>Develop infographics for nutritional information</li><li><strong>Blog Enhancement</strong>:</li><li>Optimize the existing 10 popular blog articles with improved headings, meta descriptions, and internal linking</li><li>Expand the blog with regular, high-quality content addressing identified keyword gaps</li></ul><br><h3 id="2-interactive-tools-development">2. Interactive Tools Development</h3><ul><li><strong>Calorie Calculator</strong>: Develop a user-friendly calorie calculator tool to compete with iform.se's successful tool</li><li><strong>Recipe Database</strong>: Create a searchable recipe database organized by meal type, calorie content, and dietary preferences</li><li><strong>Workout Builder</strong>: Implement an interactive workout builder tool for personalized training plans</li><li><strong>Fitness Level Assessment</strong>: Create a tool that helps users determine their fitness level and recommends appropriate workouts</li></ul><br><h3 id="3-on-page-seo-improvements">3. On-Page SEO Improvements</h3><ul><li><strong>Title Optimization</strong>: Implement more concise, benefit-oriented titles that directly answer user questions</li><li><strong>Meta Description Enhancement</strong>: Create compelling meta descriptions highlighting specific benefits and outcomes</li><li><strong>Featured Snippet Optimization</strong>: Structure content to capture featured snippets for question-based keywords</li><li><strong>Internal Linking</strong>: Strengthen internal linking between related articles to improve site navigation and distribute link equity</li><li><strong>Alt Text Implementation</strong>: Add descriptive alt text to all images to improve accessibility and SEO</li><li><strong>DOM Size Optimization</strong>: Address document object model size issues to improve page performance</li><li><strong>Heading Structure</strong>: Implement proper H1-H6 hierarchy throughout the site</li></ul><br><h3 id="4-technical-seo-improvements">4. Technical SEO Improvements</h3><ul><li><strong>Mobile Optimization</strong>: Ensure full mobile optimization for all content</li><li><strong>Schema Markup</strong>: Implement recipe schema for cooking content and how-to schema for workout guides</li><li><strong>Page Speed</strong>: Optimize page loading times, especially for high-potential content</li><li><strong>Structured Data</strong>: Implement FAQ schema for common fitness and nutrition questions</li><li><strong>XML Sitemap</strong>: Ensure the sitemap is properly configured and submitted to search engines</li></ul><br><h3 id="5-local-seo-enhancement">5. Local SEO Enhancement</h3><ul><li><strong>Google My Business</strong>: Create and optimize a Google My Business profile for local visibility in Umeå</li><li><strong>Local Keywords</strong>: Incorporate location-based keywords for in-person training services</li><li><strong>hreflang Tags</strong>: Implement proper hreflang tags for Swedish/English content</li><li><strong>Local Content</strong>: Create Umeå-specific content addressing local fitness opportunities and nutrition resources</li><li><strong>Local Partnerships</strong>: Develop content partnerships with other Umeå businesses and organizations</li></ul><br><h3 id="6-backlink-profile-cleanup-and-enhancement">6. Backlink Profile Cleanup and Enhancement</h3><ul><li><strong>Toxic Link Disavowal</strong>: Submit a disavow file to Google containing the identified toxic backlinks</li><li><strong>Link Building Strategy</strong>:</li><li>Prioritize acquiring backlinks from authoritative Swedish domains (.se)</li><li>Target fitness centers, health organizations, and local businesses in Umeå</li><li>Develop relationships with Swedish health and fitness bloggers</li><li><strong>Anchor Text Diversification</strong>: Work toward a more natural anchor text distribution with relevant keywords</li><li><strong>Content Promotion</strong>: Create shareable content (infographics, studies, guides) to naturally attract quality backlinks</li><li><strong>Local Directory Listings</strong>: Ensure consistent NAP (Name, Address, Phone) information across Swedish business directories</li></ul><br></div></section>
+                <section id="next-steps" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-arrow-right"></i></div>
+                        <h2 class="section-title">Next Steps</h2>
+                    </div>
+                    <div class="section-content"><p>Our research team will proceed with:</p><br><ol><li>Development of a detailed content calendar based on seasonal keyword opportunities</li><li>Creation of content briefs for high-priority keyword targets</li><li>Design specifications for interactive tools (calorie calculator, recipe database)</li><li>Preparation of a disavow file for toxic backlinks</li><li>Development of a targeted link building strategy for Swedish domains</li><li>Technical SEO implementation plan to address identified issues</li></ol><br><hr><br><p><em>This research report represents our comprehensive SEO analysis for PT Pontus. We recommend scheduling a follow-up discussion to review these findings and discuss implementation priorities.</em></p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - PT Pontus',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

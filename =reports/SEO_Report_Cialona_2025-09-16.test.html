@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - Cialona</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">Cialona • https://cialona.nl/</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Nederland Market</span>
+                        <span><i class="fas fa-calendar"></i> September 16, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary-cialona-seo-analysis-netherlands-market" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary: Cialona SEO Analysis – Netherlands Market</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>SEO Performance Overview (Last 12 Months)</strong></th><th><strong>Change / Current Status</strong></th></tr></thead><tbody><tr><td class="">Estimated Traffic Volume (ETV)</td><td class="negative">-32.90% (from 1,944.08 to 1,304.41 monthly visits)</td></tr><tr><td class="">Keywords in Position 1</td><td class="positive">+100% (2 keywords)</td></tr><tr><td class="">Keywords in Positions 2-3</td><td class="positive">+20% (6 keywords)</td></tr><tr><td class="">Keywords in Positions 4-10</td><td class="positive">+42.22% (64 keywords)</td></tr><tr><td class="">Keywords in Positions 41-50</td><td class="negative">-66.07%</td></tr><tr><td class="">Keywords in Positions 51-60</td><td class="negative">-71.11%</td></tr><tr><td class="">Total Keywords in Top 100</td><td class="">283 keywords</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The significant ETV decline despite gains in top 10 suggests a need to:</li><li>Strengthen mid- and long-tail keyword visibility.</li><li>Retain momentum for top-ranking keywords while expanding to adjacent themes.</li><li>Monitor monthly ETV to validate the impact of implemented changes.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Top Competitors & Keywords They Rank Well For</strong></th><th><strong>Search Volume</strong></th><th><strong>Competition</strong></th><th><strong>Cialona’s Position</strong></th></tr></thead><tbody><tr><td class="">standbouw</td><td class="">1,300</td><td class="">Medium</td><td class="">Below top 3</td></tr><tr><td class="">vacatures standbouw</td><td class="">210</td><td class="">Medium</td><td class="">Poor</td></tr><tr><td class="">standbouw vacatures</td><td class="">210</td><td class="">Medium</td><td class="">Poor</td></tr><tr><td class="">design beursstand</td><td class="">140</td><td class="">High</td><td class="">Poor</td></tr><tr><td class="">beursstand design</td><td class="">140</td><td class="">High</td><td class="">Poor</td></tr><tr><td class="">standbouw rotterdam</td><td class="">90</td><td class="">High</td><td class="">Poor</td></tr><tr><td class="">inrichting beursstand</td><td class="">260</td><td class="">High</td><td class="">Poor</td></tr></tbody></table></div><p><em>Competitors: standbouw.nl, verkerkstandbouw.nl, standbouwprinsdesign.nl</em></p><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Conduct a gap analysis for each competitor keyword.</li><li>Develop targeted landing pages or content upgrades for “standbouw” and “vacatures standbouw.”</li><li>Benchmark meta descriptions and SERP elements against top performers.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th><strong>Opportunity Keywords to Target</strong></th><th><strong>Search Volume</strong></th><th><strong>Competition</strong></th><th><strong>Why Target?</strong></th></tr></thead><tbody><tr><td class="">beursstand bouwer</td><td class="">30-90</td><td class="">Medium</td><td class="">Relevant service keyword with moderate volume</td></tr><tr><td class="">internationale standbouw</td><td class="">0-50</td><td class="">Unknown</td><td class="">Niche, international focus, low competition</td></tr><tr><td class="">3d stand ontwerp</td><td class="">Low</td><td class="">Unknown</td><td class="">Specific service offering, growing interest</td></tr><tr><td class="">stand beurs ontwerp</td><td class="">Low</td><td class="">Unknown</td><td class="">Relevant to core services, content gap</td></tr><tr><td class="">vacatures standbouw</td><td class="">210</td><td class="">Medium</td><td class="">Untapped job-related keyword, competitor strength</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize “beursstand bouwer” for a mid-volume, mid-competition quick win.</li><li>Evaluate content formats (guides, how-tos, case studies) for “internationale standbouw” and “3d stand ontwerp.”</li><li>Map each keyword to a dedicated page or content cluster.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR – Key Findings</h3><br><ul><li><strong>Organic traffic dropped 32.9%</strong> in the last year despite gains in top 10 keyword rankings.</li><li>Strong brand keyword presence but <strong>over-reliance on branded terms</strong> limits broader reach.</li><li><strong>Location-based and event-specific keywords perform well</strong>, but expansion to more cities is needed.</li><li>Competitors outrank Cialona on <strong>high-volume, high-intent keywords</strong> like "standbouw" and "vacatures standbouw."</li><li><strong>Technical SEO gaps</strong> include lack of schema markup, meta tag optimization, and no featured snippets.</li><li>Backlink profile is healthy but contains <strong>toxic links needing disavowal</strong>; competitors have stronger, more diverse backlinks.</li><li>Content gaps exist in <strong>job-related pages, portfolio/case studies, and evergreen blog content</strong>.</li><li>Quick wins include <strong>meta description improvements, event content updates, and toxic backlink disavowal</strong>.</li><li>Medium and long-term strategies focus on <strong>location SEO, job keyword targeting, portfolio expansion, and backlink acquisition</strong>.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign owners for each quick-win item with deadlines in the next 2–4 weeks.</li><li>Establish a weekly dashboard to measure ETV, rankings for priority keywords, and disavow progress.</li></ul><br><hr><br></div></section>
+                <section id="seo-research-report-cialona" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h1 class="section-title">SEO Research Report: Cialona</h1>
+                    </div>
+                    <div class="section-content"><br></div></section>
+                <section id="company-overview" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">Company Overview</h2>
+                    </div>
+                    <div class="section-content"><p>Cialona is a Dutch company specializing in stand construction for trade shows and exhibitions with 68 years of experience in the industry (<a href="https://cialona.nl/" class="link-reference" target="_blank" rel="noopener">Company Website</a>). They focus on bringing brands to life at exhibitions with meticulous attention to detail and offer services for both domestic and international clients. The company emphasizes sustainable stand construction and provides a client portal for transparent project management.</p><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Leverage the sustainability angle by targeting “duurzame standbouw” and “eco beursstand.”</li></ul><br></div></section>
+                <section id="1-overall-seo-performance-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Overall SEO Performance in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p><strong>Organic Visibility Trends:</strong></p><ul><li>Cialona.nl has experienced a concerning 32.90% decrease in Estimated Traffic Volume (ETV) from September 2024 to September 2025.</li><li>Current ETV stands at 1,304.41 monthly visits, down from 1,944.08 in September 2024.</li><li>Positive trend in top positions: 100% increase in position 1 rankings, 20% increase in positions 2-3, and 42.22% increase in positions 4-10.</li><li>Significant decline in lower positions: 66.07% decrease in positions 41-50 and 71.11% decrease in positions 51-60.</li></ul><br><p><strong>Current Organic Visibility (September 2025):</strong></p><ul><li>Position 1: 2 keywords</li><li>Positions 2-3: 6 keywords</li><li>Positions 4-10: 64 keywords</li><li>Positions 11-20: 71 keywords</li><li>Total keywords in top 100: 283 keywords</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The drop in positions 11–60 calls for optimized content refreshes on mid-tier pages to push them into the top 10.</li><li>Focus internal linking from high-authority pages to these underperforming pages.</li></ul><br><p><strong>Top-Performing Pages:</strong></p><ul><li><code>https://cialona.nl/beurzen-2024/</code>: Highest performer with ETV of 358.62 and estimated paid traffic value of $526.68</li><li><code>https://cialona.nl/beurs/vakbeurs-facilitair/</code>: Strong performer with ETV of 103.93</li><li><code>https://cialona.nl/</code> (Homepage): Performs well with ETV of 102.87 and estimated paid traffic value of $135.44</li></ul><br><p><strong>Underperforming Pages:</strong></p><ul><li>Many <code>/beurs/*</code> pages have low ETVs (under 10) and rank primarily in positions 11-40</li><li>Pages like <code>/beurs/gevel/</code>, <code>/vacature-standbouwer/</code>, <code>/standbouw-bedrijven/</code> show poor performance</li><li>Portfolio pages generally have low visibility and traffic contribution</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit underperforming pages for content depth, keyword targeting, and on-page optimization.</li><li>Convert low-traffic <code>/beurs/*</code> pages into comprehensive guides with FAQs, images, and event history.</li></ul><br><p><strong>Technical SEO Observations:</strong></p><ul><li>No featured snippets or local pack rankings, indicating missed opportunities</li><li>Limited use of schema markup</li><li>Potential issues with meta tags and image optimization</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Implement FAQ and Event schema where relevant.</li><li>Update all meta titles and descriptions to reflect targeted keywords and events.</li><li>Compress and lazy-load images to improve load times.</li></ul><br></div></section>
+                <section id="2-keyword-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2 class="section-title">2. Keyword Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p><strong>Top Performing Keywords (Positions 1-10):</strong></p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">cialona</td><td class="">210</td><td class="">1</td></tr><tr><td class="">cialona expo</td><td class="">110</td><td class="">1</td></tr><tr><td class="">stand ontwerp</td><td class="">50</td><td class="">2</td></tr><tr><td class="">standbouw eindhoven</td><td class="">110</td><td class="">5</td></tr><tr><td class="">standbouwer eindhoven</td><td class="">110</td><td class="">5</td></tr><tr><td class="">intermodal europe</td><td class="">70</td><td class="">3</td></tr><tr><td class="">spannabis</td><td class="">390</td><td class="">4</td></tr><tr><td class="">vakbeurs facilitair 2025</td><td class="">170</td><td class="">3</td></tr><tr><td class="">facilitair vakbeurs</td><td class="">480</td><td class="">4</td></tr><tr><td class="">gafa</td><td class="">260</td><td class="">4</td></tr><tr><td class="">luxury fair 2024</td><td class="">90</td><td class="">4</td></tr><tr><td class="">lxry fair</td><td class="">90</td><td class="">6</td></tr><tr><td class="">spannabis 2025</td><td class="">390</td><td class="">5</td></tr><tr><td class="">standbouw utrecht</td><td class="">90</td><td class="">7</td></tr><tr><td class="">standbouwbedrijven</td><td class="">110</td><td class="">4</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The branded terms (“cialona”) secure 2 of the top spots; diversify anchor text and on-page mentions to push generics higher.</li><li>Use location and event keywords in H2/H3 tags on the homepage and key landing pages to reinforce those signals.</li></ul><br><p><strong>Keyword Performance Insights:</strong></p><ul><li><strong>Branded Keywords Dominate:</strong> The top positions are held by branded keywords ("cialona," "cialona expo"), indicating strong brand recognition but potential over-reliance on brand searches.</li><li><strong>Location-Based Keywords:</strong> Terms like "standbouw eindhoven" (110 searches/month), "standbouwer eindhoven" (110 searches/month), and "standbouw utrecht" (90 searches/month) are ranking well, showing successful local SEO efforts.</li><li><strong>Fair/Expo Specific Keywords:</strong> Event-specific keywords like "spannabis" (390 searches/month), "vakbeurs facilitair 2025" (170 searches/month), and "facilitair vakbeurs" (480 searches/month) are performing well, indicating successful event-specific content strategy.</li><li><strong>Seasonal Fluctuations:</strong> Many keywords show significant seasonal variations in search volume, often peaking in the months leading up to specific events.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Set up a content calendar aligned with event dates to publish or refresh pages 2–3 months before each event.</li><li>Monitor seasonal search trends with Google Trends and adjust bids/campaigns accordingly.</li></ul><br><p><strong>Content Performance Analysis:</strong></p><ul><li><strong>"Beurs" Pages are Strong:</strong> The <code>/beurs/</code> subdirectory (e.g., <code>/beurs/spannabis/</code>, <code>/beurs/vakbeurs-facilitair/</code>) consistently ranks for fair/expo specific keywords.</li><li><strong>Location Pages are Effective:</strong> Pages like <code>/standbouw-eindhoven/</code> and <code>/standbouw-utrecht/</code> rank well for location-based searches.</li><li><strong>Home Page Ranks for Broad Terms:</strong> The home page (<code>/</code>) ranks for the most general terms like "cialona" and "cialona expo".</li></ul><br><p><strong>SERP Snippet Patterns:</strong></p><ul><li>Clear value propositions highlighting Cialona's experience and specialization in unique stands</li><li>Location emphasis in snippets for city-specific keywords</li><li>Event details inclusion for event-specific keywords</li><li>Strategic calls to action like "Stand nodig?"</li></ul><br><p><strong>Recommended High-Priority Keywords:</strong></p><ul><li><strong>beursstand bouwer:</strong> 30-90 monthly searches | MEDIUM competition</li><li><strong>internationale standbouw:</strong> 0-50 monthly searches | Competition data unavailable</li><li><strong>3d stand ontwerp:</strong> Currently low volume but indicates a specific service offering</li><li><strong>stand beurs ontwerp:</strong> Currently low volume but relevant to core services</li></ul><br><p><strong>Content Gaps and Opportunities:</strong></p><ul><li>Need to update "2024" keywords to "2025" or "2026" where appropriate</li><li>Expand location-based content to other major Dutch cities</li><li>Create more comprehensive blog content addressing client pain points</li><li>Develop case studies showcasing successful stand construction projects</li><li>Target "evergreen" keywords like "beursstand bouwen" and "beursstand huren"</li><li>Optimize for design-related keywords like "beursstand design"</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Build an editorial plan that assigns responsible authors for each content gap, ensuring deadlines and performance tracking.</li></ul><br></div></section>
+                <section id="3-competitive-landscape-in-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">3. Competitive Landscape in the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p><strong>Top Competitors Overview:</strong></p><br><ol><li><strong>www.standbouw.nl</strong></li></ol><ul><li><strong>Strengths:</strong> High average keyword position (1.5) and significant estimated traffic volume (406.54)</li><li><strong>Type:</strong> Direct competitor in stand construction services</li></ul><br><ol><li><strong>verkerkstandbouw.nl</strong></li></ol><ul><li><strong>Strengths:</strong> High estimated traffic volume (421.2) and good average keyword position (2.0)</li><li><strong>Type:</strong> Direct competitor with strong rankings for both general terms ("standbouw") and specific terms ("vacatures standbouw")</li><li><strong>Strategy:</strong> Simple, direct titles (e.g., "Verkerk Standbouw: Homepage") and effective meta descriptions highlighting key services</li></ul><br><ol><li><strong>standbouwprinsdesign.nl</strong></li></ol><ul><li><strong>Strengths:</strong> Strong meta descriptions with clear value propositions (free design, complete stands, easy quotes)</li><li><strong>Type:</strong> Direct competitor with excellent rankings for design-related and location-based keywords</li><li><strong>Strategy:</strong> Highly effective SERP elements with clear value propositions and calls to action (e.g., "Gratis gedetailleerd ontwerp," "Vraag eenvoudig een offerte aan")</li></ul><br><p><strong>Keyword Performance Comparison:</strong></p><br><p>Cialona is being outperformed by competitors on several high-value keywords:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Competition</th><th>Top Competitor</th></tr></thead><tbody><tr><td class="">standbouw</td><td class="">1,300</td><td class="">Medium</td><td class="">verkerkstandbouw.nl, standbouwprinsdesign.nl</td></tr><tr><td class="">vacatures standbouw</td><td class="">210</td><td class="">Medium</td><td class="">verkerkstandbouw.nl, standbouwprinsdesign.nl</td></tr><tr><td class="">standbouw vacatures</td><td class="">210</td><td class="">Medium</td><td class="">verkerkstandbouw.nl, standbouwprinsdesign.nl</td></tr><tr><td class="">design beursstand</td><td class="">140</td><td class="">High</td><td class="">standbouwprinsdesign.nl</td></tr><tr><td class="">beursstand design</td><td class="">140</td><td class="">High</td><td class="">standbouwprinsdesign.nl</td></tr><tr><td class="">standbouw rotterdam</td><td class="">90</td><td class="">High</td><td class="">standbouwprinsdesign.nl</td></tr><tr><td class="">inrichting beursstand</td><td class="">260</td><td class="">High</td><td class="">standbouwprinsdesign.nl</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Differentiate by emphasizing “duurzame beursstand” and unique value propositions not highlighted by competitors.</li><li>Audit competitor meta descriptions to identify messaging gaps and tone for Cialona.</li></ul><br><p><strong>Competitor Content Strategies:</strong></p><br><ol><li><strong>Job-Related Content:</strong> Verkerkstandbouw.nl has a dedicated "Vacatures" page that ranks well for job-related keywords, an area where Cialona is significantly underperforming.</li></ol><br><ol><li><strong>Location-Based Pages:</strong> Standbouwprinsdesign.nl effectively targets city-specific searches with optimized location pages (e.g., "standbouw rotterdam").</li></ol><br><ol><li><strong>Portfolio/Case Studies:</strong> Verkerkstandbouw.nl uses portfolio items to target specific events like "Provada Amsterdam" and "Spoga Cologne," driving targeted traffic.</li></ol><br><ol><li><strong>SERP Strategy:</strong> Standbouwprinsdesign.nl uses highly effective meta descriptions with clear value propositions and calls to action, creating compelling search results.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Create a “Vacatures” section with optimized job listings and schema markup.</li><li>Develop dedicated city pages for Amsterdam, Rotterdam, Utrecht with unique local insights.</li><li>Launch mini-case studies following competitor formats but with video testimonials.</li></ul><br></div></section>
+                <section id="4-backlink-authority-analysis-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-link"></i></div>
+                        <h2 class="section-title">4. Backlink & Authority Analysis for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p><strong>Current Backlink Profile:</strong></p><ul><li><strong>Total Backlinks:</strong> 7,156 backlinks from 160 referring domains</li><li><strong>Domain Authority:</strong> Rank of 292 with a low spam score of 2, indicating a relatively healthy backlink profile</li><li><strong>Referring Domain Types:</strong> Primarily from .com (3,417 links) and .nl (226 links) domains</li><li><strong>Link Types:</strong> Majority are anchor text links (2,851) with some image links (293)</li><li><strong>Geographic Distribution:</strong> Links primarily from worldwide sources (3,018) with significant Dutch links (227)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>A DA of 292 is solid but lags behind top competitors; aim to increase high-authority .nl links by 15% over six months.</li></ul><br><p><strong>Toxic Backlink Issues:</strong></p><ul><li>Several high spam score domains identified that require immediate disavowal:</li><li>jouwportaal.nl (100% spam score)</li><li>besteoverzicht.nl (90% spam score)</li><li>webscountry.com (65% spam score)</li><li>Multiple medium spam score directories (40-60% spam score) that should be evaluated for potential disavowal</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Disavow the high spam domains immediately.</li><li>Audit medium spam score links manually and disavow if no value.</li><li>Schedule quarterly backlink audits to catch new toxic links.</li></ul><br><p><strong>Competitor Backlink Analysis:</strong></p><ul><li><strong>Key Backlink Competitors:</strong></li><li>allepaginas.nl (rank: 41, 150 intersecting backlinks)</li><li>uwpagina.nl (rank: 3, 144 intersecting backlinks)</li><li>crunchbase.com (rank: 52, 123 intersecting backlinks)</li><li>standbouwprinsdesign.nl (rank: 4, 63 intersecting backlinks)</li><li>clcvecta.nl (rank: 38, 51 intersecting backlinks)</li></ul><br><p><strong>Backlink Opportunities:</strong></p><ul><li><strong>Industry Directories:</strong> Several industry directories link to competitors but not to Cialona</li><li><strong>Event Websites:</strong> Exhibition and fair websites where Cialona builds stands but lacks backlinks</li><li><strong>Business Listings:</strong> High-authority business listings like crunchbase.com where competitors have stronger profiles</li><li><strong>Industry Associations:</strong> Organizations like clcvecta.nl (Dutch exhibition industry association) where stronger presence could be established</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop an outreach plan targeting 10 high-value domains monthly.</li><li>Create a template for requesting backlinks from event organizers and industry associations.</li><li>Track outreach and acquired links in the SEO dashboard.</li></ul><br><p><strong>Anchor Text Analysis:</strong></p><ul><li><strong>Current Anchor Text Distribution:</strong></li><li>Brand terms ("cialona," "cialona expo") dominate anchor text profile</li><li>Service-related anchors like "standbouw utrecht" and "standontwerp" appear but are underutilized</li><li>Many generic anchors ("click here," "website") that provide limited SEO value</li><li><strong>Competitor Anchor Text Strategies:</strong></li><li>Competitors have more diverse anchor text profiles with service-specific terms</li><li>More location-based anchor text in competitor profiles</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Plan an anchor text diversification campaign with partners to include target service and location keywords at least 30% of the time.</li></ul><br></div></section>
+                <section id="5-content-strategy-recommendations-for-the-netherlands" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-file-alt"></i></div>
+                        <h2 class="section-title">5. Content Strategy Recommendations for the Netherlands</h2>
+                    </div>
+                    <div class="section-content"><br><p>Based on our comprehensive analysis, we recommend the following strategies:</p><br><p><strong>Quick Wins:</strong></p><ul><li><strong>Improve Meta Descriptions:</strong> Rewrite meta descriptions for key pages to include clear value propositions and calls to action, following standbouwprinsdesign.nl's effective approach. For example, instead of "Bij Cialona nemen we het volledige standbouw proces voor onze rekening," try "Full-service standbouw: Ontwerp, productie, en montage. Vraag vandaag nog een offerte aan!"</li><li><strong>Homepage Optimization:</strong> Optimize the homepage title tag to be more keyword-focused. Instead of "Cialona Expo Standbouw: Home - Helmond," consider "Standbouw Helmond | Beursstand Ontwerp & Realisatie."</li><li><strong>Update Event Content:</strong> Update all "2024" content to "2025" or "2026" where appropriate to maintain relevance</li><li><strong>Implement Schema Markup:</strong> Add event schema markup to increase chances of featured snippets</li><li><strong>Disavow Toxic Backlinks:</strong> Immediately disavow the identified high spam score backlinks (jouwportaal.nl, besteoverzicht.nl, webscountry.com)</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>These quick wins should be completed within 4–6 weeks to halt further ETV decline and build positive momentum.</li></ul><br><p><strong>Medium-Term Strategies:</strong></p><ul><li><strong>Optimize for Job-Related Keywords:</strong> Create a dedicated, optimized "Vacatures" page targeting keywords like "vacatures standbouw," "standbouw vacatures," and "vacature standbouwer" to compete with verkerkstandbouw.nl.</li><li><strong>Enhance Location-Based SEO:</strong> Create or optimize pages targeting specific cities or regions (e.g., "Standbouw Amsterdam," "Standbouw Rotterdam") with location-specific keywords in titles, meta descriptions, and content.</li><li><strong>Optimize Fair-Specific Content:</strong> Review and optimize existing pages targeting specific fairs (e.g., "Provada Amsterdam," "Spoga Gafa") with relevant keywords, event dates, and clear calls to action.</li><li><strong>Create Comprehensive Guides:</strong> Develop in-depth content targeting high-value keywords like "beursstand bouwer" (30-90 searches/month) and "internationale standbouw" (0-50 searches/month).</li><li><strong>Backlink Acquisition Campaign:</strong> Target the identified high-value domains that link to competitors but not to Cialona, particularly industry directories and event websites.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign each medium-term task to content and outreach teams with milestones mapped over the next 3–6 months.</li></ul><br><p><strong>Long-Term Content Development:</strong></p><ul><li><strong>Portfolio Enhancement:</strong> Create portfolio/case study pages showcasing past work at specific fairs, similar to Verkerkstandbouw.nl's approach.</li><li><strong>Video Content Strategy:</strong> Develop videos showcasing stand design process and client testimonials</li><li><strong>Content Addressing Pain Points:</strong> Create blog posts addressing common client questions and challenges in exhibition stand construction</li><li><strong>Content Clusters:</strong> Build comprehensive content clusters around core services like modular stands, custom designs, and sustainable construction</li><li><strong>Linkable Asset Creation:</strong> Develop industry reports, design guides, or interactive tools that naturally attract backlinks from industry websites</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Long-term assets build domain authority and support evergreen organic growth—plan a 12-month editorial roadmap.</li></ul><br><p><strong>Technical Improvements:</strong></p><ul><li><strong>Page Speed Optimization:</strong> Improve load times for better user experience and rankings</li><li><strong>Enhanced Internal Linking:</strong> Improve internal link structure to distribute page authority more effectively</li><li><strong>Local Business Listings:</strong> Ensure Cialona.nl is listed in relevant local business directories where competitors appear</li><li><strong>Anchor Text Diversification:</strong> Work with referring domains to improve anchor text diversity with more service and location-specific terms</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Collaborate with the web development team to implement technical fixes within the next two sprints.</li></ul><br><p><strong>Backlink Strategy:</strong></p><ul><li><strong>Industry Association Partnerships:</strong> Strengthen relationship with clcvecta.nl (Dutch exhibition industry association) to improve backlink profile</li><li><strong>Business Directory Listings:</strong> Update and optimize listings on high-authority business directories like crunchbase.com</li><li><strong>Client Testimonials and Case Studies:</strong> Request backlinks from satisfied clients, particularly those with high-authority domains</li><li><strong>Guest Posting:</strong> Develop content for industry publications on exhibition design and stand construction topics</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Draft outreach templates and set monthly targets for guest post placements and association links.</li></ul><br><p>By implementing these recommendations, Cialona can address the concerning 32.90% decrease in organic traffic, close the gap with competitors, and capitalize on untapped opportunities in the Dutch exhibition stand construction market. The combination of technical SEO improvements, content optimization, and strategic backlink acquisition will provide a comprehensive approach to improving Cialona's search visibility and organic traffic.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - Cialona',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>

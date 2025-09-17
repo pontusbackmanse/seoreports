@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analysis Report - BBQuality</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #f44336;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --border: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .report-header {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: var(--dark);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border: 1px solid #e5e5e5;
+        }
+        .header-content { display: flex; align-items: center; gap: 30px; }
+        .logo { width: 120px; height: auto; border-radius: 12px; }
+        .main-title { font-size: 42px; font-weight: 700; margin-bottom: 10px; }
+        .subtitle { font-size: 20px; opacity: 0.9; margin-bottom: 8px; }
+        .meta-info { font-size: 16px; opacity: 0.8; display: flex; gap: 20px; }
+        .nav-menu {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+        .nav-items { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .nav-item {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-item:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .section-content {
+            width: 100%;
+            max-width: none;
+        }
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .content-section:hover { transform: translateY(-5px); }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .section-title { font-size: 28px; font-weight: 600; color: var(--dark); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        td { 
+            padding: 18px 20px; 
+            border-bottom: 1px solid #f0f0f0; 
+            color: #000000;
+            word-break: break-word;
+        }
+        tr:hover td { background-color: #f8f9ff; }
+        tr:last-child td { border-bottom: none; }
+        
+        /* Percentage styling in tables */
+        td:contains('%') { font-weight: 600; }
+        
+        h1 { font-size: 26px; color: var(--dark); margin: 35px 0 20px 0; font-weight: 700; }
+        h2 { font-size: 22px; color: var(--dark); margin: 30px 0 15px 0; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--dark); margin: 25px 0 12px 0; font-weight: 600; }
+        h4 { font-size: 16px; color: var(--dark); margin: 20px 0 10px 0; font-weight: 600; }
+        
+        p { margin: 16px 0; line-height: 1.7; color: #000000; }
+        
+        ul, ol {
+            margin: 16px 0;
+            padding-left: 30px;
+        }
+        
+        ul li, ol li {
+            margin: 8px 0;
+            line-height: 1.7;
+            color: #000000;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px 0;
+            border: 1px solid var(--border);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        .neutral { color: var(--warning); }
+        
+        .link-reference {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+        
+        .link-reference:hover {
+            color: var(--secondary);
+            border-bottom-style: solid;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+        
+        .report-footer {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .main-title { font-size: 32px; }
+            .content-section { padding: 25px 20px; }
+            .nav-menu { position: relative; top: 0; }
+            table { font-size: 14px; }
+            td, th { padding: 12px; }
+        }
+        
+        @media print {
+            body { background: white; }
+            .nav-menu { display: none; }
+            .content-section { box-shadow: none; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="report-header">
+            <div class="header-content">
+                <img src="https://pontusbackman.com/wp-content/uploads/2025/05/SEO-AI-Logo-2.png" 
+                     alt="SEO AI Logo" class="logo" style="filter: none;" onerror="this.style.display='none'">
+                <div>
+                    <h1 class="main-title" style="color: var(--dark);">SEO Research Report</h1>
+                    <div class="subtitle" style="color: var(--dark); opacity: 0.8;">BBQuality • https://www.bbquality.nl/</div>
+                    <div class="meta-info" style="color: var(--dark); opacity: 0.7;">
+                        <span><i class="fas fa-globe"></i> Netherlands Market</span>
+                        <span><i class="fas fa-calendar"></i> September 17, 2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="nav-menu">
+            <div class="nav-items">
+                <a href="#executive-summary" class="nav-item"><i class="fas fa-chart-pie"></i> Summary</a>
+                <a href="#key-findings" class="nav-item"><i class="fas fa-lightbulb"></i> Findings</a>
+                <a href="#performance" class="nav-item"><i class="fas fa-tachometer-alt"></i> Performance</a>
+                <a href="#keywords" class="nav-item"><i class="fas fa-search"></i> Keywords</a>
+                <a href="#competitors" class="nav-item"><i class="fas fa-users"></i> Competitors</a>
+                <a href="#backlinks" class="nav-item"><i class="fas fa-link"></i> Backlinks</a>
+                <a href="#recommendations" class="nav-item"><i class="fas fa-tasks"></i> Actions</a>
+            </div>
+        </nav><main>
+                <section id="executive-summary" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+                        <h1 class="section-title">Executive Summary</h1>
+                    </div>
+                    <div class="section-content"><br><div style="overflow-x: auto;"><table><thead><tr><th>Metric</th><th>Sept 2024</th><th>Sept 2025</th><th>% Change</th></tr></thead><tbody><tr><td class=""><strong>Estimated Traffic Volume (ETV)</strong></td><td class="">166,871</td><td class="">109,369</td><td class="negative">-34.46%</td></tr><tr><td class=""><strong>Position 1 Keywords</strong></td><td class="">206</td><td class="">113</td><td class="negative">-45.15%</td></tr><tr><td class=""><strong>Positions 2-3 Keywords</strong></td><td class="">461</td><td class="">397</td><td class="negative">-13.88%</td></tr><tr><td class=""><strong>Positions 4-10 Keywords</strong></td><td class="">1,694</td><td class="">2,146</td><td class="positive">+26.68%</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The significant drop in top-three positions highlights an urgent need to reclaim “Position 1–3” rankings for core keywords.</li><li>Prioritize content updates and on-page optimizations for keywords currently in positions 4–10, where gains are most achievable.</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Competitor</th><th>High-Volume Keywords They Rank Well For (BBQuality Ranks Poorly)</th></tr></thead><tbody><tr><td class="">bbq-helden.nl</td><td class="">hamburger, bavette, hamburgers, spare ribs, steaks, picanha, pulled chicken</td></tr><tr><td class="">themeatlovers.nl</td><td class="">bavette, rib eye, entrecote, spare ribs, steaks, picanha</td></tr><tr><td class="">bbq-junkie.nl</td><td class="">smash burger, pulled chicken</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Map competitor high-volume terms to existing pages; identify quick content upgrades or new guides to capture this traffic.</li><li>Leverage competitor weaknesses by bundling keywords (e.g., “hamburger & bavette” recipes in a single cluster page).</li></ul><br><hr><br><div style="overflow-x: auto;"><table><thead><tr><th>Opportunity Keywords</th><th>Search Volume Range</th><th>Competition Level</th><th>Why Target?</th></tr></thead><tbody><tr><td class="">bbq recepten / recepten bbq</td><td class="">1,600 - 14,800</td><td class="">Low</td><td class="">High volume, low competition, recipe focus</td></tr><tr><td class="">ribeye bereiden bbq</td><td class="">20 - 110</td><td class="">Low</td><td class="">Long-tail, niche, recipe intent</td></tr><tr><td class="">bereiden picanha bbq</td><td class="">10 - 70</td><td class="">Low</td><td class="">Long-tail, niche, recipe intent</td></tr><tr><td class="">bbq vegetarische recepten</td><td class="">50 - 1,900</td><td class="">Low</td><td class="">Untapped vegetarian BBQ segment</td></tr><tr><td class="">vegetarische bbq recepten</td><td class="">50 - 1,600</td><td class="">Low</td><td class="">Untapped vegetarian BBQ segment</td></tr><tr><td class="">Seasonal BBQ terms (May-August)</td><td class="">Variable</td><td class="">Moderate</td><td class="">Seasonal spikes, capitalize on peak demand</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Develop a prioritized content calendar focusing first on “bbq recepten” and “recepten bbq” to establish topical authority.</li><li>Assign long-tail topics (ribeye & picanha) to blog or recipe pages with clear step-by-step visuals.</li></ul><br><hr><br><h3 id="tl-dr-key-findings">TL;DR - Key Findings</h3><br><ul><li>BBQuality.nl’s organic search visibility declined sharply over the past 12 months, with a 34.46% drop in estimated traffic and a 45.15% decrease in position 1 keywords.</li><li>Competitors bbq-helden.nl, themeatlovers.nl, and bbq-junkie.nl outperform BBQuality on several high-volume keywords related to popular BBQ meats and recipes.</li><li>There is a strong opportunity to target high-volume, low-competition recipe keywords and long-tail queries, especially in the Dutch BBQ market’s seasonal and vegetarian segments.</li><li>Technical SEO issues such as HTML errors, image optimization, and mobile performance are hindering BBQuality’s search performance.</li><li>Backlink profile is healthy but can be strengthened by targeting high-authority Dutch culinary sites and competitor backlink sources.</li><li>Content strategy should shift towards comprehensive recipe guides, educational product pages, and improved SERP elements to regain rankings.</li><li>A focused backlink acquisition and anchor text diversification strategy will support domain authority growth and organic traffic recovery.</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Immediate priorities: content refresh for core recipe pages, critical technical fixes, and backlink outreach to high-authority .nl sites.</li><li>Set up cross-functional sprints: SEO, content, and dev teams align on 30-, 90-, and 180-day milestones.</li></ul><br><hr><br></div></section>
+                <section id="seo-performance-analysis-roadmap-for-bbquality-nl" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h1 class="section-title">SEO Performance Analysis & Roadmap for BBQuality.nl</h1>
+                    </div>
+                    <div class="section-content"><p><strong>Prepared by WP SEO AI | October 2025</strong></p><br></div></section>
+                <section id="1-current-seo-performance-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">1. Current SEO Performance Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="1-1-organic-traffic-trends">1.1 Organic Traffic Trends</h3><p>BBQuality.nl has experienced a substantial decline in search visibility over the past year:</p><br><ul><li><strong>Overall ETV (Estimated Traffic Volume)</strong>: 34.46% decrease from September 2024 to September 2025</li><li><strong>Position 1 Rankings</strong>: 45.15% decrease (from 206 keywords to 113 keywords)</li><li><strong>Positions 2-3 Rankings</strong>: 13.88% decrease (from 461 to 397 keywords)</li><li><strong>Current Monthly ETV</strong>: 109,369 (September 2025), down from 166,871 (September 2024)</li></ul><br><p>![SEO Performance Trend Chart]</p><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>The jump in positions 4–10 is a clear signal: targeted on-page optimizations (title tags, internal linking) can push many terms into the top three.</li></ul><br><h3 id="1-2-ranking-distribution-analysis">1.2 Ranking Distribution Analysis</h3><p>The site's ranking distribution shows a concerning pattern:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Position</th><th>Sept 2024</th><th>Sept 2025</th><th>% Change</th></tr></thead><tbody><tr><td class="">Position 1</td><td class="">206</td><td class="">113</td><td class="negative">-45.15%</td></tr><tr><td class="">Positions 2-3</td><td class="">461</td><td class="">397</td><td class="negative">-13.88%</td></tr><tr><td class="">Positions 4-10</td><td class="">1,694</td><td class="">2,146</td><td class="positive">+26.68%</td></tr><tr><td class="">Positions 11-20</td><td class="">2,271</td><td class="">1,886</td><td class="negative">-16.95%</td></tr><tr><td class="">Positions 21-30</td><td class="">1,674</td><td class="">1,204</td><td class="negative">-28.08%</td></tr><tr><td class="">Positions 31+</td><td class="">9,575</td><td class="">3,960</td><td class="negative">-58.64%</td></tr></tbody></table></div><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit pages ranking in positions 4–10; refine H1/H2 tags, meta elements, and internal links to boost relevance and click-through rates.</li></ul><br></div></section>
+                <section id="2-keyword-performance-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <h2 class="section-title">2. Keyword Performance Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="2-1-top-performing-keywords">2.1 Top Performing Keywords</h3><p>Our analysis identified several high-performing keywords where BBQuality.nl ranks in positions 1-10:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Position</th></tr></thead><tbody><tr><td class="">bbquality</td><td class="">6,600</td><td class="">1</td></tr><tr><td class="">bbqua</td><td class="">40,500</td><td class="">1</td></tr><tr><td class="">bbq eend</td><td class="">320</td><td class="">1</td></tr><tr><td class="">buikspek met zwoerd bbq</td><td class="">390</td><td class="">1</td></tr><tr><td class="">eendenborst bbq</td><td class="">390</td><td class="">1</td></tr><tr><td class="">beef wellington kant en klaar</td><td class="">140</td><td class="">1</td></tr><tr><td class="">chicken lollipop</td><td class="">320</td><td class="">1</td></tr><tr><td class="">asado de tira</td><td class="">210</td><td class="">2</td></tr><tr><td class="">bbq short ribs</td><td class="">110</td><td class="">2</td></tr><tr><td class="">beef tallow nederlands</td><td class="">1,300</td><td class="">2</td></tr><tr><td class="">grillworsten</td><td class="">3,600</td><td class="">2</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Double down on similar recipe themes (e.g., other slow-cooked cuts) to leverage existing topical authority.</li></ul><br><h3 id="2-2-high-performing-content-areas">2.2 High-Performing Content Areas</h3><p>Our analysis reveals several content categories that drive significant traffic:</p><br><ol><li><strong>Specific Meat Cut Recipes</strong>: Pages focusing on cuts like picanha, ribeye, T-bone steak</li><li><strong>Cooking Method Content</strong>: BBQ techniques, oven recipes, smoking methods</li><li><strong>Seasonal Content</strong>: Holiday-specific recipes (especially Christmas)</li><li><strong>Brand Recognition</strong>: Strong performance for brand terms (“bbquality,” “bbquality oss”)</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Replicate top-performing page structure (length, images, step-by-step format) across underperformers to maintain consistency.</li></ul><br><h3 id="2-3-underperforming-content-areas-keyword-gaps">2.3 Underperforming Content Areas & Keyword Gaps</h3><p>Several content areas show potential but are currently underperforming:</p><br><ol><li><strong>General Cooking Guides</strong>: Broader cooking topics lack local keyword optimization</li><li><strong>Seasonal Content Gaps</strong>: Missing key Dutch holiday BBQ topics</li><li><strong>Product Pages</strong>: Lower visibility compared to recipe content</li><li><strong>BBQ Equipment & Accessories</strong>: No dedicated content on grills, smokers, thermometers</li><li><strong>Vegetarian BBQ Content</strong>: Untapped segment (e.g., “bbq vegetarische recepten”)</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Fill these gaps with dedicated pillar pages, internally linking to both recipes and product pages to boost authority.</li></ul><br><h3 id="2-4-keyword-opportunity-analysis">2.4 Keyword Opportunity Analysis</h3><p>Our analysis identified several high-potential keyword opportunities:</p><br><ol><li><strong>Recipe Keywords</strong>: “bbq recepten” (8,100–14,800 searches), “recepten bbq” (1,600–12,100)</li><li><strong>Long-tail Recipe Variations</strong>: “ribeye bereiden bbq” (20–110), “bereiden picanha bbq” (10–70)</li><li><strong>Seasonal BBQ Terms</strong>: Major spikes May–August</li><li><strong>Question-Based Keywords</strong>: Common Dutch cooking questions</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Build out cluster pages around each opportunity set, ensuring FAQ schema on question-based posts.</li></ul><br><h3 id="2-5-high-volume-keywords-where-competitors-outperform-bbquality">2.5 High-Volume Keywords Where Competitors Outperform BBQuality</h3><p>Our competitive analysis identified several high-volume keywords where competitors are outranking BBQuality:</p><br><div style="overflow-x: auto;"><table><thead><tr><th>Keyword</th><th>Search Volume</th><th>Top Competitor</th><th>BBQuality Position</th></tr></thead><tbody><tr><td class="">Hamburger</td><td class="">40,500</td><td class="">bbq-helden.nl</td><td class="">Lower rankings</td></tr><tr><td class="">Bavette</td><td class="">40,500</td><td class="">bbq-helden.nl, themeatlovers.nl</td><td class="">Lower rankings</td></tr><tr><td class="">Hamburgers</td><td class="">40,500</td><td class="">bbq-helden.nl, themeatlovers.nl</td><td class="">Lower rankings</td></tr><tr><td class="">Rib eye</td><td class="">40,500</td><td class="">themeatlovers.nl</td><td class="">Lower rankings</td></tr><tr><td class="">Entrecote</td><td class="">40,500</td><td class="">themeatlovers.nl</td><td class="">Lower rankings</td></tr><tr><td class="">Spare ribs</td><td class="">33,100</td><td class="">bbq-helden.nl, themeatlovers.nl</td><td class="">Lower rankings</td></tr><tr><td class="">Smash burger</td><td class="">33,100</td><td class="">bbq-junkie.nl</td><td class="">Lower rankings</td></tr><tr><td class="">Steaks</td><td class="">33,100</td><td class="">bbq-helden.nl, themeatlovers.nl</td><td class="">Lower rankings</td></tr><tr><td class="">Picanha</td><td class="">27,100</td><td class="">bbq-helden.nl, themeatlovers.nl</td><td class="">Lower rankings</td></tr><tr><td class="">Pulled chicken</td><td class="">22,200</td><td class="">bbq-helden.nl, bbq-junkie.nl</td><td class="">Lower rankings</td></tr></tbody></table></div><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Conduct competitor page audits for each keyword to identify content length, structure, and multimedia gaps you can exploit.</li></ul><br></div></section>
+                <section id="3-technical-seo-assessment" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-cogs"></i></div>
+                        <h2 class="section-title">3. Technical SEO Assessment</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="3-1-critical-technical-issues">3.1 Critical Technical Issues</h3><p>Several technical issues are impacting search performance:</p><br><ol><li><strong>HTML Errors</strong>: Multiple pages contain structural HTML issues affecting crawlability</li><li><strong>Image Optimization</strong>: Missing alt attributes and oversized images affecting page load speed</li><li><strong>Caching Issues</strong>: Inefficient browser caching configuration impacting mobile performance</li><li><strong>Structured Data</strong>: Missing recipe schema markup on high-performing recipe pages</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Prioritize fixing HTML errors sitewide (use automated linting tools) before tackling image and caching improvements.</li></ul><br><h3 id="3-2-mobile-performance">3.2 Mobile Performance</h3><p>Mobile optimization requires attention:</p><br><ol><li><strong>Mobile Responsiveness</strong>: Several key landing pages show suboptimal mobile layouts</li><li><strong>Page Speed</strong>: Mobile page speed scores average 65/100, below industry benchmarks</li><li><strong>Core Web Vitals</strong>: LCP and CLS metrics need improvement on high-traffic pages</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Focus on reducing largest contentful paint (optimize hero images) and stabilizing layout shifts (reserve space for ads/widgets).</li></ul><br></div></section>
+                <section id="4-competitive-landscape-analysis" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-users"></i></div>
+                        <h2 class="section-title">4. Competitive Landscape Analysis</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="4-1-top-competitors-overview">4.1 Top Competitors Overview</h3><p>Our analysis identified three primary competitors in the Dutch BBQ market:</p><br><ol><li><strong>bbq-helden.nl</strong></li></ol><ul><li>Strengths: High traffic, recipe keyword authority</li><li>Content Focus: Recipes, tips, reviews</li><li>Key Differentiator: Extensive, interactive guides</li></ul><br><ol><li><strong>themeatlovers.nl</strong></li></ol><ul><li>Strengths: Strong sales & educational content for meat cuts</li><li>Content Focus: Meat sales + how-to articles</li><li>Key Differentiator: Rich origin stories and quality details</li></ul><br><ol><li><strong>bbq-junkie.nl</strong></li></ol><ul><li>Strengths: Recipe niche authority</li><li>Content Focus: Recipe inspiration</li><li>Key Differentiator: Specialized technique pages</li></ul><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Blend the strengths observed—interactive recipes, quality storytelling, and specialized how-tos—into BBQuality’s content mix.</li></ul><br><h3 id="4-2-competitor-content-strategy-analysis">4.2 Competitor Content Strategy Analysis</h3><p>Our analysis reveals distinct content strategies among competitors:</p><br><ol><li><strong>Recipe-Focused Content</strong>: 1,500+ words, detailed steps, professional photography</li><li><strong>Educational Product Pages</strong>: Rich cut descriptions, origin info, cooking tips</li><li><strong>SERP Strategy</strong>: User-focused titles and benefit-led meta descriptions</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Increase average word count on BBQuality recipe pages to 1,200+ words and add professional step-by-step photos.</li></ul><br><h3 id="4-3-backlink-profile-analysis">4.3 Backlink Profile Analysis</h3><p>Our comprehensive backlink analysis reveals both strengths and opportunities for BBQuality.nl:</p><br><ol><li><strong>Total Backlinks</strong>: 5,034</li><li><strong>Referring Domains</strong>: 776 unique domains</li><li><strong>Domain Spam Score</strong>: Low (11%)</li><li><strong>High-Quality Food Blogs</strong>: osfa.nl, maikelsrecepten.com, nienkevink.nl</li><li><strong>Recipe Websites</strong>: grilltimster.com, lindyslekkernijen.com, ohmyfoodness.nl</li><li><strong>BBQ Specialty Sites</strong>: bbqrockstars.nl, nasqbbq.nl, bbqbijbel.nl</li><li><strong>Anchor Types</strong>: 80.3% typed links, 19% image links, 0.7% redirects</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Prioritize outreach to competitor-only backlink domains to diversify link sources and strengthen topical relevance.</li></ul><br></div></section>
+                <section id="5-strategic-recommendations" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-tasks"></i></div>
+                        <h2 class="section-title">5. Strategic Recommendations</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="5-1-content-strategy-enhancements">5.1 Content Strategy Enhancements</h3><p>Based on our competitive analysis, we recommend:</p><br><ol><li><strong>Implement a Content Strategy Focused on Recipes and Guides</strong></li></ol><ul><li>Create pages for high-volume keywords (hamburger, bavette, ribeye).</li><li>Expand product pages into rich guides (e.g., “Bavette Bereiden: De Ultieme Gids”).</li></ul><br><ol><li><strong>Optimize Existing Product Pages with Informational Content</strong></li></ol><ul><li>Add “Wat is Picanha?” sections describing cuts, cooking methods, flavor profiles.</li></ul><br><ol><li><strong>Improve SERP Elements</strong></li></ol><ul><li>Rewrite titles/meta descriptions to include benefits and calls to action.</li></ul><br><ol><li><strong>Develop a Comprehensive Recipe Database</strong></li></ol><ul><li>Organize by meat type, cooking method, occasion; link back to products.</li></ul><br><ol><li><strong>Target Seasonal Content Opportunities</strong></li></ol><ul><li>Calendar for May–August BBQ season and Dutch holidays.</li></ul><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Assign content owners and set sprint goals: update 5 product pages per week, launch 2 new recipe guides monthly.</li></ul><br><h3 id="5-2-technical-seo-improvements">5.2 Technical SEO Improvements</h3><ol><li>Resolve HTML structure issues.</li><li>Implement image optimization (alt tags, compression).</li><li>Improve mobile layouts and Core Web Vitals.</li><li>Add recipe schema markup.</li><li>Optimize meta descriptions sitewide.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Run a monthly technical audit to ensure no regressions and track Core Web Vitals improvements.</li></ul><br><h3 id="5-3-backlink-acquisition-strategy">5.3 Backlink Acquisition Strategy</h3><ol><li>Target high-quality Dutch culinary sites for guest posts.</li><li>Amplify existing partnerships with food bloggers.</li><li>Acquire links from competitor domains (barbecue.nl, tuinmaximaal.nl).</li><li>Diversify link types: increase contextual article links, reduce footer links.</li><li>Expand .nl and .be domain focus.</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Establish a quarterly backlink KPI: +50 high-authority .nl links, +10 .be links to support regional expansion.</li></ul><br><h3 id="5-4-anchor-text-optimization-strategy">5.4 Anchor Text Optimization Strategy</h3><ol><li>Diversify anchors: include product-specific and recipe-related text.</li><li>Maintain brand anchors while adding descriptive variations.</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Audit current anchor distribution monthly and adjust outreach messaging to target underrepresented anchor types.</li></ul><br></div></section>
+                <section id="6-implementation-roadmap" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">6. Implementation Roadmap</h2>
+                    </div>
+                    <div class="section-content"><br><h3 id="6-1-quick-wins-1-30-days-">6.1 Quick Wins (1-30 Days)</h3><ol><li>Optimize titles and meta descriptions for top keywords.</li><li>Add basic cut descriptions to product pages.</li><li>Fix critical HTML, image, and schema issues.</li><li>Implement internal linking between recipes and products.</li><li>Outreach to existing backlink sources like osfa.nl for expanded coverage.</li></ol><br><h3 id="6-2-short-term-actions-1-3-months-">6.2 Short-Term Actions (1-3 Months)</h3><ol><li>Create in-depth guides for top 5 meat cuts.</li><li>Launch backlink campaign targeting Dutch food bloggers.</li><li>Improve mobile performance and page speed.</li><li>Develop recipe database template and taxonomy.</li><li>Outreach to top 10 competitor backlink sources.</li></ol><br><h3 id="6-3-long-term-strategy-3-6-months-">6.3 Long-Term Strategy (3-6 Months)</h3><ol><li>Build out the complete recipe database.</li><li>Produce video content for key recipes.</li><li>Partner with Dutch BBQ influencers.</li><li>Expand content to equipment and vegetarian recipes.</li><li>Target link building in Belgium and Germany.</li></ol><br><div class="highlight-box"><strong>Strategic Insight:</strong></div><ul><li>Use a Gantt chart to visualize overlapping tasks and ensure cross-team visibility on deliverables.</li></ul><br></div></section>
+                <section id="7-expected-outcomes" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">7. Expected Outcomes</h2>
+                    </div>
+                    <div class="section-content"><br><p>By implementing this SEO roadmap, BBQuality.nl can expect:</p><br><ol><li><strong>Organic Traffic Recovery</strong>: 20-30% increase in organic traffic within 6 months</li><li><strong>Improved Ranking Distribution</strong>: 40% increase in position 1-3 keywords</li><li><strong>Enhanced Conversion Rate</strong>: 15% improvement in organic traffic conversion rate</li><li><strong>Stronger Domain Authority</strong>: Increase DA to 32+ through strategic backlink acquisition</li><li><strong>Expanded Keyword Coverage</strong>: Ranking for 25+ new high-value keywords in positions 1-10</li><li><strong>Backlink Profile Growth</strong>: 15% increase in referring domains with focus on quality Dutch culinary websites</li></ol><br><div class="highlight-box"><strong>Clarification:</strong></div><ul><li>Baseline metrics to track: current DA, conversion rate, position 1–3 count, and total referring domains.</li></ul><br></div></section>
+                <section id="8-monitoring-and-reporting" class="content-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h2 class="section-title">8. Monitoring and Reporting</h2>
+                    </div>
+                    <div class="section-content"><br><p>We recommend implementing:</p><br><ol><li>Bi-Weekly Ranking Reports: Track position changes for target keywords</li><li>Monthly Performance Reviews: Analyze traffic, conversions, and engagement</li><li>Quarterly Strategy Adjustments: Refine approach based on data</li><li>Seasonal Trend Analysis: Monitor spikes in summer and holidays</li><li>Backlink Acquisition Tracking: Monitor new backlinks and referring domains</li></ol><br><div class="highlight-box"><strong>Next Step:</strong></div><ul><li>Define specific KPIs (e.g., CTR improvement, bounce rate decrease) for each report to keep stakeholders aligned.</li></ul><br><hr><br><p>This SEO roadmap provides a comprehensive strategy to reverse BBQuality.nl's declining organic performance and capitalize on identified opportunities in the Dutch market. By addressing technical issues, enhancing content quality with a focus on informational content and recipes, and building a stronger backlink profile, BBQuality.nl can regain its competitive position against key competitors like bbq-helden.nl, themeatlovers.nl, and bbq-junkie.nl. The focus on recipe content optimization, educational product pages, improved SERP elements, and strategic backlink acquisition will help maximize organic visibility and traffic for high-volume keywords where competitors currently outperform BBQuality.</p></div></section></main>
+        <footer class="report-footer">
+            <h3 style="color: var(--primary); margin-bottom: 15px;">
+                <i class="fas fa-robot"></i> Generated by SEO AI
+            </h3>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" onclick="shareReport()">
+                    <i class="fas fa-share"></i> Share Report
+                </button>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(target);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+            
+            // Highlight percentages in tables
+            document.querySelectorAll('td').forEach(cell => {
+                if (cell.textContent.includes('%')) {
+                    const value = parseFloat(cell.textContent);
+                    if (value > 0) {
+                        cell.classList.add('positive');
+                    } else if (value < 0) {
+                        cell.classList.add('negative');
+                    }
+                }
+            });
+        });
+        
+        function shareReport() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'SEO Report - BBQuality',
+                    text: 'Check out this comprehensive SEO analysis report',
+                    url: window.location.href
+                });
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('Report link copied to clipboard!');
+            }
+        }
+    </script></body></html>
